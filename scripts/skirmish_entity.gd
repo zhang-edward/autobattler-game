@@ -1,0 +1,2 @@
+class_name SkirmishEntity
+extends Node2D

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://diju08tqwia6c"]
+
+[ext_resource type="Script" uid="uid://dmfwlemxlebbc" path="res://scripts/skirmish_entity.gd" id="1_bxu5n"]
+
+[node name="SkirmishEntity" type="Node2D" unique_id=675904121]
+script = ExtResource("1_bxu5n")
