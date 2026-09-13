@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dgsrndaml607h"]
+
+[ext_resource type="Script" uid="uid://j1cfs3sclm0v" path="res://scripts/villain_tactical_entity.gd" id="1_60ker"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_60ker"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_4pqng"]
+[ext_resource type="StyleBox" uid="uid://suecsij6ohw" path="res://prefabs/styles/villain_health_bar.tres" id="4_60ker"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnwdj"]
+size = Vector2(39, 40)
+
+[node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_60ker")
+metadata/_custom_type_script = "uid://dkofxae2dw0tl"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_60ker")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1120969407]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.0
+offset_top = -32.0
+offset_right = 22.0
+offset_bottom = -28.0
+grow_horizontal = 2
+theme_override_styles/background = ExtResource("3_4pqng")
+theme_override_styles/fill = ExtResource("4_60ker")
+value = 100.0
+show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=159193221]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_qnwdj")
+debug_color = Color(0.9999997, 0, 0.10755365, 0.41960785)

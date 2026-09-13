@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://ck88j1lpsdo7l"]
+
+[ext_resource type="Script" uid="uid://x36aawivmk4w" path="res://scripts/hero_tactical_entity.gd" id="1_cgo7g"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_yrdel"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_ha6eg"]
+[ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_wu412"]
+[ext_resource type="PackedScene" uid="uid://7yt026hwf8hn" path="res://prefabs/hero_tac_state_machine.tscn" id="5_ha6eg"]
+[ext_resource type="Script" uid="uid://balquufxeg1pq" path="res://scripts/fsm/debug_state_machine.gd" id="6_wu412"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1i1sl"]
+size = Vector2(39, 40)
+
+[node name="HeroTacticalEntity" type="CharacterBody2D" unique_id=1869031772]
+collision_layer = 0
+collision_mask = 0
+slide_on_ceiling = false
+script = ExtResource("1_cgo7g")
+metadata/_custom_type_script = "uid://dkofxae2dw0tl"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=947234328]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_yrdel")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1120497703]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.0
+offset_top = -32.0
+offset_right = 22.0
+offset_bottom = -28.0
+grow_horizontal = 2
+theme_override_styles/background = ExtResource("3_ha6eg")
+theme_override_styles/fill = ExtResource("4_wu412")
+value = 100.0
+show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=645382598]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_1i1sl")
+debug_color = Color(0.0039852504, 0.65160567, 0, 0.41960785)
+
+[node name="HeroTacStateMachine" parent="." unique_id=1304139249 instance=ExtResource("5_ha6eg")]
+
+[node name="Button" type="Button" parent="." unique_id=473592125]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -21.0
+offset_right = 21.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="DebugStateLabel" type="Label" parent="." unique_id=565616696 node_paths=PackedStringArray("state_machine")]
+offset_left = -37.0
+offset_top = -62.0
+offset_right = 37.0
+offset_bottom = -39.0
+script = ExtResource("6_wu412")
+state_machine = NodePath("../HeroTacStateMachine")

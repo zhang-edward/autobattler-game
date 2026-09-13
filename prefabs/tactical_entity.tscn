@@ -1,11 +1,16 @@
-[gd_scene format=3 uid="uid://cc2sxtyyoesqe"]
+[gd_scene format=3 uid="uid://bear815oq3k0m"]
 
 [ext_resource type="Script" uid="uid://dkofxae2dw0tl" path="res://scripts/tactical_entity.gd" id="1_lapsv"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_va4oq"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_8jh7e"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_3l37s"]
 
-[node name="TacticalEntity" type="Node2D" unique_id=857266288]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6pmnr"]
+size = Vector2(39, 40)
+
+[node name="TacticalEntity" type="CharacterBody2D" unique_id=2091202945]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_lapsv")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1744435468]
@@ -24,3 +29,7 @@ grow_horizontal = 2
 theme_override_styles/background = ExtResource("3_8jh7e")
 theme_override_styles/fill = ExtResource("4_3l37s")
 show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1108138650]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_6pmnr")

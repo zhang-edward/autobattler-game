@@ -5,23 +5,30 @@
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="2_x7kju"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="3_drvso"]
 
-[node name="TacticalEntityStatus" type="HBoxContainer" unique_id=1568076685]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_drvso"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="TacticalEntityStatus" type="PanelContainer" unique_id=1746105334]
 custom_minimum_size = Vector2(250, 100)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -114.0
+offset_left = -125.0
 offset_top = -64.0
-offset_right = 114.0
+offset_right = 125.0
 offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_drvso")
 script = ExtResource("1_a8lpn")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=630751594]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1520332242]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=630751594]
 custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -29,18 +36,18 @@ texture = ExtResource("1_d8d2l")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=994320881]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=994320881]
 propagate_maximum_size = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="HeroNameLabel" type="Label" parent="VBoxContainer" unique_id=416497821]
+[node name="HeroNameLabel" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=416497821]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Hero 1"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer" unique_id=218417559]
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer" unique_id=218417559]
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 theme_override_styles/background = ExtResource("2_x7kju")

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://7yt026hwf8hn"]
+
+[ext_resource type="Script" uid="uid://ct2wu0d81rh5a" path="res://scripts/fsm/state_machine.gd" id="1_u6xin"]
+[ext_resource type="Script" uid="uid://b2xdotgydiqq5" path="res://scripts/fsm/hero_states/hero_idle_state.gd" id="2_uw284"]
+[ext_resource type="Script" uid="uid://decl5v4nqwdhu" path="res://scripts/hero_move_state.gd" id="3_8j75u"]
+
+[node name="HeroTacStateMachine" type="Node" unique_id=1304139249]
+script = ExtResource("1_u6xin")
+initial_state = NodePath("HeroIdleState")
+
+[node name="HeroIdleState" type="Node" parent="." unique_id=606345493 node_paths=PackedStringArray("hero_move_state")]
+script = ExtResource("2_uw284")
+hero_move_state = NodePath("../HeroMoveState")
+
+[node name="HeroMoveState" type="Node" parent="." unique_id=733487274 node_paths=PackedStringArray("idle_state")]
+script = ExtResource("3_8j75u")
+idle_state = NodePath("../HeroIdleState")
