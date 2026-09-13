@@ -1,5 +1,5 @@
 class_name Prospect
-extends Object
+extends RefCounted
 
 enum ProspectType {
 	FORMER_VILLAIN,

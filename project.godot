@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameVariables="*uid://hq5y664o8xm3"
+BeehaveGlobalMetrics="*uid://c3ktl6ontsdt7"
+BeehaveGlobalDebugger="*uid://bl3ma400hpvsh"
 
 [display]
 
@@ -25,6 +27,10 @@ window/size/viewport_width=1600
 window/size/viewport_height=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/beehave/plugin.cfg")
 
 [physics]
 

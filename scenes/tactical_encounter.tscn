@@ -1052,6 +1052,7 @@ sources/0 = SubResource("TileSetAtlasSource_3re47")
 [node name="TacticalEncounter" type="Node2D" unique_id=1968811088]
 script = ExtResource("1_s7mhe")
 tactical_encounter_entity_scene = ExtResource("2_el61n")
+tactical_entity_status_scene = ExtResource("3_el61n")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=151412057]
 
@@ -1070,31 +1071,19 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/HeroStatusContainer/MarginContainer" unique_id=480860582]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HeroStatusContainer/MarginContainer" unique_id=480860582]
 layout_mode = 2
 
-[node name="HeroTitleLabel" type="Label" parent="CanvasLayer/HeroStatusContainer/MarginContainer/HBoxContainer" unique_id=512101605]
+[node name="HeroTitleLabel" type="Label" parent="CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer" unique_id=512101605]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Heroes"
 
-[node name="CivsSavedLabel" type="Label" parent="CanvasLayer/HeroStatusContainer/MarginContainer/HBoxContainer" unique_id=1525537219]
+[node name="CivsSavedLabel" type="Label" parent="CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer" unique_id=1525537219]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.390135, 0.8820665, 0, 1)
 theme_override_font_sizes/font_size = 15
 text = "Civilians Saved: 0"
-
-[node name="TacticalEntityStatus" parent="CanvasLayer/HeroStatusContainer/MarginContainer/HBoxContainer" unique_id=1568076685 instance=ExtResource("3_el61n")]
-layout_mode = 2
-
-[node name="TacticalEntityStatus2" parent="CanvasLayer/HeroStatusContainer/MarginContainer/HBoxContainer" unique_id=1515318116 instance=ExtResource("3_el61n")]
-layout_mode = 2
-
-[node name="TacticalEntityStatus3" parent="CanvasLayer/HeroStatusContainer/MarginContainer/HBoxContainer" unique_id=309706591 instance=ExtResource("3_el61n")]
-layout_mode = 2
-
-[node name="TacticalEntityStatus4" parent="CanvasLayer/HeroStatusContainer/MarginContainer/HBoxContainer" unique_id=942386655 instance=ExtResource("3_el61n")]
-layout_mode = 2
 
 [node name="VillainStatusContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1531721074]
 anchors_preset = 11
@@ -1114,33 +1103,21 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/VillainStatusContainer/MarginContainer" unique_id=1869276939]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VillainStatusContainer/MarginContainer" unique_id=1869276939]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/VillainStatusContainer/MarginContainer/HBoxContainer" unique_id=1535773302]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer" unique_id=1535773302]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Villains"
 horizontal_alignment = 2
 
-[node name="CivsKilledLabel" type="Label" parent="CanvasLayer/VillainStatusContainer/MarginContainer/HBoxContainer" unique_id=1389340291]
+[node name="CivsKilledLabel" type="Label" parent="CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer" unique_id=1389340291]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.87494904, 0.19904706, 3.85046e-07, 1)
 theme_override_font_sizes/font_size = 15
 text = "Civilians Killed: 0"
 horizontal_alignment = 2
-
-[node name="TacticalEntityStatus" parent="CanvasLayer/VillainStatusContainer/MarginContainer/HBoxContainer" unique_id=1475403849 instance=ExtResource("3_el61n")]
-layout_mode = 2
-
-[node name="TacticalEntityStatus2" parent="CanvasLayer/VillainStatusContainer/MarginContainer/HBoxContainer" unique_id=797250554 instance=ExtResource("3_el61n")]
-layout_mode = 2
-
-[node name="TacticalEntityStatus3" parent="CanvasLayer/VillainStatusContainer/MarginContainer/HBoxContainer" unique_id=1403972007 instance=ExtResource("3_el61n")]
-layout_mode = 2
-
-[node name="TacticalEntityStatus4" parent="CanvasLayer/VillainStatusContainer/MarginContainer/HBoxContainer" unique_id=1291453533 instance=ExtResource("3_el61n")]
-layout_mode = 2
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1308017431]
 limit_left = -1000

@@ -1,4 +1,10 @@
 class_name Move
-extends Object
+extends Resource
 
-var move_name := ""
+enum MoveType {
+	OFFENSE,
+	DEFENSE,
+	SUPPORT
+}
+
+@export var move_name := ""
