@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b6rnttdg6c72l"]
+
+[ext_resource type="Script" uid="uid://dvttwhdjhyxx0" path="res://scripts/civilian_tactical_entity.gd" id="1_odyde"]
+
+[node name="CivilianTacticalEntity" type="CharacterBody2D" unique_id=344029673]
+script = ExtResource("1_odyde")
+metadata/_custom_type_script = "uid://dkofxae2dw0tl"

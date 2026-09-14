@@ -1,0 +1,2 @@
+class_name CivilianTacticalEntity
+extends TacticalEntity

@@ -8,10 +8,16 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qnwdj"]
 size = Vector2(39, 40)
 
-[node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540]
+[sub_resource type="CircleShape2D" id="CircleShape2D_nyit8"]
+radius = 50.0
+
+[node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_60ker")
+sprite = NodePath("Sprite2D")
+health_bar = NodePath("ProgressBar")
+entity_detector = NodePath("EntityDetector")
 metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
@@ -33,6 +39,17 @@ value = 100.0
 show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=159193221]
+visible = false
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_qnwdj")
+disabled = true
 debug_color = Color(0.9999997, 0, 0.10755365, 0.41960785)
+
+[node name="EntityDetector" type="Area2D" parent="." unique_id=988632830]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntityDetector" unique_id=209369275]
+position = Vector2(0, -0.5)
+shape = SubResource("CircleShape2D_nyit8")
+debug_color = Color(0.99430233, 0, 0.21211717, 0.41960785)

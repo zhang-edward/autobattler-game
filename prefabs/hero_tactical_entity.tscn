@@ -10,11 +10,17 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1i1sl"]
 size = Vector2(39, 40)
 
-[node name="HeroTacticalEntity" type="CharacterBody2D" unique_id=1869031772]
+[sub_resource type="CircleShape2D" id="CircleShape2D_wu412"]
+radius = 50.0
+
+[node name="HeroTacticalEntity" type="CharacterBody2D" unique_id=1869031772 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
 collision_layer = 0
 collision_mask = 0
 slide_on_ceiling = false
 script = ExtResource("1_cgo7g")
+sprite = NodePath("Sprite2D")
+health_bar = NodePath("ProgressBar")
+entity_detector = NodePath("EntityDetector")
 metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=947234328]
@@ -36,8 +42,10 @@ value = 100.0
 show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=645382598]
+visible = false
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_1i1sl")
+disabled = true
 debug_color = Color(0.0039852504, 0.65160567, 0, 0.41960785)
 
 [node name="HeroTacStateMachine" parent="." unique_id=1304139249 instance=ExtResource("5_ha6eg")]
@@ -61,3 +69,11 @@ offset_right = 37.0
 offset_bottom = -39.0
 script = ExtResource("6_wu412")
 state_machine = NodePath("../HeroTacStateMachine")
+
+[node name="EntityDetector" type="Area2D" parent="." unique_id=1143986889]
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntityDetector" unique_id=969568277]
+position = Vector2(0, -0.5)
+shape = SubResource("CircleShape2D_wu412")
+debug_color = Color(0, 0.6478912, 0.20696399, 0.41960785)

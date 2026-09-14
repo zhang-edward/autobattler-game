@@ -11,9 +11,10 @@ const HERO_START_POS = Vector2(-400, -200)
 const VILLAIN_START_POS = Vector2(400, -200)
 
 var hero_entity_statuses: Array[TacticalEntityStatus] = []
-var villain_entity_statuses: Array[TacticalEntityStatus] = []
 var hero_entities: Array[TacticalEntity] = []
 var villain_entities: Array[TacticalEntity] = []
+var villain_entity_statuses: Array[TacticalEntityStatus] = []
+var civilian_entities: Array[TacticalEntity] = []
 
 var selected_hero: HeroTacticalEntity
 

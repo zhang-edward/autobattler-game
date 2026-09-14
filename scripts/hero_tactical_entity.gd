@@ -4,6 +4,7 @@ extends TacticalEntity
 @onready var button = $Button as Button
 
 func _ready():
+	super._ready()
 	button.pressed.connect(select)
 	
 func select():
@@ -16,3 +17,8 @@ func deselect():
 func configure_from_entity_config(ec: EntityConfig):
 	super.configure_from_entity_config(ec)
 	sprite.self_modulate = Color(0, 1, 0)
+
+func collide_area(area: Area2D):
+	var parent = area.get_parent() as TacticalEntity
+	if parent is VillainTacticalEntity:
+		print("Go to skirmish screen!")
