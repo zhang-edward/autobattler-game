@@ -18,7 +18,6 @@ func _ready() -> void:
 	entity_detector.area_entered.connect(collide_area)
 	
 func collide_area(area: Area2D):
-	print(area)
 	pass
 
 func configure_from_entity_config(ec: EntityConfig):

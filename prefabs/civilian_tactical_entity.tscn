@@ -1,7 +1,53 @@
 [gd_scene format=3 uid="uid://b6rnttdg6c72l"]
 
 [ext_resource type="Script" uid="uid://dvttwhdjhyxx0" path="res://scripts/civilian_tactical_entity.gd" id="1_odyde"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_h26us"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_raxsu"]
+[ext_resource type="StyleBox" uid="uid://d4qklfj1pc0o" path="res://prefabs/styles/civilian_health_bar.tres" id="4_h26us"]
 
-[node name="CivilianTacticalEntity" type="CharacterBody2D" unique_id=344029673]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d2i4s"]
+size = Vector2(39, 40)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eut16"]
+radius = 50.0
+
+[node name="CivilianTacticalEntity" type="CharacterBody2D" unique_id=344029673 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
 script = ExtResource("1_odyde")
+sprite = NodePath("Sprite2D")
+health_bar = NodePath("ProgressBar")
+entity_detector = NodePath("EntityDetector")
 metadata/_custom_type_script = "uid://dkofxae2dw0tl"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1980487756]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_h26us")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1885538414]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.0
+offset_top = -32.0
+offset_right = 22.0
+offset_bottom = -28.0
+grow_horizontal = 2
+theme_override_styles/background = ExtResource("3_raxsu")
+theme_override_styles/fill = ExtResource("4_h26us")
+value = 100.0
+show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=862912467]
+visible = false
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_d2i4s")
+disabled = true
+debug_color = Color(0.9999997, 0, 0.10755365, 0.41960785)
+
+[node name="EntityDetector" type="Area2D" parent="." unique_id=2141476475]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntityDetector" unique_id=762041766]
+position = Vector2(0, -0.5)
+shape = SubResource("CircleShape2D_eut16")
+debug_color = Color(9.62615e-08, 0.5868605, 0.7741749, 0.41960785)

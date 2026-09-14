@@ -3,12 +3,13 @@ extends Node2D
 
 @export var hero_tactical_entity_scene: PackedScene
 @export var villain_tactical_entity_scene: PackedScene
+@export var civ_tactical_entity_scene: PackedScene
 @export var tactical_entity_status_scene: PackedScene
 @onready var hero_status_vbox: VBoxContainer = $CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer
 @onready var villain_status_vbox: VBoxContainer = $CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer
 
-const HERO_START_POS = Vector2(-400, -200)
-const VILLAIN_START_POS = Vector2(400, -200)
+const HERO_START_POS = Vector2(-600, -300)
+const VILLAIN_START_POS = Vector2(600, -300)
 
 var hero_entity_statuses: Array[TacticalEntityStatus] = []
 var hero_entities: Array[TacticalEntity] = []
@@ -24,6 +25,7 @@ func _ready() -> void:
 	villain_entity_statuses = init_entity_statuses(GameVariables.villain_lineup, villain_status_vbox)
 	hero_entities = init_ingame_entities(GameVariables.player_lineup, HERO_START_POS, EntityConfig.EntityType.HERO)
 	villain_entities = init_ingame_entities(GameVariables.villain_lineup, VILLAIN_START_POS, EntityConfig.EntityType.VILLAIN)
+	civilian_entities = init_civilians()
 
 func reset_all_entity_round_state():
 	for ec in GameVariables.player_lineup:
@@ -58,6 +60,18 @@ func init_ingame_entities(lineup: Array[EntityConfig], start_pos: Vector2, entit
 		tac_entity.global_position = pos
 		pos.y += 100
 	return entities
+	
+func init_civilians():
+	var civ_entities: Array[TacticalEntity] = []
+	var num_civilians_to_spawn = randi_range(5, 12)
+	for i in range(0, num_civilians_to_spawn):
+		var civ_entity = civ_tactical_entity_scene.instantiate() as TacticalEntity
+		add_child(civ_entity)
+		var rand_x = randi_range(-400, 400)
+		var rand_y = randi_range(-400, 400)
+		civ_entity.global_position = Vector2(rand_x, rand_y)
+		civ_entities.append(civ_entity)
+	return civ_entities
 
 func select_hero_entity(hte: HeroTacticalEntity):
 	if selected_hero != null:

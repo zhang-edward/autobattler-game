@@ -4,8 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_yrdel"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_ha6eg"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_wu412"]
-[ext_resource type="PackedScene" uid="uid://7yt026hwf8hn" path="res://prefabs/hero_tac_state_machine.tscn" id="5_ha6eg"]
+[ext_resource type="Script" uid="uid://ct2wu0d81rh5a" path="res://scripts/fsm/state_machine.gd" id="5_sprpc"]
+[ext_resource type="Script" uid="uid://b2xdotgydiqq5" path="res://scripts/fsm/hero_states/hero_idle_state.gd" id="6_508l4"]
 [ext_resource type="Script" uid="uid://balquufxeg1pq" path="res://scripts/fsm/debug_state_machine.gd" id="6_wu412"]
+[ext_resource type="Script" uid="uid://decl5v4nqwdhu" path="res://scripts/hero_move_state.gd" id="7_2cfyy"]
+[ext_resource type="PackedScene" uid="uid://coqxmtslqj686" path="res://prefabs/dest_marker.tscn" id="8_xcxoq"]
+[ext_resource type="Script" uid="uid://orw3ypaw7yr1" path="res://scripts/fsm/hero_states/hero_save_civ_state.gd" id="9_4g6v7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1i1sl"]
 size = Vector2(39, 40)
@@ -13,11 +17,13 @@ size = Vector2(39, 40)
 [sub_resource type="CircleShape2D" id="CircleShape2D_wu412"]
 radius = 50.0
 
-[node name="HeroTacticalEntity" type="CharacterBody2D" unique_id=1869031772 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
+[node name="HeroTacticalEntity" type="CharacterBody2D" unique_id=1869031772 node_paths=PackedStringArray("hero_move_state", "hero_save_civilian_state", "sprite", "health_bar", "entity_detector")]
 collision_layer = 0
 collision_mask = 0
 slide_on_ceiling = false
 script = ExtResource("1_cgo7g")
+hero_move_state = NodePath("HeroTacStateMachine/HeroMoveState")
+hero_save_civilian_state = NodePath("HeroTacStateMachine/HeroSaveCivState")
 sprite = NodePath("Sprite2D")
 health_bar = NodePath("ProgressBar")
 entity_detector = NodePath("EntityDetector")
@@ -48,7 +54,21 @@ shape = SubResource("RectangleShape2D_1i1sl")
 disabled = true
 debug_color = Color(0.0039852504, 0.65160567, 0, 0.41960785)
 
-[node name="HeroTacStateMachine" parent="." unique_id=1304139249 instance=ExtResource("5_ha6eg")]
+[node name="HeroTacStateMachine" type="Node" parent="." unique_id=1304139249]
+script = ExtResource("5_sprpc")
+initial_state = NodePath("HeroIdleState")
+
+[node name="HeroIdleState" type="Node" parent="HeroTacStateMachine" unique_id=606345493 node_paths=PackedStringArray("hero_move_state")]
+script = ExtResource("6_508l4")
+hero_move_state = NodePath("../HeroMoveState")
+
+[node name="HeroMoveState" type="Node" parent="HeroTacStateMachine" unique_id=733487274 node_paths=PackedStringArray("idle_state")]
+script = ExtResource("7_2cfyy")
+idle_state = NodePath("../HeroIdleState")
+dest_marker_scene = ExtResource("8_xcxoq")
+
+[node name="HeroSaveCivState" type="Node" parent="HeroTacStateMachine" unique_id=1990421489]
+script = ExtResource("9_4g6v7")
 
 [node name="Button" type="Button" parent="." unique_id=473592125]
 anchors_preset = 15

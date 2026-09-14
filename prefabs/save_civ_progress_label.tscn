@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://ddxjxow5um7v3"]
+
+[ext_resource type="Script" uid="uid://c2t6j4som2ht" path="res://scripts/ui/save_civ_progress_label.gd" id="1_q2ebo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7osd"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2ebo"]
+
+[node name="SaveCivProgressLabel" type="VBoxContainer" unique_id=1982567879]
+custom_minimum_size = Vector2(120, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -27.0
+offset_right = 50.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q2ebo")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1723137440]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_k7osd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_q2ebo")
+show_percentage = false
+
+[node name="Label" type="Label" parent="." unique_id=619963062]
+layout_mode = 2
+text = "Saving..."
+horizontal_alignment = 1
