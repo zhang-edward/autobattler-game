@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_h26us"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_raxsu"]
 [ext_resource type="StyleBox" uid="uid://d4qklfj1pc0o" path="res://prefabs/styles/civilian_health_bar.tres" id="4_h26us"]
+[ext_resource type="PackedScene" uid="uid://ddxjxow5um7v3" path="res://prefabs/save_civ_progress_label.tscn" id="5_raxsu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2i4s"]
 size = Vector2(39, 40)
@@ -42,6 +43,10 @@ position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_d2i4s")
 disabled = true
 debug_color = Color(0.9999997, 0, 0.10755365, 0.41960785)
+
+[node name="SaveCivProgressLabel" parent="." unique_id=1982567879 instance=ExtResource("5_raxsu")]
+offset_top = 36.0
+offset_bottom = 90.0
 
 [node name="EntityDetector" type="Area2D" parent="." unique_id=2141476475]
 collision_layer = 4
