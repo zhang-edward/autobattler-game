@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dih4p6cm27b4s"]
+
+[ext_resource type="Script" uid="uid://bb0t2ovl7wifo" path="res://addons/beehave/nodes/beehave_tree.gd" id="1_52g5n"]
+[ext_resource type="Script" uid="uid://cg016dbe7gs1x" path="res://addons/beehave/nodes/composites/sequence.gd" id="2_3o88c"]
+[ext_resource type="Script" uid="uid://c8ldl40e34j0w" path="res://scripts/behaviors/villain/assign_behavior.gd" id="3_shjmr"]
+[ext_resource type="Script" uid="uid://8hn4kne15ac5" path="res://addons/beehave/nodes/composites/selector.gd" id="4_slgya"]
+[ext_resource type="Script" uid="uid://ctdocj6vmwoeq" path="res://scripts/behaviors/villain/is_hunting_civilian.gd" id="5_8bjcc"]
+[ext_resource type="Script" uid="uid://bugtb6lpbckjh" path="res://scripts/behaviors/villain/is_civilian_detected.gd" id="6_8bjcc"]
+[ext_resource type="Script" uid="uid://cw22yurt5l74k" path="res://addons/beehave/nodes/composites/selector_reactive.gd" id="6_jdr7r"]
+[ext_resource type="Script" uid="uid://f0g6khrhlk3y" path="res://scripts/behaviors/villain/is_in_range.gd" id="7_3iju7"]
+[ext_resource type="Script" uid="uid://b0as3tsij4xyr" path="res://scripts/behaviors/villain/attack_civilian.gd" id="8_o0rvj"]
+[ext_resource type="Script" uid="uid://ihdup0b5wakg" path="res://scripts/behaviors/villain/move_toward_civilian.gd" id="9_lrv86"]
+[ext_resource type="Script" uid="uid://cgv6vjtc0rp6c" path="res://scripts/behaviors/villain/assign_direction.gd" id="11_hvip3"]
+[ext_resource type="Script" uid="uid://dcojdhvj8qcw0" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="11_qfj58"]
+[ext_resource type="Script" uid="uid://bmhs21y6mlvfp" path="res://scripts/behaviors/villain/search_for_civilian.gd" id="12_hvip3"]
+[ext_resource type="Script" uid="uid://cqehmp3kqobv7" path="res://scripts/behaviors/villain/hunt_hero.gd" id="13_210or"]
+
+[node name="VillainBehavior" type="Node" unique_id=1365404262 node_paths=PackedStringArray("blackboard", "actor")]
+script = ExtResource("1_52g5n")
+blackboard = NodePath("@Node@307798")
+actor = NodePath("..")
+metadata/_custom_type_script = "uid://bb0t2ovl7wifo"
+
+[node name="RootSequence" type="Node" parent="." unique_id=573539194]
+script = ExtResource("2_3o88c")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="AssignBehavior" type="Node" parent="RootSequence" unique_id=1390494423]
+script = ExtResource("3_shjmr")
+
+[node name="HuntCivOrHero" type="Node" parent="RootSequence" unique_id=1699565444]
+script = ExtResource("4_slgya")
+metadata/_custom_type_script = "uid://8hn4kne15ac5"
+
+[node name="HuntCivilian" type="Node" parent="RootSequence/HuntCivOrHero" unique_id=926005]
+script = ExtResource("2_3o88c")
+metadata/_custom_type_script = "uid://cg016dbe7gs1x"
+
+[node name="IsHuntingCivilian" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian" unique_id=1964559751]
+script = ExtResource("5_8bjcc")
+metadata/_custom_type_script = "uid://cbnbvj8prv63i"
+
+[node name="DetectOrSearch" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian" unique_id=400035355]
+script = ExtResource("6_jdr7r")
+metadata/_custom_type_script = "uid://cw22yurt5l74k"
+
+[node name="DetectAndAttack" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch" unique_id=631986064]
+script = ExtResource("11_qfj58")
+metadata/_custom_type_script = "uid://dcojdhvj8qcw0"
+
+[node name="IsCivilianDetected" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/DetectAndAttack" unique_id=2135015476]
+script = ExtResource("6_8bjcc")
+
+[node name="AttackOrMove" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/DetectAndAttack" unique_id=143421082]
+script = ExtResource("6_jdr7r")
+metadata/_custom_type_script = "uid://cw22yurt5l74k"
+
+[node name="AttackSequnce" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/DetectAndAttack/AttackOrMove" unique_id=1164930399]
+script = ExtResource("11_qfj58")
+metadata/_custom_type_script = "uid://dcojdhvj8qcw0"
+
+[node name="IsInRange" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/DetectAndAttack/AttackOrMove/AttackSequnce" unique_id=1202044766]
+script = ExtResource("7_3iju7")
+
+[node name="AttackCivilian" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/DetectAndAttack/AttackOrMove/AttackSequnce" unique_id=1548544639]
+script = ExtResource("8_o0rvj")
+
+[node name="MoveTowardCivilian" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/DetectAndAttack/AttackOrMove" unique_id=1806357447]
+script = ExtResource("9_lrv86")
+
+[node name="Search" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch" unique_id=2134360339]
+script = ExtResource("11_qfj58")
+metadata/_custom_type_script = "uid://dcojdhvj8qcw0"
+
+[node name="AssignDirection" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/Search" unique_id=988041203]
+script = ExtResource("11_hvip3")
+
+[node name="SearchForCivilian" type="Node" parent="RootSequence/HuntCivOrHero/HuntCivilian/DetectOrSearch/Search" unique_id=480132119]
+script = ExtResource("12_hvip3")
+
+[node name="HuntHero" type="Node" parent="RootSequence/HuntCivOrHero" unique_id=2002739071]
+script = ExtResource("13_210or")

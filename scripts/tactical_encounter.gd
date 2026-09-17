@@ -7,6 +7,7 @@ extends Node2D
 @export var tactical_entity_status_scene: PackedScene
 @onready var hero_status_vbox: VBoxContainer = $CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer
 @onready var villain_status_vbox: VBoxContainer = $CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer
+@onready var civs_saved_label: Label = $CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer/CivsSavedLabel
 
 const HERO_START_POS = Vector2(-600, -300)
 const VILLAIN_START_POS = Vector2(600, -300)
@@ -65,13 +66,18 @@ func init_civilians():
 	var civ_entities: Array[TacticalEntity] = []
 	var num_civilians_to_spawn = randi_range(5, 12)
 	for i in range(0, num_civilians_to_spawn):
-		var civ_entity = civ_tactical_entity_scene.instantiate() as TacticalEntity
+		var civ_entity = civ_tactical_entity_scene.instantiate() as CivilianTacticalEntity
 		add_child(civ_entity)
 		var rand_x = randi_range(-400, 400)
 		var rand_y = randi_range(-400, 400)
 		civ_entity.global_position = Vector2(rand_x, rand_y)
+		civ_entity.on_civilian_saved.connect(add_saved_civilian)
 		civ_entities.append(civ_entity)
 	return civ_entities
+	
+func add_saved_civilian():
+	GameVariables.num_saved_civilians += 1
+	civs_saved_label.text = "Civilians Saved: " + str(GameVariables.num_saved_civilians)
 
 func select_hero_entity(hte: HeroTacticalEntity):
 	if selected_hero != null:

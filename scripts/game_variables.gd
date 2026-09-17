@@ -2,15 +2,15 @@ extends Node
 
 var player_lineup: Array[EntityConfig] = []
 var player_reserves: Array[EntityConfig] = []
-var captured_villains: Array[Prospect] = []
 var civilian_hero_prospects: Array[Prospect] = []
+var num_saved_civilians := 0
 
 var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []
 
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
-	villain_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.VILLAIN)
+	villain_lineup = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
 
 func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.EntityType):
 	var configs: Array[EntityConfig] = []

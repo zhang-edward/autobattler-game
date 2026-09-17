@@ -2,6 +2,7 @@ class_name CivilianTacticalEntity
 extends TacticalEntity
 
 @onready var save_civ_progress_label = $SaveCivProgressLabel as SaveCivProgressLabel
+signal on_civilian_saved
 
 func _ready() -> void:
 	sprite.self_modulate = Color(0, 0, 1)
@@ -11,7 +12,7 @@ func _ready() -> void:
 	save_civ_progress_label.on_save.connect(save_civilian)
 	
 func save_civilian():
-	print("civilian saved!")
+	on_civilian_saved.emit()
 	queue_free()
 
 func _process(delta: float) -> void:
