@@ -26,7 +26,7 @@ func tick(actor: Node, blackboard: Blackboard) -> int:
 func get_closest_civilian(villain: VillainTacticalEntity):
 	var min_dist = INF
 	var closest_civ: CivilianTacticalEntity
-	var all_living_civs = villain.game.civilian_entities.filter(func (c: CivilianTacticalEntity): return is_instance_valid(c) and c.health_bar.value > 0)
+	var all_living_civs = villain.game.civilian_entities.filter(func (c): return is_instance_valid(c) and c.health_bar.value > 0)
 	for c in all_living_civs:
 		var civ = c as CivilianTacticalEntity
 		var dist = villain.global_position.distance_to(civ.global_position)

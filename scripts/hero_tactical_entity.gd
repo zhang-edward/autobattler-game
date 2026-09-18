@@ -16,6 +16,11 @@ func select():
 func deselect():
 	sprite.self_modulate = Color(0, 1, 0)
 
+func capture():
+	game.hero_entities.erase(self)
+	GameVariables.captured_heroes.append(entity_config)
+	queue_free()
+
 func configure_from_entity_config(ec: EntityConfig):
 	super.configure_from_entity_config(ec)
 	sprite.self_modulate = Color(0, 1, 0)
