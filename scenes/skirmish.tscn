@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b587pw8nc5uql" path="res://scripts/skirmish.gd" id="1_skirmish"]
 [ext_resource type="PackedScene" uid="uid://diju08tqwia6c" path="res://prefabs/skirmish_entity.tscn" id="2_entity"]
+[ext_resource type="Script" uid="uid://g8o3vys3xjdg" path="res://scripts/skirmish/brains/keyboard_brain.gd" id="3_keyboard_brain"]
+[ext_resource type="Script" uid="uid://1remksd10of4" path="res://scripts/skirmish/brains/ai_brain.gd" id="4_0dkc3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_statusbar"]
 bg_color = Color(0.18431373, 0.18431373, 0.18431373, 0.5764706)
@@ -10,8 +12,10 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="Skirmish" type="Node2D" unique_id=1631750039]
+[node name="Skirmish" type="Node2D" unique_id=1631750039 node_paths=PackedStringArray("hero", "villain")]
 script = ExtResource("1_skirmish")
+hero = NodePath("Battlefield/Hero")
+villain = NodePath("Battlefield/Villain")
 
 [node name="Background" type="ColorRect" parent="." unique_id=2033718173]
 z_index = -100
@@ -31,8 +35,19 @@ color = Color(0.3248473, 0.30054888, 0.21897963, 1)
 [node name="Battlefield" type="Node2D" parent="." unique_id=1219586791]
 y_sort_enabled = true
 
-[node name="SkirmishEntity" parent="Battlefield" unique_id=848613753 instance=ExtResource("2_entity")]
+[node name="Hero" parent="Battlefield" unique_id=1545964777 node_paths=PackedStringArray("brain") instance=ExtResource("2_entity")]
 position = Vector2(400, 700)
+brain = NodePath("KeyboardBrain")
+
+[node name="KeyboardBrain" type="Node" parent="Battlefield/Hero" unique_id=1616395000]
+script = ExtResource("3_keyboard_brain")
+
+[node name="Villain" parent="Battlefield" unique_id=1154881056 node_paths=PackedStringArray("brain") instance=ExtResource("2_entity")]
+position = Vector2(1400, 700)
+brain = NodePath("AIBrain")
+
+[node name="AIBrain" type="Node" parent="Battlefield/Villain" unique_id=979901472]
+script = ExtResource("4_0dkc3")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=418282212]
 

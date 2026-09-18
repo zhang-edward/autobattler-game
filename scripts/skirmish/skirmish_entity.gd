@@ -21,8 +21,13 @@ const DEATH_KNOCKBACK_MIN := 260.0
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
 @export var ragdoll_state: RagdollState
+@export var brain: Brain:
+	set(value):
+		brain = value
+		brain.entity = self
 
 var entity_config: EntityConfig
+var intent: Intent
 
 # Floor-plane velocity in absolute (pre-depth-scale) units. States write this;
 # _physics_process scales it into `velocity` for move_and_slide().
@@ -51,12 +56,13 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	healthbar.max_value = ec.max_health
 	healthbar.value = healthbar.max_value
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	intent = brain.get_intent(delta)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity)
 	move_and_slide()
 
 func _process(_delta: float) -> void:
-	# Altitude plus shift that keeps the sprite's centre planted when it spins
+	# Altitude plus shift that keeps the sprite's center planted when it spins
 	sprite.position = Vector2(0.0, z) + _sprite_pivot - _sprite_pivot.rotated(sprite.rotation)
 	shadow.scale = _shadow_base_scale * IsometryUtils.scale_shadow_from(z)
 	if absolute_velocity.x != 0.0:
@@ -68,8 +74,6 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 
 	healthbar.value -= hit.damage
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
-	if dir.x == 0.0: # Directly on top of us; shove them the way the attacker faces
-		dir.x = -1.0 if source.sprite.flip_h else 1.0
 
 	if healthbar.value <= 0:
 		is_dead = true

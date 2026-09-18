@@ -21,33 +21,32 @@ var comboing: bool
 func enter(msg := {}) -> void:
 	combo_index = msg["combo_index"] if msg.has("combo_index") else 0
 	recovery_timer = RECOVERY_TIMES[combo_index]
+	comboing = false
 
 	var hitbox = hitbox_scene.instantiate()
-	fighter.add_child(hitbox)
+	e.add_child(hitbox)
 	var hitbox_offset = $HitLocation.position
-	hitbox_offset.x *= -1 if fighter.sprite.flip_h else 1
-	hitbox.init(hitbox_offset, Vector2(96, 96), 0.25, fighter, hits[combo_index])
+	hitbox_offset.x *= -1 if e.sprite.flip_h else 1
+	hitbox.init(hitbox_offset, Vector2(96, 96), 0.25, e, hits[combo_index])
 
 	# Squash on the lunge
-	fighter.scale = Vector2(1.2, 1)
-	var tween = fighter.get_tree().create_tween()
+	e.scale = Vector2(1.2, 1)
+	var tween = e.get_tree().create_tween()
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(fighter, "scale", Vector2(1, 1), 0.05)
+	tween.tween_property(e, "scale", Vector2(1, 1), 0.05)
 
-func physics_update(_delta: float) -> void:
-	var direction_x = Input.get_axis("move_left", "move_right")
-	var direction_y = Input.get_axis("move_up", "move_down")
-	fighter.absolute_velocity = Vector2(direction_x, direction_y) * NUDGE_MOVE_SPEED
+# Intents are written in physics frames, so a one-frame ActionIntent is only
+# reliably visible here, not in update()
+func physics_update(delta: float) -> void:
+	e.absolute_velocity = movement_direction() * NUDGE_MOVE_SPEED
 
-func update(delta: float) -> void:
 	recovery_timer -= delta
 
-	if recovery_timer <= BUFFER_WINDOW and Input.is_action_just_pressed("attack") and combo_index < 2:
+	if recovery_timer <= BUFFER_WINDOW and e.intent is ActionIntent and combo_index < 2:
 		comboing = true
 
 	if recovery_timer <= 0:
 		if comboing:
 			state_machine.transition_to(self, {"combo_index": combo_index + 1})
-			comboing = false
 		else:
 			state_machine.transition_to(move_state)

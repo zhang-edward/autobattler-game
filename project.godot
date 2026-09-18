@@ -72,6 +72,7 @@ attack={
 2d_physics/layer_1="Hero"
 2d_physics/layer_2="Villain"
 2d_physics/layer_3="Civilian"
+2d_physics/layer_4="Combat"
 
 [physics]
 
