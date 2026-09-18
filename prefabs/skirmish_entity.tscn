@@ -1,6 +1,88 @@
 [gd_scene format=3 uid="uid://diju08tqwia6c"]
 
-[ext_resource type="Script" uid="uid://dmfwlemxlebbc" path="res://scripts/skirmish_entity.gd" id="1_bxu5n"]
+[ext_resource type="Script" uid="uid://dmfwlemxlebbc" path="res://scripts/skirmish/skirmish_entity.gd" id="1_entity"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_icon"]
+[ext_resource type="Texture2D" uid="uid://dn5gt0a1iuba6" path="res://sprites/shadow.png" id="3_shadow"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="4_bar_bg"]
+[ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="5_bar_fill"]
+[ext_resource type="Script" uid="uid://ct2wu0d81rh5a" path="res://scripts/fsm/state_machine.gd" id="6_state_machine"]
+[ext_resource type="Script" uid="uid://bn6wf5yfxhdvr" path="res://scripts/skirmish/states/move_state.gd" id="7_move"]
+[ext_resource type="Script" uid="uid://ctd1xqhkomlw" path="res://scripts/skirmish/states/jump_state.gd" id="8_jump"]
+[ext_resource type="Script" uid="uid://c8wil5vgul13a" path="res://scripts/skirmish/states/fall_state.gd" id="9_fall"]
+[ext_resource type="Script" uid="uid://b3jcke85jjq13" path="res://scripts/skirmish/states/punch_state.gd" id="10_punch"]
+[ext_resource type="Script" uid="uid://balquufxeg1pq" path="res://scripts/fsm/debug_state_machine.gd" id="11_debug"]
 
-[node name="SkirmishEntity" type="Node2D" unique_id=675904121]
-script = ExtResource("1_bxu5n")
+[sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
+radius = 8.0
+
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("sprite", "shadow", "healthbar", "state_machine")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_entity")
+sprite = NodePath("Sprite2D")
+shadow = NodePath("Shadow")
+healthbar = NodePath("ProgressBar")
+state_machine = NodePath("StateMachine")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
+modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+z_as_relative = false
+scale = Vector2(4, 4)
+texture = ExtResource("3_shadow")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=869065160]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_icon")
+offset = Vector2(0, -64)
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=42184160]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -22.0
+offset_top = -85.0
+offset_right = 22.0
+offset_bottom = -81.0
+grow_horizontal = 2
+theme_override_styles/background = ExtResource("4_bar_bg")
+theme_override_styles/fill = ExtResource("5_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=843592500]
+shape = SubResource("CircleShape2D_feet")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1341664461]
+script = ExtResource("6_state_machine")
+initial_state = NodePath("MoveState")
+
+[node name="MoveState" type="Node" parent="StateMachine" unique_id=1582019409 node_paths=PackedStringArray("jump_state", "punch_state")]
+script = ExtResource("7_move")
+jump_state = NodePath("../JumpState")
+punch_state = NodePath("../PunchState")
+
+[node name="JumpState" type="Node" parent="StateMachine" unique_id=1752308153 node_paths=PackedStringArray("fall_state")]
+script = ExtResource("8_jump")
+fall_state = NodePath("../FallState")
+
+[node name="FallState" type="Node" parent="StateMachine" unique_id=537803416 node_paths=PackedStringArray("move_state")]
+script = ExtResource("9_fall")
+move_state = NodePath("../MoveState")
+
+[node name="PunchState" type="Node" parent="StateMachine" unique_id=942430408 node_paths=PackedStringArray("move_state")]
+script = ExtResource("10_punch")
+move_state = NodePath("../MoveState")
+
+[node name="HitLocation" type="Marker2D" parent="StateMachine/PunchState" unique_id=469299026]
+position = Vector2(40, -20)
+
+[node name="DebugStateLabel" type="Label" parent="." unique_id=1004657685 node_paths=PackedStringArray("state_machine")]
+offset_left = -50.0
+offset_top = -114.0
+offset_right = 50.0
+offset_bottom = -91.0
+text = "state"
+horizontal_alignment = 1
+script = ExtResource("11_debug")
+state_machine = NodePath("../StateMachine")
