@@ -4,6 +4,7 @@ var player_lineup: Array[EntityConfig] = []
 var player_reserves: Array[EntityConfig] = []
 var civilian_hero_prospects: Array[Prospect] = []
 var num_saved_civilians := 0
+var num_killed_civilians := 0
 
 var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []

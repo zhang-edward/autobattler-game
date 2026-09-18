@@ -10,7 +10,7 @@
 size = Vector2(39, 40)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eut16"]
-radius = 50.0
+radius = 28.111385
 
 [node name="CivilianTacticalEntity" type="CharacterBody2D" unique_id=344029673 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
 script = ExtResource("1_odyde")

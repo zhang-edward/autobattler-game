@@ -10,7 +10,7 @@
 size = Vector2(39, 40)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nyit8"]
-radius = 50.0
+radius = 29.038767
 
 [node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
 collision_layer = 0
@@ -23,7 +23,7 @@ metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="VillainBehavior" parent="." unique_id=1365404262 node_paths=PackedStringArray("blackboard") instance=ExtResource("2_4pqng")]
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@326314")
+blackboard = NodePath("@Node@335713")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
 scale = Vector2(0.3, 0.3)

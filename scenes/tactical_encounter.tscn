@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dnfootkd0wfyw" path="res://scripts/tactical_encounter.gd" id="1_s7mhe"]
 [ext_resource type="PackedScene" uid="uid://ck88j1lpsdo7l" path="res://prefabs/hero_tactical_entity.tscn" id="2_3re47"]
-[ext_resource type="PackedScene" uid="uid://bpv7ojosrtlno" path="res://prefabs/tactical_entity_status.tscn" id="3_el61n"]
 [ext_resource type="PackedScene" uid="uid://dgsrndaml607h" path="res://prefabs/villain_tactical_entity.tscn" id="3_nyit8"]
 [ext_resource type="StyleBox" uid="uid://cad5oxy37t8s7" path="res://prefabs/styles/tac_entity_status_container.tres" id="3_yhkm8"]
 [ext_resource type="PackedScene" uid="uid://b6rnttdg6c72l" path="res://prefabs/civilian_tactical_entity.tscn" id="4_gjjl5"]
@@ -1056,15 +1055,13 @@ script = ExtResource("1_s7mhe")
 hero_tactical_entity_scene = ExtResource("2_3re47")
 villain_tactical_entity_scene = ExtResource("3_nyit8")
 civ_tactical_entity_scene = ExtResource("4_gjjl5")
-tactical_entity_status_scene = ExtResource("3_el61n")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=151412057]
 
 [node name="HeroStatusContainer" type="PanelContainer" parent="CanvasLayer" unique_id=237883404]
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 200.0
-grow_vertical = 2
+custom_minimum_size = Vector2(200, 0)
+offset_right = 136.0
+offset_bottom = 72.0
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("3_yhkm8")
 
@@ -1090,13 +1087,13 @@ theme_override_font_sizes/font_size = 14
 text = "Civilians Saved: 0"
 
 [node name="VillainStatusContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1531721074]
-anchors_preset = 11
+custom_minimum_size = Vector2(200, 0)
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -230.0
+offset_left = -133.0
+offset_bottom = 72.0
 grow_horizontal = 0
-grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("3_yhkm8")
 
