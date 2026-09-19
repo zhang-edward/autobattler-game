@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://c3ftbofg34npu"]
+
+[ext_resource type="PackedScene" uid="uid://g10s6dd1hert" path="res://prefabs/lineup_hero.tscn" id="1_56jtl"]
+[ext_resource type="Script" uid="uid://352hr3kikuex" path="res://scripts/scenes/management.gd" id="1_l7tii"]
+[ext_resource type="PackedScene" uid="uid://c4soiq3qklueu" path="res://prefabs/reserve_row.tscn" id="2_2umh3"]
+
+[node name="Management" type="Node2D" unique_id=1464166626]
+script = ExtResource("1_l7tii")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1272276695]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=226930085]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=1485267170]
+layout_mode = 2
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer2" unique_id=1728346886]
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=334064461]
+layout_mode = 2
+text = "Money: 5000"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=1781899886]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="LineupContainerWrapper" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer" unique_id=1036669550]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper" unique_id=797865403]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Lineup"
+
+[node name="LineupContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper" unique_id=1169325721]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="LineupHero" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=666765194 instance=ExtResource("1_56jtl")]
+layout_mode = 2
+
+[node name="LineupHero2" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=143759515 instance=ExtResource("1_56jtl")]
+layout_mode = 2
+
+[node name="LineupHero3" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=952401376 instance=ExtResource("1_56jtl")]
+layout_mode = 2
+
+[node name="LineupHero4" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=264214121 instance=ExtResource("1_56jtl")]
+layout_mode = 2
+
+[node name="LineupHero5" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=1555032549 instance=ExtResource("1_56jtl")]
+layout_mode = 2
+
+[node name="LineupHero6" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=1010727065 instance=ExtResource("1_56jtl")]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CanvasLayer/VBoxContainer" unique_id=891024969]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=955382988]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 30
+
+[node name="ReserveContainerWrapper" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3" unique_id=131335168]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper" unique_id=889517193]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Reserves"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper" unique_id=2063071738]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ReserveContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer" unique_id=966223177]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ReserveRow" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=1829115391 instance=ExtResource("2_2umh3")]
+layout_mode = 2
+
+[node name="ReserveRow2" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=876694744 instance=ExtResource("2_2umh3")]
+layout_mode = 2
+
+[node name="ReserveRow3" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=1512069426 instance=ExtResource("2_2umh3")]
+layout_mode = 2
+
+[node name="ReserveRow4" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=1082114341 instance=ExtResource("2_2umh3")]
+layout_mode = 2

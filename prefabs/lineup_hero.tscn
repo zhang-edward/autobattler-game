@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://g10s6dd1hert"]
+
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_yk84f"]
+[ext_resource type="PackedScene" uid="uid://d2upsrdagl8ky" path="res://prefabs/stat_container.tscn" id="2_mlshe"]
+
+[node name="LineupHero" type="PanelContainer" unique_id=666765194]
+custom_minimum_size = Vector2(0, 350)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -149.0
+offset_top = -175.0
+offset_right = 149.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=816553833]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=469362790]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HeroSprite" type="TextureRect" parent="VBoxContainer/HBoxContainer" unique_id=2134197980]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_yk84f")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1389308066]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Name" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1467985685]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Hero Name"
+
+[node name="Level" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=47251698]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Lv. 5"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/HBoxContainer/VBoxContainer" unique_id=2056557796]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+show_percentage = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=1035661432]
+layout_mode = 2
+
+[node name="StatContainer" parent="VBoxContainer/HBoxContainer2" unique_id=1006810309 instance=ExtResource("2_mlshe")]
+layout_mode = 2
+
+[node name="StatContainer2" parent="VBoxContainer/HBoxContainer2" unique_id=778235708 instance=ExtResource("2_mlshe")]
+layout_mode = 2
+
+[node name="StatContainer3" parent="VBoxContainer/HBoxContainer2" unique_id=699686017 instance=ExtResource("2_mlshe")]
+layout_mode = 2
+
+[node name="StatContainer4" parent="VBoxContainer/HBoxContainer2" unique_id=990183544 instance=ExtResource("2_mlshe")]
+layout_mode = 2
