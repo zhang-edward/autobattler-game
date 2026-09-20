@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://duxyumqotb4sq" path="res://scripts/skirmish/combat/hurtbox.gd" id="14_hurtbox"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/block_state.gd" id="15_block"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/grab_state.gd" id="16_grab"]
+[ext_resource type="Script" uid="uid://1remksd10of4" path="res://scripts/skirmish/brains/ai_brain.gd" id="17_brain"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
 size = Vector2(128, 128)
@@ -23,7 +24,7 @@ size = Vector2(128, 128)
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("sprite", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "ragdoll_state", "block_state")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("sprite", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "ragdoll_state", "block_state", "brain")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_entity")
@@ -35,6 +36,7 @@ state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
 ragdoll_state = NodePath("StateMachine/RagdollState")
 block_state = NodePath("StateMachine/BlockState")
+brain = NodePath("AIBrain")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
 modulate = Color(1, 1, 1, 0.4)
@@ -131,3 +133,6 @@ text = "state"
 horizontal_alignment = 1
 script = ExtResource("11_debug")
 state_machine = NodePath("../StateMachine")
+
+[node name="AIBrain" type="Node" parent="." unique_id=1710442994]
+script = ExtResource("17_brain")

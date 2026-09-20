@@ -28,7 +28,7 @@ func configure_from_entity_config(ec: EntityConfig):
 func collide_area(area: Area2D):
 	var parent = area.get_parent() as TacticalEntity
 	if parent is VillainTacticalEntity:
-		print("Go to skirmish screen!")
+		game.skirmish_requested.emit(self, parent)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:

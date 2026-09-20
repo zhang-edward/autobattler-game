@@ -31,7 +31,7 @@ func enter(msg := {}) -> void:
 
 	# Squash on the lunge
 	e.scale = Vector2(1.2, 1)
-	var tween = e.get_tree().create_tween()
+	var tween = e.create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(e, "scale", Vector2(1, 1), 0.05)
 

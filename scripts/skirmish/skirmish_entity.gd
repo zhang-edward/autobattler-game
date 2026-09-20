@@ -4,6 +4,8 @@ extends CharacterBody2D
 # 2.5D beat-em-up entity. Screen Y is a depth axis (squashed by IsometryUtils.DEPTH_SCALE)
 # and altitude is faked in `z`, so gravity is integrated by the states, not the physics engine.
 
+signal died
+
 const GRAVITY := 980.0
 
 # Hits with no launch of their own still pop the target up by this much when it
@@ -66,7 +68,7 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_type = ec.entity_type
 	move_speed = ec.ground_speed
 	healthbar.max_value = ec.max_health
-	healthbar.value = healthbar.max_value
+	healthbar.value = ec.curr_health
 
 func _physics_process(delta: float) -> void:
 	intent = brain.get_intent(delta * hitstop_scale)
@@ -100,10 +102,13 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		return
 
 	healthbar.value -= hit.damage
+	if entity_config != null:
+		entity_config.curr_health = int(healthbar.value)
 
 	if healthbar.value <= 0:
 		is_dead = true
 		healthbar.hide()
+		died.emit()
 		# Corpses still fly. They despawn once the ragdoll settles.
 		knock_down(
 			dir * maxf(hit.knockback, DEATH_KNOCKBACK_MIN),

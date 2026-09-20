@@ -4,11 +4,15 @@ extends Node2D
 @export var hero_tactical_entity_scene: PackedScene
 @export var villain_tactical_entity_scene: PackedScene
 @export var civ_tactical_entity_scene: PackedScene
+@onready var hud: CanvasLayer = $CanvasLayer
 @onready var civs_saved_label: Label = $CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer/CivsSavedLabel
 @onready var civs_killed_label: Label = $CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer/CivsKilledLabel
 
 const HERO_START_POS = Vector2(-600, -300)
 const VILLAIN_START_POS = Vector2(600, -300)
+
+# Emitted when a hero runs into a villain. Mission decides what to do about it.
+signal skirmish_requested(hero: HeroTacticalEntity, villain: VillainTacticalEntity)
 
 var hero_entities: Array[TacticalEntity] = []
 var villain_entities: Array[TacticalEntity] = []
@@ -72,3 +76,11 @@ func select_hero_entity(hte: HeroTacticalEntity):
 	if selected_hero != null:
 		selected_hero.deselect()
 	selected_hero = hte
+
+func freeze():
+	process_mode = Node.PROCESS_MODE_DISABLED
+	hud.hide()
+
+func unfreeze():
+	process_mode = Node.PROCESS_MODE_INHERIT
+	hud.show()

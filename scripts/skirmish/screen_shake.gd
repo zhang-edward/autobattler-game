@@ -11,6 +11,9 @@ extends Node
 ## `offset` (found via the viewport), which layers on top of the camera's normal
 ## follow + position smoothing without fighting it. Nothing else in this project
 ## writes `offset`, so we own it and zero it out when a shake ends.
+##
+## Set `target` to shake something other than the active camera. CanvasLayer content
+## ignores cameras, so anything drawn on one has to be shaken through its own `offset`.
 
 # The random offset is re-rolled this many times per second; between rolls it
 # lerps toward the new target so the shake reads as a wobble, not per-frame hash.
@@ -30,6 +33,9 @@ var _elapsed := 0.0
 var _from := Vector2.ZERO        # offset we're lerping away from
 var _to := Vector2.ZERO          # offset we're lerping toward
 var _roll_countdown := 0.0       # seconds until the next re-roll
+
+## Node whose `offset` the shake drives. Falls back to the active Camera2D when null.
+var target: Node = null
 
 func _ready() -> void:
 	set_process(false)
@@ -74,11 +80,16 @@ func _process(delta: float) -> void:
 		_from = _to
 		_to = _random_offset()
 
-	var camera := get_viewport().get_camera_2d()
-	if camera == null:
+	var node := _shake_node()
+	if node == null:
 		return
 	var blend := 1.0 - clampf(_roll_countdown * FREQUENCY, 0.0, 1.0)
-	camera.offset = _from.lerp(_to, blend) * _falloff(_elapsed)
+	node.offset = _from.lerp(_to, blend) * _falloff(_elapsed)
+
+func _shake_node() -> Node:
+	if is_instance_valid(target):
+		return target
+	return get_viewport().get_camera_2d()
 
 # Exponential falloff normalized to hit exactly 0 at `_duration`, so the shake
 # eases out instead of popping when it stops. Stays in [0, 1] for t in [0, dur].
@@ -95,6 +106,6 @@ func _reset() -> void:
 	set_process(false)
 	_elapsed = 0.0
 	_amplitude = Vector2.ZERO
-	var camera := get_viewport().get_camera_2d()
-	if camera != null:
-		camera.offset = Vector2.ZERO
+	var node := _shake_node()
+	if node != null:
+		node.offset = Vector2.ZERO
