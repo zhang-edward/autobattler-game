@@ -19,6 +19,9 @@ func init(pos: Vector2, size: Vector2, lifetime: float, source: SkirmishEntity, 
 	area_entered.connect(_handle_area_entered)
 
 func _process(delta):
+	# A frozen source holds its hitboxes too, so hitstop doesn't eat their lifetime
+	if is_instance_valid(_source):
+		delta *= _source.hitstop_scale
 	_life_timer -= delta
 	if _life_timer <= 0:
 		queue_free()

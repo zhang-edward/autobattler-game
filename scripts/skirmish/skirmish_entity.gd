@@ -33,6 +33,14 @@ const KNOCKDOWN_Y_SPREAD := 0.35
 var entity_config: EntityConfig
 var intent: Intent
 
+# Scales everything that advances time for this entity. 0 holds it still while leaving
+# its nodes and collision shapes live, so a frozen fighter can still be hit.
+var hitstop_scale := 1.0:
+	set(value):
+		hitstop_scale = value
+		if state_machine != null:
+			state_machine.time_scale = value
+
 # Floor-plane velocity in absolute (pre-depth-scale) units. States write this;
 # _physics_process scales it into `velocity` for move_and_slide().
 var absolute_velocity := Vector2.ZERO
@@ -61,8 +69,8 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	healthbar.value = healthbar.max_value
 
 func _physics_process(delta: float) -> void:
-	intent = brain.get_intent(delta)
-	velocity = IsometryUtils.scale_velocity(absolute_velocity)
+	intent = brain.get_intent(delta * hitstop_scale)
+	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale
 	move_and_slide()
 
 func _process(_delta: float) -> void:
