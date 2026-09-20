@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://c4soiq3qklueu"]
+
+[ext_resource type="StyleBox" uid="uid://bdjhk7tp77l6a" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="1_avbkm"]
+[ext_resource type="Script" uid="uid://b6imbococi6rn" path="res://scripts/ui/reserve_row.gd" id="1_b1hdd"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_cbxoo"]
+[ext_resource type="PackedScene" uid="uid://cfg0si3lv2v0c" path="res://prefabs/ui/move_icon.tscn" id="2_pged0"]
+
+[node name="ReserveRow" type="PanelContainer" unique_id=227096469]
+custom_minimum_size = Vector2(0, 75)
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -37.5
+offset_bottom = 90.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_avbkm")
+script = ExtResource("1_b1hdd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=177886886]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=892456971]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+texture = ExtResource("1_cbxoo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=221731]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HeroName" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1373055488]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Hero Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=937658211]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=803695537 instance=ExtResource("2_pged0")]
+layout_mode = 2
+
+[node name="PanelContainer2" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=976710948 instance=ExtResource("2_pged0")]
+layout_mode = 2
+
+[node name="PanelContainer3" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1526299157 instance=ExtResource("2_pged0")]
+layout_mode = 2
+
+[node name="PanelContainer4" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1011967782 instance=ExtResource("2_pged0")]
+layout_mode = 2
+
+[node name="Level" type="Label" parent="HBoxContainer" unique_id=645347899]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="HBoxContainer" unique_id=1867293820]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="Attack" type="Label" parent="HBoxContainer" unique_id=965366633]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="HBoxContainer" unique_id=586023721]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="GroundSpeed" type="Label" parent="HBoxContainer" unique_id=1839274061]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="AirSpeed" type="Label" parent="HBoxContainer" unique_id=1503766036]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="Exp" type="Label" parent="HBoxContainer" unique_id=1407234985]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "15"
+horizontal_alignment = 1
+
+[node name="ActionButton" type="Button" parent="HBoxContainer" unique_id=243955058]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Recruit"
+
+[node name="WrapperButton" type="Button" parent="." unique_id=612335417]
+layout_mode = 2
+flat = true
