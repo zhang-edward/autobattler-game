@@ -11,6 +11,9 @@ const GRAVITY := 980.0
 const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
+const BLOCK_PUSHBACK := 140.0
+# Max depth-axis spread on a knockdown
+const KNOCKDOWN_Y_SPREAD := 0.35
 
 @export var entity_type: EntityConfig.EntityType
 @export var move_speed := 100.0
@@ -21,6 +24,7 @@ const DEATH_KNOCKBACK_MIN := 260.0
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
 @export var ragdoll_state: RagdollState
+@export var block_state: BlockState
 @export var brain: Brain:
 	set(value):
 		brain = value
@@ -65,15 +69,29 @@ func _process(_delta: float) -> void:
 	# Altitude plus shift that keeps the sprite's center planted when it spins
 	sprite.position = Vector2(0.0, z) + _sprite_pivot - _sprite_pivot.rotated(sprite.rotation)
 	shadow.scale = _shadow_base_scale * IsometryUtils.scale_shadow_from(z)
-	if absolute_velocity.x != 0.0:
+	if intent != null and intent.facing != 0.0:
+		sprite.flip_h = intent.facing < 0.0
+	elif absolute_velocity.x != 0.0:
 		sprite.flip_h = absolute_velocity.x < 0.0
 
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if is_dead:
 		return
 
-	healthbar.value -= hit.damage
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
+	var blocking := state_machine.state == block_state
+
+	# A grab only catches a guarding target; anyone else shrugs it off
+	if hit.kind == HitConfig.Kind.GRAB and not blocking:
+		return
+
+	# A guard stops strikes, but a grab goes straight through it
+	if blocking and hit.kind == HitConfig.Kind.STRIKE:
+		absolute_velocity = dir * BLOCK_PUSHBACK
+		Hitstop.freeze([source, self], hit.hitstop)
+		return
+
+	healthbar.value -= hit.damage
 
 	if healthbar.value <= 0:
 		is_dead = true
@@ -83,16 +101,21 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 			dir * maxf(hit.knockback, DEATH_KNOCKBACK_MIN),
 			hit.launch if hit.launch != 0.0 else DEATH_LAUNCH
 		)
-		return
-
 	# A ragdolling entity can't drop back into ordinary hitstun mid-air, so any
 	# hit that connects while it's down there keeps it airborne instead
-	if hit.knockdown or state_machine.state == ragdoll_state:
+	elif hit.knockdown or state_machine.state == ragdoll_state:
 		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH)
 	else:
 		state_machine.transition_to(hurt_state, {"dir": dir})
 
+	Hitstop.freeze([source, self], hit.hitstop)
+	if hit.knockdown:
+		ScreenShake.shake_horizontal(12, 0.1, 12)
+
 func knock_down(impulse: Vector2, launch: float) -> void:
+	# Spread so knockdowns launch slightly off the horizontal axis
+	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
+
 	if state_machine.state == ragdoll_state:
 		# Already ragdolling: relaunch in place rather than re-entering the state,
 		# which would reset the altitude we're trying to add to

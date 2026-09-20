@@ -6,8 +6,9 @@ const DEFAULT_DURATION := 0.08
 static var _resume_at: Dictionary = {}
 
 static func freeze(nodes: Array, duration: float = DEFAULT_DURATION) -> void:
-	for node in nodes:
-		_freeze_one(node, duration)
+	pass
+	# for node in nodes:
+	# 	_freeze_one(node, duration)
 
 static func _freeze_one(node: Node, duration: float) -> void:
 	var id := node.get_instance_id()

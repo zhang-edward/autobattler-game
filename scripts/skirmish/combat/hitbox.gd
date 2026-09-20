@@ -38,7 +38,5 @@ func _handle_area_entered(body: Area2D):
 	if abs(_source.position.y - target.position.y) > IsometryUtils.Y_AXIS_HIT_RANGE:
 		return
 
+	# The target owns the outcome, including whether it warrants hitstop or shake
 	target.take_hit(_hit, _source)
-	Hitstop.freeze([_source, target], _hit.hitstop)
-	if _hit.knockdown:
-		ScreenShake.shake_horizontal(12, 0.1, 12)

@@ -42,7 +42,10 @@ func physics_update(delta: float) -> void:
 
 	recovery_timer -= delta
 
-	if recovery_timer <= BUFFER_WINDOW and e.intent is ActionIntent and combo_index < 2:
+	# Only another punch continues the combo
+	var action := e.intent as ActionIntent
+	var wants_punch: bool = action != null and action.action == ActionIntent.Action.PUNCH
+	if recovery_timer <= BUFFER_WINDOW and wants_punch and combo_index < 2:
 		comboing = true
 
 	if recovery_timer <= 0:

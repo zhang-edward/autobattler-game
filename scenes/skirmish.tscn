@@ -37,13 +37,18 @@ y_sort_enabled = true
 
 [node name="Hero" parent="Battlefield" unique_id=1545964777 node_paths=PackedStringArray("brain") instance=ExtResource("2_entity")]
 position = Vector2(400, 700)
-brain = NodePath("KeyboardBrain")
+move_speed = 200.0
+brain = NodePath("AIBrain")
+
+[node name="AIBrain" type="Node" parent="Battlefield/Hero" unique_id=359877325]
+script = ExtResource("4_0dkc3")
 
 [node name="KeyboardBrain" type="Node" parent="Battlefield/Hero" unique_id=1616395000]
 script = ExtResource("3_keyboard_brain")
 
 [node name="Villain" parent="Battlefield" unique_id=1154881056 node_paths=PackedStringArray("brain") instance=ExtResource("2_entity")]
 position = Vector2(1400, 700)
+move_speed = 200.0
 brain = NodePath("AIBrain")
 
 [node name="AIBrain" type="Node" parent="Battlefield/Villain" unique_id=979901472]

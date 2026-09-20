@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://dv0tdmlcac25j" path="res://scripts/skirmish/states/hurt_state.gd" id="12_hurt"]
 [ext_resource type="Script" uid="uid://dc2t1v1odtx5q" path="res://scripts/skirmish/states/ragdoll_state.gd" id="13_ragdoll"]
 [ext_resource type="Script" uid="uid://duxyumqotb4sq" path="res://scripts/skirmish/combat/hurtbox.gd" id="14_hurtbox"]
+[ext_resource type="Script" path="res://scripts/skirmish/states/block_state.gd" id="15_block"]
+[ext_resource type="Script" path="res://scripts/skirmish/states/grab_state.gd" id="16_grab"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
 size = Vector2(128, 128)
@@ -21,7 +23,7 @@ size = Vector2(128, 128)
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("sprite", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "ragdoll_state")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("sprite", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "ragdoll_state", "block_state")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_entity")
@@ -32,6 +34,7 @@ hurtbox = NodePath("Sprite2D/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
 ragdoll_state = NodePath("StateMachine/RagdollState")
+block_state = NodePath("StateMachine/BlockState")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
 modulate = Color(1, 1, 1, 0.4)
@@ -77,10 +80,12 @@ shape = SubResource("CircleShape2D_feet")
 script = ExtResource("6_state_machine")
 initial_state = NodePath("MoveState")
 
-[node name="MoveState" type="Node" parent="StateMachine" unique_id=1582019409 node_paths=PackedStringArray("jump_state", "punch_state")]
+[node name="MoveState" type="Node" parent="StateMachine" unique_id=1582019409 node_paths=PackedStringArray("jump_state", "punch_state", "block_state", "grab_state")]
 script = ExtResource("7_move")
 jump_state = NodePath("../JumpState")
 punch_state = NodePath("../PunchState")
+block_state = NodePath("../BlockState")
+grab_state = NodePath("../GrabState")
 
 [node name="JumpState" type="Node" parent="StateMachine" unique_id=1752308153 node_paths=PackedStringArray("fall_state")]
 script = ExtResource("8_jump")
@@ -105,6 +110,17 @@ fall_state = NodePath("../FallState")
 [node name="RagdollState" type="Node" parent="StateMachine" unique_id=1710442990 node_paths=PackedStringArray("move_state")]
 script = ExtResource("13_ragdoll")
 move_state = NodePath("../MoveState")
+
+[node name="BlockState" type="Node" parent="StateMachine" unique_id=1710442991 node_paths=PackedStringArray("move_state")]
+script = ExtResource("15_block")
+move_state = NodePath("../MoveState")
+
+[node name="GrabState" type="Node" parent="StateMachine" unique_id=1710442992 node_paths=PackedStringArray("move_state")]
+script = ExtResource("16_grab")
+move_state = NodePath("../MoveState")
+
+[node name="GrabLocation" type="Marker2D" parent="StateMachine/GrabState" unique_id=1710442993]
+position = Vector2(32, -20)
 
 [node name="DebugStateLabel" type="Label" parent="." unique_id=1004657685 node_paths=PackedStringArray("state_machine")]
 offset_left = -50.0
