@@ -21,6 +21,10 @@ signal transitioned(state_name)
 # lingering tween callback can restart it.
 var _stopped := false
 
+# Multiplier applied to delta before it reaches the active state. 0 holds the machine
+# in place; its nodes stay in the scene and keep their collision shapes live.
+var time_scale := 1.0
+
 func _ready() -> void:
 	await owner.ready;
 	# The state machine assigns itself to the State objects' state_machine property.
@@ -33,10 +37,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	state.handle_input(event)
 
 func _process(delta: float) -> void:
-	state.update(delta)
+	if time_scale == 0.0:
+		return
+	state.update(delta * time_scale)
 
 func _physics_process(delta: float) -> void:
-	state.physics_update(delta)
+	if time_scale == 0.0:
+		return
+	state.physics_update(delta * time_scale)
 
 # This function calls the current state's exit() function, then changes the active state,
 # and calls its enter function.

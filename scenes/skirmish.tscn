@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://bfpvhsq4kc0gc"]
+
+[ext_resource type="Script" uid="uid://b587pw8nc5uql" path="res://scripts/skirmish.gd" id="1_skirmish"]
+[ext_resource type="PackedScene" uid="uid://diju08tqwia6c" path="res://prefabs/skirmish_entity.tscn" id="2_entity"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_statusbar"]
+bg_color = Color(0.18431373, 0.18431373, 0.18431373, 0.5764706)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Skirmish" type="Node2D" unique_id=1631750039]
+script = ExtResource("1_skirmish")
+entity_scene = ExtResource("2_entity")
+debug_hero_count = 2
+debug_villain_count = 2
+
+[node name="Background" type="ColorRect" parent="." unique_id=2033718173]
+z_index = -100
+offset_right = 1920.0
+offset_bottom = 310.0
+mouse_filter = 2
+color = Color(0.27, 0.3, 0.36, 1)
+
+[node name="Ground" type="ColorRect" parent="." unique_id=145616496]
+z_index = -100
+offset_top = 310.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0.3248473, 0.30054888, 0.21897963, 1)
+
+[node name="Battlefield" type="Node2D" parent="." unique_id=1219586791]
+y_sort_enabled = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=418282212]
+layer = 11
+
+[node name="Root" type="Control" parent="HUD" unique_id=680592050]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="StatusBarPanel" type="PanelContainer" parent="HUD/Root" unique_id=1480249655]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -140.0
+offset_right = -30.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_statusbar")
+
+[node name="StatusBar" type="HBoxContainer" parent="HUD/Root" unique_id=1924923870]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -130.0
+offset_right = -40.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="HeroStatuses" type="HBoxContainer" parent="HUD/Root/StatusBar" unique_id=902530307]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Spacer" type="Control" parent="HUD/Root/StatusBar" unique_id=537023933]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="VillainStatuses" type="HBoxContainer" parent="HUD/Root/StatusBar" unique_id=2002655054]
+layout_mode = 2
+theme_override_constants/separation = 10

@@ -1,7 +1,7 @@
 class_name TacticalEntity
 extends CharacterBody2D
 
-@onready var game = get_node("/root/TacticalEncounter") as TacticalEncounter
+@onready var game = get_parent() as TacticalEncounter
 @export var sprite: Sprite2D
 @export var health_bar: ProgressBar
 @export var entity_detector: Area2D
@@ -24,6 +24,9 @@ func configure_from_entity_config(ec: EntityConfig):
 	entity_config = ec
 	health_bar.max_value = ec.max_health
 	health_bar.value = health_bar.max_value
+
+func refresh_health_bar():
+	health_bar.value = entity_config.curr_health
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
