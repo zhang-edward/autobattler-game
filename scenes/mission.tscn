@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c7kqm2xnvd8ha"]
 
-[ext_resource type="Script" path="res://scripts/scenes/mission.gd" id="1_mission"]
+[ext_resource type="Script" uid="uid://ogkash0s2imm" path="res://scripts/scenes/mission.gd" id="1_mission"]
 [ext_resource type="PackedScene" uid="uid://yaxlel6ksd3" path="res://scenes/tactical_encounter.tscn" id="2_tactical"]
 [ext_resource type="PackedScene" uid="uid://bfpvhsq4kc0gc" path="res://scenes/skirmish.tscn" id="3_skirmish"]
 

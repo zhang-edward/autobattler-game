@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://c3ftbofg34npu"]
 
-[ext_resource type="PackedScene" uid="uid://g10s6dd1hert" path="res://prefabs/lineup_hero.tscn" id="1_56jtl"]
+[ext_resource type="PackedScene" uid="uid://g10s6dd1hert" path="res://prefabs/ui/lineup_hero.tscn" id="1_56jtl"]
 [ext_resource type="Script" uid="uid://352hr3kikuex" path="res://scripts/scenes/management.gd" id="1_l7tii"]
-[ext_resource type="PackedScene" uid="uid://c4soiq3qklueu" path="res://prefabs/reserve_row.tscn" id="2_2umh3"]
+[ext_resource type="PackedScene" uid="uid://c4soiq3qklueu" path="res://prefabs/ui/reserve_row.tscn" id="2_2umh3"]
 
 [node name="Management" type="Node2D" unique_id=1464166626]
 script = ExtResource("1_l7tii")
+lineup_hero_scene = ExtResource("1_56jtl")
+reserve_row_scene = ExtResource("2_2umh3")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1272276695]
 
@@ -27,7 +29,8 @@ theme_override_constants/margin_right = 30
 layout_mode = 2
 alignment = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=334064461]
+[node name="Money" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=334064461]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Money: 5000"
 
@@ -51,24 +54,6 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="LineupHero" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=666765194 instance=ExtResource("1_56jtl")]
-layout_mode = 2
-
-[node name="LineupHero2" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=143759515 instance=ExtResource("1_56jtl")]
-layout_mode = 2
-
-[node name="LineupHero3" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=952401376 instance=ExtResource("1_56jtl")]
-layout_mode = 2
-
-[node name="LineupHero4" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=264214121 instance=ExtResource("1_56jtl")]
-layout_mode = 2
-
-[node name="LineupHero5" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=1555032549 instance=ExtResource("1_56jtl")]
-layout_mode = 2
-
-[node name="LineupHero6" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper/LineupContainer" unique_id=1010727065 instance=ExtResource("1_56jtl")]
-layout_mode = 2
-
 [node name="Control" type="Control" parent="CanvasLayer/VBoxContainer" unique_id=891024969]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
@@ -81,33 +66,151 @@ theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 30
 
-[node name="ReserveContainerWrapper" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3" unique_id=131335168]
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3" unique_id=980871099]
+layout_mode = 2
+current_tab = 0
+
+[node name="Reserves" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer" unique_id=131335168]
 layout_mode = 2
 theme_override_constants/separation = 20
+metadata/_tab_index = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper" unique_id=889517193]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Reserves"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper" unique_id=2063071738]
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves" unique_id=2063071738]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ReserveContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer" unique_id=966223177]
+[node name="ReservesContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer" unique_id=87635543]
 unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColumnHeaders" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer" unique_id=727049001]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ReserveRow" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=1829115391 instance=ExtResource("2_2umh3")]
+[node name="Control" type="Control" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=1380737284]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 
-[node name="ReserveRow2" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=876694744 instance=ExtResource("2_2umh3")]
+[node name="Control2" type="Control" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=1020122452]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 
-[node name="ReserveRow3" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=1512069426 instance=ExtResource("2_2umh3")]
+[node name="Level" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=2123474790]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=676603110]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP"
+horizontal_alignment = 1
+
+[node name="Attack" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=901726539]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Attack"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=1730246018]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Defense"
+horizontal_alignment = 1
+
+[node name="GroundSpeed" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=1564700255]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ground Speed"
+horizontal_alignment = 1
+
+[node name="AirSpeed" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=678787616]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Air Speed"
+horizontal_alignment = 1
+
+[node name="Exp" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Reserves/ScrollContainer/ReservesContainer/ColumnHeaders" unique_id=1165617473]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "EXP"
+horizontal_alignment = 1
+
+[node name="Recruit" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer" unique_id=766450357]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit" unique_id=1724931666]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RecruitsContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer" unique_id=970029954]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColumnHeaders" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer" unique_id=978667390]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=578746971]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 
-[node name="ReserveRow4" parent="CanvasLayer/VBoxContainer/MarginContainer3/ReserveContainerWrapper/ScrollContainer/ReserveContainer" unique_id=1082114341 instance=ExtResource("2_2umh3")]
+[node name="Control2" type="Control" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=464017919]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+
+[node name="Level" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=152091634]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=1277499773]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP"
+horizontal_alignment = 1
+
+[node name="Attack" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=819276833]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Attack"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=1092872141]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Defense"
+horizontal_alignment = 1
+
+[node name="GroundSpeed" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=1286749858]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ground Speed"
+horizontal_alignment = 1
+
+[node name="AirSpeed" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=1525370169]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Air Speed"
+horizontal_alignment = 1
+
+[node name="Exp" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=1992050272]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "EXP"
+horizontal_alignment = 1
+
+[node name="Action" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer3/TabContainer/Recruit/ScrollContainer/RecruitsContainer/ColumnHeaders" unique_id=1597934954]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Action"
+horizontal_alignment = 1
