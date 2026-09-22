@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="superhero-autobattler"
-run/main_scene="uid://c3ftbofg34npu"
+run/main_scene="uid://c7kqm2xnvd8ha"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -73,6 +73,7 @@ attack={
 2d_physics/layer_2="Villain"
 2d_physics/layer_3="Civilian"
 2d_physics/layer_4="Combat"
+2d_physics/layer_5="Walls"
 
 [physics]
 

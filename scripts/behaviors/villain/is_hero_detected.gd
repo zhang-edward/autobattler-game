@@ -2,9 +2,7 @@
 class_name IsHeroDetected
 extends ConditionLeaf
 
-# Debug: spot heroes anywhere on the map
-static var VISION_RADIUS = 10000
-#static var VISION_RADIUS = 300
+static var VISION_RADIUS = 300
 static var DETECTED_HERO_KEY = "DETECTED_HERO"
 
 func tick(actor: Node, blackboard: Blackboard) -> int:
