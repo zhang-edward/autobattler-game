@@ -98,4 +98,6 @@ tile_map_data = PackedByteArray("AAC+/9z/AAAGAAAAAAC+/93/AAAGAAAAAAC+/97/AAAGAAA
 tile_set = ExtResource("7_nyit8")
 
 [node name="Spawn" type="TileMapLayer" parent="TileMap" unique_id=1915033042]
+visible = false
+tile_map_data = PackedByteArray("AADb/+D/AAAEABIAAAD1/xkAAAAEABIAAADb//D/AAAEABIAAAA3APD/AAAEABEAAADt//D/AAAEABIAAADo/wwAAAAEABIAAAA=")
 tile_set = ExtResource("7_nyit8")
