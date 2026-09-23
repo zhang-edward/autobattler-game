@@ -33,3 +33,5 @@ show_percentage = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1108138650]
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_6pmnr")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=2031903370]

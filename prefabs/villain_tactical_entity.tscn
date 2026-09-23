@@ -6,15 +6,14 @@
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_4pqng"]
 [ext_resource type="StyleBox" uid="uid://suecsij6ohw" path="res://prefabs/styles/villain_health_bar.tres" id="4_60ker"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnwdj"]
-size = Vector2(39, 40)
+[sub_resource type="CircleShape2D" id="CircleShape2D_t66dy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nyit8"]
-radius = 29.038767
+radius = 30.0
 
 [node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
-collision_layer = 0
-collision_mask = 0
+collision_layer = 2
+collision_mask = 16
 script = ExtResource("1_60ker")
 sprite = NodePath("Sprite2D")
 health_bar = NodePath("ProgressBar")
@@ -23,7 +22,7 @@ metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="VillainBehavior" parent="." unique_id=1365404262 node_paths=PackedStringArray("blackboard") instance=ExtResource("2_4pqng")]
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@41486")
+blackboard = NodePath("@Node@72634")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
 scale = Vector2(0.3, 0.3)
@@ -44,10 +43,7 @@ value = 100.0
 show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=159193221]
-visible = false
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_qnwdj")
-disabled = true
+shape = SubResource("CircleShape2D_t66dy")
 debug_color = Color(0.9999997, 0, 0.10755365, 0.41960785)
 
 [node name="EntityDetector" type="Area2D" parent="." unique_id=988632830]
@@ -73,3 +69,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 16
 text = "Hunt Hero"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1826117187]
+debug_enabled = true

@@ -2,6 +2,7 @@ class_name TacticalEntity
 extends CharacterBody2D
 
 @onready var game = get_parent() as TacticalEncounter
+@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 @export var sprite: Sprite2D
 @export var health_bar: ProgressBar
 @export var entity_detector: Area2D
