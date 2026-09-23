@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://decl5v4nqwdhu" path="res://scripts/hero_move_state.gd" id="7_2cfyy"]
 [ext_resource type="PackedScene" uid="uid://coqxmtslqj686" path="res://prefabs/dest_marker.tscn" id="8_xcxoq"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1i1sl"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_nyit8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wu412"]
 radius = 29.10756
@@ -44,8 +44,10 @@ value = 100.0
 show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=645382598]
+visible = false
 position = Vector2(0.5, -0.5)
-shape = SubResource("RectangleShape2D_1i1sl")
+shape = SubResource("CircleShape2D_nyit8")
+disabled = true
 debug_color = Color(0.0039852504, 0.65160567, 0, 0.41960785)
 
 [node name="HeroTacStateMachine" type="Node" parent="." unique_id=1304139249]
@@ -88,3 +90,7 @@ collision_mask = 6
 position = Vector2(0, -0.5)
 shape = SubResource("CircleShape2D_wu412")
 debug_color = Color(0, 0.6478912, 0.20696399, 0.41960785)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1733485173]
+path_postprocessing = 1
+debug_path_custom_color = Color(0, 0.87403035, 0.37854216, 1)

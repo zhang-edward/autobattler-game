@@ -8,6 +8,7 @@ extends Node2D
 @onready var civs_saved_label: Label = $CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer/CivsSavedLabel
 @onready var civs_killed_label: Label = $CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer/CivsKilledLabel
 @onready var spawn_layer: TileMapLayer = $TileMap/Spawn
+@onready var ground_layer: TileMapLayer = $TileMap/Ground
 
 const HERO_START_POS = Vector2(-600, -300)
 const VILLAIN_START_POS = Vector2(600, -300)
@@ -36,14 +37,16 @@ func reset_all_entity_round_state():
 	# Don't track exp, kills, assists on villains
 	for ec in GameVariables.villain_lineup:
 		ec.curr_health = ec.max_health
-		
+
+func get_used_cells_by_id_local(tile_atlas_coords: Vector2i):
+	var positions = spawn_layer.get_used_cells_by_id(0, tile_atlas_coords)
+	return positions.map(func (t): return spawn_layer.map_to_local(t))
+
 func get_hero_spawn_positions():
-	var spawn_positions = spawn_layer.get_used_cells_by_id(0, Vector2i(4, 18))
-	return spawn_positions.map(func (t): return spawn_layer.map_to_local(t))
-	
+	return get_used_cells_by_id_local(Vector2i(4, 18))
+
 func get_villain_spawn_positions():
-	var spawn_positions = spawn_layer.get_used_cells_by_id(0, Vector2i(4, 17))
-	return spawn_positions.map(func (t): return spawn_layer.map_to_local(t))
+	return get_used_cells_by_id_local(Vector2i(4, 17))
 
 func init_ingame_entities(lineup: Array[EntityConfig], spawn_positions: Array, entity_type: EntityConfig.EntityType):
 	var entities: Array[TacticalEntity] = []
@@ -60,14 +63,15 @@ func init_ingame_entities(lineup: Array[EntityConfig], spawn_positions: Array, e
 	return entities
 	
 func init_civilians():
+	var civ_spawn_positions = get_used_cells_by_id_local(Vector2(19, 13))
+	civ_spawn_positions.shuffle()
 	var civ_entities: Array[TacticalEntity] = []
 	var num_civilians_to_spawn = randi_range(5, 12)
 	for i in range(0, num_civilians_to_spawn):
 		var civ_entity = civ_tactical_entity_scene.instantiate() as CivilianTacticalEntity
 		add_child(civ_entity)
-		var rand_x = randi_range(-400, 400)
-		var rand_y = randi_range(-400, 400)
-		civ_entity.global_position = Vector2(rand_x, rand_y)
+		var rand_pos = civ_spawn_positions[i]
+		civ_entity.global_position = Vector2(rand_pos.x, rand_pos.y)
 		civ_entity.on_civilian_saved.connect(add_saved_civilian)
 		civ_entity.on_civilian_killed.connect(add_killed_civilian)
 		civ_entities.append(civ_entity)
