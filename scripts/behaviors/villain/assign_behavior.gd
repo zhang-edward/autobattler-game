@@ -18,8 +18,6 @@ func tick(_actor: Node, blackboard: Blackboard) -> int:
 	return SUCCESS
 
 func update_assigned_behavior(blackboard: Blackboard):
-	# Debug: always hunt heroes
-	var behavior = AssignBehavior.HUNT_HERO
-	#var behavior = AssignBehavior.HUNT_HERO if randi_range(0, 1) == 0 else AssignBehavior.HUNT_CIVILIAN
+	var behavior = AssignBehavior.HUNT_HERO if randi_range(0, 1) == 0 else AssignBehavior.HUNT_CIVILIAN
 	blackboard.set_value(AssignBehavior.BEHAVIOR_KEY, behavior)
 	blackboard.set_value(AssignBehavior.BEHAVIOR_UPDATED_TS, Time.get_ticks_msec())

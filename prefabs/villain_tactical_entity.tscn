@@ -22,7 +22,7 @@ metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="VillainBehavior" parent="." unique_id=1365404262 node_paths=PackedStringArray("blackboard") instance=ExtResource("2_4pqng")]
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@72634")
+blackboard = NodePath("@Node@31995")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
 scale = Vector2(0.3, 0.3)
@@ -71,4 +71,5 @@ theme_override_font_sizes/font_size = 16
 text = "Hunt Hero"
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1826117187]
+path_postprocessing = 1
 debug_enabled = true
