@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://bxkkcw6b257jq"]
+
+[ext_resource type="Script" uid="uid://b0gam1pn7ceix" path="res://scripts/ui/captured_rescued_entity_row.gd" id="1_3uxhi"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_niblg"]
+[ext_resource type="PackedScene" uid="uid://cfg0si3lv2v0c" path="res://prefabs/ui/move_icon.tscn" id="2_3uxhi"]
+
+[node name="CapturedRescuedEntityRow" type="HBoxContainer" unique_id=1212832270]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+script = ExtResource("1_3uxhi")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=41852022]
+layout_mode = 2
+texture = ExtResource("1_niblg")
+
+[node name="Control" type="Control" parent="." unique_id=2053937625]
+custom_minimum_size = Vector2(7, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1477875539]
+custom_minimum_size = Vector2(275, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="HeroName" type="Label" parent="VBoxContainer" unique_id=1820494286]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Villain (Captured)"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=811473553]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MoveIcon" parent="VBoxContainer/HBoxContainer" unique_id=803695537 instance=ExtResource("2_3uxhi")]
+layout_mode = 2
+
+[node name="MoveIcon2" parent="VBoxContainer/HBoxContainer" unique_id=1980936572 instance=ExtResource("2_3uxhi")]
+layout_mode = 2
+
+[node name="MoveIcon3" parent="VBoxContainer/HBoxContainer" unique_id=70197890 instance=ExtResource("2_3uxhi")]
+layout_mode = 2
+
+[node name="MoveIcon4" parent="VBoxContainer/HBoxContainer" unique_id=247115079 instance=ExtResource("2_3uxhi")]
+layout_mode = 2
+
+[node name="Level" type="Label" parent="." unique_id=1750493461]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "15"
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="." unique_id=2034629505]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+
+[node name="Attack" type="Label" parent="." unique_id=2031845222]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="." unique_id=1434251115]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+
+[node name="GroundSpeed" type="Label" parent="." unique_id=1151812483]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+
+[node name="AirSpeed" type="Label" parent="." unique_id=10863912]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 1
+
+[node name="Cost" type="Label" parent="." unique_id=1719116683]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "1000"
+horizontal_alignment = 1

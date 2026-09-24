@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="superhero-autobattler"
-run/main_scene="uid://c7kqm2xnvd8ha"
+run/main_scene="uid://ht4dli8hc11p"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 

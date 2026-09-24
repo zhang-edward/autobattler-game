@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b6rnttdg6c72l"]
 
-[ext_resource type="Script" uid="uid://dvttwhdjhyxx0" path="res://scripts/civilian_tactical_entity.gd" id="1_odyde"]
+[ext_resource type="Script" uid="uid://dvttwhdjhyxx0" path="res://scripts/encounter/civilian_tactical_entity.gd" id="1_odyde"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_h26us"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_raxsu"]
 [ext_resource type="StyleBox" uid="uid://d4qklfj1pc0o" path="res://prefabs/styles/civilian_health_bar.tres" id="4_h26us"]

@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://ck88j1lpsdo7l"]
 
-[ext_resource type="Script" uid="uid://x36aawivmk4w" path="res://scripts/hero_tactical_entity.gd" id="1_cgo7g"]
+[ext_resource type="Script" uid="uid://x36aawivmk4w" path="res://scripts/encounter/hero_tactical_entity.gd" id="1_cgo7g"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_yrdel"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_ha6eg"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_wu412"]
 [ext_resource type="Script" uid="uid://ct2wu0d81rh5a" path="res://scripts/fsm/state_machine.gd" id="5_sprpc"]
 [ext_resource type="Script" uid="uid://b2xdotgydiqq5" path="res://scripts/fsm/hero_states/hero_idle_state.gd" id="6_508l4"]
 [ext_resource type="Script" uid="uid://balquufxeg1pq" path="res://scripts/fsm/debug_state_machine.gd" id="6_wu412"]
-[ext_resource type="Script" uid="uid://decl5v4nqwdhu" path="res://scripts/hero_move_state.gd" id="7_2cfyy"]
+[ext_resource type="Script" uid="uid://decl5v4nqwdhu" path="res://scripts/fsm/hero_states/hero_move_state.gd" id="7_2cfyy"]
 [ext_resource type="PackedScene" uid="uid://coqxmtslqj686" path="res://prefabs/dest_marker.tscn" id="8_xcxoq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nyit8"]

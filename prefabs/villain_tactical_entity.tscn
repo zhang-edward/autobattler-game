@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dgsrndaml607h"]
 
-[ext_resource type="Script" uid="uid://j1cfs3sclm0v" path="res://scripts/villain_tactical_entity.gd" id="1_60ker"]
+[ext_resource type="Script" uid="uid://j1cfs3sclm0v" path="res://scripts/encounter/villain_tactical_entity.gd" id="1_60ker"]
 [ext_resource type="PackedScene" uid="uid://dih4p6cm27b4s" path="res://prefabs/villain_behavior.tscn" id="2_4pqng"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_60ker"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_4pqng"]
@@ -22,7 +22,7 @@ metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="VillainBehavior" parent="." unique_id=1365404262 node_paths=PackedStringArray("blackboard") instance=ExtResource("2_4pqng")]
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@31995")
+blackboard = NodePath("@Node@535254")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
 scale = Vector2(0.3, 0.3)

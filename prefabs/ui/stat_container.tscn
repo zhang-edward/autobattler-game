@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d2upsrdagl8ky"]
 
-[ext_resource type="Script" uid="uid://d26nqyipqgtkp" path="res://scripts/stat_container.gd" id="1_j6yr2"]
+[ext_resource type="Script" uid="uid://d26nqyipqgtkp" path="res://scripts/ui/stat_container.gd" id="1_j6yr2"]
 
 [node name="StatContainer" type="VBoxContainer" unique_id=1006810309]
 size_flags_horizontal = 3

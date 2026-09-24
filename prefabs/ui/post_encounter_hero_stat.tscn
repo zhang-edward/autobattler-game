@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://c33oe6qoqs2l"]
+
+[ext_resource type="Script" uid="uid://b033jaketuqnr" path="res://scripts/ui/post_encounter_hero_stat.gd" id="1_4g2hh"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_36ohj"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_arhb1"]
+[ext_resource type="StyleBox" uid="uid://b7t0qyfoyuqua" path="res://prefabs/styles/exp_bar.tres" id="4_rfqso"]
+
+[node name="PostEncounterHeroStat" type="HBoxContainer" unique_id=109064886]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+script = ExtResource("1_4g2hh")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1904506458]
+layout_mode = 2
+texture = ExtResource("1_36ohj")
+
+[node name="Control" type="Control" parent="." unique_id=988447912]
+custom_minimum_size = Vector2(7, 0)
+layout_mode = 2
+
+[node name="HeroName" type="Label" parent="." unique_id=804567655]
+custom_minimum_size = Vector2(275, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Hero Name"
+
+[node name="VillainsDefeated" type="Label" parent="." unique_id=1307844555]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "2"
+horizontal_alignment = 1
+
+[node name="Assists" type="Label" parent="." unique_id=731536553]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "2"
+horizontal_alignment = 1
+
+[node name="DamageDealt" type="Label" parent="." unique_id=1185637586]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "2"
+horizontal_alignment = 1
+
+[node name="CiviliansSaved" type="Label" parent="." unique_id=917700505]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "2"
+horizontal_alignment = 1
+
+[node name="ExpBar" type="ProgressBar" parent="." unique_id=201849829]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = ExtResource("3_arhb1")
+theme_override_styles/fill = ExtResource("4_rfqso")
+show_percentage = false

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bfpvhsq4kc0gc"]
 
-[ext_resource type="Script" uid="uid://b587pw8nc5uql" path="res://scripts/skirmish.gd" id="1_skirmish"]
+[ext_resource type="Script" uid="uid://b587pw8nc5uql" path="res://scripts/skirmish/skirmish.gd" id="1_skirmish"]
 [ext_resource type="PackedScene" uid="uid://diju08tqwia6c" path="res://prefabs/skirmish_entity.tscn" id="2_entity"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_statusbar"]

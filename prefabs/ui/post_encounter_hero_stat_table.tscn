@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://b5c2to1j71ygj"]
+
+[ext_resource type="PackedScene" uid="uid://c33oe6qoqs2l" path="res://prefabs/ui/post_encounter_hero_stat.tscn" id="1_eu7ty"]
+[ext_resource type="Script" uid="uid://dd7k5meylgivw" path="res://scripts/ui/post_encounter_hero_stat_table.gd" id="1_xhidt"]
+
+[node name="PEHeroStatTable" type="PanelContainer" unique_id=801008408]
+custom_minimum_size = Vector2(1500, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -750.0
+offset_top = -25.0
+offset_right = 750.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xhidt")
+post_encounter_hero_stat_scene = ExtResource("1_eu7ty")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1415296511]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TableContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1659177653]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/TableContainer" unique_id=15000921]
+layout_mode = 2
+text = "Hero Stats"
+
+[node name="HeaderColumn" type="HBoxContainer" parent="MarginContainer/TableContainer" unique_id=1761174797]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=1824295075]
+custom_minimum_size = Vector2(410, 0)
+layout_mode = 2
+
+[node name="VillainsDefeated" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=95778312]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 0
+text = "Villains Defeated"
+horizontal_alignment = 1
+
+[node name="Assists" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=2066473844]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 0
+text = "Assists"
+horizontal_alignment = 1
+
+[node name="DamageDealt" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=1333627686]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 0
+text = "Damage Dealt"
+horizontal_alignment = 1
+
+[node name="CiviliansSaved" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=878855981]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 0
+text = "Civilians Saved"
+horizontal_alignment = 1
+
+[node name="Exp" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=1194411606]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 0
+text = "Exp"
+horizontal_alignment = 1
