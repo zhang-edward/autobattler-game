@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://g10s6dd1hert" path="res://prefabs/ui/lineup_hero.tscn" id="1_56jtl"]
 [ext_resource type="Script" uid="uid://352hr3kikuex" path="res://scripts/scenes/management.gd" id="1_l7tii"]
 [ext_resource type="PackedScene" uid="uid://c4soiq3qklueu" path="res://prefabs/ui/reserve_row.tscn" id="2_2umh3"]
+[ext_resource type="PackedScene" uid="uid://c542jduq3d3ty" path="res://prefabs/ui/top_nav_bar.tscn" id="4_3ngfp"]
 
 [node name="Management" type="Node2D" unique_id=1464166626]
 script = ExtResource("1_l7tii")
@@ -20,33 +21,19 @@ grow_vertical = 2
 theme_override_constants/separation = 4
 alignment = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=1485267170]
-layout_mode = 2
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer2" unique_id=1728346886]
-layout_mode = 2
-alignment = 2
-
-[node name="Money" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=334064461]
+[node name="TopNavBar" parent="CanvasLayer/VBoxContainer" unique_id=185711022 instance=ExtResource("4_3ngfp")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Money: 5000"
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=1781899886]
 layout_mode = 2
 theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 30
 
 [node name="LineupContainerWrapper" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer" unique_id=1036669550]
 layout_mode = 2
 theme_override_constants/separation = 20
-
-[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper" unique_id=797865403]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Lineup"
 
 [node name="LineupContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/MarginContainer/LineupContainerWrapper" unique_id=1169325721]
 unique_name_in_owner = true
@@ -55,7 +42,7 @@ theme_override_constants/separation = 20
 alignment = 1
 
 [node name="Control" type="Control" parent="CanvasLayer/VBoxContainer" unique_id=891024969]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/VBoxContainer" unique_id=955382988]

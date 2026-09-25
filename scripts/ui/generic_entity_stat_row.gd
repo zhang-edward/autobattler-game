@@ -1,4 +1,4 @@
-class_name CapturedRescuedEntityRow
+class_name GenericEntityStatRow
 extends HBoxContainer
 
 @onready var hero_name_label: Label = $VBoxContainer/HeroName

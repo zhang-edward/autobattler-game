@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://xtc5k5m0hk42"]
 
-[ext_resource type="PackedScene" uid="uid://bxkkcw6b257jq" path="res://prefabs/ui/captured_rescued_entity_row.tscn" id="1_a6r10"]
+[ext_resource type="PackedScene" uid="uid://bxkkcw6b257jq" path="res://prefabs/ui/generic_entity_stat_row.tscn" id="1_a6r10"]
 [ext_resource type="Script" uid="uid://c8ty8buwlcw55" path="res://scripts/ui/post_encounter_caputured_rescued_table.gd" id="1_ncqaj"]
 
 [node name="PostEncounterCaptureRescueTable" type="PanelContainer" unique_id=1203423206]
@@ -15,7 +15,7 @@ offset_right = 600.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ncqaj")
-captured_rescued_entity_row_scene = ExtResource("1_a6r10")
+generic_entity_stat_row_scene = ExtResource("1_a6r10")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1901436273]
 layout_mode = 2

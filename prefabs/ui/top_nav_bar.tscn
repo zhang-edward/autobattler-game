@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://c542jduq3d3ty"]
+
+[ext_resource type="Script" uid="uid://cj4sgieifj37k" path="res://scripts/ui/top_nav_bar.gd" id="1_aihe4"]
+
+[node name="TopNavBar" type="PanelContainer" unique_id=185711022]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+script = ExtResource("1_aihe4")
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1828483217]
+layout_mode = 2
+theme_override_constants/margin_right = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2" unique_id=1045179999]
+layout_mode = 2
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/HBoxContainer" unique_id=1949099441]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Roster" type="Button" parent="MarginContainer2/HBoxContainer/HBoxContainer" unique_id=468502571]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 50)
+layout_mode = 2
+text = "Roster"
+flat = true
+
+[node name="Encounter" type="Button" parent="MarginContainer2/HBoxContainer/HBoxContainer" unique_id=621536848]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 50)
+layout_mode = 2
+text = "Encounter"
+flat = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer2/HBoxContainer" unique_id=1941598492]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Money" type="Label" parent="MarginContainer2/HBoxContainer/HBoxContainer2" unique_id=404146651]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Money: 5000"

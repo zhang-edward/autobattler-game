@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://bxkkcw6b257jq"]
 
-[ext_resource type="Script" uid="uid://b0gam1pn7ceix" path="res://scripts/ui/captured_rescued_entity_row.gd" id="1_3uxhi"]
-[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_niblg"]
-[ext_resource type="PackedScene" uid="uid://cfg0si3lv2v0c" path="res://prefabs/ui/move_icon.tscn" id="2_3uxhi"]
+[ext_resource type="Script" uid="uid://b0gam1pn7ceix" path="res://scripts/ui/generic_entity_stat_row.gd" id="1_x5k01"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_21itr"]
+[ext_resource type="PackedScene" uid="uid://cfg0si3lv2v0c" path="res://prefabs/ui/move_icon.tscn" id="3_4mtty"]
 
-[node name="CapturedRescuedEntityRow" type="HBoxContainer" unique_id=1212832270]
+[node name="GenericEntityStatRow" type="HBoxContainer" unique_id=1212832270]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -15,18 +15,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 alignment = 1
-script = ExtResource("1_3uxhi")
+script = ExtResource("1_x5k01")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=41852022]
 layout_mode = 2
-texture = ExtResource("1_niblg")
+texture = ExtResource("2_21itr")
 
 [node name="Control" type="Control" parent="." unique_id=2053937625]
 custom_minimum_size = Vector2(7, 0)
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1477875539]
-custom_minimum_size = Vector2(275, 0)
+custom_minimum_size = Vector2(325, 0)
 layout_mode = 2
 alignment = 1
 
@@ -39,63 +39,63 @@ text = "Villain (Captured)"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MoveIcon" parent="VBoxContainer/HBoxContainer" unique_id=803695537 instance=ExtResource("2_3uxhi")]
+[node name="MoveIcon" parent="VBoxContainer/HBoxContainer" unique_id=803695537 instance=ExtResource("3_4mtty")]
 layout_mode = 2
 
-[node name="MoveIcon2" parent="VBoxContainer/HBoxContainer" unique_id=1980936572 instance=ExtResource("2_3uxhi")]
+[node name="MoveIcon2" parent="VBoxContainer/HBoxContainer" unique_id=1980936572 instance=ExtResource("3_4mtty")]
 layout_mode = 2
 
-[node name="MoveIcon3" parent="VBoxContainer/HBoxContainer" unique_id=70197890 instance=ExtResource("2_3uxhi")]
+[node name="MoveIcon3" parent="VBoxContainer/HBoxContainer" unique_id=70197890 instance=ExtResource("3_4mtty")]
 layout_mode = 2
 
-[node name="MoveIcon4" parent="VBoxContainer/HBoxContainer" unique_id=247115079 instance=ExtResource("2_3uxhi")]
+[node name="MoveIcon4" parent="VBoxContainer/HBoxContainer" unique_id=247115079 instance=ExtResource("3_4mtty")]
 layout_mode = 2
 
 [node name="Level" type="Label" parent="." unique_id=1750493461]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "15"
 horizontal_alignment = 1
 
 [node name="HP" type="Label" parent="." unique_id=2034629505]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "100"
 horizontal_alignment = 1
 
 [node name="Attack" type="Label" parent="." unique_id=2031845222]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "100"
 horizontal_alignment = 1
 
 [node name="Defense" type="Label" parent="." unique_id=1434251115]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "100"
 horizontal_alignment = 1
 
 [node name="GroundSpeed" type="Label" parent="." unique_id=1151812483]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "100"
 horizontal_alignment = 1
 
 [node name="AirSpeed" type="Label" parent="." unique_id=10863912]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "100"
 horizontal_alignment = 1
 
 [node name="Cost" type="Label" parent="." unique_id=1719116683]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "1000"
 horizontal_alignment = 1

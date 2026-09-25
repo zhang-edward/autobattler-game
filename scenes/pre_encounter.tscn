@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://bqhiugxre2som"]
+
+[ext_resource type="PackedScene" uid="uid://bxkkcw6b257jq" path="res://prefabs/ui/generic_entity_stat_row.tscn" id="1_ft5iv"]
+[ext_resource type="Script" uid="uid://4vka2s6h14rc" path="res://scripts/scenes/pre_encounter.gd" id="1_xvklm"]
+[ext_resource type="PackedScene" uid="uid://c542jduq3d3ty" path="res://prefabs/ui/top_nav_bar.tscn" id="3_bgc1a"]
+
+[node name="PreEncounter" type="Node2D" unique_id=953282306]
+script = ExtResource("1_xvklm")
+generic_entity_stat_row_scene = ExtResource("1_ft5iv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1821978144]
+
+[node name="TopNavBar" parent="CanvasLayer" unique_id=185711022 instance=ExtResource("3_bgc1a")]
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=400224480]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer" unique_id=52408791]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=1925713201]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=44580319]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 40
+text = "Superhero Team Name"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=275201611]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HeroStatContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" unique_id=896880194]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=909502531]
+layout_mode = 2
+text = "vs."
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=1315665882]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=646885004]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 40
+text = "Villain Team Name"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=25838851]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VillainStatContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer" unique_id=2140612435]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=1214902433]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Start"

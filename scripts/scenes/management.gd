@@ -7,14 +7,16 @@ extends Node2D
 @onready var reserves_container: VBoxContainer = %ReservesContainer
 @onready var recruits_container: VBoxContainer = %RecruitsContainer
 @onready var money_label: Label = %Money
+@onready var top_nav_bar: TopNavBar = %TopNavBar
 
 var selected_reserve_row: ReserveRow = null
 
 func _ready() -> void:
-	var hero_starting_lineup = GameVariables.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
+	var hero_starting_lineup = GameVariables.player_lineup
+	if hero_starting_lineup.is_empty():
+		hero_starting_lineup = GameVariables.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
 	var recruits = GameVariables.generate_random_entity_configs(10, EntityConfig.EntityType.HERO)
 	var reserves = GameVariables.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
-	money_label.text = "Money: $" + str(GameVariables.money)
 	for ec in hero_starting_lineup:
 		var entity_config = ec as EntityConfig
 		var lineup_hero = lineup_hero_scene.instantiate() as LineupHero
