@@ -14,8 +14,8 @@
 [ext_resource type="Script" uid="uid://dv0tdmlcac25j" path="res://scripts/skirmish/states/hurt_state.gd" id="12_hurt"]
 [ext_resource type="Script" uid="uid://dc2t1v1odtx5q" path="res://scripts/skirmish/states/ragdoll_state.gd" id="13_ragdoll"]
 [ext_resource type="Script" uid="uid://duxyumqotb4sq" path="res://scripts/skirmish/combat/hurtbox.gd" id="14_hurtbox"]
-[ext_resource type="Script" path="res://scripts/skirmish/states/block_state.gd" id="15_block"]
-[ext_resource type="Script" path="res://scripts/skirmish/states/grab_state.gd" id="16_grab"]
+[ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="15_block"]
+[ext_resource type="Script" uid="uid://bfvmryhqxp1yt" path="res://scripts/skirmish/states/grab_state.gd" id="16_grab"]
 [ext_resource type="Script" uid="uid://1remksd10of4" path="res://scripts/skirmish/brains/ai_brain.gd" id="17_brain"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hurtbox"]
@@ -26,7 +26,7 @@ radius = 8.0
 
 [node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("sprite", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "ragdoll_state", "block_state", "brain")]
 collision_layer = 0
-collision_mask = 0
+collision_mask = 1024
 script = ExtResource("1_entity")
 sprite = NodePath("Sprite2D")
 shadow = NodePath("Shadow")
@@ -52,7 +52,7 @@ offset = Vector2(0, -64)
 
 [node name="Hurtbox" type="Area2D" parent="Sprite2D" unique_id=1710442987 node_paths=PackedStringArray("parent")]
 collision_layer = 8
-collision_mask = 0
+collision_mask = 1024
 monitoring = false
 script = ExtResource("14_hurtbox")
 parent = NodePath("../..")

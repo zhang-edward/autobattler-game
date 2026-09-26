@@ -71,6 +71,13 @@ theme_override_font_sizes/font_size = 0
 text = "Civilians Saved"
 horizontal_alignment = 1
 
+[node name="Level" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=1882025722]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 0
+text = "Level"
+horizontal_alignment = 1
+
 [node name="Exp" type="Label" parent="MarginContainer/TableContainer/HeaderColumn" unique_id=1194411606]
 layout_mode = 2
 size_flags_horizontal = 3

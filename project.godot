@@ -75,6 +75,9 @@ attack={
 2d_physics/layer_3="Civilian"
 2d_physics/layer_4="Combat"
 2d_physics/layer_5="Walls"
+2d_physics/layer_9="SkirmishHero"
+2d_physics/layer_10="SkirmishVillain"
+2d_physics/layer_11="SkirmishWall"
 
 [physics]
 

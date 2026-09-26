@@ -17,6 +17,9 @@ const BLOCK_PUSHBACK := 140.0
 # Max depth-axis spread on a knockdown
 const KNOCKDOWN_Y_SPREAD := 0.35
 
+const HERO_LAYER_INDEX = 9
+const VILLAIN_LAYER_INDEX = 10
+
 @export var entity_type: EntityConfig.EntityType
 @export var move_speed := 100.0
 @export var sprite: Sprite2D
@@ -69,6 +72,8 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	move_speed = ec.ground_speed
 	healthbar.max_value = ec.max_health
 	healthbar.value = ec.curr_health
+	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
+	set_collision_layer_value(layer_index, true)
 
 func _physics_process(delta: float) -> void:
 	intent = brain.get_intent(delta * hitstop_scale)

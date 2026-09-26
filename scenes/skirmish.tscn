@@ -11,6 +11,18 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u42sw"]
+size = Vector2(20, 1080)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6pmnr"]
+size = Vector2(20, 1080)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dkc3"]
+size = Vector2(1920, 136.375)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_543uf"]
+size = Vector2(1890, 320)
+
 [node name="Skirmish" type="Node2D" unique_id=1631750039]
 script = ExtResource("1_skirmish")
 entity_scene = ExtResource("2_entity")
@@ -93,3 +105,36 @@ mouse_filter = 2
 [node name="VillainStatuses" type="HBoxContainer" parent="HUD/Root/StatusBar" unique_id=2002655054]
 layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="VWall" type="StaticBody2D" parent="." unique_id=320051880]
+collision_layer = 1024
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VWall" unique_id=1960425404]
+position = Vector2(0, 540)
+shape = SubResource("RectangleShape2D_u42sw")
+
+[node name="VWall2" type="StaticBody2D" parent="." unique_id=172121651]
+collision_layer = 1024
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VWall2" unique_id=1249207026]
+position = Vector2(1920, 540)
+shape = SubResource("RectangleShape2D_6pmnr")
+
+[node name="HWall" type="StaticBody2D" parent="." unique_id=1691447752]
+position = Vector2(960, 1000)
+collision_layer = 1024
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HWall" unique_id=1054663155]
+shape = SubResource("RectangleShape2D_0dkc3")
+
+[node name="HWall2" type="StaticBody2D" parent="." unique_id=1615577379]
+position = Vector2(960, 0)
+collision_layer = 1024
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HWall2" unique_id=714280630]
+position = Vector2(0, 150)
+shape = SubResource("RectangleShape2D_543uf")

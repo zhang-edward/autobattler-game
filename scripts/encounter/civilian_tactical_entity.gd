@@ -14,7 +14,7 @@ func _ready() -> void:
 	save_civ_progress_label.on_save.connect(save_civilian)
 	
 func save_civilian():
-	saving_hero.entity_config.num_civs_saved += 1
+	saving_hero.add_saved_civilian()
 	on_civilian_saved.emit()
 	queue_free()
 
