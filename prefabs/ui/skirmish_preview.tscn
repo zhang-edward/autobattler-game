@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dh1bbjqupj5se"]
+
+[ext_resource type="Script" uid="uid://csekx1cnmdw3v" path="res://scripts/ui/skirmish_preview.gd" id="1_ypveg"]
+[ext_resource type="PackedScene" uid="uid://dspcjfy5rppgy" path="res://prefabs/ui/skirmish_preview_stat_row.tscn" id="6_hh73g"]
+
+[node name="SkirmishPreview" type="PanelContainer" unique_id=1279977058]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -419.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_ypveg")
+skirmish_preview_stat_row_scene = ExtResource("6_hh73g")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1038302902]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=333619438]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=523058180]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Super Hero Team"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=1453617181]
+layout_mode = 2
+
+[node name="HeroContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/PanelContainer" unique_id=2031491260]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BattleButton" type="Button" parent="HBoxContainer" unique_id=1928375962]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "Battle!"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=1332097727]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2" unique_id=307999159]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Villain Team"
+horizontal_alignment = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer2" unique_id=1276911305]
+layout_mode = 2
+
+[node name="VillainContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer2/PanelContainer" unique_id=140993332]
+unique_name_in_owner = true
+layout_mode = 2

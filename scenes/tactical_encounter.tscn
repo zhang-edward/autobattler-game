@@ -6,6 +6,7 @@
 [ext_resource type="StyleBox" uid="uid://cad5oxy37t8s7" path="res://prefabs/styles/tac_entity_status_container.tres" id="3_yhkm8"]
 [ext_resource type="PackedScene" uid="uid://b6rnttdg6c72l" path="res://prefabs/civilian_tactical_entity.tscn" id="4_gjjl5"]
 [ext_resource type="Script" uid="uid://chakufddoqn20" path="res://scripts/game_camera.gd" id="5_3re47"]
+[ext_resource type="PackedScene" uid="uid://dh1bbjqupj5se" path="res://prefabs/ui/skirmish_preview.tscn" id="6_gjjl5"]
 [ext_resource type="TileSet" uid="uid://c6jiv6wa6kj7l" path="res://prefabs/tactical_city_tileset.tres" id="7_nyit8"]
 
 [node name="TacticalEncounter" type="Node2D" unique_id=1968811088]
@@ -18,7 +19,7 @@ civ_tactical_entity_scene = ExtResource("4_gjjl5")
 
 [node name="HeroStatusContainer" type="PanelContainer" parent="CanvasLayer" unique_id=237883404]
 custom_minimum_size = Vector2(200, 0)
-offset_right = 136.0
+offset_right = 200.0
 offset_bottom = 72.0
 mouse_filter = 1
 theme_override_styles/panel = ExtResource("3_yhkm8")
@@ -49,7 +50,7 @@ custom_minimum_size = Vector2(200, 0)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -133.0
+offset_left = -200.0
 offset_bottom = 72.0
 grow_horizontal = 0
 mouse_filter = 1
@@ -77,6 +78,10 @@ theme_override_colors/font_color = Color(0.87494904, 0.19904706, 3.85046e-07, 1)
 theme_override_font_sizes/font_size = 14
 text = "Civilians Killed: 0"
 horizontal_alignment = 2
+
+[node name="SkirmishPreview" parent="CanvasLayer" unique_id=1279977058 instance=ExtResource("6_gjjl5")]
+visible = false
+offset_top = -59.0
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1308017431]
 limit_left = -1500

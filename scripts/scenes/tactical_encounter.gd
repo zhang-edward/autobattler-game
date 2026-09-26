@@ -9,6 +9,7 @@ extends Node2D
 @onready var civs_killed_label: Label = $CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer/CivsKilledLabel
 @onready var spawn_layer: TileMapLayer = $TileMap/Spawn
 @onready var ground_layer: TileMapLayer = $TileMap/Ground
+@onready var skirmish_preview: SkirmishPreview = $CanvasLayer/SkirmishPreview
 
 const HERO_START_POS = Vector2(-600, -300)
 const VILLAIN_START_POS = Vector2(600, -300)

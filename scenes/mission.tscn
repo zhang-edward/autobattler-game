@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ogkash0s2imm" path="res://scripts/scenes/mission.gd" id="1_mission"]
 [ext_resource type="PackedScene" uid="uid://yaxlel6ksd3" path="res://scenes/tactical_encounter.tscn" id="2_tactical"]
 [ext_resource type="PackedScene" uid="uid://bfpvhsq4kc0gc" path="res://scenes/skirmish.tscn" id="3_skirmish"]
+[ext_resource type="PackedScene" uid="uid://dh1bbjqupj5se" path="res://prefabs/ui/skirmish_preview.tscn" id="4_0mvd2"]
 
 [node name="Mission" type="Node" unique_id=1710443001 node_paths=PackedStringArray("tactical")]
 script = ExtResource("1_mission")
@@ -10,3 +11,8 @@ tactical = NodePath("TacticalEncounter")
 skirmish_scene = ExtResource("3_skirmish")
 
 [node name="TacticalEncounter" parent="." unique_id=1710443002 instance=ExtResource("2_tactical")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=618127975]
+
+[node name="SkirmishPreview" parent="CanvasLayer" unique_id=1279977058 instance=ExtResource("4_0mvd2")]
+offset_top = -59.0

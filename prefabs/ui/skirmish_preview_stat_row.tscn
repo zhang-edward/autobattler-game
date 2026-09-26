@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://dspcjfy5rppgy"]
+
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_0ejtw"]
+[ext_resource type="Script" uid="uid://1henm1g87jl5" path="res://scripts/ui/skirmish_preview_stat_row.gd" id="1_5vc1d"]
+[ext_resource type="PackedScene" uid="uid://d2upsrdagl8ky" path="res://prefabs/ui/stat_container.tscn" id="2_5vc1d"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_otye8"]
+[ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_1xxcf"]
+[ext_resource type="PackedScene" uid="uid://cfg0si3lv2v0c" path="res://prefabs/ui/move_icon.tscn" id="5_shyho"]
+
+[node name="SkirmishPreviewStatRow" type="HBoxContainer" unique_id=1511485773]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+script = ExtResource("1_5vc1d")
+stat_container_scene = ExtResource("2_5vc1d")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2009314062]
+layout_mode = 2
+texture = ExtResource("1_0ejtw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=772038425]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="HeroName" type="Label" parent="VBoxContainer" unique_id=461348772]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Hero Name"
+
+[node name="StatListContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1073405108]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Control" type="Control" parent="." unique_id=2095311257]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="." unique_id=107389892]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer2" unique_id=1564020845]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/background = ExtResource("3_otye8")
+theme_override_styles/fill = ExtResource("4_1xxcf")
+show_percentage = false
+
+[node name="MoveIconContainer" type="HBoxContainer" parent="VBoxContainer2" unique_id=201640857]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MoveIcon" parent="VBoxContainer2/MoveIconContainer" unique_id=803695537 instance=ExtResource("5_shyho")]
+layout_mode = 2
+
+[node name="MoveIcon2" parent="VBoxContainer2/MoveIconContainer" unique_id=598886103 instance=ExtResource("5_shyho")]
+layout_mode = 2
+
+[node name="MoveIcon3" parent="VBoxContainer2/MoveIconContainer" unique_id=447230628 instance=ExtResource("5_shyho")]
+layout_mode = 2
+
+[node name="MoveIcon4" parent="VBoxContainer2/MoveIconContainer" unique_id=1178749515 instance=ExtResource("5_shyho")]
+layout_mode = 2

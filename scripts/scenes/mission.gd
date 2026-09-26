@@ -9,6 +9,7 @@ const SKIRMISH_LAYER = 10
 
 @export var tactical: TacticalEncounter
 @export var skirmish_scene: PackedScene
+@onready var skirmish_preview = $CanvasLayer/SkirmishPreview
 
 var skirmish_layer: CanvasLayer
 var skirmish_hero: HeroTacticalEntity
@@ -16,20 +17,21 @@ var skirmish_villain: VillainTacticalEntity
 
 func _ready() -> void:
 	tactical.skirmish_requested.connect(_on_skirmish_requested)
+	skirmish_preview.on_skirmish_start.connect(open_skirmish)
 
 # The request arrives from an area_entered callback, which runs while the physics
 # server is flushing queries and refuses to have collision nodes added or removed
 func _on_skirmish_requested(hero: HeroTacticalEntity, villain: VillainTacticalEntity):
-	open_skirmish.call_deferred(hero, villain)
-
-func open_skirmish(hero: HeroTacticalEntity, villain: VillainTacticalEntity):
-	if skirmish_layer != null or not is_instance_valid(hero) or not is_instance_valid(villain):
-		return
 	skirmish_hero = hero
 	skirmish_villain = villain
+	skirmish_preview.show_skirmish_preview([hero.entity_config], [villain.entity_config])
+	tactical.freeze()
 
-	var heroes: Array[EntityConfig] = [hero.entity_config]
-	var villains: Array[EntityConfig] = [villain.entity_config]
+func open_skirmish():
+	if skirmish_layer != null or not is_instance_valid(skirmish_hero) or not is_instance_valid(skirmish_villain):
+		return
+	var heroes: Array[EntityConfig] = [skirmish_hero.entity_config]
+	var villains: Array[EntityConfig] = [skirmish_villain.entity_config]
 	var skirmish = skirmish_scene.instantiate() as Skirmish
 	skirmish.setup(heroes, villains)
 	skirmish.finished.connect(end_skirmish)
