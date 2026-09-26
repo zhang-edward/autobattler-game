@@ -29,7 +29,6 @@ var recruit_cost := 0
 # In-round state
 var curr_health := 0
 var gained_exp := 0
-var num_kills := 0
 var num_assists := 0
 var damage_dealt := 0
 var villains_defeated := 0

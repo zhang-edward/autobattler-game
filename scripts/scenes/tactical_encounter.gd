@@ -4,12 +4,14 @@ extends Node2D
 @export var hero_tactical_entity_scene: PackedScene
 @export var villain_tactical_entity_scene: PackedScene
 @export var civ_tactical_entity_scene: PackedScene
+
 @onready var hud: CanvasLayer = $CanvasLayer
 @onready var civs_saved_label: Label = $CanvasLayer/HeroStatusContainer/MarginContainer/VBoxContainer/CivsSavedLabel
 @onready var civs_killed_label: Label = $CanvasLayer/VillainStatusContainer/MarginContainer/VBoxContainer/CivsKilledLabel
 @onready var spawn_layer: TileMapLayer = $TileMap/Spawn
 @onready var ground_layer: TileMapLayer = $TileMap/Ground
 @onready var skirmish_preview: SkirmishPreview = $CanvasLayer/SkirmishPreview
+@onready var camera: Camera2D = $Camera2D
 
 const HERO_START_POS = Vector2(-600, -300)
 const VILLAIN_START_POS = Vector2(600, -300)
@@ -33,7 +35,7 @@ func reset_all_entity_round_state():
 	for ec in GameVariables.player_lineup:
 		ec.curr_health = ec.max_health
 		ec.gained_exp = 0
-		ec.num_kills = 0
+		ec.villains_defeated = 0
 		ec.num_assists = 0
 	# Don't track exp, kills, assists on villains
 	for ec in GameVariables.villain_lineup:

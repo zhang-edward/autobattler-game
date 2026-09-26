@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bvfmm46kyxdic"]
+
+[ext_resource type="Script" uid="uid://06tiupeprnrd" path="res://scripts/ui/skirmish_range_circle.gd" id="1_2i7iw"]
+
+[node name="SkirmishRangeCircle" type="Node2D" unique_id=1973532949]
+script = ExtResource("1_2i7iw")

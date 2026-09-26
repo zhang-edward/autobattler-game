@@ -31,3 +31,6 @@ func refresh_health_bar():
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
+	
+func defeat():
+	queue_free()

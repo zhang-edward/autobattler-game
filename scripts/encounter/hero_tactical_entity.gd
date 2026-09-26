@@ -16,6 +16,10 @@ func select():
 func deselect():
 	sprite.self_modulate = Color(0, 1, 0)
 
+func defeat():
+	game.hero_entities.erase(self)
+	super.defeat()
+
 func capture():
 	game.hero_entities.erase(self)
 	GameVariables.captured_heroes.append(entity_config)

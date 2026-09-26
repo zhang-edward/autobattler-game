@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://yaxlel6ksd3" path="res://scenes/tactical_encounter.tscn" id="2_tactical"]
 [ext_resource type="PackedScene" uid="uid://bfpvhsq4kc0gc" path="res://scenes/skirmish.tscn" id="3_skirmish"]
 [ext_resource type="PackedScene" uid="uid://dh1bbjqupj5se" path="res://prefabs/ui/skirmish_preview.tscn" id="4_0mvd2"]
+[ext_resource type="PackedScene" uid="uid://bvfmm46kyxdic" path="res://prefabs/ui/skirmish_range_circle.tscn" id="4_ksxw2"]
 
 [node name="Mission" type="Node" unique_id=1710443001 node_paths=PackedStringArray("tactical")]
 script = ExtResource("1_mission")
@@ -11,6 +12,8 @@ tactical = NodePath("TacticalEncounter")
 skirmish_scene = ExtResource("3_skirmish")
 
 [node name="TacticalEncounter" parent="." unique_id=1710443002 instance=ExtResource("2_tactical")]
+
+[node name="SkirmishRangeCircle" parent="." unique_id=1973532949 instance=ExtResource("4_ksxw2")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=618127975]
 

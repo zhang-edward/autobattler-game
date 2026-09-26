@@ -10,7 +10,7 @@ func configure_from_entity_config(ec: EntityConfig):
 
 func defeat():
 	game.villain_entities.erase(self)
-	queue_free()
+	super.defeat()
 
 func is_overlapping_civilian(civ: CivilianTacticalEntity):
 	var overlapping_areas = entity_detector.get_overlapping_areas()
