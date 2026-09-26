@@ -77,26 +77,21 @@ func end_skirmish(winner: EntityConfig.EntityType):
 	skirmish_layer = null
 
 	for sh in skirmish_heroes:
-		if sh.health_bar.value == 0:
+		sh.refresh_health_bar()
+		if sh.entity_config.curr_health == 0:
 			sh.defeat()
-		else:
-			sh.refresh_health_bar()
+			
 	for sv in skirmish_villains:
-		if sv.health_bar.value == 0:
+		sv.refresh_health_bar()
+		if sv.entity_config.curr_health == 0:
 			sv.defeat()
-		else:
-			sv.refresh_health_bar()
 
 	if winner == EntityConfig.EntityType.HERO:
-		var rand_kill_index = randi_range(0, skirmish_heroes.size())
-		for i in range(0, skirmish_heroes.size()):
-			var sh = skirmish_heroes[i]
-			if i == rand_kill_index:
-				sh.entity_config.villains_defeated += 1
-			else:
-				sh.entity_config.num_assists += 1
 		for sv in skirmish_villains:
 			var villain = sv as VillainTacticalEntity
+			for sh in skirmish_heroes:
+				if !sh.entity_config.defeated_villain_names.has(villain.entity_config.entity_name):
+					sh.entity_config.num_assists += 1
 			villain.defeat()
 
 	skirmish_heroes = []

@@ -101,11 +101,15 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		Hitstop.freeze([source, self], hit.hitstop)
 		return
 
+	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.attack, entity_config.defense)
+	source.entity_config.damage_dealt += hit.damage
 	healthbar.value -= hit.damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
 
 	if healthbar.value <= 0:
+		# deal the killing blow, so source entity gets a villain-defeated credit
+		source.entity_config.defeated_villain_names.append(entity_config.entity_name)
 		is_dead = true
 		healthbar.hide()
 		died.emit()

@@ -21,7 +21,7 @@ func generate_random_stat_lines(lineup: Array[EntityConfig]):
 		var entity_config = ec as EntityConfig
 		entity_config.damage_dealt = randi_range(50, 100)
 		entity_config.num_assists = randi_range(0, 5)
-		entity_config.villains_defeated = randi_range(0, 3)
+		entity_config.defeated_villain_names = ["test1", "test2", "test3"]
 		entity_config.num_civs_saved = randi_range(5, 10)
 		entity_config.exp = randi_range(0, 100)
 		

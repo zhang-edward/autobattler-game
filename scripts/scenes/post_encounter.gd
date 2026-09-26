@@ -9,10 +9,6 @@ extends Node2D
 var pe_state_scroll_index := 0
 
 func _ready() -> void:
-	GameVariables.generate_random_stat_lines(GameVariables.player_lineup)
-	GameVariables.civilian_hero_prospects = GameVariables.generate_random_prospects(5, Prospect.ProspectType.SAVED_CIVILIAN)
-	GameVariables.captured_villain_prospects = GameVariables.generate_random_prospects(5, Prospect.ProspectType.FORMER_VILLAIN)
-	GameVariables.captured_heroes = GameVariables.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
 	pe_hero_stat_table.configure(GameVariables.player_lineup)
 	next_button.pressed.connect(increment_scroll_index)
 	back_button.pressed.connect(decrement_scroll_index)

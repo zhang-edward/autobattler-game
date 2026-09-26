@@ -35,8 +35,8 @@ func reset_all_entity_round_state():
 	for ec in GameVariables.player_lineup:
 		ec.curr_health = ec.max_health
 		ec.gained_exp = 0
-		ec.villains_defeated = 0
 		ec.num_assists = 0
+		ec.defeated_villain_names = []
 	# Don't track exp, kills, assists on villains
 	for ec in GameVariables.villain_lineup:
 		ec.curr_health = ec.max_health

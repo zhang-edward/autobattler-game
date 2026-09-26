@@ -10,7 +10,7 @@ extends HBoxContainer
 
 func configure(config: EntityConfig):
 	hero_name_label.text = config.entity_name
-	villains_defeated_label.text = str(config.villains_defeated)
+	villains_defeated_label.text = str(config.defeated_villain_names.size())
 	assists_label.text = str(config.num_assists)
 	damage_dealt_label.text = str(config.damage_dealt)
 	civilians_saved_label.text = str(config.num_civs_saved)

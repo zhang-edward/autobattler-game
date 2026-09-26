@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://y3mvpybu4glb"]
 
-[ext_resource type="Script" path="res://scripts/skirmish/combat/hitbox.gd" id="1_i3oj0"]
+[ext_resource type="Script" uid="uid://bltatnhkik4v5" path="res://scripts/skirmish/combat/hitbox.gd" id="1_i3oj0"]
 
 [node name="Hitbox" type="Area2D" unique_id=1509281958]
 collision_layer = 8

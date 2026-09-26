@@ -31,7 +31,7 @@ func configure_from_entity_config(ec: EntityConfig):
 
 func collide_area(area: Area2D):
 	var parent = area.get_parent() as TacticalEntity
-	if parent is VillainTacticalEntity:
+	if parent is VillainTacticalEntity and health_bar.value > 0:
 		game.skirmish_requested.emit(self, parent)
 
 func _unhandled_input(event: InputEvent) -> void:

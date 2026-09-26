@@ -8,11 +8,13 @@ func enter(_msg := {}) -> void:
 	hero.velocity = Vector2.ZERO
 	var civilians = get_civilians_in_range()
 	for c in civilians:
-		var save_civ_label = save_civ_label_scene.instantiate() as SaveCivProgressLabel
-		hero.add_child(save_civ_label)
-		save_civ_label.civ_ref = c
-		save_civ_label.global_position = Vector2(c.global_position.x, c.global_position.y + 75)
-		save_civ_label.start_save_timer()
+		if !c.is_being_saved:
+			c.saving_hero = hero
+			var save_civ_label = save_civ_label_scene.instantiate() as SaveCivProgressLabel
+			hero.add_child(save_civ_label)
+			save_civ_label.civ_ref = c
+			save_civ_label.global_position = Vector2(c.global_position.x, c.global_position.y + 75)
+			save_civ_label.start_save_timer()
 		
 func update(_delta: float) -> void:
 	var civilians = get_civilians_in_range()

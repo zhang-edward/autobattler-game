@@ -5,6 +5,9 @@ extends TacticalEntity
 signal on_civilian_saved
 signal on_civilian_killed
 
+var is_being_saved := false
+var saving_hero: HeroTacticalEntity
+
 func _ready() -> void:
 	sprite.self_modulate = Color(0, 0, 1)
 	var health = randi_range(75, 125)
@@ -13,6 +16,7 @@ func _ready() -> void:
 	save_civ_progress_label.on_save.connect(save_civilian)
 	
 func save_civilian():
+	saving_hero.entity_config.num_civs_saved += 1
 	on_civilian_saved.emit()
 	queue_free()
 	
@@ -31,5 +35,7 @@ func _process(delta: float) -> void:
 			save_civ_progress_label.show()
 			save_civ_progress_label.start_save_timer()
 	else:
+		is_being_saved = false
+		saving_hero = null
 		save_civ_progress_label.hide()
 		save_civ_progress_label.stop_save_timer()

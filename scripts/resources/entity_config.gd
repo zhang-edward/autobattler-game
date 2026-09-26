@@ -31,5 +31,5 @@ var curr_health := 0
 var gained_exp := 0
 var num_assists := 0
 var damage_dealt := 0
-var villains_defeated := 0
 var num_civs_saved := 0
+var defeated_villain_names := []
