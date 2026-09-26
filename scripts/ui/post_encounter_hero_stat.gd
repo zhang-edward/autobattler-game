@@ -24,18 +24,19 @@ func configure(config: EntityConfig):
 	level_label.text = str(config.level)
 	exp_bar.value = config.exp
 	add_gained_exp()
-	
+
 func add_gained_exp():
+	await get_tree().create_timer(0.5).timeout
 	gained_exp_remaining = entity_config.gained_exp
 	gain_exp_timer = Timer.new()
 	gain_exp_timer.autostart = true
 	gain_exp_timer.one_shot = false
 	gain_exp_timer.timeout.connect(add_exp_increment)
-	gain_exp_timer.wait_time = 0.01
+	gain_exp_timer.wait_time = 0.02
 	add_child(gain_exp_timer)
 
 func add_exp_increment():
-	if gained_exp_remaining == 0:
+	if gained_exp_remaining == 0 and is_instance_valid(gain_exp_timer):
 		gain_exp_timer.stop()
 		gain_exp_timer.queue_free()
 	else:

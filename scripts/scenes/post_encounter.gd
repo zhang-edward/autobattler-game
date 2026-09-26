@@ -1,6 +1,7 @@
 class_name PostEncounter
 extends Node2D
 
+@onready var title_label: Label = $CanvasLayer/VBoxContainer/Title
 @onready var pe_hero_stat_table: PostEncounterHeroStatTable = $CanvasLayer/VBoxContainer/PEHeroStatTable
 @onready var pe_capture_rescue_table: PostEncounterCaptureRescueTable = $CanvasLayer/VBoxContainer/PECaptureRescueTable
 @onready var back_button: Button = %BackButton
@@ -9,10 +10,11 @@ extends Node2D
 var pe_state_scroll_index := 0
 
 func _ready() -> void:
+	title_label.text = "Victory!" if GameVariables.encounter_end_state == GameVariables.EncounterEndState.VICTORY else "Defeat..."
 	pe_hero_stat_table.configure(GameVariables.player_lineup)
 	next_button.pressed.connect(increment_scroll_index)
 	back_button.pressed.connect(decrement_scroll_index)
-	
+
 func increment_scroll_index():
 	if pe_state_scroll_index == 3:
 		get_tree().change_scene_to_file("res://scenes/management.tscn")

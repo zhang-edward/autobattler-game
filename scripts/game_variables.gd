@@ -29,6 +29,7 @@ func generate_random_stat_lines(lineup: Array[EntityConfig]):
 		entity_config.defeated_villain_names = ["test1", "test2", "test3"]
 		entity_config.num_civs_saved = randi_range(5, 10)
 		entity_config.exp = randi_range(0, 100)
+		entity_config.gained_exp = randi_range(5, 25)
 		
 func generate_random_prospects(num_prospects: int, prospect_type: Prospect.ProspectType) -> Array[Prospect]:
 	var entity_configs = generate_random_entity_configs(num_prospects, EntityConfig.EntityType.HERO)
