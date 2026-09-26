@@ -14,10 +14,10 @@ const SKIRMISH_LAYER = 10
 @onready var skirmish_preview: SkirmishPreview = $CanvasLayer/SkirmishPreview
 
 var skirmish_layer: CanvasLayer
-var skirmish_heroes: Array[TacticalEntity]
-var skirmish_villains: Array[TacticalEntity]
+var tactical_heroes_in_skirmish: Array[TacticalEntity]
+var tactical_villains_in_skirmish: Array[TacticalEntity]
 
-const SKIRMISH_RADIUS = 500
+const SKIRMISH_RADIUS = 150
 
 func _ready() -> void:
 	tactical.skirmish_requested.connect(_on_skirmish_requested)
@@ -29,9 +29,9 @@ func _ready() -> void:
 # The request arrives from an area_entered callback, which runs while the physics
 # server is flushing queries and refuses to have collision nodes added or removed
 func _on_skirmish_requested(hero: HeroTacticalEntity, villain: VillainTacticalEntity):
-	skirmish_heroes = get_all_entities_within_radius(hero.global_position, SKIRMISH_RADIUS, EntityConfig.EntityType.HERO)
-	skirmish_villains = get_all_entities_within_radius(hero.global_position, SKIRMISH_RADIUS, EntityConfig.EntityType.VILLAIN)
-	skirmish_preview.show_skirmish_preview(skirmish_heroes, skirmish_villains)
+	tactical_heroes_in_skirmish = get_all_entities_within_radius(hero.global_position, SKIRMISH_RADIUS, EntityConfig.EntityType.HERO)
+	tactical_villains_in_skirmish = get_all_entities_within_radius(hero.global_position, SKIRMISH_RADIUS, EntityConfig.EntityType.VILLAIN)
+	skirmish_preview.show_skirmish_preview(tactical_heroes_in_skirmish, tactical_villains_in_skirmish)
 	# Add lerp to global position for smoother movement
 	skirmish_range_circle.global_position = hero.global_position
 	skirmish_range_circle.show()
@@ -50,13 +50,13 @@ func open_skirmish():
 	skirmish_preview.hide()
 	if skirmish_layer != null:
 		return
-	var valid_skirmish_heroes = skirmish_heroes.filter(func (sh): return is_instance_valid(sh))
-	var valid_skirmish_villains = skirmish_villains.filter(func (sv): return is_instance_valid(sv))
+	var valid_tactical_heroes_in_skirmish = tactical_heroes_in_skirmish.filter(func (sh): return is_instance_valid(sh))
+	var valid_tactical_villains_in_skirmish = tactical_villains_in_skirmish.filter(func (sv): return is_instance_valid(sv))
 	var heroes: Array[EntityConfig] = []
 	var villains: Array[EntityConfig] = []
-	for sh in valid_skirmish_heroes:
+	for sh in valid_tactical_heroes_in_skirmish:
 		heroes.append(sh.entity_config)
-	for sv in valid_skirmish_villains:
+	for sv in valid_tactical_villains_in_skirmish:
 		villains.append(sv.entity_config)
 	var skirmish = skirmish_scene.instantiate() as Skirmish
 	skirmish.setup(heroes, villains)
@@ -76,26 +76,27 @@ func end_skirmish(winner: EntityConfig.EntityType):
 	skirmish_layer.queue_free()
 	skirmish_layer = null
 
-	for sh in skirmish_heroes:
+	for sh in tactical_heroes_in_skirmish:
 		sh.refresh_health_bar()
 		if sh.entity_config.curr_health == 0:
 			sh.defeat()
 			
-	for sv in skirmish_villains:
+	for sv in tactical_villains_in_skirmish:
 		sv.refresh_health_bar()
 		if sv.entity_config.curr_health == 0:
 			sv.defeat()
 
 	if winner == EntityConfig.EntityType.HERO:
-		for sv in skirmish_villains:
+		for sv in tactical_villains_in_skirmish:
 			var villain = sv as VillainTacticalEntity
-			for sh in skirmish_heroes:
-				if !sh.entity_config.defeated_villain_names.has(villain.entity_config.entity_name):
-					sh.entity_config.num_assists += 1
+			for sh in tactical_heroes_in_skirmish:
+				var hero = sh as HeroTacticalEntity
+				if !hero.entity_config.defeated_villain_names.has(villain.entity_config.entity_name):
+					hero.add_assist()
 			villain.defeat()
 
-	skirmish_heroes = []
-	skirmish_villains = []
+	tactical_heroes_in_skirmish = []
+	tactical_villains_in_skirmish = []
 	skirmish_range_circle.hide()
 
 	# Last, so the loser is already on its way out when the frozen collision

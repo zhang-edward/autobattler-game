@@ -6,7 +6,7 @@
 [ext_resource type="StyleBox" uid="uid://cad5oxy37t8s7" path="res://prefabs/styles/tac_entity_status_container.tres" id="3_yhkm8"]
 [ext_resource type="PackedScene" uid="uid://b6rnttdg6c72l" path="res://prefabs/civilian_tactical_entity.tscn" id="4_gjjl5"]
 [ext_resource type="Script" uid="uid://chakufddoqn20" path="res://scripts/game_camera.gd" id="5_3re47"]
-[ext_resource type="TileSet" uid="uid://c6jiv6wa6kj7l" path="res://prefabs/tactical_city_tileset.tres" id="7_nyit8"]
+[ext_resource type="TileSet" uid="uid://c6jiv6wa6kj7l" path="res://prefabs/tilsets/tactical_city_tileset.tres" id="7_nyit8"]
 
 [node name="TacticalEncounter" type="Node2D" unique_id=1968811088]
 script = ExtResource("1_s7mhe")

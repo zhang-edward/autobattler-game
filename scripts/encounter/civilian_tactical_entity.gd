@@ -4,8 +4,6 @@ extends TacticalEntity
 @onready var save_civ_progress_label = $SaveCivProgressLabel as SaveCivProgressLabel
 signal on_civilian_saved
 signal on_civilian_killed
-
-var is_being_saved := false
 var saving_hero: HeroTacticalEntity
 
 func _ready() -> void:
@@ -19,7 +17,7 @@ func save_civilian():
 	saving_hero.entity_config.num_civs_saved += 1
 	on_civilian_saved.emit()
 	queue_free()
-	
+
 func die():
 	on_civilian_killed.emit()
 	queue_free()
@@ -29,13 +27,14 @@ func _process(delta: float) -> void:
 	var is_overlapping_hero := false
 	for a in areas:
 		if a.get_parent() is HeroTacticalEntity:
+			if !save_civ_progress_label.is_saving:
+				saving_hero = a.get_parent()
 			is_overlapping_hero = true
 	if is_overlapping_hero:
 		if !save_civ_progress_label.is_saving:
 			save_civ_progress_label.show()
 			save_civ_progress_label.start_save_timer()
 	else:
-		is_being_saved = false
 		saving_hero = null
 		save_civ_progress_label.hide()
 		save_civ_progress_label.stop_save_timer()

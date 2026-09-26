@@ -24,7 +24,6 @@ var level := 1
 var exp := 0
 var skirmish_moveset: Array[Move] = []
 var can_fly := false
-var recruit_cost := 0
 
 # In-round state
 var curr_health := 0

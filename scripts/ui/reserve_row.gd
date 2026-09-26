@@ -1,7 +1,6 @@
 class_name ReserveRow
 extends PanelContainer
 
-var is_recruitable: bool = false
 var entity_config: EntityConfig
 
 @onready var hero_name_label: Label = %HeroName
@@ -26,7 +25,7 @@ func _ready() -> void:
 	action_button.pressed.connect(recruit)
 	wrapper_button.pressed.connect(select)
 
-func setup(ec: EntityConfig):
+func setup_entity_config(ec: EntityConfig):
 	entity_config = ec
 	hero_name_label.text = ec.entity_name
 	level_label.text = str(ec.level)
@@ -36,9 +35,11 @@ func setup(ec: EntityConfig):
 	ground_speed_label.text = str(ec.ground_speed)
 	air_speed_label.text = str(ec.air_speed)
 	exp_label.text = str(ec.exp)
-	action_button.visible = is_recruitable
-	if action_button.visible:
-		action_button.text = "Recruit ($" + str(ec.recruit_cost) + ")"
+
+func setup_prospect(prospect: Prospect):
+	setup_entity_config(prospect.entity_config)
+	action_button.visible = true
+	action_button.text = "Recruit ($" + str(prospect.cost) + ")"
 
 func highlight():
 	add_theme_stylebox_override("panel", load("res://prefabs/styles/default_ui_panel_stylebox_hl.tres"))

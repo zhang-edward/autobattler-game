@@ -7,8 +7,11 @@ static var BEHAVIOR_UPDATED_TS = "behavior_updated_ts"
 static var HUNT_CIVILIAN = "hunt_civilian"
 static var HUNT_HERO = "hunt_hero"
 static var BEHAVIOR_TTL = 10000
+static var BEHAVIOR_LOCKED = "debug_behavior_locked"
 
 func tick(_actor: Node, blackboard: Blackboard) -> int:
+	if blackboard.get_value(AssignBehavior.BEHAVIOR_LOCKED) == true:
+		return SUCCESS
 	if blackboard.get_value(AssignBehavior.BEHAVIOR_KEY) == null:
 		update_assigned_behavior(blackboard)
 	else:

@@ -24,6 +24,18 @@ func capture():
 	game.hero_entities.erase(self)
 	GameVariables.captured_heroes.append(entity_config)
 	queue_free()
+	
+func add_assist():
+	entity_config.num_assists += 1
+	entity_config.gained_exp += 10
+
+func add_villain_defeated(villain_name: String):
+	entity_config.defeated_villain_names.append(villain_name)
+	entity_config.gained_exp += 50
+
+func add_saved_civilian():
+	entity_config.num_civs_saved += 1
+	entity_config.gained_exp += 5
 
 func configure_from_entity_config(ec: EntityConfig):
 	super.configure_from_entity_config(ec)

@@ -15,22 +15,19 @@ func _ready() -> void:
 	var hero_starting_lineup = GameVariables.player_lineup
 	if hero_starting_lineup.is_empty():
 		hero_starting_lineup = GameVariables.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
-	var recruits = GameVariables.generate_random_entity_configs(10, EntityConfig.EntityType.HERO)
-	var reserves = GameVariables.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
+	var all_prospects = GameVariables.captured_villain_prospects + GameVariables.civilian_hero_prospects
 	for ec in hero_starting_lineup:
 		var entity_config = ec as EntityConfig
 		var lineup_hero = lineup_hero_scene.instantiate() as LineupHero
 		lineup_container.add_child(lineup_hero)
 		lineup_hero.setup(entity_config)
 		lineup_hero.on_select.connect(move_reserve_into_lineup)
-	for ec in reserves:
+	for ec in GameVariables.player_reserves:
 		var entity_config = ec as EntityConfig
-		var reserve_row = add_reserve_row(ec, reserves_container, false)
+		var reserve_row = add_reserve_row_entity_config(ec, reserves_container)
 		reserve_row.on_select.connect(select_reserve)
-	for ec in recruits:
-		var entity_config = ec as EntityConfig
-		entity_config.recruit_cost = randi_range(200, 500)
-		var reserve_row = add_reserve_row(ec, recruits_container, true)
+	for prospect in all_prospects:
+		var reserve_row = add_reserve_row_prospect(prospect, recruits_container)
 		reserve_row.on_recruit.connect(recruit_entity)
 		
 func recruit_entity(row: ReserveRow):
@@ -57,11 +54,15 @@ func move_reserve_into_lineup(lineup_hero: LineupHero):
 		selected_reserve_row.setup(lh_ec)
 		selected_reserve_row.dehighlight()
 		selected_reserve_row = null
-	
 
-func add_reserve_row(e: EntityConfig, container: VBoxContainer, is_recruitable: bool):
+func add_reserve_row_entity_config(e: EntityConfig, container: VBoxContainer):
 	var reserve_row = reserve_row_scene.instantiate() as ReserveRow
 	container.add_child(reserve_row)
-	reserve_row.is_recruitable = is_recruitable
-	reserve_row.setup(e)
+	reserve_row.setup_entity_config(e)
+	return reserve_row
+	
+func add_reserve_row_prospect(p: Prospect, container: VBoxContainer):
+	var reserve_row = reserve_row_scene.instantiate() as ReserveRow
+	container.add_child(reserve_row)
+	reserve_row.setup_prospect(p)
 	return reserve_row

@@ -69,7 +69,7 @@ func init_civilians():
 	var civ_spawn_positions = get_used_cells_by_id_local(Vector2(19, 13))
 	civ_spawn_positions.shuffle()
 	var civ_entities: Array[TacticalEntity] = []
-	var num_civilians_to_spawn = randi_range(5, 12)
+	var num_civilians_to_spawn = randi_range(3, 8)
 	for i in range(0, num_civilians_to_spawn):
 		var civ_entity = civ_tactical_entity_scene.instantiate() as CivilianTacticalEntity
 		add_child(civ_entity)
@@ -80,13 +80,47 @@ func init_civilians():
 		civ_entities.append(civ_entity)
 	return civ_entities
 	
+func debug_set_civilian_count(target_count: int) -> void:
+	target_count = max(target_count, 0)
+	civilian_entities = civilian_entities.filter(func (c): return is_instance_valid(c))
+	var diff = target_count - civilian_entities.size()
+	if diff > 0:
+		var civ_spawn_positions = get_used_cells_by_id_local(Vector2(19, 13))
+		civ_spawn_positions.shuffle()
+		for i in range(diff):
+			var civ_entity = civ_tactical_entity_scene.instantiate() as CivilianTacticalEntity
+			add_child(civ_entity)
+			if civ_spawn_positions.size() > 0:
+				var rand_pos = civ_spawn_positions[i % civ_spawn_positions.size()]
+				civ_entity.global_position = Vector2(rand_pos.x, rand_pos.y)
+			civ_entity.on_civilian_saved.connect(add_saved_civilian)
+			civ_entity.on_civilian_killed.connect(add_killed_civilian)
+			civilian_entities.append(civ_entity)
+	elif diff < 0:
+		for i in range(-diff):
+			if civilian_entities.is_empty():
+				break
+			var c = civilian_entities.pop_back()
+			if is_instance_valid(c):
+				c.queue_free()
+
 func add_saved_civilian():
 	GameVariables.num_saved_civilians += 1
 	civs_saved_label.text = "Civilians Saved: " + str(GameVariables.num_saved_civilians)
+	handle_encounter_end_condition()
 	
 func add_killed_civilian():
 	GameVariables.num_killed_civilians += 1
 	civs_killed_label.text = "Civilians Killed: " + str(GameVariables.num_killed_civilians)
+	handle_encounter_end_condition()
+	
+func handle_encounter_end_condition():
+	var num_accounted_civs = GameVariables.num_saved_civilians + GameVariables.num_killed_civilians
+	if num_accounted_civs == civilian_entities.size():
+		var num_saved = GameVariables.num_saved_civilians
+		var num_killed = GameVariables.num_killed_civilians
+		GameVariables.encounter_end_state = GameVariables.EncounterEndState.VICTORY if num_saved > num_killed else GameVariables.EncounterEndState.DEFEAT
+		get_tree().change_scene_to_file("res://scenes/post_encounter.tscn")
 
 func select_hero_entity(hte: HeroTacticalEntity):
 	if selected_hero != null:

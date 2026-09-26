@@ -1,18 +1,23 @@
 extends Node
 
+enum EncounterEndState {
+	VICTORY,
+	DEFEAT
+}
+
 var player_lineup: Array[EntityConfig] = []
 var player_reserves: Array[EntityConfig] = []
 var civilian_hero_prospects: Array[Prospect] = []
 var captured_villain_prospects: Array[Prospect] = []
 var num_saved_civilians := 0
 var num_killed_civilians := 0
-var money := 5000
+var money := 0
+var encounter_end_state: EncounterEndState
 
 var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []
 
 func _ready():
-	print("Went here!")
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
 	villain_lineup = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
 	
