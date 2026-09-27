@@ -15,10 +15,10 @@ func _ready():
 	
 func select():
 	game.select_hero_entity(self)
-	sprite.self_modulate = Color(1, 1, 0)
+	tactical_sprite.select()
 
 func deselect():
-	sprite.self_modulate = Color(0, 1, 0)
+	tactical_sprite.deselect()
 
 func defeat():
 	game.hero_entities.erase(self)
@@ -43,7 +43,6 @@ func add_saved_civilian():
 
 func configure_from_entity_config(ec: EntityConfig):
 	super.configure_from_entity_config(ec)
-	sprite.self_modulate = Color(0, 1, 0)
 
 func collide_area(area: Area2D):
 	var parent = area.get_parent() as TacticalEntity

@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_crbdr"]
 [ext_resource type="Texture2D" uid="uid://c6cr8bb8v1cx0" path="res://assets/portraits/placeholder/face/unisex/base04.png" id="1_dha5v"]
 [ext_resource type="Script" uid="uid://6rukf8tdhlaw" path="res://scripts/encounter/tactical_sprite.gd" id="1_vm1tn"]
-[ext_resource type="Shader" uid="uid://2dteextef3jj" path="res://prefabs/shaders/outline.gdshader" id="2_k2fy7"]
 [ext_resource type="Texture2D" uid="uid://0ub7nefjvfel" path="res://assets/portraits/placeholder/eyes/female/eyes03.png" id="2_vm1tn"]
 [ext_resource type="Texture2D" uid="uid://b2gwg73txdxaq" path="res://assets/portraits/placeholder/eyebrows/unisex/eyebrows01.png" id="3_k2fy7"]
 [ext_resource type="Texture2D" uid="uid://cjghn7nqs8byh" path="res://assets/portraits/placeholder/nose/unisex/nose02.png" id="4_4t6g6"]
@@ -11,19 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://cvdg7c3tw6gp1" path="res://assets/portraits/placeholder/hair/female/hair27.png" id="6_omc0g"]
 [ext_resource type="Texture2D" uid="uid://danrti211ayaw" path="res://assets/portraits/placeholder/clothing/female/clothing02.png" id="7_ubxu2"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k2fy7"]
-shader = ExtResource("2_k2fy7")
-shader_parameter/color = Color(1, 1, 0, 1)
-shader_parameter/width = 1.0000000475
-shader_parameter/pattern = 0
-shader_parameter/inside = false
-shader_parameter/add_margins = true
-
 [node name="TacticalSprite" type="Node2D" unique_id=314250928]
 script = ExtResource("1_vm1tn")
 
 [node name="Face" type="Sprite2D" parent="." unique_id=2105388691]
-material = SubResource("ShaderMaterial_k2fy7")
 texture = ExtResource("1_dha5v")
 
 [node name="Eyes" type="Sprite2D" parent="." unique_id=1534554653]
@@ -39,14 +29,12 @@ texture = ExtResource("4_4t6g6")
 texture = ExtResource("5_dha5v")
 
 [node name="Hair" type="Sprite2D" parent="." unique_id=122477688]
-material = SubResource("ShaderMaterial_k2fy7")
 texture = ExtResource("6_omc0g")
 
 [node name="Clothes" type="Sprite2D" parent="." unique_id=1770826452]
-material = SubResource("ShaderMaterial_k2fy7")
 texture = ExtResource("7_ubxu2")
 
 [node name="FacialHair" type="Sprite2D" parent="." unique_id=1723414996]
 visible = false
-material = SubResource("ShaderMaterial_k2fy7")
+scale = Vector2(1.25, 1.25)
 texture = ExtResource("1_crbdr")

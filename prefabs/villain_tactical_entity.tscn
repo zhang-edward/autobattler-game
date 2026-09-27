@@ -2,45 +2,43 @@
 
 [ext_resource type="Script" uid="uid://j1cfs3sclm0v" path="res://scripts/encounter/villain_tactical_entity.gd" id="1_60ker"]
 [ext_resource type="PackedScene" uid="uid://dih4p6cm27b4s" path="res://prefabs/villain_behavior.tscn" id="2_4pqng"]
-[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_60ker"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_4pqng"]
 [ext_resource type="StyleBox" uid="uid://suecsij6ohw" path="res://prefabs/styles/villain_health_bar.tres" id="4_60ker"]
+[ext_resource type="PackedScene" uid="uid://ljug8wkaxfro" path="res://prefabs/tactical_sprite.tscn" id="5_4pqng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t66dy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nyit8"]
-radius = 30.0
+radius = 40.028114
 
-[node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540 node_paths=PackedStringArray("sprite", "health_bar", "entity_detector")]
+[node name="VillainTacticalEntity" type="CharacterBody2D" unique_id=1626350540 node_paths=PackedStringArray("health_bar", "entity_detector")]
 collision_layer = 2
 collision_mask = 16
 script = ExtResource("1_60ker")
-sprite = NodePath("Sprite2D")
 health_bar = NodePath("ProgressBar")
 entity_detector = NodePath("EntityDetector")
 metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="VillainBehavior" parent="." unique_id=1365404262 node_paths=PackedStringArray("blackboard") instance=ExtResource("2_4pqng")]
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@535254")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1936434005]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_60ker")
+blackboard = NodePath("@Node@490226")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1120969407]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -22.0
-offset_top = -32.0
-offset_right = 22.0
-offset_bottom = -28.0
+offset_left = -25.0
+offset_top = -40.0
+offset_right = 25.0
+offset_bottom = -36.0
 grow_horizontal = 2
 theme_override_styles/background = ExtResource("3_4pqng")
 theme_override_styles/fill = ExtResource("4_60ker")
 value = 100.0
 show_percentage = false
+
+[node name="TacticalSprite" parent="." unique_id=314250928 instance=ExtResource("5_4pqng")]
+scale = Vector2(2, 2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=159193221]
 shape = SubResource("CircleShape2D_t66dy")
@@ -62,9 +60,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -41.0
-offset_top = -59.0
+offset_top = -68.0
 offset_right = 40.0
-offset_bottom = -36.0
+offset_bottom = -45.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 16

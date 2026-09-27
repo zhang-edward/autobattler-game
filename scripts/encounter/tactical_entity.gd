@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 @onready var game = get_parent() as TacticalEncounter
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
-@export var sprite: Sprite2D
+@onready var tactical_sprite: TacticalSprite = $TacticalSprite
 @export var health_bar: ProgressBar
 @export var entity_detector: Area2D
 
@@ -25,6 +25,7 @@ func configure_from_entity_config(ec: EntityConfig):
 	entity_config = ec
 	health_bar.max_value = ec.max_health
 	health_bar.value = health_bar.max_value
+	tactical_sprite.render_portrait(ec.portrait_config)
 
 func refresh_health_bar():
 	health_bar.value = entity_config.curr_health

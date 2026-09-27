@@ -45,6 +45,55 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="ColumnHeaders" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer" unique_id=1808575037]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="Control" type="Control" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1582248223]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=65036714]
+custom_minimum_size = Vector2(326, 0)
+layout_mode = 2
+
+[node name="Level" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=75354880]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1648946563]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP"
+horizontal_alignment = 1
+
+[node name="Attack" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1650164748]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ATK"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1336806872]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "DEF"
+horizontal_alignment = 1
+
+[node name="GroundSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1780315235]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "G.Spd"
+horizontal_alignment = 1
+
+[node name="AirSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=524053057]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "A. Spd"
+horizontal_alignment = 1
+
 [node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=909502531]
 layout_mode = 2
 text = "vs."
@@ -68,6 +117,55 @@ size_flags_vertical = 3
 [node name="VillainStatContainer" type="VBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer" unique_id=2140612435]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="ColumnHeaders" type="HBoxContainer" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer" unique_id=158678707]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="Control" type="Control" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=1739939126]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=1827266410]
+custom_minimum_size = Vector2(326, 0)
+layout_mode = 2
+
+[node name="Level" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=998163281]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+horizontal_alignment = 1
+
+[node name="HP" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=1251613098]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "HP"
+horizontal_alignment = 1
+
+[node name="Attack" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=1993103107]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ATK"
+horizontal_alignment = 1
+
+[node name="Defense" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=1731991471]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "DEF"
+horizontal_alignment = 1
+
+[node name="GroundSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=2123756986]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "G.Spd"
+horizontal_alignment = 1
+
+[node name="AirSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=726134852]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "A. Spd"
+horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=1214902433]
 unique_name_in_owner = true

@@ -6,7 +6,6 @@ extends TacticalEntity
 
 func configure_from_entity_config(ec: EntityConfig):
 	super.configure_from_entity_config(ec)
-	sprite.self_modulate = Color(1, 0, 0)
 
 func defeat():
 	game.villain_entities.erase(self)

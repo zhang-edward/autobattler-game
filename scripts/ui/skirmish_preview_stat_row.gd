@@ -6,6 +6,7 @@ extends HBoxContainer
 @onready var stat_list_container: HBoxContainer = %StatListContainer
 @onready var move_icon_container: HBoxContainer = %MoveIconContainer
 @onready var health_bar: ProgressBar = %HealthBar
+@onready var portrait: Portrait = $Portrait
 
 func configure(entity_config: EntityConfig):
 	hero_name_label.text = entity_config.entity_name
@@ -17,6 +18,8 @@ func configure(entity_config: EntityConfig):
 	for stat in stat_list:
 		var stat_container = stat_container_scene.instantiate() as StatContainer
 		stat_list_container.add_child(stat_container)
+		stat_container.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		stat_container.set_stat_value(stat.name, stat.value)
 	health_bar.max_value = entity_config.max_health
 	health_bar.value = entity_config.curr_health
+	portrait.render_portrait(entity_config.portrait_config)

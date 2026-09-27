@@ -34,15 +34,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="SkirmishPreviewStatRow" parent="HBoxContainer/VBoxContainer" unique_id=1511485773 instance=ExtResource("6_hh73g")]
-layout_mode = 2
-
-[node name="SkirmishPreviewStatRow2" parent="HBoxContainer/VBoxContainer" unique_id=735681083 instance=ExtResource("6_hh73g")]
-layout_mode = 2
-
-[node name="SkirmishPreviewStatRow3" parent="HBoxContainer/VBoxContainer" unique_id=1645147580 instance=ExtResource("6_hh73g")]
-layout_mode = 2
-
 [node name="BattleButton" type="Button" parent="HBoxContainer" unique_id=1928375962]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(75, 50)
