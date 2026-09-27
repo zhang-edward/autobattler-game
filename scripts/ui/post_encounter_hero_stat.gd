@@ -23,6 +23,7 @@ func configure(config: EntityConfig):
 	civilians_saved_label.text = str(config.num_civs_saved)
 	level_label.text = str(config.level)
 	exp_bar.value = config.exp
+	exp_bar.max_value = config.exp_to_next_level
 	add_gained_exp()
 
 func add_gained_exp():
@@ -43,6 +44,7 @@ func add_exp_increment():
 		exp_bar.value += EXP_INCREMENT
 		if exp_bar.value >= exp_bar.max_value:
 			exp_bar.value = exp_bar.value - exp_bar.max_value
-			entity_config.level += 1
+			entity_config.handle_level_up()
+			exp_bar.max_value = entity_config.exp_to_next_level
 			level_label.text = str(entity_config.level)
 		gained_exp_remaining -= EXP_INCREMENT

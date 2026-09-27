@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bear815oq3k0m"]
 
 [ext_resource type="Script" uid="uid://dkofxae2dw0tl" path="res://scripts/encounter/tactical_entity.gd" id="1_lapsv"]
-[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_va4oq"]
+[ext_resource type="PackedScene" uid="uid://ljug8wkaxfro" path="res://prefabs/tactical_sprite.tscn" id="2_8jh7e"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_8jh7e"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_3l37s"]
 
@@ -13,9 +13,7 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_lapsv")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1744435468]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_va4oq")
+[node name="TacticalSprite" parent="." unique_id=314250928 instance=ExtResource("2_8jh7e")]
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1600975112]
 anchors_preset = 5

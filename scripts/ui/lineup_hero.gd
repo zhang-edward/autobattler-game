@@ -6,6 +6,7 @@ extends PanelContainer
 @onready var hero_name_label: Label = $VBoxContainer/HBoxContainer/VBoxContainer/Name
 @onready var level_label: Label = $VBoxContainer/HBoxContainer/VBoxContainer/Level
 @onready var button: Button = $Button
+@onready var portrait: Portrait = %Portrait
 
 var entity_config: EntityConfig
 
@@ -20,6 +21,7 @@ func setup(ec: EntityConfig):
 	entity_config = ec
 	hero_name_label.text = entity_config.entity_name
 	level_label.text = "Lv. " + str(entity_config.level)
+	portrait.render_portrait(ec.portrait_config)
 	var stats_to_show = [
 		{ "stat_name": "HP", "value": entity_config.max_health },
 		{ "stat_name": "ATK", "value": entity_config.attack },

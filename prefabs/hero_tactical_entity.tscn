@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ck88j1lpsdo7l"]
 
 [ext_resource type="Script" uid="uid://x36aawivmk4w" path="res://scripts/encounter/hero_tactical_entity.gd" id="1_cgo7g"]
-[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_yrdel"]
+[ext_resource type="PackedScene" uid="uid://ljug8wkaxfro" path="res://prefabs/tactical_sprite.tscn" id="2_t66dy"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_ha6eg"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_wu412"]
 [ext_resource type="Script" uid="uid://ct2wu0d81rh5a" path="res://scripts/fsm/state_machine.gd" id="5_sprpc"]
@@ -20,23 +20,21 @@ collision_mask = 16
 slide_on_ceiling = false
 script = ExtResource("1_cgo7g")
 hero_move_state = NodePath("HeroTacStateMachine/HeroMoveState")
-sprite = NodePath("Sprite2D")
+sprite = NodePath("")
 health_bar = NodePath("ProgressBar")
 entity_detector = NodePath("EntityDetector")
 metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=947234328]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_yrdel")
+[node name="TacticalSprite" parent="." unique_id=314250928 instance=ExtResource("2_t66dy")]
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1120497703]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -22.0
-offset_top = -32.0
+offset_top = -23.0
 offset_right = 22.0
-offset_bottom = -28.0
+offset_bottom = -19.0
 grow_horizontal = 2
 theme_override_styles/background = ExtResource("3_ha6eg")
 theme_override_styles/fill = ExtResource("4_wu412")

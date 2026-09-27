@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://d4fa8oh4s03s1"]
+
+[ext_resource type="Shader" uid="uid://bngttpiuswdf7" path="res://shaders/circular_portrait_crop.gdshader" id="1_jag3v"]
+
+[resource]
+shader = ExtResource("1_jag3v")
+shader_parameter/radius = 0.48
+shader_parameter/border_width = 0.03
+shader_parameter/border_color = Color(1, 1, 1, 1)

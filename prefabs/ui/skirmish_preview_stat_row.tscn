@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dspcjfy5rppgy"]
 
-[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_0ejtw"]
 [ext_resource type="Script" uid="uid://1henm1g87jl5" path="res://scripts/ui/skirmish_preview_stat_row.gd" id="1_5vc1d"]
 [ext_resource type="PackedScene" uid="uid://d2upsrdagl8ky" path="res://prefabs/ui/stat_container.tscn" id="2_5vc1d"]
+[ext_resource type="PackedScene" uid="uid://ck86u27dwvdgx" path="res://prefabs/ui/portrait.tscn" id="3_5vc1d"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_otye8"]
 [ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="4_1xxcf"]
 [ext_resource type="PackedScene" uid="uid://cfg0si3lv2v0c" path="res://prefabs/ui/move_icon.tscn" id="5_shyho"]
@@ -12,18 +12,20 @@ anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -64.0
+offset_top = -36.0
 offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 20
+theme_override_constants/separation = 15
 script = ExtResource("1_5vc1d")
 stat_container_scene = ExtResource("2_5vc1d")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=2009314062]
+[node name="Portrait" parent="." unique_id=1920897560 instance=ExtResource("3_5vc1d")]
+custom_minimum_size = Vector2(100, 100)
+custom_maximum_size = Vector2(100, 100)
 layout_mode = 2
-texture = ExtResource("1_0ejtw")
+size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=772038425]
 custom_minimum_size = Vector2(300, 0)
@@ -51,8 +53,9 @@ alignment = 1
 
 [node name="HealthBar" type="ProgressBar" parent="VBoxContainer2" unique_id=1564020845]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(415, 25)
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_styles/background = ExtResource("3_otye8")
 theme_override_styles/fill = ExtResource("4_1xxcf")
 show_percentage = false
@@ -62,6 +65,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 2
 
 [node name="MoveIcon" parent="VBoxContainer2/MoveIconContainer" unique_id=803695537 instance=ExtResource("5_shyho")]
 layout_mode = 2

@@ -33,10 +33,7 @@ func _ready() -> void:
 
 func reset_all_entity_round_state():
 	for ec in GameVariables.player_lineup:
-		ec.curr_health = ec.max_health
-		ec.gained_exp = 0
-		ec.num_assists = 0
-		ec.defeated_villain_names = []
+		ec.reset_all_in_round_vars()
 	# Don't track exp, kills, assists on villains
 	for ec in GameVariables.villain_lineup:
 		ec.curr_health = ec.max_health
@@ -120,6 +117,7 @@ func handle_encounter_end_condition():
 		var num_saved = GameVariables.num_saved_civilians
 		var num_killed = GameVariables.num_killed_civilians
 		GameVariables.encounter_end_state = GameVariables.EncounterEndState.VICTORY if num_saved > num_killed else GameVariables.EncounterEndState.DEFEAT
+		GameVariables.generate_random_stat_lines(GameVariables.player_lineup)
 		get_tree().change_scene_to_file("res://scenes/post_encounter.tscn")
 
 func select_hero_entity(hte: HeroTacticalEntity):

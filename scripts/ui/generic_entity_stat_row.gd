@@ -9,6 +9,7 @@ extends HBoxContainer
 @onready var ground_speed_label: Label = $GroundSpeed
 @onready var air_speed_label: Label = $AirSpeed
 @onready var cost: Label = $Cost
+@onready var portrait: Portrait = $Portrait
 
 func configure_from_entity_config(ec: EntityConfig):
 	hero_name_label.text = ec.entity_name
@@ -18,6 +19,7 @@ func configure_from_entity_config(ec: EntityConfig):
 	defense_label.text = str(ec.defense)
 	ground_speed_label.text = str(ec.ground_speed)
 	air_speed_label.text = str(ec.air_speed)
+	portrait.render_portrait(ec.portrait_config)
 
 func configure_from_prospect(prospect: Prospect):
 	configure_from_entity_config(prospect.entity_config)

@@ -1,0 +1,2 @@
+class_name TacticalSprite
+extends Node2D
