@@ -8,7 +8,12 @@
 [ext_resource type="Texture2D" uid="uid://ieye6wndqx14" path="res://assets/portraits/placeholder/mouth/unisex/mouth04.png" id="5_0gtjt"]
 [ext_resource type="Texture2D" uid="uid://3dlngvo5tctb" path="res://assets/portraits/placeholder/hair/male/hair09.png" id="6_mr2td"]
 [ext_resource type="Texture2D" uid="uid://bopoaqit6pghl" path="res://assets/portraits/placeholder/clothing/unisex/clothing01.png" id="7_f0e7s"]
+[ext_resource type="Shader" uid="uid://cfjiv8xwshgco" path="res://prefabs/shaders/recolor_sprite.gdshader" id="8_0gtjt"]
 [ext_resource type="Texture2D" uid="uid://bhcbba8tygdbn" path="res://assets/portraits/placeholder/facial_hair/male/facial12.png" id="8_n2fp0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nqd1l"]
+shader = ExtResource("8_0gtjt")
+shader_parameter/target_color = Color(2.6712567e-06, 0.5576884, 0.32475188, 1)
 
 [node name="Portrait" type="Control" unique_id=1920897560]
 layout_mode = 3
@@ -76,6 +81,7 @@ grow_vertical = 2
 texture = ExtResource("6_mr2td")
 
 [node name="Clothes" type="TextureRect" parent="." unique_id=788764166]
+material = SubResource("ShaderMaterial_nqd1l")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

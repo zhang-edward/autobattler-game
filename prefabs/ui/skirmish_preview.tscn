@@ -24,7 +24,7 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=523058180]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 text = "Super Hero Team"
 
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=1453617181]
@@ -48,7 +48,7 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2" unique_id=307999159]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 30
 text = "Villain Team"
 horizontal_alignment = 2
 

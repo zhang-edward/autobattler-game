@@ -82,16 +82,10 @@ size_flags_horizontal = 3
 text = "DEF"
 horizontal_alignment = 1
 
-[node name="GroundSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1780315235]
+[node name="Speed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=1780315235]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "G.Spd"
-horizontal_alignment = 1
-
-[node name="AirSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer/HeroStatContainer/ColumnHeaders" unique_id=524053057]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "A. Spd"
+text = "SPD"
 horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=909502531]
@@ -155,16 +149,10 @@ size_flags_horizontal = 3
 text = "DEF"
 horizontal_alignment = 1
 
-[node name="GroundSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=2123756986]
+[node name="Speed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=2123756986]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "G.Spd"
-horizontal_alignment = 1
-
-[node name="AirSpeed" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer/VBoxContainer2/PanelContainer/VillainStatContainer/ColumnHeaders" unique_id=726134852]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "A. Spd"
+text = "SPD"
 horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="CanvasLayer/VBoxContainer" unique_id=1214902433]

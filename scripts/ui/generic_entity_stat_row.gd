@@ -18,7 +18,6 @@ func configure_from_entity_config(ec: EntityConfig):
 	attack_label.text = str(ec.attack)
 	defense_label.text = str(ec.defense)
 	ground_speed_label.text = str(ec.ground_speed)
-	air_speed_label.text = str(ec.air_speed)
 	portrait.render_portrait(ec.portrait_config)
 
 func configure_from_prospect(prospect: Prospect):

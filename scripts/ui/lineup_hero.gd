@@ -26,8 +26,7 @@ func setup(ec: EntityConfig):
 		{ "stat_name": "HP", "value": entity_config.max_health },
 		{ "stat_name": "ATK", "value": entity_config.attack },
 		{ "stat_name": "DEF", "value": entity_config.defense },
-		{ "stat_name": "G.SPD", "value": entity_config.ground_speed },
-		{ "stat_name": "A.SPD", "value": entity_config.air_speed }
+		{ "stat_name": "SPD", "value": entity_config.ground_speed }
 	]
 	for c in stat_container_wrapper.get_children():
 		if c is StatContainer:

@@ -5,6 +5,11 @@
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_4pqng"]
 [ext_resource type="StyleBox" uid="uid://suecsij6ohw" path="res://prefabs/styles/villain_health_bar.tres" id="4_60ker"]
 [ext_resource type="PackedScene" uid="uid://ljug8wkaxfro" path="res://prefabs/tactical_sprite.tscn" id="5_4pqng"]
+[ext_resource type="Shader" uid="uid://cfjiv8xwshgco" path="res://prefabs/shaders/recolor_sprite.gdshader" id="6_nqd1l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qnwdj"]
+shader = ExtResource("6_nqd1l")
+shader_parameter/target_color = Color(1, 0.06621265, 0.18987891, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t66dy"]
 
@@ -21,7 +26,7 @@ metadata/_custom_type_script = "uid://dkofxae2dw0tl"
 
 [node name="VillainBehavior" parent="." unique_id=1365404262 node_paths=PackedStringArray("blackboard") instance=ExtResource("2_4pqng")]
 actor_node_path = NodePath("..")
-blackboard = NodePath("@Node@490226")
+blackboard = NodePath("@Node@566386")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1120969407]
 anchors_preset = 5
@@ -40,11 +45,15 @@ show_percentage = false
 [node name="TacticalSprite" parent="." unique_id=314250928 instance=ExtResource("5_4pqng")]
 scale = Vector2(2, 2)
 
+[node name="Clothes" parent="TacticalSprite" index="6" unique_id=1770826452]
+material = SubResource("ShaderMaterial_qnwdj")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=159193221]
 shape = SubResource("CircleShape2D_t66dy")
 debug_color = Color(0.9999997, 0, 0.10755365, 0.41960785)
 
 [node name="EntityDetector" type="Area2D" parent="." unique_id=988632830]
+visible = false
 collision_layer = 2
 collision_mask = 5
 
@@ -70,4 +79,5 @@ text = "Hunt Hero"
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1826117187]
 path_postprocessing = 1
-debug_enabled = true
+
+[editable path="TacticalSprite"]

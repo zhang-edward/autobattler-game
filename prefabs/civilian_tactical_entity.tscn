@@ -3,8 +3,13 @@
 [ext_resource type="Script" uid="uid://dvttwhdjhyxx0" path="res://scripts/encounter/civilian_tactical_entity.gd" id="1_odyde"]
 [ext_resource type="PackedScene" uid="uid://ljug8wkaxfro" path="res://prefabs/tactical_sprite.tscn" id="2_raxsu"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="3_raxsu"]
+[ext_resource type="Shader" uid="uid://cfjiv8xwshgco" path="res://prefabs/shaders/recolor_sprite.gdshader" id="3_u44bg"]
 [ext_resource type="StyleBox" uid="uid://d4qklfj1pc0o" path="res://prefabs/styles/civilian_health_bar.tres" id="4_h26us"]
 [ext_resource type="PackedScene" uid="uid://ddxjxow5um7v3" path="res://prefabs/save_civ_progress_label.tscn" id="5_raxsu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u44bg"]
+shader = ExtResource("3_u44bg")
+shader_parameter/target_color = Color(0.2, 0.45, 0.85, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2i4s"]
 size = Vector2(39, 40)
@@ -17,9 +22,6 @@ script = ExtResource("1_odyde")
 health_bar = NodePath("ProgressBar")
 entity_detector = NodePath("EntityDetector")
 metadata/_custom_type_script = "uid://dkofxae2dw0tl"
-
-[node name="TacticalSprite" parent="." unique_id=314250928 instance=ExtResource("2_raxsu")]
-scale = Vector2(2, 2)
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1885538414]
 anchors_preset = 5
@@ -35,6 +37,12 @@ theme_override_styles/fill = ExtResource("4_h26us")
 value = 100.0
 show_percentage = false
 
+[node name="TacticalSprite" parent="." unique_id=314250928 instance=ExtResource("2_raxsu")]
+scale = Vector2(2, 2)
+
+[node name="Clothes" parent="TacticalSprite" index="6" unique_id=1770826452]
+material = SubResource("ShaderMaterial_u44bg")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=862912467]
 visible = false
 position = Vector2(0.5, 0)
@@ -47,6 +55,7 @@ offset_top = 41.0
 offset_bottom = 95.0
 
 [node name="EntityDetector" type="Area2D" parent="." unique_id=2141476475]
+visible = false
 collision_layer = 4
 collision_mask = 3
 
@@ -54,3 +63,5 @@ collision_mask = 3
 position = Vector2(0, -0.5)
 shape = SubResource("CircleShape2D_eut16")
 debug_color = Color(9.62615e-08, 0.5868605, 0.7741749, 0.41960785)
+
+[editable path="TacticalSprite"]
