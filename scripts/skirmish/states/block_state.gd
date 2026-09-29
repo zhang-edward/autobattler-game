@@ -16,10 +16,7 @@ var block_timer := 0.0
 
 func enter(msg := {}) -> void:
 	block_timer = float(msg.get("duration", FALLBACK_DURATION))
-	e.sprite.modulate = BLOCK_TINT
-
-func exit() -> void:
-	e.sprite.modulate = Color.WHITE
+	e.rig.play_animation("male-rig/block")
 
 func physics_update(delta: float) -> void:
 	# Planted while guarding

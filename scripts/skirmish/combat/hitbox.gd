@@ -18,6 +18,12 @@ func init(pos: Vector2, size: Vector2, lifetime: float, source: SkirmishEntity, 
 	_hit = hit
 	area_entered.connect(_handle_area_entered)
 
+func disable():
+	_collision_shape.disabled = true
+	
+func enable():
+	_collision_shape.disabled = false
+
 func _process(delta):
 	# A frozen source holds its hitboxes too, so hitstop doesn't eat their lifetime
 	if is_instance_valid(_source):

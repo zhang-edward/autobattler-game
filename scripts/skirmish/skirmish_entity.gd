@@ -20,9 +20,11 @@ const KNOCKDOWN_Y_SPREAD := 0.35
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
 
+@onready var rig_wrapper: Sprite2D = $RigWrapper
+
 @export var entity_type: EntityConfig.EntityType
 @export var move_speed := 100.0
-@export var sprite: Sprite2D
+@export var rig: SkirmishEntityRig
 @export var shadow: Sprite2D
 @export var healthbar: ProgressBar
 @export var hurtbox: Hurtbox
@@ -57,14 +59,14 @@ var z_velocity := 0.0
 var is_dead := false
 
 var _shadow_base_scale: Vector2
-var _sprite_pivot: Vector2
 
 func _ready() -> void:
 	healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
-	# The sprite's origin sits at the bottom, so rotating the node alone would swing the body around
-	# the bottom - define a pivot where the sprite's centre actually sits
-	_sprite_pivot = sprite.offset * sprite.scale
+	rig.on_emit_hitbox_enable.connect(handle_hitbox_for_attack)
+	
+func handle_hitbox_for_attack():
+	pass
 
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
@@ -82,12 +84,11 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	# Altitude plus shift that keeps the sprite's center planted when it spins
-	sprite.position = Vector2(0.0, z) + _sprite_pivot - _sprite_pivot.rotated(sprite.rotation)
 	shadow.scale = _shadow_base_scale * IsometryUtils.scale_shadow_from(z)
 	if intent != null and intent.facing != 0.0:
-		sprite.flip_h = intent.facing < 0.0
+		rig.scale.x = -1.0 if intent.facing < 0.0 else 1.0
 	elif absolute_velocity.x != 0.0:
-		sprite.flip_h = absolute_velocity.x < 0.0
+		rig.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
 
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if is_dead:
@@ -138,18 +139,15 @@ func knock_down(impulse: Vector2, launch: float) -> void:
 	# Spread so knockdowns launch slightly off the horizontal axis
 	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
 
-	if state_machine.state == ragdoll_state:
-		# Already ragdolling: relaunch in place rather than re-entering the state,
-		# which would reset the altitude we're trying to add to
-		ragdoll_state.relaunch(impulse, launch)
-	else:
-		state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch})
+	#if state_machine.state == ragdoll_state:
+		## Already ragdolling: relaunch in place rather than re-entering the state,
+		## which would reset the altitude we're trying to add to
+		#ragdoll_state.relaunch(impulse, launch)
+	#else:
+		#state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch})
 
 func despawn() -> void:
 	var tween := create_tween()
-	tween.tween_property(sprite, "modulate:a", 0.0, 0.4)
+	tween.tween_property(rig, "modulate:a", 0.0, 0.4)
 	tween.parallel().tween_property(shadow, "modulate:a", 0.0, 0.4)
 	tween.tween_callback(queue_free)
-
-func get_sprite_size() -> Vector2:
-	return sprite.texture.get_size() * sprite.scale

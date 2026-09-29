@@ -21,18 +21,14 @@ var hit: HitConfig = HitConfig.create(5, 180.0, -220.0, true, 0.12, HitConfig.Ki
 var recovery_timer := 0.0
 
 func enter(_msg := {}) -> void:
+	e.rig.play_animation("male-rig/block")
 	recovery_timer = RECOVERY_TIME
 
 	var hitbox = hitbox_scene.instantiate()
 	e.add_child(hitbox)
 	var hitbox_offset: Vector2 = $GrabLocation.position
-	hitbox_offset.x *= -1 if e.sprite.flip_h else 1
+	hitbox_offset.x *= -1 if e.rig.scale.x < 0 else 1
 	hitbox.init(hitbox_offset, GRAB_SIZE, GRAB_ACTIVE_TIME, e, hit)
-
-	e.sprite.modulate = GRAB_TINT
-
-func exit() -> void:
-	e.sprite.modulate = Color.WHITE
 
 func physics_update(delta: float) -> void:
 	# Planted for the whole attempt

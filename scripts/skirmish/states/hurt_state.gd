@@ -13,11 +13,10 @@ func enter(msg := {}) -> void:
 	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
 	e.absolute_velocity = dir.normalized() * BASE_KNOCKBACK
 	hitstun_timer = HITSTUN_SECONDS
-	e.sprite.modulate = Color(1, 0, 0)
+	e.rig.play_animation("male-rig/hurt")
 
 func exit() -> void:
 	e.absolute_velocity = Vector2.ZERO
-	e.sprite.modulate = Color.WHITE
 
 func update(delta: float) -> void:
 	e.absolute_velocity *= 0.9

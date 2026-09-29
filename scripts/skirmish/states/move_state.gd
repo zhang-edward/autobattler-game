@@ -6,6 +6,9 @@ extends SkirmishState
 @export var block_state: BlockState
 @export var grab_state: GrabState
 
+func enter(_msg := {}):
+	e.rig.play_animation("male-rig/walk")
+
 func physics_update(_delta: float) -> void:
 	var action := e.intent as ActionIntent
 	if action != null:
@@ -19,6 +22,8 @@ func physics_update(_delta: float) -> void:
 		return
 
 	e.absolute_velocity = movement_direction() * e.move_speed
+	if e.absolute_velocity == Vector2.ZERO and e.rig.anim_player.current_animation != "male-rig/idle":
+		e.rig.play_animation("male-rig/idle")
 
 	var movement := e.intent as MovementIntent
 	if e.z == 0 and movement != null and movement.jump:

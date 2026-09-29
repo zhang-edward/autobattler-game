@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dqpffuirjlq7b"]
 
 [ext_resource type="Texture2D" uid="uid://bdwqmc8n23lbm" path="res://assets/skirmish/placeholder/upperarm.png" id="1_306bx"]
+[ext_resource type="Script" uid="uid://5u24nk7hqlt8" path="res://scripts/skirmish/skirmish_entity_rig.gd" id="1_m775y"]
 [ext_resource type="Texture2D" uid="uid://dbyt6uo580et2" path="res://assets/skirmish/placeholder/torso.png" id="2_2ekpu"]
 [ext_resource type="Texture2D" uid="uid://c5q1k2v8k3xl4" path="res://assets/skirmish/placeholder/head.png" id="3_m775y"]
 [ext_resource type="Texture2D" uid="uid://kixd2w3fmuvy" path="res://assets/skirmish/placeholder/forearm.png" id="4_ew1ca"]
@@ -10,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://cjpsl5b0xcbr5" path="res://assets/skirmish/placeholder/leg.png" id="7_eayux"]
 [ext_resource type="Texture2D" uid="uid://qbb7hdu60i2a" path="res://assets/skirmish/placeholder/foot-side.png" id="9_frasx"]
 [ext_resource type="AnimationLibrary" uid="uid://cbjclj3e14cpt" path="res://animations/male-rig.res" id="10_2ekpu"]
+[ext_resource type="Script" uid="uid://bltatnhkik4v5" path="res://scripts/skirmish/combat/hitbox.gd" id="11_ew1ca"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6pmnr"]
+radius = 19.10497
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qa2gp"]
 radius = 30.066593
@@ -563,6 +568,7 @@ _data = {
 }
 
 [node name="MaleRig" type="CharacterBody2D" unique_id=1018612703]
+script = ExtResource("1_m775y")
 
 [node name="UpperArm-Back" type="Sprite2D" parent="." unique_id=441717832]
 position = Vector2(7.000001, 18.999998)
@@ -583,6 +589,16 @@ rotation = 0.25848264
 scale = Vector2(1.0000002, 1.0000002)
 texture = ExtResource("5_aw06y")
 offset = Vector2(5.821205, -3.8960495)
+
+[node name="BackHitbox" type="Area2D" parent="UpperArm-Back/Forarm-Back/Fist-Back" unique_id=23219755]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("11_ew1ca")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperArm-Back/Forarm-Back/Fist-Back/BackHitbox" unique_id=151253750]
+position = Vector2(6.2886906, -2.4399085)
+shape = SubResource("CircleShape2D_6pmnr")
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=1896956401]
 position = Vector2(-15, 58.999992)
@@ -658,6 +674,16 @@ rotation = -0.4215836
 scale = Vector2(1, -1)
 texture = ExtResource("5_aw06y")
 offset = Vector2(7, -2)
+
+[node name="FrontHitbox" type="Area2D" parent="Upperarm-Front/Forearm-Front/Fist-Front" unique_id=557918909]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("11_ew1ca")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Upperarm-Front/Forearm-Front/Fist-Front/FrontHitbox" unique_id=75388909]
+position = Vector2(6.2886906, -2.4399085)
+shape = SubResource("CircleShape2D_6pmnr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=121458254]
 visible = false
