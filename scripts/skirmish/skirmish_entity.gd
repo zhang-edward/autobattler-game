@@ -22,6 +22,7 @@ const VILLAIN_LAYER_INDEX = 10
 
 @onready var rig_wrapper: Sprite2D = $RigWrapper
 
+@export var hitbox_scene: PackedScene
 @export var entity_type: EntityConfig.EntityType
 @export var move_speed := 100.0
 @export var rig: SkirmishEntityRig
@@ -30,6 +31,7 @@ const VILLAIN_LAYER_INDEX = 10
 @export var hurtbox: Hurtbox
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
+@export var punch_state: PunchState
 @export var ragdoll_state: RagdollState
 @export var block_state: BlockState
 @export var brain: Brain:
@@ -63,10 +65,25 @@ var _shadow_base_scale: Vector2
 func _ready() -> void:
 	healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
-	rig.on_emit_hitbox_enable.connect(handle_hitbox_for_attack)
+	rig.on_emit_hitbox_enable.connect(handle_hitbox_enable)
 	
-func handle_hitbox_for_attack():
-	pass
+func handle_hitbox_enable():
+	if state_machine.state == punch_state:
+		var hit_config = punch_state.hits[punch_state.combo_index]
+		match rig.anim_player.current_animation:
+			"male-rig/frontarm_jab":
+				var hitbox = hitbox_scene.instantiate() as Hitbox
+				rig.front_fist.add_child(hitbox)
+				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.2, self, hit_config)
+			"male-rig/backarm_jab":
+				var hitbox = hitbox_scene.instantiate() as Hitbox
+				rig.back_fist.add_child(hitbox)
+				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.3, self, hit_config)
+			"male-rig/backarm_uppercut":
+				var hitbox = hitbox_scene.instantiate() as Hitbox
+				add_child(hitbox)
+				hitbox.init(Vector2(0, 0), Vector2(40, 80), 0.3, self, hit_config)
+				hitbox.global_position = rig.back_fist.global_position
 
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
@@ -86,9 +103,9 @@ func _process(_delta: float) -> void:
 	# Altitude plus shift that keeps the sprite's center planted when it spins
 	shadow.scale = _shadow_base_scale * IsometryUtils.scale_shadow_from(z)
 	if intent != null and intent.facing != 0.0:
-		rig.scale.x = -1.0 if intent.facing < 0.0 else 1.0
+		rig_wrapper.scale.x = -1.0 if intent.facing < 0.0 else 1.0
 	elif absolute_velocity.x != 0.0:
-		rig.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
+		rig_wrapper.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
 
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if is_dead:

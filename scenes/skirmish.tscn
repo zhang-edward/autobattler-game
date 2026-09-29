@@ -26,8 +26,6 @@ size = Vector2(1890, 320)
 [node name="Skirmish" type="Node2D" unique_id=1631750039]
 script = ExtResource("1_skirmish")
 entity_scene = ExtResource("2_entity")
-debug_hero_count = 2
-debug_villain_count = 2
 
 [node name="Background" type="ColorRect" parent="." unique_id=2033718173]
 z_index = -100

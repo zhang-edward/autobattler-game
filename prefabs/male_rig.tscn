@@ -11,13 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://cjpsl5b0xcbr5" path="res://assets/skirmish/placeholder/leg.png" id="7_eayux"]
 [ext_resource type="Texture2D" uid="uid://qbb7hdu60i2a" path="res://assets/skirmish/placeholder/foot-side.png" id="9_frasx"]
 [ext_resource type="AnimationLibrary" uid="uid://cbjclj3e14cpt" path="res://animations/male-rig.res" id="10_2ekpu"]
-[ext_resource type="Script" uid="uid://bltatnhkik4v5" path="res://scripts/skirmish/combat/hitbox.gd" id="11_ew1ca"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_6pmnr"]
-radius = 19.10497
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_qa2gp"]
-radius = 30.066593
 
 [sub_resource type="Animation" id="Animation_2ekpu"]
 length = 0.001
@@ -48,7 +41,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("UpperArm-Back/Forarm-Back/Fist-Back:position")
+tracks/2/path = NodePath("UpperArm-Back/Forarm-Back/BackFist:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -192,7 +185,7 @@ tracks/13/keys = {
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("Upperarm-Front/Forearm-Front/Fist-Front:position")
+tracks/14/path = NodePath("Upperarm-Front/Forearm-Front/FrontFist:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -228,7 +221,7 @@ tracks/16/keys = {
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("UpperArm-Back/Forarm-Back/Fist-Back:rotation")
+tracks/17/path = NodePath("UpperArm-Back/Forarm-Back/BackFist:rotation")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
@@ -372,7 +365,7 @@ tracks/28/keys = {
 tracks/29/type = "value"
 tracks/29/imported = false
 tracks/29/enabled = true
-tracks/29/path = NodePath("Upperarm-Front/Forearm-Front/Fist-Front:rotation")
+tracks/29/path = NodePath("Upperarm-Front/Forearm-Front/FrontFist:rotation")
 tracks/29/interp = 1
 tracks/29/loop_wrap = true
 tracks/29/keys = {
@@ -384,7 +377,7 @@ tracks/29/keys = {
 tracks/30/type = "value"
 tracks/30/imported = false
 tracks/30/enabled = true
-tracks/30/path = NodePath("Upperarm-Front/Forearm-Front/Fist-Front:scale")
+tracks/30/path = NodePath("Upperarm-Front/Forearm-Front/FrontFist:scale")
 tracks/30/interp = 1
 tracks/30/loop_wrap = true
 tracks/30/keys = {
@@ -420,7 +413,7 @@ tracks/32/keys = {
 tracks/33/type = "value"
 tracks/33/imported = false
 tracks/33/enabled = true
-tracks/33/path = NodePath("UpperArm-Back/Forarm-Back/Fist-Back:scale")
+tracks/33/path = NodePath("UpperArm-Back/Forarm-Back/BackFist:scale")
 tracks/33/interp = 1
 tracks/33/loop_wrap = true
 tracks/33/keys = {
@@ -567,7 +560,7 @@ _data = {
 &"RESET": SubResource("Animation_2ekpu")
 }
 
-[node name="MaleRig" type="CharacterBody2D" unique_id=1018612703]
+[node name="MaleRig" type="Node2D" unique_id=216610745]
 script = ExtResource("1_m775y")
 
 [node name="UpperArm-Back" type="Sprite2D" parent="." unique_id=441717832]
@@ -583,22 +576,13 @@ scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("4_ew1ca")
 offset = Vector2(10.457014, -1.8490906)
 
-[node name="Fist-Back" type="Sprite2D" parent="UpperArm-Back/Forarm-Back" unique_id=1131300776]
+[node name="BackFist" type="Sprite2D" parent="UpperArm-Back/Forarm-Back" unique_id=1131300776]
+unique_name_in_owner = true
 position = Vector2(22.166748, -5.964602)
 rotation = 0.25848264
 scale = Vector2(1.0000002, 1.0000002)
 texture = ExtResource("5_aw06y")
 offset = Vector2(5.821205, -3.8960495)
-
-[node name="BackHitbox" type="Area2D" parent="UpperArm-Back/Forarm-Back/Fist-Back" unique_id=23219755]
-unique_name_in_owner = true
-collision_layer = 8
-collision_mask = 8
-script = ExtResource("11_ew1ca")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperArm-Back/Forarm-Back/Fist-Back/BackHitbox" unique_id=151253750]
-position = Vector2(6.2886906, -2.4399085)
-shape = SubResource("CircleShape2D_6pmnr")
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=1896956401]
 position = Vector2(-15, 58.999992)
@@ -668,27 +652,13 @@ rotation = 0.17169547
 texture = ExtResource("4_ew1ca")
 offset = Vector2(9, -1)
 
-[node name="Fist-Front" type="Sprite2D" parent="Upperarm-Front/Forearm-Front" unique_id=748303341]
+[node name="FrontFist" type="Sprite2D" parent="Upperarm-Front/Forearm-Front" unique_id=748303341]
+unique_name_in_owner = true
 position = Vector2(23, -5)
 rotation = -0.4215836
 scale = Vector2(1, -1)
 texture = ExtResource("5_aw06y")
 offset = Vector2(7, -2)
-
-[node name="FrontHitbox" type="Area2D" parent="Upperarm-Front/Forearm-Front/Fist-Front" unique_id=557918909]
-unique_name_in_owner = true
-collision_layer = 8
-collision_mask = 8
-script = ExtResource("11_ew1ca")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Upperarm-Front/Forearm-Front/Fist-Front/FrontHitbox" unique_id=75388909]
-position = Vector2(6.2886906, -2.4399085)
-shape = SubResource("CircleShape2D_6pmnr")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=121458254]
-visible = false
-position = Vector2(-11, 35)
-shape = SubResource("CircleShape2D_qa2gp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=689288795]
 libraries/ = SubResource("AnimationLibrary_m775y")
