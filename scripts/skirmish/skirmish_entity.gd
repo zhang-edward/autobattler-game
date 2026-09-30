@@ -32,7 +32,9 @@ const VILLAIN_LAYER_INDEX = 10
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
 @export var punch_state: PunchState
+@export var grab_state: GrabState
 @export var ragdoll_state: RagdollState
+@export var is_grabbed_state: IsGrabbedState
 @export var block_state: BlockState
 @export var brain: Brain:
 	set(value):
@@ -60,6 +62,8 @@ var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
 
+var grabbed_entity
+
 var _shadow_base_scale: Vector2
 
 func _ready() -> void:
@@ -84,6 +88,13 @@ func handle_hitbox_enable():
 				add_child(hitbox)
 				hitbox.init(Vector2(0, 0), Vector2(40, 80), 0.3, self, hit_config)
 				hitbox.global_position = rig.back_fist.global_position
+	elif state_machine.state == grab_state:
+		var hit_config = grab_state.hit
+		if rig.anim_player.current_animation == "male-rig/grab":
+			var hitbox = hitbox_scene.instantiate() as Hitbox
+			rig.back_fist.add_child(hitbox)
+			hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.2, self, hit_config)
+			hitbox.global_position = rig.back_fist.global_position
 
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
@@ -119,10 +130,14 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		return
 
 	# A guard stops strikes, but a grab goes straight through it
-	if blocking and hit.kind == HitConfig.Kind.STRIKE:
-		absolute_velocity = dir * BLOCK_PUSHBACK
-		Hitstop.freeze([source, self], hit.hitstop)
-		return
+	if blocking:
+		if hit.kind == HitConfig.Kind.STRIKE:
+			absolute_velocity = dir * BLOCK_PUSHBACK
+			Hitstop.freeze([source, self], hit.hitstop)
+			return
+		elif hit.kind == HitConfig.Kind.GRAB:
+			state_machine.transition_to(is_grabbed_state, { "grabber": source })
+			source.grabbed_entity = self
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.attack, entity_config.defense)
 	source.entity_config.damage_dealt += hit.damage

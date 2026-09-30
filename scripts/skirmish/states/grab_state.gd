@@ -7,8 +7,7 @@ scripted throw. Recovers slowly, so a whiffed grab is punishable.
 """
 
 const GRAB_TINT := Color(1.0, 0.85, 0.3)
-# Long next to a jab's 0.2
-const RECOVERY_TIME := 0.5
+const RECOVERY_TIME := 1.0
 const GRAB_SIZE := Vector2(72, 72)
 const GRAB_ACTIVE_TIME := 0.15
 
@@ -24,16 +23,13 @@ func enter(_msg := {}) -> void:
 	e.rig.play_animation("male-rig/grab")
 	recovery_timer = RECOVERY_TIME
 
-	#var hitbox = hitbox_scene.instantiate()
-	#e.add_child(hitbox)
-	#var hitbox_offset: Vector2 = $GrabLocation.position
-	#hitbox_offset.x *= -1 if e.rig.scale.x < 0 else 1
-	#hitbox.init(hitbox_offset, GRAB_SIZE, GRAB_ACTIVE_TIME, e, hit)
-
 func physics_update(delta: float) -> void:
 	# Planted for the whole attempt
 	e.absolute_velocity = Vector2.ZERO
-
-	recovery_timer -= delta
-	if recovery_timer <= 0.0:
-		state_machine.transition_to(move_state)
+	
+	if e.grabbed_entity != null:
+		pass
+	else:
+		recovery_timer -= delta
+		if recovery_timer <= 0.0:
+			state_machine.transition_to(move_state)

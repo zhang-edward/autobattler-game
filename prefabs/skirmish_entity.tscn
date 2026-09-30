@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="15_block"]
 [ext_resource type="Script" uid="uid://bfvmryhqxp1yt" path="res://scripts/skirmish/states/grab_state.gd" id="16_grab"]
 [ext_resource type="Script" uid="uid://1remksd10of4" path="res://scripts/skirmish/brains/ai_brain.gd" id="17_brain"]
+[ext_resource type="Script" uid="uid://dkuwi6fc0w2qa" path="res://scripts/skirmish/states/is_grabbed_state.gd" id="17_qu6eo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -26,7 +27,7 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "punch_state", "ragdoll_state", "block_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "punch_state", "grab_state", "ragdoll_state", "is_grabbed_state", "block_state", "brain")]
 collision_layer = 0
 collision_mask = 1024
 script = ExtResource("1_entity")
@@ -38,7 +39,9 @@ hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
 punch_state = NodePath("StateMachine/PunchState")
+grab_state = NodePath("StateMachine/GrabState")
 ragdoll_state = NodePath("StateMachine/RagdollState")
+is_grabbed_state = NodePath("StateMachine/IsGrabbedState")
 block_state = NodePath("StateMachine/BlockState")
 brain = NodePath("AIBrain")
 
@@ -121,6 +124,9 @@ move_state = NodePath("../MoveState")
 script = ExtResource("16_grab")
 move_state = NodePath("../MoveState")
 
+[node name="IsGrabbedState" type="Node" parent="StateMachine" unique_id=96898516]
+script = ExtResource("17_qu6eo")
+
 [node name="DebugStateLabel" type="Label" parent="." unique_id=1004657685 node_paths=PackedStringArray("state_machine")]
 offset_left = -48.0
 offset_top = -226.0
@@ -134,4 +140,3 @@ state_machine = NodePath("../StateMachine")
 [node name="AIBrain" type="Node" parent="." unique_id=1710442994]
 script = ExtResource("17_brain")
 preferred_distance = 75.0
-grab_weight = 0.0
