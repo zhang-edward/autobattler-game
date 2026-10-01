@@ -21,6 +21,7 @@ const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
 
 @onready var rig_wrapper: Sprite2D = $RigWrapper
+@onready var debug_name_label: Label = $DebugNameLabel
 
 @export var hitbox_scene: PackedScene
 @export var entity_type: EntityConfig.EntityType
@@ -31,6 +32,7 @@ const VILLAIN_LAYER_INDEX = 10
 @export var hurtbox: Hurtbox
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
+@export var death_state: DeathState
 @export var punch_state: PunchState
 @export var grab_state: GrabState
 @export var ragdoll_state: RagdollState
@@ -104,6 +106,7 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	healthbar.value = ec.curr_health
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
+	debug_name_label.text = entity_config.entity_name
 
 func _physics_process(delta: float) -> void:
 	intent = brain.get_intent(delta * hitstop_scale)
@@ -112,6 +115,7 @@ func _physics_process(delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	# Altitude plus shift that keeps the sprite's center planted when it spins
+	rig_wrapper.position.y = z
 	shadow.scale = _shadow_base_scale * IsometryUtils.scale_shadow_from(z)
 	if intent != null and intent.facing != 0.0:
 		rig_wrapper.scale.x = -1.0 if intent.facing < 0.0 else 1.0
@@ -151,11 +155,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		is_dead = true
 		healthbar.hide()
 		died.emit()
-		# Corpses still fly. They despawn once the ragdoll settles.
-		knock_down(
-			dir * maxf(hit.knockback, DEATH_KNOCKBACK_MIN),
-			hit.launch if hit.launch != 0.0 else DEATH_LAUNCH
-		)
+		state_machine.transition_to(death_state)
 	# A ragdolling entity can't drop back into ordinary hitstun mid-air, so any
 	# hit that connects while it's down there keeps it airborne instead
 	elif hit.knockdown or state_machine.state == ragdoll_state:

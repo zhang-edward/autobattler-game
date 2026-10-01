@@ -12,6 +12,7 @@ const GRAB_SIZE := Vector2(72, 72)
 const GRAB_ACTIVE_TIME := 0.15
 
 @export var move_state: MoveState
+@export var throw_state: ThrowState
 
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
 # Low damage; the knockdown and floor impact carry the hit
@@ -28,7 +29,7 @@ func physics_update(delta: float) -> void:
 	e.absolute_velocity = Vector2.ZERO
 	
 	if e.grabbed_entity != null:
-		pass
+		e.state_machine.transition_to(throw_state)
 	else:
 		recovery_timer -= delta
 		if recovery_timer <= 0.0:

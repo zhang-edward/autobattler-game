@@ -6,6 +6,7 @@ const HITSTUN_SECONDS := 0.3
 
 @export var move_state: MoveState
 @export var fall_state: FallState
+@export var death_state: DeathState
 
 var hitstun_timer := 0.0
 
@@ -20,7 +21,6 @@ func exit() -> void:
 
 func update(delta: float) -> void:
 	e.absolute_velocity *= 0.9
-
 	hitstun_timer -= delta
 	if hitstun_timer <= 0:
 		if e.z < 0:

@@ -19,6 +19,8 @@
 [ext_resource type="Script" uid="uid://bfvmryhqxp1yt" path="res://scripts/skirmish/states/grab_state.gd" id="16_grab"]
 [ext_resource type="Script" uid="uid://1remksd10of4" path="res://scripts/skirmish/brains/ai_brain.gd" id="17_brain"]
 [ext_resource type="Script" uid="uid://dkuwi6fc0w2qa" path="res://scripts/skirmish/states/is_grabbed_state.gd" id="17_qu6eo"]
+[ext_resource type="Script" uid="uid://d23s31nb4ucsg" path="res://scripts/skirmish/states/throw_state.gd" id="18_fo287"]
+[ext_resource type="Script" uid="uid://bhqwo0ypavxl5" path="res://scripts/skirmish/states/death_state.gd" id="19_pkptp"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -27,7 +29,7 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "punch_state", "grab_state", "ragdoll_state", "is_grabbed_state", "block_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "punch_state", "grab_state", "ragdoll_state", "is_grabbed_state", "block_state", "brain")]
 collision_layer = 0
 collision_mask = 1024
 script = ExtResource("1_entity")
@@ -38,6 +40,7 @@ healthbar = NodePath("ProgressBar")
 hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
+death_state = NodePath("StateMachine/DeathState")
 punch_state = NodePath("StateMachine/PunchState")
 grab_state = NodePath("StateMachine/GrabState")
 ragdoll_state = NodePath("StateMachine/RagdollState")
@@ -107,25 +110,35 @@ move_state = NodePath("../MoveState")
 script = ExtResource("10_punch")
 move_state = NodePath("../MoveState")
 
-[node name="HurtState" type="Node" parent="StateMachine" unique_id=1710442989 node_paths=PackedStringArray("move_state", "fall_state")]
+[node name="HurtState" type="Node" parent="StateMachine" unique_id=1710442989 node_paths=PackedStringArray("move_state", "fall_state", "death_state")]
 script = ExtResource("12_hurt")
 move_state = NodePath("../MoveState")
 fall_state = NodePath("../FallState")
+death_state = NodePath("../DeathState")
 
-[node name="RagdollState" type="Node" parent="StateMachine" unique_id=1710442990 node_paths=PackedStringArray("move_state")]
+[node name="RagdollState" type="Node" parent="StateMachine" unique_id=1710442990 node_paths=PackedStringArray("move_state", "grab_state")]
 script = ExtResource("13_ragdoll")
 move_state = NodePath("../MoveState")
+grab_state = NodePath("../GrabState")
 
 [node name="BlockState" type="Node" parent="StateMachine" unique_id=1710442991 node_paths=PackedStringArray("move_state")]
 script = ExtResource("15_block")
 move_state = NodePath("../MoveState")
 
-[node name="GrabState" type="Node" parent="StateMachine" unique_id=1710442992 node_paths=PackedStringArray("move_state")]
+[node name="GrabState" type="Node" parent="StateMachine" unique_id=1710442992 node_paths=PackedStringArray("move_state", "throw_state")]
 script = ExtResource("16_grab")
 move_state = NodePath("../MoveState")
+throw_state = NodePath("../ThrowState")
 
 [node name="IsGrabbedState" type="Node" parent="StateMachine" unique_id=96898516]
 script = ExtResource("17_qu6eo")
+
+[node name="ThrowState" type="Node" parent="StateMachine" unique_id=1592108371 node_paths=PackedStringArray("move_state")]
+script = ExtResource("18_fo287")
+move_state = NodePath("../MoveState")
+
+[node name="DeathState" type="Node" parent="StateMachine" unique_id=1186784855]
+script = ExtResource("19_pkptp")
 
 [node name="DebugStateLabel" type="Label" parent="." unique_id=1004657685 node_paths=PackedStringArray("state_machine")]
 offset_left = -48.0
@@ -136,6 +149,14 @@ text = "state"
 horizontal_alignment = 1
 script = ExtResource("11_debug")
 state_machine = NodePath("../StateMachine")
+
+[node name="DebugNameLabel" type="Label" parent="." unique_id=191042615]
+offset_left = -49.0
+offset_top = 17.0
+offset_right = 51.0
+offset_bottom = 40.0
+text = "hero name"
+horizontal_alignment = 1
 
 [node name="AIBrain" type="Node" parent="." unique_id=1710442994]
 script = ExtResource("17_brain")
