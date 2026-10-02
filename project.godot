@@ -21,8 +21,8 @@ GameVariables="*uid://hq5y664o8xm3"
 BeehaveGlobalMetrics="*uid://c3ktl6ontsdt7"
 BeehaveGlobalDebugger="*uid://bl3ma400hpvsh"
 ScreenShake="*res://scripts/skirmish/screen_shake.gd"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 TacticalDebugConsole="*res://scripts/debug/debug_console.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 

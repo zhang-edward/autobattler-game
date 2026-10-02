@@ -12,6 +12,8 @@ func enter(_msg := {}) -> void:
 	e.rig.on_throw_release.connect(_release, CONNECT_ONE_SHOT)
 
 func _release():
+	if !is_instance_valid(e.grabbed_entity):
+		return
 	var target := e.grabbed_entity as SkirmishEntity
 	var dir := Vector2(signf(target.position.x - e.position.x), 0.0)
 	target.state_machine.transition_to(target.ragdoll_state, {
