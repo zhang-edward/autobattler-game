@@ -5,7 +5,6 @@ signal finished(winner: EntityConfig.EntityType)
 
 const HERO_START := Vector2(400.0, 700.0)
 const VILLAIN_START := Vector2(1400.0, 700.0)
-# Off-arena (behind the HWall), so a benched body can never block or be hit
 const HERO_BENCH := Vector2(400.0, 1200.0)
 const VILLAIN_BENCH := Vector2(1400.0, 1200.0)
 # Delay between the last death and `finished`, so the body can land and fade first
@@ -54,7 +53,6 @@ func active_for(team: EntityConfig.EntityType) -> SkirmishEntity:
 func _build_status_rows() -> void:
 	if not _status_rows.is_empty():
 		return
-	# Name lookup instead of a deep $ path, so rearranging the HUD tree won't break this
 	hero_statuses = find_child("HeroStatuses", true, false) as VBoxContainer
 	villain_statuses = find_child("VillainStatuses", true, false) as VBoxContainer
 	_add_status_rows(hero_team, hero_statuses)
@@ -67,8 +65,6 @@ func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> 
 		row.configure(entity)
 		_status_rows.append(row)
 
-# Voluntary swap. Move-only and never interrupts a grab; returns false when denied
-# so MoveState can fall through to normal movement instead of stalling.
 func tag(team: EntityConfig.EntityType, entity: SkirmishEntity) -> bool:
 	if _finished or entity == null or not is_instance_valid(entity) or entity.is_dead:
 		return false
@@ -121,7 +117,6 @@ func _on_entity_died(entity: SkirmishEntity) -> void:
 	_release_grab_links(entity)
 	var roster := team_for(entity.entity_type)
 	var next := _healthiest_living_bench(roster)
-	# Dead bench member (shouldn't happen; bench can't be hit): just check the team
 	if entity != active_for(entity.entity_type):
 		if not _team_has_living(roster):
 			_finish(_winning_side(entity.entity_type))
@@ -132,27 +127,14 @@ func _on_entity_died(entity: SkirmishEntity) -> void:
 	_finish(_winning_side(entity.entity_type))
 
 func _do_tag(team: EntityConfig.EntityType, entity: SkirmishEntity) -> void:
-	var start := HERO_START if team == EntityConfig.EntityType.HERO else VILLAIN_START
-	var bench := HERO_BENCH if team == EntityConfig.EntityType.HERO else VILLAIN_BENCH
 	var current := active_for(team)
-	if current != null and is_instance_valid(current) and not current.is_dead:
-		current.position = bench
-		current.z = 0.0
-		current.z_velocity = 0.0
-		current.set_active(false)
-	entity.position = start
-	entity.z = 0.0
-	entity.z_velocity = 0.0
-	entity.absolute_velocity = Vector2.ZERO
-	entity.intent = null
-	entity.set_active(true)
 	if team == EntityConfig.EntityType.HERO:
 		active_hero = entity
 	else:
 		active_villain = entity
-	# Re-enter Move so the incoming fighter restarts its walk anim
-	if entity.state_machine != null and entity.state_machine.state != null:
-		entity.state_machine.transition_to(entity.state_machine.state)
+	if current != null and is_instance_valid(current) and not current.is_dead:
+		current.state_machine.transition_to(current.tag_out_state)
+	entity.begin_tag_in()
 
 func _is_grab_in_progress() -> bool:
 	for e in [active_hero, active_villain]:

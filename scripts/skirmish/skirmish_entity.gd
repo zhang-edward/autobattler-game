@@ -38,6 +38,8 @@ const VILLAIN_LAYER_INDEX = 10
 @export var ragdoll_state: RagdollState
 @export var is_grabbed_state: IsGrabbedState
 @export var block_state: BlockState
+@export var tag_out_state: TagOutState
+@export var tag_in_state: TagInState
 @export var brain: Brain:
 	set(value):
 		brain = value
@@ -113,6 +115,14 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
 	debug_name_label.text = entity_config.entity_name
+
+# Tag entrance setup: visible and ticking so TagInState runs, but the hurtbox
+# stays dark until TagInState completes into set_active(true).
+func begin_tag_in() -> void:
+	is_active = true
+	process_mode = Node.PROCESS_MODE_INHERIT
+	visible = true
+	state_machine.transition_to(tag_in_state)
 
 func set_active(value: bool) -> void:
 	is_active = value
