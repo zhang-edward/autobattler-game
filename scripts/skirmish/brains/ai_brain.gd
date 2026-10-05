@@ -20,10 +20,22 @@ punch / block / grab from a weighted bag.
 @export var reaction_time := 0.2
 @export var min_block_duration := 1.0
 @export var max_block_duration := 2.0
+# Swap to a benched teammate this much healthier (health fraction) than self
+const TAG_HEALTH_MARGIN := 0.2
 
 var _reaction_timer := 0.0
 
 func get_intent(delta: float) -> Intent:
+	# Voluntary tags come from Move only; Skirmish.tag() re-validates (grab lock).
+	if entity.is_active and entity.skirmish != null and entity.state_machine != null and entity.state_machine.state is MoveState:
+		var mate := _healthier_benchmate()
+		if mate != null:
+			var tag := TagIntent.new()
+			tag.target = mate
+			var opp := _nearest_opponent()
+			if opp != null:
+				tag.facing = signf((opp.global_position - entity.global_position).x)
+			return tag
 	var target := _nearest_opponent()
 	if target == null:
 		return null
@@ -84,10 +96,27 @@ func _nearest_opponent() -> SkirmishEntity:
 	var nearest_dist := INF
 	for node in entity.get_parent().get_children():
 		var other := node as SkirmishEntity
-		if other == null or other == entity or other.is_dead or other.entity_type == entity.entity_type:
+		if other == null or other == entity or other.is_dead or not other.is_active or other.entity_type == entity.entity_type:
 			continue
 		var dist := entity.global_position.distance_squared_to(other.global_position)
 		if dist < nearest_dist:
 			nearest_dist = dist
 			nearest = other
 	return nearest
+
+func _healthier_benchmate() -> SkirmishEntity:
+	if entity.skirmish == null or entity.entity_config == null:
+		return null
+	var my_frac := float(entity.entity_config.curr_health) / float(maxi(entity.entity_config.max_health, 1))
+	var best: SkirmishEntity = null
+	var best_frac := -1.0
+	for mate in entity.skirmish.team_for(entity.entity_type):
+		if mate == null or not is_instance_valid(mate) or mate == entity or mate.is_dead or mate.is_active:
+			continue
+		if mate.entity_config == null:
+			continue
+		var frac := float(mate.entity_config.curr_health) / float(maxi(mate.entity_config.max_health, 1))
+		if frac - my_frac > TAG_HEALTH_MARGIN and frac > best_frac:
+			best_frac = frac
+			best = mate
+	return best

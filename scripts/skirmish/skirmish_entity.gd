@@ -45,6 +45,8 @@ const VILLAIN_LAYER_INDEX = 10
 
 var entity_config: EntityConfig
 var intent: Intent
+var is_active := true
+var skirmish: Skirmish
 
 # Scales everything that advances time for this entity. 0 holds it still while leaving
 # its nodes and collision shapes live, so a frozen fighter can still be hit.
@@ -69,7 +71,11 @@ var grabbed_entity
 var _shadow_base_scale: Vector2
 
 func _ready() -> void:
-	healthbar.value = healthbar.max_value
+	if entity_config != null:
+		healthbar.max_value = entity_config.max_health
+		healthbar.value = entity_config.curr_health
+	else:
+		healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
 	rig.on_emit_hitbox_enable.connect(handle_hitbox_enable)
 	
@@ -108,7 +114,21 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	set_collision_layer_value(layer_index, true)
 	debug_name_label.text = entity_config.entity_name
 
+func set_active(value: bool) -> void:
+	is_active = value
+	visible = value
+	# DISABLED freezes the whole subtree (entity, state machine, brain, rig anims)
+	process_mode = Node.PROCESS_MODE_INHERIT if value else Node.PROCESS_MODE_DISABLED
+	if hurtbox != null:
+		hurtbox.set_deferred("monitorable", value)
+		hurtbox.set_deferred("monitoring", value)
+	if not value:
+		absolute_velocity = Vector2.ZERO
+		intent = null
+
 func _physics_process(delta: float) -> void:
+	if not is_active or brain == null:
+		return
 	intent = brain.get_intent(delta * hitstop_scale)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale
 	move_and_slide()
@@ -123,7 +143,7 @@ func _process(_delta: float) -> void:
 		rig_wrapper.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
 
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
-	if is_dead:
+	if is_dead or not is_active:
 		return
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
@@ -140,7 +160,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 			Hitstop.freeze([source, self], hit.hitstop)
 			return
 		elif hit.kind == HitConfig.Kind.GRAB:
-			state_machine.transition_to(is_grabbed_state, { "grabber": source })
+			state_machine.transition_to(is_grabbed_state, {"grabber": source})
 			source.grabbed_entity = self
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.attack, entity_config.defense)
@@ -168,15 +188,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 
 func knock_down(impulse: Vector2, launch: float) -> void:
-	# Spread so knockdowns launch slightly off the horizontal axis
 	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
-
-	#if state_machine.state == ragdoll_state:
-		## Already ragdolling: relaunch in place rather than re-entering the state,
-		## which would reset the altitude we're trying to add to
-		#ragdoll_state.relaunch(impulse, launch)
-	#else:
-		#state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch})
 
 func despawn() -> void:
 	var tween := create_tween()
