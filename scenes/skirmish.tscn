@@ -69,38 +69,28 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 30.0
-offset_top = -140.0
+offset_top = -1069.0
 offset_right = -30.0
-offset_bottom = -20.0
+offset_bottom = -949.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_statusbar")
 
-[node name="StatusBar" type="HBoxContainer" parent="HUD/Root" unique_id=1924923870]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = -130.0
-offset_right = -40.0
-offset_bottom = -30.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="StatusBar" type="HBoxContainer" parent="HUD/Root/StatusBarPanel" unique_id=1924923870]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="HeroStatuses" type="HBoxContainer" parent="HUD/Root/StatusBar" unique_id=902530307]
+[node name="HeroStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=270419866]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Spacer" type="Control" parent="HUD/Root/StatusBar" unique_id=537023933]
+[node name="Spacer" type="Control" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=537023933]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="VillainStatuses" type="HBoxContainer" parent="HUD/Root/StatusBar" unique_id=2002655054]
+[node name="VillainStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=1386501132]
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -126,6 +116,7 @@ collision_layer = 1024
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HWall" unique_id=1054663155]
+position = Vector2(0, 140)
 shape = SubResource("RectangleShape2D_0dkc3")
 
 [node name="HWall2" type="StaticBody2D" parent="." unique_id=1615577379]

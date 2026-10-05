@@ -10,8 +10,12 @@ const HERO_BENCH := Vector2(400.0, 1200.0)
 const VILLAIN_BENCH := Vector2(1400.0, 1200.0)
 # Delay between the last death and `finished`, so the body can land and fade first
 const OUTRO_SECONDS := 1.5
+const STATUS_ROW := preload("res://prefabs/skirmish_status_row.tscn")
 
 @export var entity_scene: PackedScene
+
+var hero_statuses: VBoxContainer
+var villain_statuses: VBoxContainer
 
 @export_group("Standalone testing")
 @export var debug_hero_count := 3
@@ -22,10 +26,18 @@ var villain_team: Array[SkirmishEntity] = []
 var active_hero: SkirmishEntity
 var active_villain: SkirmishEntity
 var _finished := false
+var _status_rows: Array[SkirmishStatusRow] = []
 
 func _ready() -> void:
 	if hero_team.is_empty() and villain_team.is_empty():
 		_setup_debug_matchup()
+	_build_status_rows()
+
+func _process(_delta: float) -> void:
+	for row in _status_rows:
+		row.refresh()
+		var is_active := is_instance_valid(row.entity) and (row.entity == active_hero or row.entity == active_villain)
+		row.set_active_highlight(is_active)
 
 func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
 	hero_team = _spawn_side(heroes, HERO_START, HERO_BENCH)
@@ -38,6 +50,22 @@ func team_for(team: EntityConfig.EntityType) -> Array[SkirmishEntity]:
 
 func active_for(team: EntityConfig.EntityType) -> SkirmishEntity:
 	return active_hero if team == EntityConfig.EntityType.HERO else active_villain
+
+func _build_status_rows() -> void:
+	if not _status_rows.is_empty():
+		return
+	# Name lookup instead of a deep $ path, so rearranging the HUD tree won't break this
+	hero_statuses = find_child("HeroStatuses", true, false) as VBoxContainer
+	villain_statuses = find_child("VillainStatuses", true, false) as VBoxContainer
+	_add_status_rows(hero_team, hero_statuses)
+	_add_status_rows(villain_team, villain_statuses)
+
+func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> void:
+	for entity in team:
+		var row := STATUS_ROW.instantiate() as SkirmishStatusRow
+		container.add_child(row)
+		row.configure(entity)
+		_status_rows.append(row)
 
 # Voluntary swap. Move-only and never interrupts a grab; returns false when denied
 # so MoveState can fall through to normal movement instead of stalling.

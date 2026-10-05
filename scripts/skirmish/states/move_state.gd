@@ -26,8 +26,13 @@ func physics_update(_delta: float) -> void:
 		return
 
 	e.absolute_velocity = movement_direction() * e.move_speed
-	if e.absolute_velocity == Vector2.ZERO and e.rig.anim_player.current_animation != "male-rig/idle":
-		e.rig.play_animation("male-rig/idle")
+	if e.absolute_velocity == Vector2.ZERO:
+		if e.rig.anim_player.current_animation != "male-rig/idle":
+			e.rig.play_animation("male-rig/idle")
+	else:
+		if e.rig.anim_player.current_animation != "male-rig/walk":
+			e.rig.play_animation("male-rig/walk")
+
 
 	var movement := e.intent as MovementIntent
 	if e.z == 0 and movement != null and movement.jump:
