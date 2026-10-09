@@ -50,20 +50,15 @@ var intent: Intent
 var is_active := true
 var skirmish: Skirmish
 
-# Scales everything that advances time for this entity. 0 holds it still while leaving
-# its nodes and collision shapes live, so a frozen fighter can still be hit.
 var hitstop_scale := 1.0:
 	set(value):
 		hitstop_scale = value
 		if state_machine != null:
 			state_machine.time_scale = value
 
-# Floor-plane velocity in absolute (pre-depth-scale) units. States write this;
-# _physics_process scales it into `velocity` for move_and_slide().
 var absolute_velocity := Vector2.ZERO
 
-# Altitude: negative is up, 0 is the floor. Rendered by offsetting the sprite,
-# which carries the hurtbox up with it.
+# Altitude: negative is up, 0 is the floor. Rendered by offsetting the sprite.
 var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
@@ -71,6 +66,10 @@ var is_dead := false
 var grabbed_entity
 
 var _shadow_base_scale: Vector2
+
+func facing() -> float:
+	var f := signf(rig_wrapper.scale.x)
+	return f if f != 0.0 else 1.0
 
 func _ready() -> void:
 	if entity_config != null:
@@ -85,18 +84,18 @@ func handle_hitbox_enable():
 	if state_machine.state == punch_state:
 		var hit_config = punch_state.hits[punch_state.combo_index]
 		match rig.anim_player.current_animation:
-			"male-rig/frontarm_jab":
+			"male-rig/frontarm_jab", "male-rig/frontarm_jab_instant":
 				var hitbox = hitbox_scene.instantiate() as Hitbox
 				rig.front_fist.add_child(hitbox)
 				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.2, self, hit_config)
-			"male-rig/backarm_jab":
+			"male-rig/backarm_jab", "male-rig/backarm_jab_instant":
 				var hitbox = hitbox_scene.instantiate() as Hitbox
 				rig.back_fist.add_child(hitbox)
 				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.3, self, hit_config)
-			"male-rig/backarm_uppercut":
+			"male-rig/backarm_uppercut", "male-rig/backarm_uppercut_instant":
 				var hitbox = hitbox_scene.instantiate() as Hitbox
 				add_child(hitbox)
-				hitbox.init(Vector2(0, 0), Vector2(40, 80), 0.3, self, hit_config)
+				hitbox.init(Vector2(0, 0), Vector2(80, 100), 0.3, self, hit_config)
 				hitbox.global_position = rig.back_fist.global_position
 	elif state_machine.state == grab_state:
 		var hit_config = grab_state.hit
@@ -118,11 +117,14 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 
 # Tag entrance setup: visible and ticking so TagInState runs, but the hurtbox
 # stays dark until TagInState completes into set_active(true).
-func begin_tag_in() -> void:
+func begin_tag_in(destination: Vector2, entry_side := 0.0) -> void:
 	is_active = true
 	process_mode = Node.PROCESS_MODE_INHERIT
 	visible = true
-	state_machine.transition_to(tag_in_state)
+	state_machine.transition_to(tag_in_state, {"destination": destination, "entry_side": entry_side})
+
+func begin_tag_out() -> void:
+	state_machine.transition_to(tag_out_state)
 
 func set_active(value: bool) -> void:
 	is_active = value
@@ -172,6 +174,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		elif hit.kind == HitConfig.Kind.GRAB:
 			state_machine.transition_to(is_grabbed_state, {"grabber": source})
 			source.grabbed_entity = self
+			return
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.attack, entity_config.defense)
 	source.entity_config.damage_dealt += hit.damage
@@ -189,7 +192,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	# A ragdolling entity can't drop back into ordinary hitstun mid-air, so any
 	# hit that connects while it's down there keeps it airborne instead
 	elif hit.knockdown or state_machine.state == ragdoll_state:
-		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH)
+		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
 	else:
 		state_machine.transition_to(hurt_state, {"dir": dir})
 
@@ -197,8 +200,16 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if hit.knockdown:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 
-func knock_down(impulse: Vector2, launch: float) -> void:
+func knock_down(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
 	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
+
+	if state_machine.state == ragdoll_state:
+		# Already ragdolling: relaunch in place rather than re-entering the state,
+		# which would reset the altitude we're trying to add to
+		ragdoll_state.relaunch(impulse, launch)
+		ragdoll_state.thrower_entity = thrower
+	else:
+		state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch, "thrower": thrower})
 
 func despawn() -> void:
 	var tween := create_tween()

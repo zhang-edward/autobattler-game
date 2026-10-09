@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://b587pw8nc5uql" path="res://scripts/skirmish/skirmish.gd" id="1_skirmish"]
 [ext_resource type="PackedScene" uid="uid://diju08tqwia6c" path="res://prefabs/skirmish_entity.tscn" id="2_entity"]
 [ext_resource type="Script" uid="uid://rufam8hg02of" path="res://scripts/ui/screen_band_rect.gd" id="3_u42sw"]
+[ext_resource type="Script" uid="uid://d04ukv4j57sv3" path="res://scripts/skirmish/tag_director.gd" id="4_0dkc3"]
+[ext_resource type="Script" uid="uid://d1vbhgexbdvrx" path="res://scripts/skirmish/cutscene_manager.gd" id="4_543uf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_statusbar"]
 bg_color = Color(0.18431373, 0.18431373, 0.18431373, 0.5764706)
@@ -82,6 +84,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="HeroStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=270419866]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -91,6 +94,7 @@ size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="VillainStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=1386501132]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -127,3 +131,23 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HWall2" unique_id=714280630]
 position = Vector2(0, 150)
 shape = SubResource("RectangleShape2D_543uf")
+
+[node name="TagCamera" type="Camera2D" parent="." unique_id=585411401]
+unique_name_in_owner = true
+position = Vector2(960, 540)
+
+[node name="TagDarken" type="ColorRect" parent="." unique_id=1328725042]
+unique_name_in_owner = true
+visible = false
+z_index = -50
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="CutsceneManager" type="Node" parent="." unique_id=58608920]
+script = ExtResource("4_543uf")
+
+[node name="TagDirector" type="Node" parent="." unique_id=1787847176 node_paths=PackedStringArray("cutscene")]
+script = ExtResource("4_0dkc3")
+cutscene = NodePath("../CutsceneManager")

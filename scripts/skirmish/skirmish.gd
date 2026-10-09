@@ -27,10 +27,15 @@ var active_villain: SkirmishEntity
 var _finished := false
 var _status_rows: Array[SkirmishStatusRow] = []
 
+@onready var director: TagDirector = $TagDirector
+
 func _ready() -> void:
 	if hero_team.is_empty() and villain_team.is_empty():
 		_setup_debug_matchup()
 	_build_status_rows()
+
+func _exit_tree() -> void:
+	get_tree().paused = false
 
 func _process(_delta: float) -> void:
 	for row in _status_rows:
@@ -53,8 +58,8 @@ func active_for(team: EntityConfig.EntityType) -> SkirmishEntity:
 func _build_status_rows() -> void:
 	if not _status_rows.is_empty():
 		return
-	hero_statuses = find_child("HeroStatuses", true, false) as VBoxContainer
-	villain_statuses = find_child("VillainStatuses", true, false) as VBoxContainer
+	hero_statuses = get_node("%HeroStatuses") as VBoxContainer
+	villain_statuses = get_node("%VillainStatuses") as VBoxContainer
 	_add_status_rows(hero_team, hero_statuses)
 	_add_status_rows(villain_team, villain_statuses)
 
@@ -65,21 +70,20 @@ func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> 
 		row.configure(entity)
 		_status_rows.append(row)
 
-func tag(team: EntityConfig.EntityType, entity: SkirmishEntity) -> bool:
-	if _finished or entity == null or not is_instance_valid(entity) or entity.is_dead:
+func tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
+	if _finished or incoming == null or not is_instance_valid(incoming) or incoming.is_dead:
 		return false
 	var roster := team_for(team)
-	if not roster.has(entity):
+	if not roster.has(incoming):
 		return false
 	var current := active_for(team)
-	if current == entity:
+	if current == incoming:
 		return false
 	if current != null and is_instance_valid(current) and not current.is_dead:
 		if current.state_machine == null or not (current.state_machine.state is MoveState):
 			return false
 	if _is_grab_in_progress():
 		return false
-	_do_tag(team, entity)
 	return true
 
 func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -> Array[SkirmishEntity]:
@@ -116,25 +120,17 @@ func _setup_debug_matchup() -> void:
 func _on_entity_died(entity: SkirmishEntity) -> void:
 	_release_grab_links(entity)
 	var roster := team_for(entity.entity_type)
-	var next := _healthiest_living_bench(roster)
 	if entity != active_for(entity.entity_type):
 		if not _team_has_living(roster):
 			_finish(_winning_side(entity.entity_type))
 		return
-	if next != null:
-		_do_tag(entity.entity_type, next)
-		return
-	_finish(_winning_side(entity.entity_type))
+	director.request_avenge(entity.entity_type)
 
-func _do_tag(team: EntityConfig.EntityType, entity: SkirmishEntity) -> void:
-	var current := active_for(team)
+func swap_refs(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> void:
 	if team == EntityConfig.EntityType.HERO:
-		active_hero = entity
+		active_hero = incoming
 	else:
-		active_villain = entity
-	if current != null and is_instance_valid(current) and not current.is_dead:
-		current.state_machine.transition_to(current.tag_out_state)
-	entity.begin_tag_in()
+		active_villain = incoming
 
 func _is_grab_in_progress() -> bool:
 	for e in [active_hero, active_villain]:
@@ -158,13 +154,11 @@ func _release_grab_links(dead: SkirmishEntity) -> void:
 	if victim != null and is_instance_valid(victim) and not victim.is_dead:
 		victim.state_machine.transition_to(victim.hurt_state, {"dir": Vector2.ZERO})
 
-func _healthiest_living_bench(roster: Array[SkirmishEntity]) -> SkirmishEntity:
+func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishEntity:
 	var best: SkirmishEntity = null
 	var best_frac := -1.0
-	for e in roster:
+	for e in team:
 		if e == null or not is_instance_valid(e) or e.is_dead or e.is_active:
-			continue
-		if e.entity_config == null:
 			continue
 		var frac := float(e.entity_config.curr_health) / float(maxi(e.entity_config.max_health, 1))
 		if frac > best_frac:

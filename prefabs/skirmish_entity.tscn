@@ -21,8 +21,8 @@
 [ext_resource type="Script" uid="uid://dkuwi6fc0w2qa" path="res://scripts/skirmish/states/is_grabbed_state.gd" id="17_qu6eo"]
 [ext_resource type="Script" uid="uid://d23s31nb4ucsg" path="res://scripts/skirmish/states/throw_state.gd" id="18_fo287"]
 [ext_resource type="Script" uid="uid://bhqwo0ypavxl5" path="res://scripts/skirmish/states/death_state.gd" id="19_pkptp"]
-[ext_resource type="Script" path="res://scripts/skirmish/states/tag_out_state.gd" id="20_tagout"]
-[ext_resource type="Script" path="res://scripts/skirmish/states/tag_in_state.gd" id="21_tagin"]
+[ext_resource type="Script" uid="uid://51rw8eli5wvp" path="res://scripts/skirmish/states/tag_out_state.gd" id="20_tagout"]
+[ext_resource type="Script" uid="uid://dkmr4uicm6gs2" path="res://scripts/skirmish/states/tag_in_state.gd" id="21_tagin"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -144,10 +144,10 @@ move_state = NodePath("../MoveState")
 [node name="DeathState" type="Node" parent="StateMachine" unique_id=1186784855]
 script = ExtResource("19_pkptp")
 
-[node name="TagOutState" type="Node" parent="StateMachine"]
+[node name="TagOutState" type="Node" parent="StateMachine" unique_id=1833548725]
 script = ExtResource("20_tagout")
 
-[node name="TagInState" type="Node" parent="StateMachine" node_paths=PackedStringArray("move_state")]
+[node name="TagInState" type="Node" parent="StateMachine" unique_id=1254519896 node_paths=PackedStringArray("move_state")]
 script = ExtResource("21_tagin")
 move_state = NodePath("../MoveState")
 
@@ -171,4 +171,3 @@ horizontal_alignment = 1
 
 [node name="AIBrain" type="Node" parent="." unique_id=1710442994]
 script = ExtResource("17_brain")
-preferred_distance = 75.0

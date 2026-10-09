@@ -2,7 +2,7 @@ class_name PunchState
 extends SkirmishState
 
 const NUDGE_MOVE_SPEED = 50.0
-const RECOVERY_TIMES := [0.6, 0.7, 0.7]
+const RECOVERY_TIMES := [0.4, 0.4, 0.4]
 const BUFFER_WINDOW := 0.2
 
 @export var move_state: MoveState
@@ -15,9 +15,9 @@ var hits: Array[HitConfig] = [
 	HitConfig.create(15, 450.0, -350.0, true, 0.12),
 ]
 var combo_anims = [
-	"male-rig/frontarm_jab",
-	"male-rig/backarm_jab",
-	"male-rig/backarm_uppercut"
+	"male-rig/frontarm_jab_instant",
+	"male-rig/backarm_jab_instant",
+	"male-rig/backarm_uppercut_instant"
 ]
 var combo_index := 0
 var recovery_timer = 0

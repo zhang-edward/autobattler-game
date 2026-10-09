@@ -10,10 +10,6 @@ func enter(_msg := {}):
 	e.rig.play_animation("male-rig/walk")
 
 func physics_update(_delta: float) -> void:
-	var tag := e.intent as TagIntent
-	if tag != null and tag.target != null and e.skirmish != null:
-		if e.skirmish.tag(e.entity_type, tag.target):
-			return
 	var action := e.intent as ActionIntent
 	if action != null:
 		match action.action:
