@@ -59,3 +59,10 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		entity_config.portrait_config = portrait_config
 		configs.append(entity_config)
 	return configs
+
+func generate_random_threat_requests(num_requests: int):
+	var requests: Array[ThreatRequestConfig] = []
+	for i in range(0, num_requests):
+		var threat_request_config = ThreatRequestConfigBuilder.new()\
+			.with_title("Sample threat request")
+	return requests
