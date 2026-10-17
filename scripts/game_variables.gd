@@ -48,11 +48,12 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE)\
 			.with_entity_name(rand_name)\
 			.with_max_health(randi_range(75, 200))\
-			.with_attack(randi_range(10, 20))\
 			.with_defense(randi_range(10, 20))\
-			.with_can_fly(randi_range(0, 1) == 0)\
-			.with_ground_speed(randi_range(50, 200))\
-			.with_air_speed(randi_range(100, 250))\
+			.with_strength(randi_range(5, 15))\
+			.with_skill(randi_range(5, 15))\
+			.with_agility(randi_range(5, 15))\
+			.with_vitality(randi_range(5, 15))\
+			.with_charisma(randi_range(5, 15))\
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c4soiq3qklueu"]
+[gd_scene format=3 uid="uid://bukfuenhgx603"]
 
 [ext_resource type="StyleBox" uid="uid://bdjhk7tp77l6a" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="1_avbkm"]
 [ext_resource type="Script" uid="uid://b6imbococi6rn" path="res://scripts/ui/reserve_row.gd" id="1_b1hdd"]

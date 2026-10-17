@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://m74ym5iqu5ou"]
+
+[ext_resource type="Script" uid="uid://h8t8o6kyyqtd" path="res://scripts/ui/threat_label.gd" id="1_141jp"]
+[ext_resource type="StyleBox" uid="uid://bjjej2k6xfahf" path="res://prefabs/styles/mobs_threat_type_label.tres" id="1_smpyl"]
+
+[node name="ThreatLabel" type="PanelContainer" unique_id=1612519437]
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_smpyl")
+script = ExtResource("1_141jp")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=43440037]
+custom_minimum_size = Vector2(100, 0)
+custom_maximum_size = Vector2(100, -1)
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer" unique_id=1782258638]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "VILLAIN"
+horizontal_alignment = 1

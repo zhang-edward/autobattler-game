@@ -1,11 +1,35 @@
 [gd_scene format=3 uid="uid://bqhiugxre2som"]
 
 [ext_resource type="PackedScene" uid="uid://bxkkcw6b257jq" path="res://prefabs/ui/generic_entity_stat_row.tscn" id="1_ft5iv"]
-[ext_resource type="Script" uid="uid://4vka2s6h14rc" path="res://scripts/scenes/pre_encounter.gd" id="1_xvklm"]
 [ext_resource type="PackedScene" uid="uid://c542jduq3d3ty" path="res://prefabs/ui/top_nav_bar.tscn" id="3_bgc1a"]
 
+[sub_resource type="GDScript" id="GDScript_xvklm"]
+script/source = "class_name PreEncounter
+extends Node2D
+
+@export var generic_entity_stat_row_scene: PackedScene
+@onready var hero_stat_container: VBoxContainer = %HeroStatContainer
+@onready var villain_stat_container: VBoxContainer = %VillainStatContainer
+@onready var start_button: Button = %StartButton
+
+func _ready() -> void:
+	init_entity_stat_rows(hero_stat_container, GameVariables.player_lineup)
+	init_entity_stat_rows(villain_stat_container, GameVariables.villain_lineup)
+	start_button.pressed.connect(go_to_tactical_encounter)
+	
+func go_to_tactical_encounter():
+	get_tree().change_scene_to_file(\"res://scenes/mission.tscn\")
+	
+func init_entity_stat_rows(container: VBoxContainer, lineup: Array[EntityConfig]):
+	for ec in lineup:
+		var stat_row = generic_entity_stat_row_scene.instantiate() as GenericEntityStatRow
+		container.add_child(stat_row)
+		stat_row.configure_from_entity_config(ec)
+		stat_row.cost.hide()
+"
+
 [node name="PreEncounter" type="Node2D" unique_id=953282306]
-script = ExtResource("1_xvklm")
+script = SubResource("GDScript_xvklm")
 generic_entity_stat_row_scene = ExtResource("1_ft5iv")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1821978144]

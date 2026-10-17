@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://134ttetq48vj"]
+
+[ext_resource type="Script" uid="uid://bce1lwjjypo3f" path="res://scripts/ui/sidebar_menu_option.gd" id="1_vsuwh"]
+
+[node name="SidebarMenuOption" type="PanelContainer" unique_id=1362751910]
+custom_minimum_size = Vector2(200, 0)
+mouse_filter = 1
+script = ExtResource("1_vsuwh")
+option_text = "Request Inbox"
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1236239543]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1204858380]
+layout_mode = 2
+
+[node name="OptionLabel" type="Label" parent="MarginContainer/HBoxContainer" unique_id=851579487]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Request Inbox"
+
+[node name="Badge" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1381319600]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="." unique_id=1730168670]
+layout_mode = 2
+flat = true

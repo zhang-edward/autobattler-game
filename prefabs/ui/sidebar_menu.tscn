@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cb01jqbyr22ns"]
+
+[ext_resource type="PackedScene" uid="uid://134ttetq48vj" path="res://prefabs/ui/sidebar_menu_option.tscn" id="1_chfu6"]
+
+[node name="SidebarMenu" type="PanelContainer" unique_id=672150573]
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=569810834]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1447355354]
+layout_mode = 2
+
+[node name="SidebarMenuOption" parent="MarginContainer/VBoxContainer" unique_id=1362751910 instance=ExtResource("1_chfu6")]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="SidebarMenuOption2" parent="MarginContainer/VBoxContainer" unique_id=1146846148 instance=ExtResource("1_chfu6")]
+layout_mode = 2
+option_text = "Roster"
