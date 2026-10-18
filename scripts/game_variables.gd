@@ -7,15 +7,12 @@ enum EncounterEndState {
 
 var player_lineup: Array[EntityConfig] = []
 var player_reserves: Array[EntityConfig] = []
-var civilian_hero_prospects: Array[Prospect] = []
 var captured_villain_prospects: Array[Prospect] = []
-var num_saved_civilians := 0
-var num_killed_civilians := 0
 var money := 0
 var encounter_end_state: EncounterEndState
-
 var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []
+var threat_request_configs: Array[ThreatRequestConfig] = []
 
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
@@ -63,6 +60,16 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 func generate_random_threat_requests(num_requests: int):
 	var requests: Array[ThreatRequestConfig] = []
 	for i in range(0, num_requests):
+		var threat_type = ThreatRequestConfig.ThreatType.MOB if randi_range(0, 1) == 0 else ThreatRequestConfig.ThreatType.VILLAIN
+		var enemy_configs = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
+		var villain_name = enemy_configs[0].entity_name
 		var threat_request_config = ThreatRequestConfigBuilder.new()\
-			.with_title("Sample threat request")
+			.with_title(villain_name + " encountered")\
+			.with_description("Sample description")\
+			.with_expiry_days(randi_range(5, 8))\
+			.with_level_requirement(1)\
+			.with_enemy_configs(enemy_configs)\
+			.with_threat_type(threat_type)\
+			.build()
+		requests.append(threat_request_config)
 	return requests

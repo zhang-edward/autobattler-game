@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://kcb742xwenma"]
 
 [ext_resource type="Script" uid="uid://dg8oflv1p8l" path="res://scripts/scenes/dispatch.gd" id="1_2ubsd"]
-[ext_resource type="Script" uid="uid://ok4ghcj8f1s8" path="res://scripts/ui/threat_details_container.gd" id="3_usk72"]
+[ext_resource type="PackedScene" uid="uid://udxuy8egjjio" path="res://prefabs/ui/dispatch/request_inbox_threat.tscn" id="2_nh7xv"]
 [ext_resource type="PackedScene" uid="uid://cb01jqbyr22ns" path="res://prefabs/ui/sidebar_menu.tscn" id="3_x4ql8"]
-[ext_resource type="PackedScene" uid="uid://m74ym5iqu5ou" path="res://prefabs/ui/dispatch/threat_label.tscn" id="4_usk72"]
+[ext_resource type="StyleBox" uid="uid://blb5rs03cmmqx" path="res://prefabs/styles/req_inbox_stylebox.tres" id="4_l24lb"]
+[ext_resource type="PackedScene" uid="uid://b0a1yswoi41lu" path="res://prefabs/ui/dispatch/threat_details_container.tscn" id="5_nh7xv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ubsd"]
 bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
@@ -11,14 +12,9 @@ bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4ql8"]
 bg_color = Color(0.07450981, 0.07450981, 0.1254902, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_usk72"]
-bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh7xv"]
-bg_color = Color(0.972549, 0.80784315, 0.28235295, 1)
-
 [node name="Dispatch" type="Node2D" unique_id=1043561400]
 script = ExtResource("1_2ubsd")
+threat_req_scene = ExtResource("2_nh7xv")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1648504902]
 
@@ -47,23 +43,28 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer" unique_id=1913921672]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer" unique_id=1971538080]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer" unique_id=1256791433]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_l24lb")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/PanelContainer" unique_id=1971538080]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/MarginContainer" unique_id=707766451]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer" unique_id=707766451]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1069569561]
+[node name="Header" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1069569561]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Request Inbox"
 
-[node name="NumThreatsLabel" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=492818596]
+[node name="NumThreatsLabel" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=492818596]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
@@ -79,95 +80,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 0
 
-[node name="ThreatDetailsContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer" unique_id=1204942209]
+[node name="ThreatDetailsContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer" unique_id=325321033 instance=ExtResource("5_nh7xv")]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-script = ExtResource("3_usk72")
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer" unique_id=1871963123]
-custom_maximum_size = Vector2(450, -1)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_usk72")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer" unique_id=1288113386]
-layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer" unique_id=1929279915]
-layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="ThreatLabel" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1612519437 instance=ExtResource("4_usk72")]
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Headline" type="RichTextLabel" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=345531504]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 36
-bbcode_enabled = true
-text = "CINDER QUEEN TORCHES THE DOCKS"
-fit_content = true
-scroll_active = false
-
-[node name="Description" type="RichTextLabel" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1873806744]
-layout_mode = 2
-theme_override_colors/default_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
-theme_override_font_sizes/normal_font_size = 22
-bbcode_enabled = true
-text = "lorem ipsum dolor sit amet consectetur adipiscing elit cillum id aliqua officia cupidatat deserunt anim distinctio nam veniam"
-fit_content = true
-scroll_active = false
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1750430317]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="TypeContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=383223145]
-layout_mode = 2
-
-[node name="TypeLabel" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/TypeContainer" unique_id=1492463755]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
-theme_override_font_sizes/font_size = 22
-text = "Type"
-
-[node name="TypeValue" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/TypeContainer" unique_id=1609475320]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 22
-text = "Elemental"
-horizontal_alignment = 2
-
-[node name="RewardContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1877586361]
-layout_mode = 2
-
-[node name="TypeLabel" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/RewardContainer" unique_id=200538605]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
-theme_override_font_sizes/font_size = 22
-text = "Reward"
-
-[node name="TypeValue" type="Label" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/RewardContainer" unique_id=991103436]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 22
-text = "320 XP"
-horizontal_alignment = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/HBoxContainer/RequestInbox/HBoxContainer/ThreatDetailsContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1053391453]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_nh7xv")
-text = "Assign Heroes"

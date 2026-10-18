@@ -1,0 +1,154 @@
+[gd_scene format=3 uid="uid://b0a1yswoi41lu"]
+
+[ext_resource type="Script" uid="uid://ok4ghcj8f1s8" path="res://scripts/ui/threat_details_container.gd" id="1_ubaie"]
+[ext_resource type="PackedScene" uid="uid://m74ym5iqu5ou" path="res://prefabs/ui/dispatch/threat_label.tscn" id="2_gllpy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_usk72"]
+bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l24lb"]
+content_margin_left = 0.0
+content_margin_right = 25.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh7xv"]
+bg_color = Color(0.972549, 0.80784315, 0.28235295, 1)
+
+[node name="ThreatDetailsContainer" type="MarginContainer" unique_id=325321033]
+offset_right = 515.0
+offset_bottom = 497.0
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+script = ExtResource("1_ubaie")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1104898189]
+custom_maximum_size = Vector2(450, -1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_usk72")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1265623319]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=2109049604]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="ThreatLabel" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1612519437 instance=ExtResource("2_gllpy")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Headline" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=2028831757]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxEmpty_l24lb")
+bbcode_enabled = true
+text = "CINDER QUEEN TORCHES THE DOCKS"
+fit_content = true
+scroll_active = false
+
+[node name="Description" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=233388220]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/default_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
+theme_override_font_sizes/normal_font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_l24lb")
+bbcode_enabled = true
+text = "Sample Description"
+fit_content = true
+scroll_active = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=606895782]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TypeContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=495322447]
+layout_mode = 2
+
+[node name="TypeLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/TypeContainer" unique_id=1729359439]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
+theme_override_font_sizes/font_size = 22
+text = "Type"
+
+[node name="TypeValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/TypeContainer" unique_id=1952108980]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Elemental"
+horizontal_alignment = 2
+
+[node name="ExpRewardContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1518131711]
+layout_mode = 2
+
+[node name="ExpRewardLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ExpRewardContainer" unique_id=1079877225]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
+theme_override_font_sizes/font_size = 22
+text = "EXP"
+
+[node name="ExpRewardValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ExpRewardContainer" unique_id=737263589]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "320 XP"
+horizontal_alignment = 2
+
+[node name="MoneyRewardContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2029499133]
+layout_mode = 2
+
+[node name="MoneyRewardLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/MoneyRewardContainer" unique_id=309731768]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
+theme_override_font_sizes/font_size = 22
+text = "Money"
+
+[node name="MoneyRewardValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/MoneyRewardContainer" unique_id=720560693]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "$1,500"
+horizontal_alignment = 2
+
+[node name="RenownRewardContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2031482996]
+layout_mode = 2
+
+[node name="RenownRewardLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/RenownRewardContainer" unique_id=1533455219]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
+theme_override_font_sizes/font_size = 22
+text = "Renown"
+
+[node name="RenownRewardValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/RenownRewardContainer" unique_id=1602726036]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "100"
+horizontal_alignment = 2
+
+[node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=950879448]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_nh7xv")
+text = "Assign Heroes"

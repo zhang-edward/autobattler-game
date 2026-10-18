@@ -54,6 +54,10 @@ func with_skirmish_moveset(mset: Array[Move]):
 	_entity_config.skirmish_moveset = mset
 	return self
 	
+func with_entity_power_type(t: EntityConfig.EntityPowerType):
+	_entity_config.entity_power_type = t
+	return self
+	
 func build() -> EntityConfig:
 	var completed_entity_config = _entity_config
 	reset()

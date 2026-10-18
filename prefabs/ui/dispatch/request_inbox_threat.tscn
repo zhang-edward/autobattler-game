@@ -2,9 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://m74ym5iqu5ou" path="res://prefabs/ui/dispatch/threat_label.tscn" id="1_c6u0a"]
 [ext_resource type="Script" uid="uid://b0vmdman1pk3p" path="res://scripts/ui/request_inbox_threat.gd" id="1_othqe"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c6u0a"]
-bg_color = Color(0.00066579867, 0.12423704, 0.15771177, 1)
+[ext_resource type="StyleBox" uid="uid://blb5rs03cmmqx" path="res://prefabs/styles/req_inbox_stylebox.tres" id="1_wtbok"]
 
 [node name="RequestInboxThreat" type="PanelContainer" unique_id=698988606]
 anchors_preset = 14
@@ -15,7 +13,7 @@ offset_top = -51.0
 offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_c6u0a")
+theme_override_styles/panel = ExtResource("1_wtbok")
 script = ExtResource("1_othqe")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1527712728]
@@ -29,7 +27,8 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=1612519437 instance=ExtResource("1_c6u0a")]
+[node name="ThreatLabel" parent="MarginContainer/HBoxContainer" unique_id=1612519437 instance=ExtResource("1_c6u0a")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1297390837]

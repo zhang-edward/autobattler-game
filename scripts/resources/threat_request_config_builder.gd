@@ -29,6 +29,10 @@ func with_level_requirement(value: int) -> ThreatRequestConfigBuilder:
 func with_enemy_configs(value: Array[EntityConfig]) -> ThreatRequestConfigBuilder:
 	threat_request_config.enemy_configs = value
 	return self
+	
+func with_threat_type(value: ThreatRequestConfig.ThreatType):
+	threat_request_config.threat_type = value
+	return self
 
 func build() -> ThreatRequestConfig:
 	var completedthreat_request_config := threat_request_config

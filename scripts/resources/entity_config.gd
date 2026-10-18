@@ -3,7 +3,16 @@ extends RefCounted
 
 enum EntityType {
 	HERO,
-	VILLAIN
+	VILLAIN,
+	MOB
+}
+
+enum EntityPowerType {
+	ELEMENTAL,
+	PHYSICAL,
+	TRANSFORMATION,
+	PSYCHIC,
+	GOD
 }
 
 enum Gender {
@@ -15,6 +24,7 @@ enum Gender {
 var gender: Gender
 var entity_name: String = ""
 var entity_type: EntityType
+var entity_power_type: EntityPowerType
 var max_health := 100
 var defense := 5
 var strength: int = 0

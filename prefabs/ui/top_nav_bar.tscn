@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://c542jduq3d3ty"]
+
+[sub_resource type="GDScript" id="GDScript_kuev2"]
+script/source = "class_name TopNavBar
+extends PanelContainer
+
+@onready var money_label = %Money
+@onready var roster_button: Button = %Roster
+@onready var encounter_button: Button = %Encounter
+
+func _ready() -> void:
+	money_label.text = \"Money: $\" + str(GameVariables.money)
+	roster_button.pressed.connect(go_to_management_scene)
+	encounter_button.pressed.connect(go_to_pre_encounter_scene)
+	
+func go_to_management_scene():
+	get_tree().change_scene_to_file(\"res://scenes/management.tscn\")
+
+func go_to_pre_encounter_scene():
+	get_tree().change_scene_to_file(\"res://scenes/pre_encounter.tscn\")
+"
+
+[node name="TopNavBar" type="PanelContainer" unique_id=185711022]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+script = SubResource("GDScript_kuev2")
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=1828483217]
+layout_mode = 2
+theme_override_constants/margin_right = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2" unique_id=1045179999]
+layout_mode = 2
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer2/HBoxContainer" unique_id=1949099441]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Roster" type="Button" parent="MarginContainer2/HBoxContainer/HBoxContainer" unique_id=468502571]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 50)
+layout_mode = 2
+text = "Roster"
+flat = true
+
+[node name="Encounter" type="Button" parent="MarginContainer2/HBoxContainer/HBoxContainer" unique_id=621536848]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 50)
+layout_mode = 2
+text = "Encounter"
+flat = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer2/HBoxContainer" unique_id=1941598492]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Money" type="Label" parent="MarginContainer2/HBoxContainer/HBoxContainer2" unique_id=404146651]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Money: 5000"
