@@ -5,6 +5,7 @@
 
 [node name="StatLabel" type="PanelContainer" unique_id=51830719]
 custom_minimum_size = Vector2(100, 0)
+size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("1_e1u6s")
 script = ExtResource("2_57p85")
 

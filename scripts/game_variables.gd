@@ -12,6 +12,7 @@ var encounter_end_state: EncounterEndState
 var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []
 var threat_request_configs: Array[ThreatRequestConfig] = []
+var selected_threat_request_config: ThreatRequestConfig
 
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
@@ -70,3 +71,16 @@ func generate_random_threat_requests(num_requests: int):
 			.build()
 		requests.append(threat_request_config)
 	return requests
+	
+func get_label_from_power_type(t: EntityConfig.EntityPowerType):
+	match t:
+		EntityConfig.EntityPowerType.ELEMENTAL:
+			return "Elemental"
+		EntityConfig.EntityPowerType.PHYSICAL:
+			return "Physical"
+		EntityConfig.EntityPowerType.TRANSFORMATION:
+			return "Transformation"
+		EntityConfig.EntityPowerType.PSYCHIC:
+			return "Psychic"
+		EntityConfig.EntityPowerType.GOD:
+			return "God"

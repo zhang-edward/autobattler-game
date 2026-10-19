@@ -9,7 +9,10 @@ extends Node2D
 @onready var choose_hero_modal: ChooseHeroModal = %ChooseHeroModal
 @onready var hero_slots: VBoxContainer = %HeroSlots
 @onready var add_hero_buttons: VBoxContainer = %AddHeroButtons
+@onready var enemy_preview_container: VBoxContainer = %EnemyPreviewContainer
+
 @export var hero_preview_row_scene: PackedScene
+@export var enemy_preview_scene: PackedScene
 
 var selected_heroes: Array[EntityConfig] = []
 
@@ -20,6 +23,15 @@ func _ready() -> void:
 	add_hero_slot_2_button.pressed.connect(open_choose_hero_modal)
 	add_hero_slot_3_button.pressed.connect(open_choose_hero_modal)
 	choose_hero_modal.on_confirm_hero_to_add.connect(add_hero_to_selected)
+	setup_enemy_preview(GameVariables.selected_threat_request_config)
+	
+func setup_enemy_preview(threat_req_config: ThreatRequestConfig):
+	for c in enemy_preview_container.get_children():
+		c.queue_free()
+	for c in threat_req_config.enemy_configs:
+		var enemy_preview = enemy_preview_scene.instantiate() as EnemyPreview
+		enemy_preview_container.add_child(enemy_preview)
+		enemy_preview.configure(c)
 
 func go_to_dispatch_scene():
 	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")

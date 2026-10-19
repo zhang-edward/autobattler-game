@@ -11,10 +11,15 @@ extends PanelContainer
 var entity_config: EntityConfig
 
 signal on_clicked(r: HeroPreviewRow)
+signal on_remove(r: HeroPreviewRow)
 
 func _ready() -> void:
 	remove_button.hide()
 	button.pressed.connect(click_hero)
+	remove_button.pressed.connect(remove)
+
+func remove():
+	on_remove.emit(self)
 
 func click_hero():
 	on_clicked.emit(self)

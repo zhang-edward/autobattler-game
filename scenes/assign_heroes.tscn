@@ -3,29 +3,10 @@
 [ext_resource type="Script" uid="uid://siqt5rf0wyto" path="res://scripts/scenes/assign_heroes.gd" id="1_ihonc"]
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="1_vd65o"]
 [ext_resource type="PackedScene" uid="uid://p50qwtod1sfs" path="res://prefabs/ui/dispatch/enemy_preview.tscn" id="2_k84fd"]
-[ext_resource type="Script" uid="uid://dbsxp6jfbucyu" path="res://scripts/ui/hero_preview_row.gd" id="3_ttdwy"]
-[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="4_fpicj"]
 [ext_resource type="StyleBox" uid="uid://i1qkj3ru8ce2" path="res://prefabs/styles/add_hero_stylebox.tres" id="4_okyai"]
+[ext_resource type="PackedScene" uid="uid://c8138g287jm2q" path="res://prefabs/ui/dispatch/hero_preview_row.tscn" id="4_w4o2g"]
 [ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="5_ihonc"]
-[ext_resource type="Texture2D" uid="uid://ba8uflhxcow4a" path="res://assets/icons/x_mark.png" id="5_vhhu2"]
 [ext_resource type="PackedScene" uid="uid://dydjhnktgrenw" path="res://prefabs/ui/dispatch/choose_hero_modal.tscn" id="7_7dyfs"]
-[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="7_r7ebt"]
-[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/dispatch/stat_label.tscn" id="8_7dyfs"]
-
-[sub_resource type="PackedScene" id="PackedScene_bhl7h"]
-_bundled = {
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"id_paths": [],
-"names": PackedStringArray("HeroPreviewRow", "custom_maximum_size", "propagate_maximum_size", "anchors_preset", "anchor_right", "anchor_bottom", "grow_horizontal", "grow_vertical", "size_flags_vertical", "theme_override_styles/panel", "script", "stat_label_scene", "PanelContainer", "MarginContainer", "layout_mode", "theme_override_constants/margin_left", "theme_override_constants/margin_top", "theme_override_constants/margin_right", "theme_override_constants/margin_bottom", "HBoxContainer", "theme_override_constants/separation", "RemoveButton", "unique_name_in_owner", "modulate", "custom_minimum_size", "texture", "expand_mode", "TextureRect", "Button", "flat", "VBoxContainer", "size_flags_horizontal", "HeroName", "theme_override_font_sizes/font_size", "text", "Label", "StatGrid", "columns", "GridContainer", "LevelLabel", "bbcode_enabled", "horizontal_alignment", "vertical_alignment", "RichTextLabel"),
-"node_count": 11,
-"node_ids": PackedInt32Array(1883060387, 1644996953, 188998073, 1966996183, 1894346300, 1354835787, 1356586763, 332344443, 391813349, 1718627429, 1940564429),
-"node_paths": [],
-"nodes": PackedInt32Array(-1, -1, 12, 0, -1, 11, 1, 0, 2, 1, 3, 2, 4, 3, 5, 3, 6, 4, 7, 4, 8, 5, 9, 6, 10, 7, 11, 8, 0, 0, 0, 13, 13, -1, 5, 14, 4, 15, 9, 16, 2, 17, 9, 18, 2, 0, 1, 0, 19, 19, -1, 2, 14, 4, 20, 2, 0, 2, 0, 27, 21, -1, 8, 22, 10, 23, 11, 24, 12, 1, 13, 14, 4, 8, 14, 25, 15, 26, 16, 0, 3, 0, 28, 28, -1, 7, 14, 16, 3, 2, 4, 3, 5, 3, 6, 4, 7, 4, 29, 10, 0, 2, 0, 27, 27, -1, 4, 1, 17, 14, 4, 25, 18, 26, 4, 0, 2, 0, 30, 30, -1, 2, 14, 4, 31, 19, 0, 6, 0, 35, 32, -1, 4, 22, 10, 14, 4, 33, 20, 34, 21, 0, 2, 0, 38, 36, -1, 5, 22, 10, 1, 0, 14, 4, 8, 14, 37, 19, 0, 2, 0, 43, 39, -1, 8, 22, 10, 24, 22, 14, 4, 31, 14, 40, 10, 34, 23, 41, 16, 42, 16, 0, 0, 0, 28, 28, -1, 2, 14, 4, 29, 10, 0),
-"variants": [Vector2(-1, 120), false, 15, 1.0, 2, 6, ExtResource("7_r7ebt"), ExtResource("3_ttdwy"), ExtResource("8_7dyfs"), 20, true, Color(0.99676746, 0, 0.24783534, 1), Vector2(30, 30), Vector2(50, 50), 4, ExtResource("5_vhhu2"), 1, Vector2(100, 100), ExtResource("4_fpicj"), 3, 25, "Ironclad", Vector2(50, 0), "[font_size=20]Lv[/font_size] [font_size=32]2[/font_size]"],
-"version": 3
-}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pmnr"]
 bg_color = Color(0.11764706, 0.12156863, 0.2, 1)
@@ -48,7 +29,8 @@ corner_radius_bottom_left = 5
 
 [node name="AssignHeroes" type="Node2D" unique_id=1143530313]
 script = ExtResource("1_ihonc")
-hero_preview_row_scene = SubResource("PackedScene_bhl7h")
+hero_preview_row_scene = ExtResource("4_w4o2g")
+enemy_preview_scene = ExtResource("2_k84fd")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=106521896]
 
@@ -107,12 +89,10 @@ layout_mode = 2
 size_flags_vertical = 3
 vertical_scroll_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=885691583]
+[node name="EnemyPreviewContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=885691583]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="EnemyPreview" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1792914888 instance=ExtResource("2_k84fd")]
-layout_mode = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=251193010]
 custom_minimum_size = Vector2(1000, 0)
