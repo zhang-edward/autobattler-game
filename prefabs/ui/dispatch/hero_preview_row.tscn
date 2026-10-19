@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://dbsxp6jfbucyu" path="res://scripts/ui/hero_preview_row.gd" id="2_6ahc5"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_roh7t"]
 [ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/dispatch/stat_label.tscn" id="3_6ahc5"]
-[ext_resource type="Texture2D" uid="uid://ba8uflhxcow4a" path="res://assets/icons/x_mark.png" id="4_6ahc5"]
 
 [node name="HeroPreviewRow" type="PanelContainer" unique_id=1883060387]
 custom_maximum_size = Vector2(-1, 120)
@@ -15,6 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 6
+mouse_filter = 1
 theme_override_styles/panel = ExtResource("1_lwsse")
 script = ExtResource("2_6ahc5")
 stat_label_scene = ExtResource("3_6ahc5")
@@ -29,25 +29,6 @@ theme_override_constants/margin_bottom = 15
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=188998073]
 layout_mode = 2
 theme_override_constants/separation = 15
-
-[node name="RemoveButton" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1966996183]
-unique_name_in_owner = true
-modulate = Color(0.99676746, 0, 0.24783534, 1)
-custom_minimum_size = Vector2(30, 30)
-custom_maximum_size = Vector2(50, 50)
-layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("4_6ahc5")
-expand_mode = 1
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/RemoveButton" unique_id=1894346300]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-flat = true
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1354835787]
 custom_maximum_size = Vector2(100, 100)
@@ -77,11 +58,25 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 1
 bbcode_enabled = true
 text = "[font_size=20]Lv[/font_size] [font_size=32]2[/font_size]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="RemoveOverlay" type="PanelContainer" parent="." unique_id=582377987]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RemoveOverlay" unique_id=1051738499]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Remove"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Button" type="Button" parent="." unique_id=1940564429]
 layout_mode = 2
+mouse_filter = 1
 flat = true

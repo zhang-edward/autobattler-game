@@ -5,21 +5,26 @@ extends PanelContainer
 @onready var stat_grid: GridContainer = %StatGrid
 @onready var level_label: RichTextLabel = %LevelLabel
 @onready var hero_name: Label = %HeroName
+@onready var remove_overlay: PanelContainer = %RemoveOverlay
 @onready var button: Button = $Button
-@onready var remove_button: TextureRect = %RemoveButton
 
+var enable_remove_overlay := false
 var entity_config: EntityConfig
 
 signal on_clicked(r: HeroPreviewRow)
-signal on_remove(r: HeroPreviewRow)
 
 func _ready() -> void:
-	remove_button.hide()
 	button.pressed.connect(click_hero)
-	remove_button.pressed.connect(remove)
+	button.mouse_entered.connect(show_remove_overlay)
+	button.mouse_exited.connect(hide_remove_overlay)
 
-func remove():
-	on_remove.emit(self)
+func show_remove_overlay():
+	if enable_remove_overlay:
+		remove_overlay.show()
+	
+func hide_remove_overlay():
+	if enable_remove_overlay:
+		remove_overlay.hide()
 
 func click_hero():
 	on_clicked.emit(self)

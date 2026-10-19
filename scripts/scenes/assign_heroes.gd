@@ -54,7 +54,8 @@ func update_heroes_in_slots():
 		var preview_row = hero_preview_row_scene.instantiate() as HeroPreviewRow
 		hero_slots.add_child(preview_row)
 		preview_row.configure(sh)
-		preview_row.remove_button.show()
+		preview_row.enable_remove_overlay = true
+		preview_row.on_clicked.connect(remove_from_selected)
 	var num_hero_slots_to_show = 3 - selected_heroes.size()
 	var add_hero_slot_buttons = add_hero_buttons.get_children()
 	for i in range(0, add_hero_slot_buttons.size()):
@@ -62,4 +63,8 @@ func update_heroes_in_slots():
 			add_hero_slot_buttons[i].show()
 		else:
 			add_hero_slot_buttons[i].hide()
-		
+
+func remove_from_selected(row: HeroPreviewRow):
+	var config = row.entity_config
+	selected_heroes = selected_heroes.filter(func (c): return c != config)
+	update_heroes_in_slots()
