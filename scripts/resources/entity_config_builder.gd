@@ -22,10 +22,6 @@ func with_entity_type(et: EntityConfig.EntityType):
 	_entity_config.entity_type = et
 	return self 
 
-func with_max_health(mh: int):
-	_entity_config.max_health = mh
-	return self
-
 func with_defense(def: int):
 	_entity_config.defense = def
 	return self

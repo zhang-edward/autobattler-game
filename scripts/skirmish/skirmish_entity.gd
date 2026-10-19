@@ -101,8 +101,8 @@ func handle_hitbox_enable():
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
 	entity_type = ec.entity_type
-	move_speed = ec.ground_speed
-	healthbar.max_value = ec.max_health
+	move_speed = ec.agility
+	healthbar.max_value = ec.vitality
 	healthbar.value = ec.curr_health
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
@@ -143,7 +143,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 			state_machine.transition_to(is_grabbed_state, { "grabber": source })
 			source.grabbed_entity = self
 
-	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.attack, entity_config.defense)
+	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
 	source.entity_config.damage_dealt += hit.damage
 	healthbar.value -= hit.damage
 	if entity_config != null:

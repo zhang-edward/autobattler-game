@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bonodf36dkj5n"]
+
+[ext_resource type="StyleBox" uid="uid://d4lt7lx0jwo46" path="res://prefabs/styles/dark_panel_rounded.tres" id="1_e1u6s"]
+[ext_resource type="Script" uid="uid://bpdaeiv1rkgc6" path="res://scripts/ui/stat_label.gd" id="2_57p85"]
+
+[node name="StatLabel" type="PanelContainer" unique_id=51830719]
+custom_minimum_size = Vector2(100, 0)
+theme_override_styles/panel = ExtResource("1_e1u6s")
+script = ExtResource("2_57p85")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=579312623]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=520428157]
+layout_mode = 2
+
+[node name="StatName" type="Label" parent="MarginContainer/HBoxContainer" unique_id=2099779903]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.67058825, 0.6784314, 0.77254903, 1)
+theme_override_font_sizes/font_size = 18
+text = "STR"
+
+[node name="StatValue" type="Label" parent="MarginContainer/HBoxContainer" unique_id=1596854628]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "9999"

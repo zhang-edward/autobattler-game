@@ -25,7 +25,6 @@ var gender: Gender
 var entity_name: String = ""
 var entity_type: EntityType
 var entity_power_type: EntityPowerType
-var max_health := 100
 var defense := 5
 var strength: int = 0
 var skill: int = 0
@@ -50,11 +49,10 @@ func handle_level_up():
 	level += 1	
 	exp_to_next_level = get_exp_to_next_level(level)
 	defense += cond_stat_update(1, 5)
-	max_health += cond_stat_update(5, 10)
 	strength += cond_stat_update(1, 3)
 	skill += cond_stat_update(1, 3)
-	agility += cond_stat_update(1, 3)
-	vitality += cond_stat_update(1, 3)
+	agility += cond_stat_update(15, 25)
+	vitality += cond_stat_update(10, 20)
 	charisma += cond_stat_update(1, 3)
 
 func cond_stat_update(lo: int, hi: int):
@@ -62,12 +60,13 @@ func cond_stat_update(lo: int, hi: int):
 	return randi_range(lo, hi) if should_incr else 0
 	
 func reset_all_in_round_vars():
-	curr_health = max_health
+	curr_health = vitality
 	gained_exp = 0
 	num_assists = 0
 	damage_dealt = 0
 	num_civs_saved = 0
 	defeated_villain_names = []
+
 func get_exp_to_next_level(level: int) -> int:
 	var base_exp: float = 100.0
 	var exponent: float = 1.8

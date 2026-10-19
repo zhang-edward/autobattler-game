@@ -102,7 +102,7 @@ func _land() -> void:
 
 	if e.z_velocity >= min_bounce_speed:
 		e.rig.play_animation(ANIM_SLAM)
-		e.healthbar.value -= HitConfig.calculate_damage(grab_state.hit.damage, thrower_entity.entity_config.attack, e.entity_config.defense)
+		e.healthbar.value -= HitConfig.calculate_damage(grab_state.hit.damage, thrower_entity.entity_config.strength, e.entity_config.defense)
 		e.z_velocity *= -floor_restitution
 		e.absolute_velocity *= floor_skid_retention
 		# The bounce launch happens this same frame, so show the slam for a beat

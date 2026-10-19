@@ -6,7 +6,6 @@ enum EncounterEndState {
 }
 
 var player_lineup: Array[EntityConfig] = []
-var player_reserves: Array[EntityConfig] = []
 var captured_villain_prospects: Array[Prospect] = []
 var money := 0
 var encounter_end_state: EncounterEndState
@@ -44,12 +43,11 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_entity_type(entity_type)\
 			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE)\
 			.with_entity_name(rand_name)\
-			.with_max_health(randi_range(75, 200))\
 			.with_defense(randi_range(10, 20))\
 			.with_strength(randi_range(5, 15))\
 			.with_skill(randi_range(5, 15))\
-			.with_agility(randi_range(5, 15))\
-			.with_vitality(randi_range(5, 15))\
+			.with_agility(randi_range(100, 150))\
+			.with_vitality(randi_range(75, 200))\
 			.with_charisma(randi_range(5, 15))\
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
@@ -60,7 +58,6 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 func generate_random_threat_requests(num_requests: int):
 	var requests: Array[ThreatRequestConfig] = []
 	for i in range(0, num_requests):
-		var threat_type = ThreatRequestConfig.ThreatType.MOB if randi_range(0, 1) == 0 else ThreatRequestConfig.ThreatType.VILLAIN
 		var enemy_configs = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
 		var villain_name = enemy_configs[0].entity_name
 		var threat_request_config = ThreatRequestConfigBuilder.new()\
@@ -69,7 +66,7 @@ func generate_random_threat_requests(num_requests: int):
 			.with_expiry_days(randi_range(5, 8))\
 			.with_level_requirement(1)\
 			.with_enemy_configs(enemy_configs)\
-			.with_threat_type(threat_type)\
+			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN)\
 			.build()
 		requests.append(threat_request_config)
 	return requests

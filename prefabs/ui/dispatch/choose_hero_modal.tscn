@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://dydjhnktgrenw"]
+
+[ext_resource type="Script" uid="uid://ccuugwparf8y0" path="res://scripts/ui/choose_hero_modal.gd" id="1_us1su"]
+[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="1_w7cy1"]
+[ext_resource type="PackedScene" uid="uid://c8138g287jm2q" path="res://prefabs/ui/dispatch/hero_preview_row.tscn" id="2_w7cy1"]
+[ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="3_w7cy1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_us1su"]
+bg_color = Color(0.972549, 0.80784315, 0.28235295, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="ChooseHeroModal" type="PanelContainer" unique_id=977992407]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_us1su")
+hero_preview_row = ExtResource("2_w7cy1")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1948970327]
+custom_minimum_size = Vector2(1180, 660)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = ExtResource("1_w7cy1")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1587509765]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=926578948]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=166491120]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 45
+text = "Choose a Hero"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=273561936]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HeroListContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=2138261737]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=965799244]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="Back" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=607590499]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("3_w7cy1")
+text = "Cancel"
+
+[node name="Dispatch" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1851404051]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(175, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_us1su")
+text = "Add to Squad"
