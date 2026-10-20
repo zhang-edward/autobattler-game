@@ -2,7 +2,7 @@ class_name HurtState
 extends SkirmishState
 
 const BASE_KNOCKBACK := 100.0
-const HITSTUN_SECONDS := 0.3
+const HITSTUN_SECONDS := 0.5
 
 @export var move_state: MoveState
 @export var fall_state: FallState

@@ -7,7 +7,7 @@ punch / block / grab from a weighted bag.
 """
 
 @export_group("Approach")
-@export var preferred_distance := 50.0
+@export var preferred_distance := 100.0
 @export var deadzone := 20.0
 
 @export_group("Action weights")
@@ -16,12 +16,10 @@ punch / block / grab from a weighted bag.
 @export var grab_weight := 2.0
 
 @export_group("Timing")
-# Pause between arriving in range and committing to an action
-@export var reaction_time := 0.2
 @export var min_block_duration := 1.0
 @export var max_block_duration := 2.0
+@export var act_probability := 0.1
 
-var _reaction_timer := 0.0
 
 func get_intent(delta: float) -> Intent:
 	var target := _nearest_opponent()
@@ -37,20 +35,14 @@ func get_intent(delta: float) -> Intent:
 	var facing := signf(to_target.x)
 
 	if distance > preferred_distance + deadzone:
-		_reaction_timer = reaction_time
 		return _movement(to_target.normalized(), facing)
 
 	if distance < preferred_distance - deadzone:
-		_reaction_timer = reaction_time
 		return _movement(-to_target.normalized(), facing)
 
-	# In range: stand still until the reaction timer runs out, then act
-	_reaction_timer -= delta
-	if _reaction_timer > 0.0:
-		return _movement(Vector2.ZERO, facing)
-
-	_reaction_timer = reaction_time
-	return _pick_action(facing)
+	if randf() < act_probability:
+		return _pick_action(facing)
+	return _movement(Vector2.ZERO, facing)
 
 func _movement(direction: Vector2, facing: float) -> MovementIntent:
 	var intent := MovementIntent.new()
@@ -84,7 +76,7 @@ func _nearest_opponent() -> SkirmishEntity:
 	var nearest_dist := INF
 	for node in entity.get_parent().get_children():
 		var other := node as SkirmishEntity
-		if other == null or other == entity or other.is_dead or other.entity_type == entity.entity_type:
+		if other == null or other == entity or other.is_dead or not other.is_active or other.entity_type == entity.entity_type:
 			continue
 		var dist := entity.global_position.distance_squared_to(other.global_position)
 		if dist < nearest_dist:
