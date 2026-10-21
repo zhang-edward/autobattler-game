@@ -14,8 +14,6 @@ extends Node2D
 @export var hero_preview_row_scene: PackedScene
 @export var enemy_preview_scene: PackedScene
 
-var selected_heroes: Array[EntityConfig] = []
-
 func _ready() -> void:
 	back_button.pressed.connect(go_to_dispatch_scene)
 	dispatch_button.pressed.connect(go_to_skirmish_scene)
@@ -41,22 +39,22 @@ func go_to_skirmish_scene():
 
 func open_choose_hero_modal():
 	choose_hero_modal.show()
-	choose_hero_modal.display_available_heroes(selected_heroes)
+	choose_hero_modal.display_available_heroes(GameVariables.selected_heroes_for_threat)
 
 func add_hero_to_selected(config: EntityConfig):
-	selected_heroes.append(config)
+	GameVariables.selected_heroes_for_threat.append(config)
 	update_heroes_in_slots()
 
 func update_heroes_in_slots():
 	for c in hero_slots.get_children():
 		c.queue_free()
-	for sh in selected_heroes:
+	for sh in GameVariables.selected_heroes_for_threat:
 		var preview_row = hero_preview_row_scene.instantiate() as HeroPreviewRow
 		hero_slots.add_child(preview_row)
 		preview_row.configure(sh)
 		preview_row.enable_remove_overlay = true
 		preview_row.on_clicked.connect(remove_from_selected)
-	var num_hero_slots_to_show = 3 - selected_heroes.size()
+	var num_hero_slots_to_show = 3 - GameVariables.selected_heroes_for_threat.size()
 	var add_hero_slot_buttons = add_hero_buttons.get_children()
 	for i in range(0, add_hero_slot_buttons.size()):
 		if i < num_hero_slots_to_show:
@@ -66,5 +64,6 @@ func update_heroes_in_slots():
 
 func remove_from_selected(row: HeroPreviewRow):
 	var config = row.entity_config
+	var selected_heroes = GameVariables.selected_heroes_for_threat
 	selected_heroes = selected_heroes.filter(func (c): return c != config)
 	update_heroes_in_slots()

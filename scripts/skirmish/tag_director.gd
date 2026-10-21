@@ -57,7 +57,7 @@ func play_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity, scenario:
 	if is_playing:
 		_pending.append([team, incoming, scenario])
 		return
-	if not skirmish.tag(team, incoming):
+	if not skirmish.can_tag(team, incoming):
 		if incoming != null and is_instance_valid(incoming) and not incoming.is_dead:
 			_pending.append([team, incoming, scenario])
 		return

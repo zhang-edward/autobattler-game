@@ -13,6 +13,7 @@ var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []
 var threat_request_configs: Array[ThreatRequestConfig] = []
 var selected_threat_request_config: ThreatRequestConfig
+var selected_heroes_for_threat: Array[EntityConfig] = []
 
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)

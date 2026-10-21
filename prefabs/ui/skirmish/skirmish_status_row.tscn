@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bdly7ofbxoxpw"]
+
+[ext_resource type="Script" uid="uid://dam53r2pxydtv" path="res://scripts/ui/skirmish_status_row.gd" id="1_v4q45"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="2_p85x6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_row"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="SkirmishStatusRow" type="PanelContainer" unique_id=2116411216]
+theme_override_styles/panel = SubResource("StyleBoxFlat_row")
+script = ExtResource("1_v4q45")
+
+[node name="HBox" type="HBoxContainer" parent="." unique_id=252070609]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="NameLabel" type="Label" parent="HBox" unique_id=288033]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Name"
+
+[node name="HealthBar" type="ProgressBar" parent="HBox" unique_id=224715193]
+custom_minimum_size = Vector2(180, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/background = ExtResource("2_p85x6")
+show_percentage = false

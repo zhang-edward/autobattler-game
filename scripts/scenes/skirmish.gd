@@ -9,7 +9,7 @@ const HERO_BENCH := Vector2(400.0, 1200.0)
 const VILLAIN_BENCH := Vector2(1400.0, 1200.0)
 # Delay between the last death and `finished`, so the body can land and fade first
 const OUTRO_SECONDS := 1.5
-const STATUS_ROW := preload("res://prefabs/skirmish_status_row.tscn")
+const STATUS_ROW := preload("res://prefabs/ui/skirmish/skirmish_status_row.tscn")
 
 # Wall layout, authored at this resolution and scaled to the current viewport
 const WALL_BASE_SIZE := Vector2(1920.0, 1080.0)
@@ -47,6 +47,7 @@ var _status_rows: Array[SkirmishStatusRow] = []
 func _ready() -> void:
 	get_viewport().size_changed.connect(_update_walls)
 	_update_walls()
+	setup(GameVariables.selected_heroes_for_threat, GameVariables.selected_threat_request_config.enemy_configs)
 	if hero_team.is_empty() and villain_team.is_empty():
 		_setup_debug_matchup()
 	_build_status_rows()
@@ -77,6 +78,10 @@ func _place_wall(wall: StaticBody2D, center: Vector2, size: Vector2) -> void:
 	(collider.shape as RectangleShape2D).size = size
 
 func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
+	for h in heroes:
+		h.reset_all_in_round_vars()
+	for v in villains:
+		v.reset_all_in_round_vars()
 	hero_team = _spawn_side(heroes, HERO_START, HERO_BENCH)
 	villain_team = _spawn_side(villains, VILLAIN_START, VILLAIN_BENCH)
 	active_hero = hero_team[0] if not hero_team.is_empty() else null
@@ -103,7 +108,7 @@ func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> 
 		row.configure(entity)
 		_status_rows.append(row)
 
-func tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
+func can_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
 	if _finished or incoming == null or not is_instance_valid(incoming) or incoming.is_dead:
 		return false
 	var roster := team_for(team)
