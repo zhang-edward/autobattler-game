@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b7nln4cphbho4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8uqo"]
+
+[node name="ThreatLevelLabel" type="PanelContainer" unique_id=1612519437]
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_u8uqo")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=43440037]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="MarginContainer" unique_id=1782258638]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "High"
+horizontal_alignment = 1

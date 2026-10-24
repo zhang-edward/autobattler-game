@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://c8wjugndeq23s"]
+
+[ext_resource type="StyleBox" uid="uid://bi7kr6q3n6da7" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="1_71o0b"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_w4smw"]
+[ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_adxab"]
+[ext_resource type="PackedScene" uid="uid://b7nln4cphbho4" path="res://prefabs/ui/threat_level_label.tscn" id="4_rp87b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa2gp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 2
+border_color = Color(0.7294118, 0.7294118, 0.7294118, 0.29411766)
+
+[node name="VillainDetailsPanel" type="PanelContainer" unique_id=1368912246]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -103.5
+offset_bottom = 103.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("1_71o0b")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=68333436]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=539742863]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=48322841]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Villains At Large"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1914258416]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=574962496]
+layout_mode = 2
+texture = ExtResource("2_w4smw")
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=832797630]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=382283853]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Cinder Queen"
+
+[node name="EntityPowerTypeLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1612519437 instance=ExtResource("3_adxab")]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="NonRecruitStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1663535162]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats" unique_id=452920132]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qa2gp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer" unique_id=893540884]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer/HBoxContainer" unique_id=2119054315]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+
+[node name="LevelValue" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer/HBoxContainer" unique_id=1989104309]
+layout_mode = 2
+text = "4"
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats" unique_id=1729576257]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qa2gp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer2" unique_id=1747743147]
+layout_mode = 2
+
+[node name="HPLabel" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer2/HBoxContainer" unique_id=34119381]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+
+[node name="HPValue" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer2/HBoxContainer" unique_id=1683555001]
+layout_mode = 2
+text = "4"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats" unique_id=713384782]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/HBoxContainer3" unique_id=493503720]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Threat Level"
+
+[node name="ThreatLevelLabel" parent="MarginContainer/VBoxContainer/NonRecruitStats/HBoxContainer3" unique_id=241413867 instance=ExtResource("4_rp87b")]
+layout_mode = 2

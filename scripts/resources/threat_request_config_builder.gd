@@ -33,6 +33,10 @@ func with_enemy_configs(value: Array[EntityConfig]) -> ThreatRequestConfigBuilde
 func with_threat_type(value: ThreatRequestConfig.ThreatType):
 	threat_request_config.threat_type = value
 	return self
+	
+func with_threat_reward(reward: ThreatReward):
+	threat_request_config.reward = reward
+	return self
 
 func build() -> ThreatRequestConfig:
 	var completedthreat_request_config := threat_request_config

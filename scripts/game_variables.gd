@@ -15,6 +15,10 @@ var threat_request_configs: Array[ThreatRequestConfig] = []
 var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
 
+static var BASE_EXP_REWARD = 100
+static var BASE_MONEY_REWARD = 100
+static var BASE_RENOWN_REWARD = 100
+
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
 	villain_lineup = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
@@ -61,7 +65,11 @@ func generate_random_threat_requests(num_requests: int):
 	var requests: Array[ThreatRequestConfig] = []
 	for i in range(0, num_requests):
 		var enemy_configs = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
-		var villain_name = enemy_configs[0].entity_name
+		var villain_config = enemy_configs[0]
+		var villain_name = villain_config.entity_name
+		# Give villain enhanced stats, since player will only fight one villain at a time
+		_enhance_villain_stats(villain_config)
+		var threat_reward = create_threat_reward(villain_config)
 		var threat_request_config = ThreatRequestConfigBuilder.new()\
 			.with_title(villain_name + " encountered")\
 			.with_description("Sample description")\
@@ -69,9 +77,20 @@ func generate_random_threat_requests(num_requests: int):
 			.with_level_requirement(1)\
 			.with_enemy_configs(enemy_configs)\
 			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN)\
+			.with_threat_reward(threat_reward)\
 			.build()
 		requests.append(threat_request_config)
 	return requests
+	
+func create_threat_reward(config: EntityConfig):
+	var reward = ThreatReward.new()
+	reward.exp_gain = BASE_EXP_REWARD
+	reward.money = BASE_MONEY_REWARD
+	reward.renown = BASE_RENOWN_REWARD
+	return reward
+
+func _enhance_villain_stats(config: EntityConfig):
+	config.vitality = round(config.vitality * 2.5)
 	
 func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 	match t:

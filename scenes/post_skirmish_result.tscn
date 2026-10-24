@@ -1,0 +1,163 @@
+[gd_scene format=3 uid="uid://dmkebsbcp1235"]
+
+[ext_resource type="Script" uid="uid://c7wo23uv13ypr" path="res://scripts/scenes/post_skirmish_result.gd" id="1_my2ys"]
+[ext_resource type="PackedScene" uid="uid://bxn6nabdjayvf" path="res://prefabs/ui/skirmish/hero_exp_gain_panel.tscn" id="2_8tshr"]
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="3_762vw"]
+[ext_resource type="StyleBox" uid="uid://bi7kr6q3n6da7" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="4_47rf1"]
+[ext_resource type="PackedScene" uid="uid://c8wjugndeq23s" path="res://prefabs/ui/skirmish/villain_details_panel.tscn" id="5_762vw"]
+[ext_resource type="PackedScene" uid="uid://bfixji84ylmhq" path="res://prefabs/ui/skirmish/battle_stat_panel.tscn" id="6_47rf1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_762vw"]
+bg_color = Color(0.9764706, 0.8117647, 0.28235295, 1)
+
+[node name="PostSkirmishResult" type="Node2D" unique_id=1745463980]
+script = ExtResource("1_my2ys")
+hero_exp_gain_panel_scene = ExtResource("2_8tshr")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1271575141]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=892918099]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_762vw")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=1540564926]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=454701770]
+layout_mode = 2
+
+[node name="ResultLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=671257980]
+layout_mode = 2
+theme_override_font_sizes/font_size = 75
+text = "Victory!"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1363735546]
+layout_mode = 2
+
+[node name="SquadRewardsPanel" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1503425291]
+custom_minimum_size = Vector2(1200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("4_47rf1")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel" unique_id=711069419]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer" unique_id=559987170]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer" unique_id=1231789819]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Squad Rewards"
+
+[node name="HeroExpBars" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer" unique_id=1702981466]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HeroExpGainPanel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HeroExpBars" unique_id=1613106793 instance=ExtResource("2_8tshr")]
+layout_mode = 2
+
+[node name="HeroExpGainPanel2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HeroExpBars" unique_id=1042132104 instance=ExtResource("2_8tshr")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer" unique_id=584938979]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1596368159]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=1468955239]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" unique_id=1373660989]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1936504641]
+layout_mode = 2
+text = "Money"
+
+[node name="Value" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=992566194]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "+$1,500"
+
+[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2121138968]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2" unique_id=423002576]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer" unique_id=456448918]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer/VBoxContainer" unique_id=1692429628]
+layout_mode = 2
+text = "Money"
+
+[node name="Value" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer/VBoxContainer" unique_id=1418714837]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "+$1,500"
+
+[node name="VillainDetailsPanel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1368912246 instance=ExtResource("5_762vw")]
+layout_mode = 2
+
+[node name="BattleStatsPanel" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1573505870]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_47rf1")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel" unique_id=1561385536]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer" unique_id=1562657420]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer" unique_id=540074967]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Battle Stats"
+
+[node name="BattleStatList" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer" unique_id=1317200626]
+layout_mode = 2
+
+[node name="BattleStatPanel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer/BattleStatList" unique_id=1363568073 instance=ExtResource("6_47rf1")]
+layout_mode = 2
+
+[node name="BattleStatPanel2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer/BattleStatList" unique_id=1232295584 instance=ExtResource("6_47rf1")]
+layout_mode = 2
+
+[node name="BattleStatPanel3" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer/BattleStatList" unique_id=1683351585 instance=ExtResource("6_47rf1")]
+layout_mode = 2
+
+[node name="BattleStatPanel4" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer/BattleStatList" unique_id=637126962 instance=ExtResource("6_47rf1")]
+layout_mode = 2
+
+[node name="BattleStatPanel5" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer/BattleStatList" unique_id=741393646 instance=ExtResource("6_47rf1")]
+layout_mode = 2
+
+[node name="BattleStatPanel6" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/BattleStatsPanel/MarginContainer/VBoxContainer/BattleStatList" unique_id=758414458 instance=ExtResource("6_47rf1")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=662771536]
+layout_mode = 2
+alignment = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=396564546]
+custom_minimum_size = Vector2(200, 75)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_762vw")
+text = "Continue"

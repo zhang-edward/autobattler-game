@@ -10,9 +10,9 @@ const BUFFER_WINDOW := 0.2
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
 # The two jabs are ordinary hits; the finisher knocks them down and sends them skidding
 var hits: Array[HitConfig] = [
-	HitConfig.create(10),
-	HitConfig.create(10),
-	HitConfig.create(15, 450.0, -350.0, true, 0.12),
+	HitConfig.create(20),
+	HitConfig.create(20),
+	HitConfig.create(30, 450.0, -350.0, true, 0.12),
 ]
 var combo_anims = [
 	"male-rig/frontarm_jab_instant",

@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bxn6nabdjayvf"]
+
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_2mdml"]
+[ext_resource type="StyleBox" uid="uid://cg8t6ptha62e" path="res://prefabs/styles/exp_bar_bg.tres" id="2_nlud2"]
+[ext_resource type="StyleBox" uid="uid://lye068ferra7" path="res://prefabs/styles/exp_bar_fill.tres" id="3_hlgqs"]
+
+[node name="HeroExpGainPanel" type="PanelContainer" unique_id=1613106793]
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1269035958]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1452448525]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1037868698]
+layout_mode = 2
+texture = ExtResource("1_2mdml")
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=2143495269]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=799777417]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HeroName" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1758150528]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 25
+text = "Volt Runner"
+
+[node name="HeroLevel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1263265560]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+text = "Lv. 1"
+
+[node name="EXPGain" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1745264802]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+text = "+300"
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1522552905]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_styles/background = ExtResource("2_nlud2")
+theme_override_styles/fill = ExtResource("3_hlgqs")
+value = 50.0
+show_percentage = false

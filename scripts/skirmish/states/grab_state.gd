@@ -16,7 +16,7 @@ const GRAB_ACTIVE_TIME := 0.15
 
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
 # Low damage; the knockdown and floor impact carry the hit
-var hit: HitConfig = HitConfig.create(5, 180.0, -220.0, true, 0.12, HitConfig.Kind.GRAB)
+var hit: HitConfig = HitConfig.create(15, 180.0, -220.0, true, 0.12, HitConfig.Kind.GRAB)
 
 var recovery_timer := 0.0
 
