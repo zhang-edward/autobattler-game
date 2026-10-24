@@ -3,7 +3,7 @@
 [ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="1_lwsse"]
 [ext_resource type="Script" uid="uid://dbsxp6jfbucyu" path="res://scripts/ui/hero_preview_row.gd" id="2_6ahc5"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_roh7t"]
-[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/dispatch/stat_label.tscn" id="3_6ahc5"]
+[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="3_6ahc5"]
 
 [node name="HeroPreviewRow" type="PanelContainer" unique_id=1883060387]
 custom_maximum_size = Vector2(-1, 120)

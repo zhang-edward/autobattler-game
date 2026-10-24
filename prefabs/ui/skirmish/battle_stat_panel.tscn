@@ -1,11 +1,18 @@
 [gd_scene format=3 uid="uid://bfixji84ylmhq"]
 
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="1_27rla"]
+
 [node name="BattleStatPanel" type="PanelContainer" unique_id=1363568073]
 custom_minimum_size = Vector2(200, 0)
 size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("1_27rla")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=974243956]
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1318044769]
 layout_mode = 2

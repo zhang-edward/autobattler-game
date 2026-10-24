@@ -4,13 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_w4smw"]
 [ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_adxab"]
 [ext_resource type="PackedScene" uid="uid://b7nln4cphbho4" path="res://prefabs/ui/threat_level_label.tscn" id="4_rp87b"]
+[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="5_w4smw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa2gp"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_bottom = 2
 border_color = Color(0.7294118, 0.7294118, 0.7294118, 0.29411766)
 
-[node name="VillainDetailsPanel" type="PanelContainer" unique_id=1368912246]
+[node name="PostSkirmishVillainDetails" type="PanelContainer" unique_id=1368912246]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
@@ -24,9 +25,14 @@ theme_override_styles/panel = ExtResource("1_71o0b")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=68333436]
 layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=539742863]
 layout_mode = 2
+theme_override_constants/separation = 20
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=48322841]
 layout_mode = 2
@@ -55,6 +61,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 
 [node name="NonRecruitStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1663535162]
+visible = false
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats" unique_id=452920132]
@@ -98,4 +105,28 @@ size_flags_horizontal = 3
 text = "Threat Level"
 
 [node name="ThreatLevelLabel" parent="MarginContainer/VBoxContainer/NonRecruitStats/HBoxContainer3" unique_id=241413867 instance=ExtResource("4_rp87b")]
+layout_mode = 2
+
+[node name="StatContainer" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1921995914]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+columns = 3
+
+[node name="StatLabel" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=51830719 instance=ExtResource("5_w4smw")]
+layout_mode = 2
+
+[node name="StatLabel2" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=1074566508 instance=ExtResource("5_w4smw")]
+layout_mode = 2
+
+[node name="StatLabel3" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=1361576074 instance=ExtResource("5_w4smw")]
+layout_mode = 2
+
+[node name="StatLabel4" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=555155159 instance=ExtResource("5_w4smw")]
+layout_mode = 2
+
+[node name="StatLabel5" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=769191610 instance=ExtResource("5_w4smw")]
+layout_mode = 2
+
+[node name="StatLabel6" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=398557941 instance=ExtResource("5_w4smw")]
 layout_mode = 2

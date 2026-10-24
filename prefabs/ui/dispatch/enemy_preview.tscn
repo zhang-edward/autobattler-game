@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_i71j0"]
 [ext_resource type="Script" uid="uid://ca3j72b0jwkvl" path="res://scripts/ui/enemy_preview.gd" id="1_xj4uv"]
-[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/dispatch/stat_label.tscn" id="2_xj4uv"]
+[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="2_xj4uv"]
 
 [node name="EnemyPreview" type="VBoxContainer" unique_id=1792914888]
 size_flags_horizontal = 3
