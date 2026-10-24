@@ -30,6 +30,10 @@ func request_avenge(entity_type: EntityConfig.EntityType) -> void:
 		skirmish._finish(skirmish._winning_side(entity_type))
 		return
 	_pending.append([entity_type, bench, Scenario.AVENGE])
+	
+func request_manual_tag(entity_type: EntityConfig.EntityType, incoming_entity: SkirmishEntity) -> void:
+	var rand_scenario = Scenario.values().pick_random()
+	_pending.append([entity_type, incoming_entity, rand_scenario])
 
 func _process(_delta: float) -> void:
 	if is_playing or skirmish == null:
@@ -39,13 +43,13 @@ func _process(_delta: float) -> void:
 		var req: Array = _pending.pop_front()
 		play_tag(req[0], req[1], req[2])
 		return
-	for team in [EntityConfig.EntityType.HERO, EntityConfig.EntityType.VILLAIN]:
-		if _has_pending(team):
-			continue
-		if _check_voluntary(team):
-			return
-		if _check_glory(team):
-			return
+	#for team in [EntityConfig.EntityType.HERO, EntityConfig.EntityType.VILLAIN]:
+		#if _has_pending(team):
+			#continue
+		#if _check_voluntary(team):
+			#return
+		#if _check_glory(team):
+			#return
 
 func _has_pending(team: EntityConfig.EntityType) -> bool:
 	for req in _pending:

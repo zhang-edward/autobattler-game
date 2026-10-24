@@ -44,13 +44,22 @@ var _status_rows: Array[SkirmishStatusRow] = []
 @onready var _bottom_wall: StaticBody2D = $HWall
 @onready var _top_wall: StaticBody2D = $HWall2
 
+@onready var tag_in_buttons: HBoxContainer = %TagInButtons
+@onready var special_moves: HBoxContainer = %SpecialMoves
+
+@export_group("UI Elements")
+@export var tag_in_button_scene: PackedScene
+@export var special_move_button_scene: PackedScene
+
 func _ready() -> void:
 	get_viewport().size_changed.connect(_update_walls)
 	_update_walls()
-	setup(GameVariables.selected_heroes_for_threat, GameVariables.selected_threat_request_config.enemy_configs)
+	init_configs_from_game_vars()
 	if hero_team.is_empty() and villain_team.is_empty():
 		_setup_debug_matchup()
 	_build_status_rows()
+	_build_tag_in_buttons()
+	_build_special_move_buttons()
 
 func _exit_tree() -> void:
 	get_tree().paused = false
@@ -76,6 +85,12 @@ func _place_wall(wall: StaticBody2D, center: Vector2, size: Vector2) -> void:
 	var collider := wall.get_node("CollisionShape2D") as CollisionShape2D
 	collider.position = Vector2.ZERO
 	(collider.shape as RectangleShape2D).size = size
+	
+
+func init_configs_from_game_vars():
+	var threat_req_config = GameVariables.selected_threat_request_config
+	var villain_configs = threat_req_config.enemy_configs if threat_req_config != null else ([] as Array[EntityConfig])
+	setup(GameVariables.selected_heroes_for_threat, villain_configs)
 
 func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
 	for h in heroes:
@@ -100,6 +115,19 @@ func _build_status_rows() -> void:
 	villain_statuses = get_node("%VillainStatuses") as VBoxContainer
 	_add_status_rows(hero_team, hero_statuses)
 	_add_status_rows(villain_team, villain_statuses)
+	
+func _build_tag_in_buttons() -> void:
+	for h in hero_team:
+		var tag_in_button = tag_in_button_scene.instantiate() as TagInButton
+		tag_in_buttons.add_child(tag_in_button)
+		tag_in_button.init(h)
+		tag_in_button.on_click.connect(_manual_tag_in)
+		
+func _manual_tag_in(entity: SkirmishEntity):
+	director.request_manual_tag(EntityConfig.EntityType.HERO, entity)
+	
+func _build_special_move_buttons() -> void:
+	pass
 
 func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> void:
 	for entity in team:

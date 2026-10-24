@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://ch6bna4rv5bgv"]
+
+[ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="1_3kdpt"]
+[ext_resource type="Script" uid="uid://c2ol15yycrd3r" path="res://scripts/ui/special_move_button.gd" id="2_3kdpt"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="3_7lt7j"]
+
+[node name="SpecialMoveButton" type="PanelContainer" unique_id=1308431726]
+custom_minimum_size = Vector2(300, 0)
+theme_override_styles/panel = ExtResource("1_3kdpt")
+script = ExtResource("2_3kdpt")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1669887262]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=97255510]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1680623882]
+layout_mode = 2
+texture = ExtResource("3_7lt7j")
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1908394572]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=695401356]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Thunder Kick"
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=408815342]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Cooldown - 5s"
+
+[node name="Button" type="Button" parent="." unique_id=768602855]
+layout_mode = 2
+flat = true

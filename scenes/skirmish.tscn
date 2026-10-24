@@ -2,16 +2,11 @@
 
 [ext_resource type="Script" uid="uid://b587pw8nc5uql" path="res://scripts/scenes/skirmish.gd" id="1_skirmish"]
 [ext_resource type="PackedScene" uid="uid://diju08tqwia6c" path="res://prefabs/skirmish_entity.tscn" id="2_entity"]
+[ext_resource type="PackedScene" uid="uid://n6k4pg1qgx8" path="res://prefabs/ui/skirmish/tag_in_button.tscn" id="3_6blwl"]
 [ext_resource type="Script" uid="uid://rufam8hg02of" path="res://scripts/ui/screen_band_rect.gd" id="3_u42sw"]
 [ext_resource type="Script" uid="uid://d04ukv4j57sv3" path="res://scripts/skirmish/tag_director.gd" id="4_0dkc3"]
 [ext_resource type="Script" uid="uid://d1vbhgexbdvrx" path="res://scripts/skirmish/cutscene_manager.gd" id="4_543uf"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_statusbar"]
-bg_color = Color(0.18431373, 0.18431373, 0.18431373, 0.5764706)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="4_pisl1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u42sw"]
 size = Vector2(20, 1080)
@@ -28,6 +23,7 @@ size = Vector2(1890, 320)
 [node name="Skirmish" type="Node2D" unique_id=1631750039]
 script = ExtResource("1_skirmish")
 entity_scene = ExtResource("2_entity")
+tag_in_button_scene = ExtResource("3_6blwl")
 
 [node name="Background" type="ColorRect" parent="." unique_id=2033718173]
 z_index = -100
@@ -61,42 +57,76 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 metadata/_edit_lock_ = true
 
 [node name="StatusBarPanel" type="PanelContainer" parent="HUD/Root" unique_id=1480249655]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("4_pisl1")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Root/StatusBarPanel" unique_id=1974779099]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="StatusBar" type="HBoxContainer" parent="HUD/Root/StatusBarPanel/MarginContainer" unique_id=1924923870]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HeroStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/MarginContainer/StatusBar" unique_id=270419866]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Spacer" type="Control" parent="HUD/Root/StatusBarPanel/MarginContainer/StatusBar" unique_id=537023933]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="VillainStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/MarginContainer/StatusBar" unique_id=1386501132]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="HUD/Root" unique_id=2008688599]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = -1069.0
-offset_right = -30.0
-offset_bottom = -949.0
 grow_horizontal = 2
 grow_vertical = 0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_statusbar")
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("4_pisl1")
 
-[node name="StatusBar" type="HBoxContainer" parent="HUD/Root/StatusBarPanel" unique_id=1924923870]
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Root/PanelContainer" unique_id=170283811]
 layout_mode = 2
-mouse_filter = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
 
-[node name="HeroStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=270419866]
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/Root/PanelContainer/MarginContainer" unique_id=1234880742]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TagInButtons" type="HBoxContainer" parent="HUD/Root/PanelContainer/MarginContainer/HBoxContainer" unique_id=522176331]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
 
-[node name="Spacer" type="Control" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=537023933]
+[node name="VSeparator" type="VSeparator" parent="HUD/Root/PanelContainer/MarginContainer/HBoxContainer" unique_id=2071006809]
 layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
 
-[node name="VillainStatuses" type="VBoxContainer" parent="HUD/Root/StatusBarPanel/StatusBar" unique_id=1386501132]
+[node name="SpecialMoves" type="HBoxContainer" parent="HUD/Root/PanelContainer/MarginContainer/HBoxContainer" unique_id=1430149993]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
 
 [node name="VWall" type="StaticBody2D" parent="." unique_id=320051880]
 collision_layer = 1024
@@ -148,6 +178,6 @@ color = Color(0, 0, 0, 0.65)
 [node name="CutsceneManager" type="Node" parent="." unique_id=58608920]
 script = ExtResource("4_543uf")
 
-[node name="TagDirector" type="Node" parent="." unique_id=1787847176 node_paths=PackedStringArray("cutscene")]
+[node name="TagDirector" type="Node" parent="." unique_id=1114085817 node_paths=PackedStringArray("cutscene")]
 script = ExtResource("4_0dkc3")
 cutscene = NodePath("../CutsceneManager")
