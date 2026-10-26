@@ -15,8 +15,7 @@ func _ready() -> void:
 		var threat_req = threat_req_scene.instantiate() as RequestInboxThreat
 		request_container.add_child(threat_req)
 		threat_req.configure_from_config(config)
-		var cb = Callable(self, "select_threat_req").bind(threat_req)
-		threat_req.button.pressed.connect(cb)
+		threat_req.button.pressed.connect(select_threat_req.bind(threat_req))
 	num_threats_label.text = str(GameVariables.threat_request_configs.size()) + " threats awaiting response"
 	threat_details_container.hide()
 	

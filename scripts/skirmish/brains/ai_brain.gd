@@ -3,21 +3,15 @@ extends Brain
 
 """
 Closes on the nearest opponent, holds at preferred_distance, and once in range picks
-punch / block / grab from a weighted bag.
+an OFFENSIVE move from the entity's moveset by weight. DEFENSIVE moves (block)
+are reaction-only and never picked.
 """
 
 @export_group("Approach")
 @export var preferred_distance := 100.0
 @export var deadzone := 20.0
 
-@export_group("Action weights")
-@export var punch_weight := 5.0
-@export var block_weight := 3.0
-@export var grab_weight := 2.0
-
 @export_group("Timing")
-@export var min_block_duration := 1.0
-@export var max_block_duration := 2.0
 @export var act_probability := 0.1
 
 
@@ -44,32 +38,39 @@ func get_intent(delta: float) -> Intent:
 		return _pick_action(facing)
 	return _movement(Vector2.ZERO, facing)
 
-func _movement(direction: Vector2, facing: float) -> MovementIntent:
-	var intent := MovementIntent.new()
+func _movement(direction: Vector2, facing: float) -> Intent:
+	var intent := Intent.new()
 	intent.direction = direction
 	intent.facing = facing
 	return intent
 
-func _pick_action(facing: float) -> ActionIntent:
-	var intent := ActionIntent.new()
+func _pick_action(facing: float) -> Intent:
+	var intent := Intent.new()
 	intent.facing = facing
-	intent.action = _draw_weighted()
-	if intent.action == ActionIntent.Action.BLOCK:
-		intent.duration = randf_range(min_block_duration, max_block_duration)
+	intent.move = _draw_weighted()
 	return intent
 
-func _draw_weighted() -> ActionIntent.Action:
-	var total := punch_weight + block_weight + grab_weight
+func _draw_weighted() -> Move:
+	var candidates: Array[Move] = []
+	if entity != null and entity.entity_config != null:
+		for move in entity.entity_config.moveset:
+			if move != null and move.category == Move.Category.OFFENSIVE and move.weight > 0.0:
+				candidates.append(move)
+	if candidates.is_empty():
+		return null
+
+	var total := 0.0
+	for move in candidates:
+		total += move.weight
 	if total <= 0.0:
-		return ActionIntent.Action.PUNCH
+		return candidates[0]
 
 	var roll := randf() * total
-	if roll < punch_weight:
-		return ActionIntent.Action.PUNCH
-	roll -= punch_weight
-	if roll < block_weight:
-		return ActionIntent.Action.BLOCK
-	return ActionIntent.Action.GRAB
+	for move in candidates:
+		if roll < move.weight:
+			return move
+		roll -= move.weight
+	return candidates[candidates.size() - 1]
 
 func _nearest_opponent() -> SkirmishEntity:
 	var nearest: SkirmishEntity = null

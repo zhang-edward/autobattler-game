@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="GrabMove" format=3 uid="uid://1o3h8cnhvr43"]
+
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_qssr4"]
+[ext_resource type="Script" uid="uid://dt130vglt0jat" path="res://scripts/resources/grab_move.gd" id="2_81jih"]
+[ext_resource type="PackedScene" path="res://assets/moves/grab_state.tscn" id="3_h2jb4"]
+[ext_resource type="PackedScene" path="res://assets/moves/throw_state.tscn" id="4_h7j0s"]
+
+[sub_resource type="Resource" id="Resource_ysv6a"]
+script = ExtResource("1_qssr4")
+kind = 1
+damage = 15
+knockback = 180.0
+launch = -220.0
+knockdown = true
+hitstop = 0.12
+
+[resource]
+script = ExtResource("2_81jih")
+hit = SubResource("Resource_ysv6a")
+throw_state_scene = ExtResource("4_h7j0s")
+weight = 2.0
+move_name = "Grab"
+state_scene = ExtResource("3_h2jb4")

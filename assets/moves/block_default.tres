@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BlockMove" format=3 uid="uid://8kip54axupxp"]
+
+[ext_resource type="Script" uid="uid://c5j3h1jugpu17" path="res://scripts/resources/block_move.gd" id="1_iksih"]
+[ext_resource type="PackedScene" path="res://assets/moves/block_state.tscn" id="2_kgl7x"]
+
+[resource]
+script = ExtResource("1_iksih")
+category = 1
+move_name = "Block"
+state_scene = ExtResource("2_kgl7x")

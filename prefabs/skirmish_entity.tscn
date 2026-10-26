@@ -31,7 +31,7 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "punch_state", "grab_state", "ragdoll_state", "is_grabbed_state", "block_state", "tag_out_state", "tag_in_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "move_state", "ragdoll_state", "is_grabbed_state", "tag_out_state", "tag_in_state", "brain")]
 collision_layer = 0
 collision_mask = 1024
 script = ExtResource("1_entity")
@@ -43,11 +43,9 @@ hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
 death_state = NodePath("StateMachine/DeathState")
-punch_state = NodePath("StateMachine/PunchState")
-grab_state = NodePath("StateMachine/GrabState")
+move_state = NodePath("StateMachine/MoveState")
 ragdoll_state = NodePath("StateMachine/RagdollState")
 is_grabbed_state = NodePath("StateMachine/IsGrabbedState")
-block_state = NodePath("StateMachine/BlockState")
 tag_out_state = NodePath("StateMachine/TagOutState")
 tag_in_state = NodePath("StateMachine/TagInState")
 brain = NodePath("AIBrain")
@@ -95,12 +93,9 @@ shape = SubResource("CircleShape2D_feet")
 script = ExtResource("6_state_machine")
 initial_state = NodePath("MoveState")
 
-[node name="MoveState" type="Node" parent="StateMachine" unique_id=1582019409 node_paths=PackedStringArray("jump_state", "punch_state", "block_state", "grab_state")]
+[node name="MoveState" type="Node" parent="StateMachine" unique_id=1582019409 node_paths=PackedStringArray("jump_state")]
 script = ExtResource("7_move")
 jump_state = NodePath("../JumpState")
-punch_state = NodePath("../PunchState")
-block_state = NodePath("../BlockState")
-grab_state = NodePath("../GrabState")
 
 [node name="JumpState" type="Node" parent="StateMachine" unique_id=1752308153 node_paths=PackedStringArray("fall_state")]
 script = ExtResource("8_jump")
@@ -110,36 +105,18 @@ fall_state = NodePath("../FallState")
 script = ExtResource("9_fall")
 move_state = NodePath("../MoveState")
 
-[node name="PunchState" type="Node" parent="StateMachine" unique_id=942430408 node_paths=PackedStringArray("move_state")]
-script = ExtResource("10_punch")
-move_state = NodePath("../MoveState")
-
 [node name="HurtState" type="Node" parent="StateMachine" unique_id=1710442989 node_paths=PackedStringArray("move_state", "fall_state", "death_state")]
 script = ExtResource("12_hurt")
 move_state = NodePath("../MoveState")
 fall_state = NodePath("../FallState")
 death_state = NodePath("../DeathState")
 
-[node name="RagdollState" type="Node" parent="StateMachine" unique_id=1710442990 node_paths=PackedStringArray("move_state", "grab_state")]
+[node name="RagdollState" type="Node" parent="StateMachine" unique_id=1710442990 node_paths=PackedStringArray("move_state")]
 script = ExtResource("13_ragdoll")
 move_state = NodePath("../MoveState")
-grab_state = NodePath("../GrabState")
-
-[node name="BlockState" type="Node" parent="StateMachine" unique_id=1710442991 node_paths=PackedStringArray("move_state")]
-script = ExtResource("15_block")
-move_state = NodePath("../MoveState")
-
-[node name="GrabState" type="Node" parent="StateMachine" unique_id=1710442992 node_paths=PackedStringArray("move_state", "throw_state")]
-script = ExtResource("16_grab")
-move_state = NodePath("../MoveState")
-throw_state = NodePath("../ThrowState")
 
 [node name="IsGrabbedState" type="Node" parent="StateMachine" unique_id=96898516]
 script = ExtResource("17_qu6eo")
-
-[node name="ThrowState" type="Node" parent="StateMachine" unique_id=1592108371 node_paths=PackedStringArray("move_state")]
-script = ExtResource("18_fo287")
-move_state = NodePath("../MoveState")
 
 [node name="DeathState" type="Node" parent="StateMachine" unique_id=1186784855]
 script = ExtResource("19_pkptp")

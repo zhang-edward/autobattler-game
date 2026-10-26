@@ -1,5 +1,5 @@
 class_name BlockState
-extends SkirmishState
+extends MoveBasedState
 
 """
 Held guard, omnidirectional. Negates strikes but not grabs; see SkirmishEntity.take_hit.
@@ -10,12 +10,17 @@ const BLOCK_TINT := Color(0.4, 0.6, 1.0)
 # Used when a brain transitions in without passing a duration
 const FALLBACK_DURATION := 0.4
 
-@export var move_state: MoveState
-
+var duration: float = FALLBACK_DURATION
 var block_timer := 0.0
 
-func enter(msg := {}) -> void:
-	block_timer = float(msg.get("duration", FALLBACK_DURATION))
+func init(move: Move) -> void:
+	var block_move := move as BlockMove
+	if block_move == null:
+		return
+	duration = block_move.duration
+
+func enter(_msg := {}) -> void:
+	block_timer = duration
 	e.rig.play_animation("male-rig/block")
 
 func physics_update(delta: float) -> void:
@@ -24,4 +29,4 @@ func physics_update(delta: float) -> void:
 
 	block_timer -= delta
 	if block_timer <= 0.0:
-		state_machine.transition_to(move_state)
+		state_machine.transition_to(e.move_state)

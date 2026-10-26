@@ -33,11 +33,9 @@ const VILLAIN_LAYER_INDEX = 10
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
 @export var death_state: DeathState
-@export var punch_state: PunchState
-@export var grab_state: GrabState
+@export var move_state: MoveState
 @export var ragdoll_state: RagdollState
 @export var is_grabbed_state: IsGrabbedState
-@export var block_state: BlockState
 @export var tag_out_state: TagOutState
 @export var tag_in_state: TagInState
 @export var brain: Brain:
@@ -49,6 +47,7 @@ var entity_config: EntityConfig
 var intent: Intent
 var is_active := true
 var skirmish: Skirmish
+var move_to_state: Dictionary = {}
 
 var hitstop_scale := 1.0:
 	set(value):
@@ -81,8 +80,9 @@ func _ready() -> void:
 	rig.on_emit_hitbox_enable.connect(handle_hitbox_enable)
 	
 func handle_hitbox_enable():
-	if state_machine.state == punch_state:
-		var hit_config = punch_state.hits[punch_state.combo_index]
+	if state_machine.state is PunchState:
+		var punch := state_machine.state as PunchState
+		var hit_config: HitConfig = punch.hits[punch.combo_index]
 		match rig.anim_player.current_animation:
 			"male-rig/frontarm_jab", "male-rig/frontarm_jab_instant":
 				var hitbox = hitbox_scene.instantiate() as Hitbox
@@ -97,8 +97,8 @@ func handle_hitbox_enable():
 				add_child(hitbox)
 				hitbox.init(Vector2(0, 0), Vector2(80, 100), 0.3, self, hit_config)
 				hitbox.global_position = rig.back_fist.global_position
-	elif state_machine.state == grab_state:
-		var hit_config = grab_state.hit
+	elif state_machine.state is GrabState:
+		var hit_config: HitConfig = (state_machine.state as GrabState).hit
 		if rig.anim_player.current_animation == "male-rig/grab":
 			var hitbox = hitbox_scene.instantiate() as Hitbox
 			rig.back_fist.add_child(hitbox)
@@ -114,6 +114,7 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
 	debug_name_label.text = entity_config.entity_name
+	_build_move_map()
 
 # Tag entrance setup: visible and ticking so TagInState runs, but the hurtbox
 # stays dark until TagInState completes into set_active(true).
@@ -154,27 +155,87 @@ func _process(_delta: float) -> void:
 	elif absolute_velocity.x != 0.0:
 		rig_wrapper.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
 
+func _build_move_map() -> void:
+	move_to_state.clear()
+	if entity_config == null:
+		return
+	for move in entity_config.moveset:
+		if move == null or move.state_scene == null:
+			continue
+		var instance := move.state_scene.instantiate() as MoveBasedState
+		if instance == null:
+			continue
+		state_machine.add_child(instance)
+		# StateMachine._ready already ran, so wire manually.
+		instance.state_machine = state_machine
+		instance.init(move)
+		move_to_state[move] = instance
+		if move is GrabMove:
+			_init_throw(move, instance as GrabState)
+
+func _init_throw(grab_move: GrabMove, grab_state: GrabState) -> void:
+	if grab_move.throw_state_scene == null or grab_state == null:
+		return
+	var throw_instance := grab_move.throw_state_scene.instantiate() as ThrowState
+	if throw_instance == null:
+		return
+	state_machine.add_child(throw_instance)
+	throw_instance.state_machine = state_machine
+	throw_instance.init(grab_move)
+	grab_state.throw_state = throw_instance
+	ragdoll_state.bounce_base_damage = grab_move.hit.damage
+
+func _block_move() -> Move:
+	if entity_config == null:
+		return null
+	for move in entity_config.moveset:
+		if move is BlockMove:
+			return move
+	return null
+
+func _block_instance() -> BlockState:
+	var block_move := _block_move()
+	if block_move != null and move_to_state.has(block_move):
+		return move_to_state[block_move] as BlockState
+	return null
+
+func _can_block() -> bool:
+	var state := state_machine.state
+	return not (
+		state == death_state
+		or state == tag_in_state
+		or state == tag_out_state
+		or state == is_grabbed_state
+		or state == ragdoll_state
+	)
+
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if is_dead or not is_active:
 		return
+	# If hitbox owner somehow transitioned into a state which invalidates its hitbox, we don't need to process this hit anymore
+	if source == null or not is_instance_valid(source) or source.is_dead or not source.is_active:
+		return
+	if source.state_machine != null:
+		var source_state: State = source.state_machine.state
+		if source_state == source.is_grabbed_state or source_state == source.ragdoll_state or source_state == source.death_state:
+			return
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
-	var blocking := state_machine.state == block_state
 
-	# A grab only catches a guarding target; anyone else shrugs it off
-	if hit.kind == HitConfig.Kind.GRAB and not blocking:
+	if hit.kind == HitConfig.Kind.GRAB:
+		state_machine.transition_to(is_grabbed_state, {"grabber": source})
+		source.grabbed_entity = self
 		return
 
-	# A guard stops strikes, but a grab goes straight through it
-	if blocking:
-		if hit.kind == HitConfig.Kind.STRIKE:
-			absolute_velocity = dir * BLOCK_PUSHBACK
-			Hitstop.freeze([source, self], hit.hitstop)
-			return
-		elif hit.kind == HitConfig.Kind.GRAB:
-			state_machine.transition_to(is_grabbed_state, {"grabber": source})
-			source.grabbed_entity = self
-			return
+	if hit.kind == HitConfig.Kind.STRIKE and _can_block():
+		# Check block success with a "skill" stat check (d100 < 5 * skill)
+		var skill: int = entity_config.skill if entity_config != null else 0
+		if randf() * 100.0 < float(skill) * 5.0:
+			var block_instance := _block_instance()
+			if block_instance != null:
+				state_machine.transition_to(block_instance)
+				Hitstop.freeze([source, self], hit.hitstop)
+				return
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
 	source.entity_config.damage_dealt += hit.damage
@@ -183,12 +244,11 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		entity_config.curr_health = int(healthbar.value)
 
 	if healthbar.value <= 0:
-		# deal the killing blow, so source entity gets a villain-defeated credit
-		source.entity_config.defeated_villain_names.append(entity_config.entity_name)
 		is_dead = true
 		healthbar.hide()
 		died.emit()
 		state_machine.transition_to(death_state)
+
 	# A ragdolling entity can't drop back into ordinary hitstun mid-air, so any
 	# hit that connects while it's down there keeps it airborne instead
 	elif hit.knockdown or state_machine.state == ragdoll_state:

@@ -20,7 +20,7 @@ func with_entity_name(en: String):
 
 func with_entity_type(et: EntityConfig.EntityType):
 	_entity_config.entity_type = et
-	return self 
+	return self
 
 func with_defense(def: int):
 	_entity_config.defense = def
@@ -46,8 +46,8 @@ func with_charisma(cha: int):
 	_entity_config.charisma = cha
 	return self
 	
-func with_skirmish_moveset(mset: Array[Move]):
-	_entity_config.skirmish_moveset = mset
+func with_skirmish_moveset(moveset: Array[Move]):
+	_entity_config.moveset = moveset
 	return self
 	
 func with_entity_power_type(t: EntityConfig.EntityPowerType):

@@ -1,11 +1,9 @@
 class_name PunchState
-extends SkirmishState
+extends MoveBasedState
 
 const NUDGE_MOVE_SPEED = 50.0
 const RECOVERY_TIMES := [0.4, 0.4, 0.4]
 const BUFFER_WINDOW := 0.2
-
-@export var move_state: MoveState
 
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
 # The two jabs are ordinary hits; the finisher knocks them down and sends them skidding
@@ -19,16 +17,27 @@ var combo_anims = [
 	"male-rig/backarm_jab_instant",
 	"male-rig/backarm_uppercut_instant"
 ]
+var recovery_times: Array = RECOVERY_TIMES
+var buffer_window: float = BUFFER_WINDOW
 var combo_index := 0
 var recovery_timer = 0
 var comboing: bool
 
+func init(move: Move) -> void:
+	var punch_move := move as PunchMove
+	if punch_move == null:
+		return
+	hits = punch_move.hits
+	combo_anims = punch_move.combo_anims
+	recovery_times = punch_move.recovery_times
+	buffer_window = punch_move.buffer_window
+
 func enter(msg := {}) -> void:
 	combo_index = msg["combo_index"] if msg.has("combo_index") else 0
-	recovery_timer = RECOVERY_TIMES[combo_index]
+	recovery_timer = recovery_times[combo_index]
 	comboing = false
 
-	var combo_anim = combo_anims[combo_index]
+	var combo_anim: String = combo_anims[combo_index]
 	e.rig.play_animation(combo_anim)
 
 	# Squash on the lunge
@@ -37,7 +46,7 @@ func enter(msg := {}) -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(e, "scale", Vector2(1, 1), 0.05)
 
-# Intents are written in physics frames, so a one-frame ActionIntent is only
+# Intents are written in physics frames, so a one-frame move intent is only
 # reliably visible here, not in update()
 func physics_update(delta: float) -> void:
 	e.absolute_velocity = movement_direction() * NUDGE_MOVE_SPEED
@@ -45,8 +54,7 @@ func physics_update(delta: float) -> void:
 	recovery_timer -= delta
 
 	# Only another punch continues the combo
-	var action := e.intent as ActionIntent
-	var wants_punch: bool = action != null and action.action == ActionIntent.Action.PUNCH
+	var wants_punch: bool = e.intent != null and e.intent.move is PunchMove
 	if recovery_timer <= BUFFER_WINDOW and wants_punch and combo_index < 2:
 		comboing = true
 
@@ -54,4 +62,4 @@ func physics_update(delta: float) -> void:
 		if comboing:
 			state_machine.transition_to(self, {"combo_index": combo_index + 1})
 		else:
-			state_machine.transition_to(move_state)
+			state_machine.transition_to(e.move_state)
