@@ -1,5 +1,5 @@
 class_name BlockState
-extends MoveBasedState
+extends AbilityState
 
 """
 Held guard, omnidirectional. Negates strikes but not grabs; see SkirmishEntity.take_hit.
@@ -13,8 +13,8 @@ const FALLBACK_DURATION := 0.4
 var duration: float = FALLBACK_DURATION
 var block_timer := 0.0
 
-func init(move: Move) -> void:
-	var block_move := move as BlockMove
+func init(ability: Ability) -> void:
+	var block_move := ability as BlockAbility
 	if block_move == null:
 		return
 	duration = block_move.duration

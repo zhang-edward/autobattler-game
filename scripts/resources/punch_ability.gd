@@ -1,5 +1,5 @@
-class_name PunchMove
-extends Move
+class_name PunchAbility
+extends Ability
 
 # The two jabs are ordinary hits; the finisher knocks them down and sends them skidding
 @export var hits: Array[HitConfig] = [
@@ -18,4 +18,4 @@ extends Move
 func _init() -> void:
 	weight = 5.0
 	category = Category.OFFENSIVE
-	move_name = "Punch"
+	ability_name = "Punch"

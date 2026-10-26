@@ -46,8 +46,8 @@ func with_charisma(cha: int):
 	_entity_config.charisma = cha
 	return self
 	
-func with_skirmish_moveset(moveset: Array[Move]):
-	_entity_config.moveset = moveset
+func with_abilities(abilities: Array[Ability]):
+	_entity_config.abilities = abilities
 	return self
 	
 func with_entity_power_type(t: EntityConfig.EntityPowerType):

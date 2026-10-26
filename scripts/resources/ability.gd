@@ -1,4 +1,4 @@
-class_name Move
+class_name Ability
 extends Resource
 
 enum Category {
@@ -6,9 +6,9 @@ enum Category {
 	DEFENSIVE,
 }
 
-## AI selection weight. DEFENSIVE moves use 0 (reaction only, never picked).
+## AI selection weight. DEFENSIVE abilities use 0 (reaction only, never picked).
 @export var weight := 0.0
 @export var category: Category = Category.OFFENSIVE
-@export var move_name := ""
+@export var ability_name := ""
 ## State scene instantiated under the entity's StateMachine at spawn.
 @export var state_scene: PackedScene

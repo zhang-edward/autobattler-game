@@ -1,19 +1,30 @@
-[gd_resource type="Resource" script_class="PunchMove" format=3 uid="uid://dh5kiyqnci2o1"]
+[gd_resource type="Resource" script_class="PunchAbility" format=3]
 
-[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_up3ay"]
-[ext_resource type="Script" uid="uid://bjy2uarck0u0i" path="res://scripts/resources/punch_move.gd" id="2_pajp7"]
-[ext_resource type="PackedScene" path="res://assets/moves/punch_state.tscn" id="3_6i3v1"]
+[ext_resource type="Script" path="res://scripts/skirmish/combat/hit_config.gd" id="1_37t0l"]
+[ext_resource type="Script" path="res://scripts/resources/punch_ability.gd" id="2_j1e43"]
+[ext_resource type="PackedScene" path="res://assets/abilities/punch_state.tscn" id="3_loolt"]
 
-[sub_resource type="Resource" id="Resource_j0g80"]
-script = ExtResource("1_up3ay")
+[sub_resource type="Resource" id="Resource_bxuln"]
+script = ExtResource("1_37t0l")
+kind = 0
 damage = 20
+knockback = 100.0
+launch = 0.0
+knockdown = false
+hitstop = 0.08
 
-[sub_resource type="Resource" id="Resource_gswwu"]
-script = ExtResource("1_up3ay")
+[sub_resource type="Resource" id="Resource_x0xiy"]
+script = ExtResource("1_37t0l")
+kind = 0
 damage = 20
+knockback = 100.0
+launch = 0.0
+knockdown = false
+hitstop = 0.08
 
-[sub_resource type="Resource" id="Resource_1tcqv"]
-script = ExtResource("1_up3ay")
+[sub_resource type="Resource" id="Resource_vaxc4"]
+script = ExtResource("1_37t0l")
+kind = 0
 damage = 30
 knockback = 450.0
 launch = -350.0
@@ -21,8 +32,12 @@ knockdown = true
 hitstop = 0.12
 
 [resource]
-script = ExtResource("2_pajp7")
-hits = Array[ExtResource("1_up3ay")]([SubResource("Resource_j0g80"), SubResource("Resource_gswwu"), SubResource("Resource_1tcqv")])
+script = ExtResource("2_j1e43")
+hits = Array[ExtResource("1_37t0l")]([SubResource("Resource_bxuln"), SubResource("Resource_x0xiy"), SubResource("Resource_vaxc4")])
+combo_anims = Array[String](["male-rig/frontarm_jab_instant", "male-rig/backarm_jab_instant", "male-rig/backarm_uppercut_instant"])
+recovery_times = Array[float]([0.4, 0.4, 0.4])
+buffer_window = 0.2
 weight = 5.0
-move_name = "Punch"
-state_scene = ExtResource("3_6i3v1")
+category = 0
+ability_name = "Punch"
+state_scene = ExtResource("3_loolt")

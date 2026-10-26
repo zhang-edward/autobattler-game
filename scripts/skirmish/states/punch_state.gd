@@ -1,5 +1,5 @@
 class_name PunchState
-extends MoveBasedState
+extends AbilityState
 
 const NUDGE_MOVE_SPEED = 50.0
 const RECOVERY_TIMES := [0.4, 0.4, 0.4]
@@ -23,8 +23,8 @@ var combo_index := 0
 var recovery_timer = 0
 var comboing: bool
 
-func init(move: Move) -> void:
-	var punch_move := move as PunchMove
+func init(ability: Ability) -> void:
+	var punch_move := ability as PunchAbility
 	if punch_move == null:
 		return
 	hits = punch_move.hits
@@ -54,7 +54,7 @@ func physics_update(delta: float) -> void:
 	recovery_timer -= delta
 
 	# Only another punch continues the combo
-	var wants_punch: bool = e.intent != null and e.intent.move is PunchMove
+	var wants_punch: bool = e.intent != null and e.intent.ability is PunchAbility
 	if recovery_timer <= BUFFER_WINDOW and wants_punch and combo_index < 2:
 		comboing = true
 

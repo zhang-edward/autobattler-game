@@ -37,7 +37,7 @@ var charisma: int = 0 # TODO: Does nothing currently
 var level := 1
 var exp := 0
 var exp_to_next_level := 100
-var moveset: Array[Move] = []
+var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
 
 # In-round state

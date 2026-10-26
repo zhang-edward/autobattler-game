@@ -8,8 +8,8 @@ func enter(_msg := {}):
 
 func physics_update(_delta: float) -> void:
 	var intent := e.intent
-	if intent != null and intent.move != null:
-		var next_state: State = e.move_to_state.get(intent.move)
+	if intent != null and intent.ability != null:
+		var next_state: State = e.ability_to_state.get(intent.ability)
 		if next_state != null:
 			state_machine.transition_to(next_state)
 		return

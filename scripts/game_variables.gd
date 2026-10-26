@@ -17,12 +17,12 @@ var selected_heroes_for_threat: Array[EntityConfig] = []
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
-const PUNCH_DEFAULT: PunchMove = preload("res://assets/moves/punch_default.tres")
-const GRAB_DEFAULT: GrabMove = preload("res://assets/moves/grab_default.tres")
-const BLOCK_DEFAULT: BlockMove = preload("res://assets/moves/block_default.tres")
-var default_punch: PunchMove = PUNCH_DEFAULT
-var default_grab: GrabMove = GRAB_DEFAULT
-var default_block: BlockMove = BLOCK_DEFAULT
+const PUNCH_DEFAULT: PunchAbility = preload("res://assets/abilities/punch_default.tres")
+const GRAB_DEFAULT: GrabAbility = preload("res://assets/abilities/grab_default.tres")
+const BLOCK_DEFAULT: BlockAbility = preload("res://assets/abilities/block_default.tres")
+var default_punch: PunchAbility = PUNCH_DEFAULT
+var default_grab: GrabAbility = GRAB_DEFAULT
+var default_block: BlockAbility = BLOCK_DEFAULT
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
@@ -62,7 +62,7 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_agility(randi_range(100, 150)) \
 			.with_vitality(randi_range(75, 200)) \
 			.with_charisma(randi_range(5, 15)) \
-			.with_skirmish_moveset([default_punch, default_grab, default_block] as Array[Move]) \
+			.with_abilities([default_punch, default_grab, default_block] as Array[Ability]) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config

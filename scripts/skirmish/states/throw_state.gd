@@ -1,5 +1,5 @@
 class_name ThrowState
-extends MoveBasedState
+extends AbilityState
 
 const THROW_SPEED := 400.0
 const THROW_LAUNCH := -500.0
@@ -9,8 +9,8 @@ var throw_speed: float = THROW_SPEED
 var throw_launch: float = THROW_LAUNCH
 var throw_delay: float = THROW_DELAY
 
-func init(move: Move) -> void:
-	var grab_move := move as GrabMove
+func init(ability: Ability) -> void:
+	var grab_move := ability as GrabAbility
 	if grab_move == null:
 		return
 	throw_speed = grab_move.throw_speed

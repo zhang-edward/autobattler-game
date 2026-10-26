@@ -14,7 +14,7 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 
 @export var move_state: MoveState
 
-# Base damage for the floor-bounce hit. Initialized at spawn from the GrabMove.
+# Base damage for the floor-bounce hit. Initialized at spawn from the GrabAbility.
 var bounce_base_damage := 15
 
 @export_group("Physics")

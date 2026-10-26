@@ -47,7 +47,7 @@ var entity_config: EntityConfig
 var intent: Intent
 var is_active := true
 var skirmish: Skirmish
-var move_to_state: Dictionary = {}
+var ability_to_state: Dictionary = {}
 
 var hitstop_scale := 1.0:
 	set(value):
@@ -156,47 +156,47 @@ func _process(_delta: float) -> void:
 		rig_wrapper.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
 
 func _build_move_map() -> void:
-	move_to_state.clear()
+	ability_to_state.clear()
 	if entity_config == null:
 		return
-	for move in entity_config.moveset:
-		if move == null or move.state_scene == null:
+	for ability in entity_config.abilities:
+		if ability == null or ability.state_scene == null:
 			continue
-		var instance := move.state_scene.instantiate() as MoveBasedState
+		var instance := ability.state_scene.instantiate() as AbilityState
 		if instance == null:
 			continue
 		state_machine.add_child(instance)
 		# StateMachine._ready already ran, so wire manually.
 		instance.state_machine = state_machine
-		instance.init(move)
-		move_to_state[move] = instance
-		if move is GrabMove:
-			_init_throw(move, instance as GrabState)
+		instance.init(ability)
+		ability_to_state[ability] = instance
+		if ability is GrabAbility:
+			_init_throw(ability, instance as GrabState)
 
-func _init_throw(grab_move: GrabMove, grab_state: GrabState) -> void:
-	if grab_move.throw_state_scene == null or grab_state == null:
+func _init_throw(grab_ability: GrabAbility, grab_state: GrabState) -> void:
+	if grab_ability.throw_state_scene == null or grab_state == null:
 		return
-	var throw_instance := grab_move.throw_state_scene.instantiate() as ThrowState
+	var throw_instance := grab_ability.throw_state_scene.instantiate() as ThrowState
 	if throw_instance == null:
 		return
 	state_machine.add_child(throw_instance)
 	throw_instance.state_machine = state_machine
-	throw_instance.init(grab_move)
+	throw_instance.init(grab_ability)
 	grab_state.throw_state = throw_instance
-	ragdoll_state.bounce_base_damage = grab_move.hit.damage
+	ragdoll_state.bounce_base_damage = grab_ability.hit.damage
 
-func _block_move() -> Move:
+func _block_ability() -> Ability:
 	if entity_config == null:
 		return null
-	for move in entity_config.moveset:
-		if move is BlockMove:
-			return move
+	for ability in entity_config.abilities:
+		if ability is BlockAbility:
+			return ability
 	return null
 
 func _block_instance() -> BlockState:
-	var block_move := _block_move()
-	if block_move != null and move_to_state.has(block_move):
-		return move_to_state[block_move] as BlockState
+	var block_ability := _block_ability()
+	if block_ability != null and ability_to_state.has(block_ability):
+		return ability_to_state[block_ability] as BlockState
 	return null
 
 func _can_block() -> bool:

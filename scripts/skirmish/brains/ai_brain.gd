@@ -3,7 +3,7 @@ extends Brain
 
 """
 Closes on the nearest opponent, holds at preferred_distance, and once in range picks
-an OFFENSIVE move from the entity's moveset by weight. DEFENSIVE moves (block)
+an OFFENSIVE ability from the entity's kit by weight. DEFENSIVE abilities (block)
 are reaction-only and never picked.
 """
 
@@ -47,29 +47,29 @@ func _movement(direction: Vector2, facing: float) -> Intent:
 func _pick_action(facing: float) -> Intent:
 	var intent := Intent.new()
 	intent.facing = facing
-	intent.move = _draw_weighted()
+	intent.ability = _draw_weighted()
 	return intent
 
-func _draw_weighted() -> Move:
-	var candidates: Array[Move] = []
+func _draw_weighted() -> Ability:
+	var candidates: Array[Ability] = []
 	if entity != null and entity.entity_config != null:
-		for move in entity.entity_config.moveset:
-			if move != null and move.category == Move.Category.OFFENSIVE and move.weight > 0.0:
-				candidates.append(move)
+		for ability in entity.entity_config.abilities:
+			if ability != null and ability.category == Ability.Category.OFFENSIVE and ability.weight > 0.0:
+				candidates.append(ability)
 	if candidates.is_empty():
 		return null
 
 	var total := 0.0
-	for move in candidates:
-		total += move.weight
+	for ability in candidates:
+		total += ability.weight
 	if total <= 0.0:
 		return candidates[0]
 
 	var roll := randf() * total
-	for move in candidates:
-		if roll < move.weight:
-			return move
-		roll -= move.weight
+	for ability in candidates:
+		if roll < ability.weight:
+			return ability
+		roll -= ability.weight
 	return candidates[candidates.size() - 1]
 
 func _nearest_opponent() -> SkirmishEntity:

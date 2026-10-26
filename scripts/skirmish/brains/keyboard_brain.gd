@@ -4,7 +4,7 @@ extends Brain
 func get_intent(_delta: float) -> Intent:
 	if Input.is_action_just_pressed("attack"):
 		var punch := Intent.new()
-		punch.move = _first_offensive_move()
+		punch.ability = _first_offensive_ability()
 		return punch
 
 	var movement := Intent.new()
@@ -15,9 +15,9 @@ func get_intent(_delta: float) -> Intent:
 	movement.jump = Input.is_action_just_pressed("jump")
 	return movement
 
-func _first_offensive_move() -> Move:
+func _first_offensive_ability() -> Ability:
 	if entity != null and entity.entity_config != null:
-		for move in entity.entity_config.moveset:
-			if move != null and move.category == Move.Category.OFFENSIVE:
-				return move
+		for ability in entity.entity_config.abilities:
+			if ability != null and ability.category == Ability.Category.OFFENSIVE:
+				return ability
 	return null

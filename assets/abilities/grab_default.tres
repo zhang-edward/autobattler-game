@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="GrabMove" format=3 uid="uid://1o3h8cnhvr43"]
+[gd_resource type="Resource" script_class="GrabAbility" format=3]
 
-[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_qssr4"]
-[ext_resource type="Script" uid="uid://dt130vglt0jat" path="res://scripts/resources/grab_move.gd" id="2_81jih"]
-[ext_resource type="PackedScene" path="res://assets/moves/grab_state.tscn" id="3_h2jb4"]
-[ext_resource type="PackedScene" path="res://assets/moves/throw_state.tscn" id="4_h7j0s"]
+[ext_resource type="Script" path="res://scripts/skirmish/combat/hit_config.gd" id="1_72ohn"]
+[ext_resource type="Script" path="res://scripts/resources/grab_ability.gd" id="2_gg5vv"]
+[ext_resource type="PackedScene" path="res://assets/abilities/grab_state.tscn" id="3_ts462"]
+[ext_resource type="PackedScene" path="res://assets/abilities/throw_state.tscn" id="4_20k1j"]
 
-[sub_resource type="Resource" id="Resource_ysv6a"]
-script = ExtResource("1_qssr4")
+[sub_resource type="Resource" id="Resource_p78mp"]
+script = ExtResource("1_72ohn")
 kind = 1
 damage = 15
 knockback = 180.0
@@ -15,9 +15,9 @@ knockdown = true
 hitstop = 0.12
 
 [resource]
-script = ExtResource("2_81jih")
-hit = SubResource("Resource_ysv6a")
-throw_state_scene = ExtResource("4_h7j0s")
+script = ExtResource("2_gg5vv")
+hit = SubResource("Resource_p78mp")
+throw_state_scene = ExtResource("4_20k1j")
 weight = 2.0
-move_name = "Grab"
-state_scene = ExtResource("3_h2jb4")
+ability_name = "Grab"
+state_scene = ExtResource("3_ts462")

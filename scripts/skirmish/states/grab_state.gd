@@ -1,5 +1,5 @@
 class_name GrabState
-extends MoveBasedState
+extends AbilityState
 
 """
 Grab attempt. Lands through a guard, and resolves as a knockdown rather than a
@@ -11,7 +11,7 @@ const RECOVERY_TIME := 1.0
 const GRAB_SIZE := Vector2(72, 72)
 const GRAB_ACTIVE_TIME := 0.15
 
-# Assigned at spawn alongside init() — the throw half of this GrabMove.
+# Assigned at spawn alongside init() — the throw half of this GrabAbility.
 var throw_state: ThrowState
 
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
@@ -21,8 +21,8 @@ var recovery_time: float = RECOVERY_TIME
 
 var recovery_timer := 0.0
 
-func init(move: Move) -> void:
-	var grab_move := move as GrabMove
+func init(ability: Ability) -> void:
+	var grab_move := ability as GrabAbility
 	if grab_move == null:
 		return
 	hit = grab_move.hit

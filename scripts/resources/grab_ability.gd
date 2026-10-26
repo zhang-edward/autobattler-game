@@ -1,5 +1,5 @@
-class_name GrabMove
-extends Move
+class_name GrabAbility
+extends Ability
 
 @export var hit: HitConfig = HitConfig.create(15, 180.0, -220.0, true, 0.12, HitConfig.Kind.GRAB)
 @export var recovery_time := 1.0
@@ -14,4 +14,4 @@ extends Move
 func _init() -> void:
 	weight = 2.0
 	category = Category.OFFENSIVE
-	move_name = "Grab"
+	ability_name = "Grab"
