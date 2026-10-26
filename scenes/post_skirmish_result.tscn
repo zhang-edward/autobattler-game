@@ -37,6 +37,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="ResultLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=671257980]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 75
 text = "Victory!"
