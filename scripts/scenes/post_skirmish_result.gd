@@ -5,7 +5,7 @@ extends Node2D
 @export var skirmish_reward_panel_scene: PackedScene
 @onready var result_label: Label = %ResultLabel
 @onready var hero_exp_bars: VBoxContainer = %HeroExpBars
-@onready var skirmish_result_panel: HBoxContainer = %SkirmishResultPanel
+@onready var skirmish_result_container: HBoxContainer = %SkirmishResultContainer
 @onready var continue_button: Button = %Continue
 
 func _ready():
@@ -29,11 +29,11 @@ func handle_skirmish_result():
 		result_label.text = "Defeat..."
 		for c in hero_exp_bars.get_children():
 			var child = c as HeroExpGainPanel
-			var reduced_exp = round(threat_req_config.reward_exp_gain * 0.5)
-			child.setup_rewawrd(reduced_exp)
-	add_skirmish_result_panels(did_player_win)
+			var reduced_exp = round(threat_req_config.reward.exp_gain * 0.5)
+			child.setup_reward(reduced_exp)
+	add_skirmish_reward_panels(did_player_win)
 
-func add_skirmish_result_panels(did_player_win: bool):
+func add_skirmish_reward_panels(did_player_win: bool):
 	var threat_req_config = GameVariables.selected_threat_request_config
 	var exp_gain = threat_req_config.reward.exp_gain
 	var money = threat_req_config.reward.money
@@ -42,12 +42,14 @@ func add_skirmish_result_panels(did_player_win: bool):
 		exp_gain = round(exp_gain * 0.5)
 		money = round(money * 0.5)
 		renown = 0
-	var exp_panel = skirmish_reward_panel_scene.instantiate() as SkirmishRewardPanel
-	exp_panel.setup_reward("EXP", exp_gain)
-	var money_panel = skirmish_reward_panel_scene.instantiate() as SkirmishRewardPanel
-	money_panel.setup_reward("Money", money)
-	var renown_panel = skirmish_reward_panel_scene.instantiate() as SkirmishRewardPanel
-	renown_panel.setup_reward("Renown", renown)
+	add_skirmish_reward_panel("EXP", exp_gain)
+	add_skirmish_reward_panel("Money", money)
+	add_skirmish_reward_panel("Renown", renown)
+	
+func add_skirmish_reward_panel(reward_name: String, reward_value: int):
+	var panel = skirmish_reward_panel_scene.instantiate() as SkirmishRewardPanel
+	skirmish_result_container.add_child(panel)
+	panel.setup_reward(reward_name, reward_value)
 
 func setup_hero_exp_gain_panels():
 	for h in GameVariables.selected_heroes_for_threat:

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ccw0f112xv6q7" path="res://scripts/ui/skirmish_reward_panel.gd" id="1_fb1oa"]
 
-[node name="SkirmishResultPanel" type="PanelContainer" unique_id=2021521285]
+[node name="SkirmishRewardPanel" type="PanelContainer" unique_id=2021521285]
 size_flags_horizontal = 3
 script = ExtResource("1_fb1oa")
 
