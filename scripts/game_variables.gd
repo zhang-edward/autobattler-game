@@ -14,6 +14,7 @@ var captured_heroes: Array[EntityConfig] = []
 var threat_request_configs: Array[ThreatRequestConfig] = []
 var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
+var skirmish_winner: EntityConfig.EntityType
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
