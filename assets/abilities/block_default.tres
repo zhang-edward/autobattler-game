@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="BlockAbility" format=3]
+[gd_resource type="Resource" script_class="BlockAbility" format=3 uid="uid://v51bgpkpyrt1"]
 
-[ext_resource type="Script" path="res://scripts/resources/block_ability.gd" id="1_akrfj"]
+[ext_resource type="Script" uid="uid://c1v4s07cpc6vt" path="res://scripts/resources/block_ability.gd" id="1_akrfj"]
 [ext_resource type="PackedScene" path="res://assets/abilities/block_state.tscn" id="2_i7nvp"]
 
 [resource]

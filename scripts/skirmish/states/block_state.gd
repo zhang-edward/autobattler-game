@@ -6,11 +6,7 @@ Held guard, omnidirectional. Negates strikes but not grabs; see SkirmishEntity.t
 Held for a duration the brain passes in, not until released.
 """
 
-const BLOCK_TINT := Color(0.4, 0.6, 1.0)
-# Used when a brain transitions in without passing a duration
-const FALLBACK_DURATION := 0.4
-
-var duration: float = FALLBACK_DURATION
+var duration: float
 var block_timer := 0.0
 
 func init(ability: Ability) -> void:

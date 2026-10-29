@@ -185,18 +185,18 @@ func _init_throw(grab_ability: GrabAbility, grab_state: GrabState) -> void:
 	grab_state.throw_state = throw_instance
 	ragdoll_state.bounce_base_damage = grab_ability.hit.damage
 
-func _block_ability() -> Ability:
+func _defensive_ability() -> Ability:
 	if entity_config == null:
 		return null
 	for ability in entity_config.abilities:
-		if ability is BlockAbility:
+		if ability.category == Ability.Category.DEFENSIVE:
 			return ability
 	return null
 
-func _block_instance() -> BlockState:
-	var block_ability := _block_ability()
-	if block_ability != null and ability_to_state.has(block_ability):
-		return ability_to_state[block_ability] as BlockState
+func _defensive_state() -> State:
+	var ability := _defensive_ability()
+	if ability != null and ability_to_state.has(ability):
+		return ability_to_state[ability]
 	return null
 
 func _can_block() -> bool:
@@ -231,9 +231,10 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		# Check block success with a "skill" stat check (d100 < 5 * skill)
 		var skill: int = entity_config.skill if entity_config != null else 0
 		if randf() * 100.0 < float(skill) * 5.0:
-			var block_instance := _block_instance()
-			if block_instance != null:
-				state_machine.transition_to(block_instance)
+			print("Defending!")
+			var defensive_state := _defensive_state()
+			if defensive_state != null:
+				state_machine.transition_to(defensive_state)
 				Hitstop.freeze([source, self], hit.hitstop)
 				return
 

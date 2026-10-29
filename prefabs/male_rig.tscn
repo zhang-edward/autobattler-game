@@ -17,19 +17,19 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("UpperArm-Back:position")
+tracks/0/path = NodePath("Torso/UpperArm-Back:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(7.000001, 18.999998)]
+"values": [Vector2(29.79403, -34.1576)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("UpperArm-Back/Forarm-Back:position")
+tracks/1/path = NodePath("Torso/UpperArm-Back/Forarm-Back:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -41,7 +41,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("UpperArm-Back/Forarm-Back/BackFist:position")
+tracks/2/path = NodePath("Torso/UpperArm-Back/Forarm-Back/BackFist:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -161,19 +161,19 @@ tracks/11/keys = {
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("Upperarm-Front:position")
+tracks/12/path = NodePath("Torso/Upperarm-Front:position")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-32.999992, 15.000005)]
+"values": [Vector2(-10.205965, -38.157593)]
 }
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("Upperarm-Front/Forearm-Front:position")
+tracks/13/path = NodePath("Torso/Upperarm-Front/Forearm-Front:position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
@@ -185,7 +185,7 @@ tracks/13/keys = {
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("Upperarm-Front/Forearm-Front/FrontFist:position")
+tracks/14/path = NodePath("Torso/Upperarm-Front/Forearm-Front/FrontFist:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -197,7 +197,7 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("UpperArm-Back:rotation")
+tracks/15/path = NodePath("Torso/UpperArm-Back:rotation")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
@@ -209,7 +209,7 @@ tracks/15/keys = {
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("UpperArm-Back/Forarm-Back:rotation")
+tracks/16/path = NodePath("Torso/UpperArm-Back/Forarm-Back:rotation")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -221,7 +221,7 @@ tracks/16/keys = {
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("UpperArm-Back/Forarm-Back/BackFist:rotation")
+tracks/17/path = NodePath("Torso/UpperArm-Back/Forarm-Back/BackFist:rotation")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
@@ -341,7 +341,7 @@ tracks/26/keys = {
 tracks/27/type = "value"
 tracks/27/imported = false
 tracks/27/enabled = true
-tracks/27/path = NodePath("Upperarm-Front:rotation")
+tracks/27/path = NodePath("Torso/Upperarm-Front:rotation")
 tracks/27/interp = 1
 tracks/27/loop_wrap = true
 tracks/27/keys = {
@@ -353,7 +353,7 @@ tracks/27/keys = {
 tracks/28/type = "value"
 tracks/28/imported = false
 tracks/28/enabled = true
-tracks/28/path = NodePath("Upperarm-Front/Forearm-Front:rotation")
+tracks/28/path = NodePath("Torso/Upperarm-Front/Forearm-Front:rotation")
 tracks/28/interp = 1
 tracks/28/loop_wrap = true
 tracks/28/keys = {
@@ -365,7 +365,7 @@ tracks/28/keys = {
 tracks/29/type = "value"
 tracks/29/imported = false
 tracks/29/enabled = true
-tracks/29/path = NodePath("Upperarm-Front/Forearm-Front/FrontFist:rotation")
+tracks/29/path = NodePath("Torso/Upperarm-Front/Forearm-Front/FrontFist:rotation")
 tracks/29/interp = 1
 tracks/29/loop_wrap = true
 tracks/29/keys = {
@@ -377,7 +377,7 @@ tracks/29/keys = {
 tracks/30/type = "value"
 tracks/30/imported = false
 tracks/30/enabled = true
-tracks/30/path = NodePath("Upperarm-Front/Forearm-Front/FrontFist:scale")
+tracks/30/path = NodePath("Torso/Upperarm-Front/Forearm-Front/FrontFist:scale")
 tracks/30/interp = 1
 tracks/30/loop_wrap = true
 tracks/30/keys = {
@@ -389,7 +389,7 @@ tracks/30/keys = {
 tracks/31/type = "value"
 tracks/31/imported = false
 tracks/31/enabled = true
-tracks/31/path = NodePath("UpperArm-Back:scale")
+tracks/31/path = NodePath("Torso/UpperArm-Back:scale")
 tracks/31/interp = 1
 tracks/31/loop_wrap = true
 tracks/31/keys = {
@@ -401,7 +401,7 @@ tracks/31/keys = {
 tracks/32/type = "value"
 tracks/32/imported = false
 tracks/32/enabled = true
-tracks/32/path = NodePath("UpperArm-Back/Forarm-Back:scale")
+tracks/32/path = NodePath("Torso/UpperArm-Back/Forarm-Back:scale")
 tracks/32/interp = 1
 tracks/32/loop_wrap = true
 tracks/32/keys = {
@@ -413,7 +413,7 @@ tracks/32/keys = {
 tracks/33/type = "value"
 tracks/33/imported = false
 tracks/33/enabled = true
-tracks/33/path = NodePath("UpperArm-Back/Forarm-Back/BackFist:scale")
+tracks/33/path = NodePath("Torso/UpperArm-Back/Forarm-Back/BackFist:scale")
 tracks/33/interp = 1
 tracks/33/loop_wrap = true
 tracks/33/keys = {
@@ -533,7 +533,7 @@ tracks/42/keys = {
 tracks/43/type = "value"
 tracks/43/imported = false
 tracks/43/enabled = true
-tracks/43/path = NodePath("Upperarm-Front:scale")
+tracks/43/path = NodePath("Torso/Upperarm-Front:scale")
 tracks/43/interp = 1
 tracks/43/loop_wrap = true
 tracks/43/keys = {
@@ -545,7 +545,7 @@ tracks/43/keys = {
 tracks/44/type = "value"
 tracks/44/imported = false
 tracks/44/enabled = true
-tracks/44/path = NodePath("Upperarm-Front/Forearm-Front:scale")
+tracks/44/path = NodePath("Torso/Upperarm-Front/Forearm-Front:scale")
 tracks/44/interp = 1
 tracks/44/loop_wrap = true
 tracks/44/keys = {
@@ -563,32 +563,54 @@ _data = {
 [node name="MaleRig" type="Node2D" unique_id=216610745]
 script = ExtResource("1_m775y")
 
-[node name="UpperArm-Back" type="Sprite2D" parent="." unique_id=441717832]
-position = Vector2(7.000001, 18.999998)
+[node name="Torso" type="Sprite2D" parent="." unique_id=1896956401]
+position = Vector2(-15, 58.999992)
+rotation = -0.013696447
+texture = ExtResource("2_2ekpu")
+offset = Vector2(7, -25)
+
+[node name="Upperarm-Front" type="Sprite2D" parent="Torso" unique_id=895163469]
+z_index = 1
+position = Vector2(-10.205965, -38.157593)
+rotation = 0.29639155
+texture = ExtResource("1_306bx")
+offset = Vector2(-14, 13)
+
+[node name="Forearm-Front" type="Sprite2D" parent="Torso/Upperarm-Front" unique_id=1896646404]
+position = Vector2(-29.383736, 31.497831)
+rotation = 0.17169547
+texture = ExtResource("4_ew1ca")
+offset = Vector2(9, -1)
+
+[node name="FrontFist" type="Sprite2D" parent="Torso/Upperarm-Front/Forearm-Front" unique_id=748303341]
+unique_name_in_owner = true
+position = Vector2(23, -5)
+rotation = -0.4215836
+scale = Vector2(1, -1)
+texture = ExtResource("5_aw06y")
+offset = Vector2(7, -2)
+
+[node name="UpperArm-Back" type="Sprite2D" parent="Torso" unique_id=441717832]
+z_index = -1
+position = Vector2(29.79403, -34.1576)
 rotation = -1.1805993
 texture = ExtResource("1_306bx")
 offset = Vector2(-12.620164, 14.994087)
 
-[node name="Forarm-Back" type="Sprite2D" parent="UpperArm-Back" unique_id=596912855]
+[node name="Forarm-Back" type="Sprite2D" parent="Torso/UpperArm-Back" unique_id=596912855]
 position = Vector2(-25.514013, 30.933998)
 rotation = 0.87649226
 scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("4_ew1ca")
 offset = Vector2(10.457014, -1.8490906)
 
-[node name="BackFist" type="Sprite2D" parent="UpperArm-Back/Forarm-Back" unique_id=1131300776]
+[node name="BackFist" type="Sprite2D" parent="Torso/UpperArm-Back/Forarm-Back" unique_id=1131300776]
 unique_name_in_owner = true
 position = Vector2(22.166748, -5.964602)
 rotation = 0.25848264
 scale = Vector2(1.0000002, 1.0000002)
 texture = ExtResource("5_aw06y")
 offset = Vector2(5.821205, -3.8960495)
-
-[node name="Torso" type="Sprite2D" parent="." unique_id=1896956401]
-position = Vector2(-15, 58.999992)
-rotation = -0.013696447
-texture = ExtResource("2_2ekpu")
-offset = Vector2(7, -25)
 
 [node name="Head" type="Sprite2D" parent="Torso" unique_id=1181393194]
 position = Vector2(12.84944, -47.01473)
@@ -602,6 +624,7 @@ position = Vector2(-15, 72)
 texture = ExtResource("6_m775y")
 
 [node name="Thigh-Back" type="Sprite2D" parent="Hips" unique_id=1352693113]
+z_index = -1
 position = Vector2(17, 9)
 rotation = -1.3888351
 texture = ExtResource("6_bi6dj")
@@ -639,26 +662,6 @@ scale = Vector2(-0.8000026, 1)
 skew = -0.039696574
 texture = ExtResource("9_frasx")
 offset = Vector2(11.887058, 7.9759827)
-
-[node name="Upperarm-Front" type="Sprite2D" parent="." unique_id=895163469]
-position = Vector2(-32.999992, 15.000005)
-rotation = 0.29639155
-texture = ExtResource("1_306bx")
-offset = Vector2(-14, 13)
-
-[node name="Forearm-Front" type="Sprite2D" parent="Upperarm-Front" unique_id=1896646404]
-position = Vector2(-29.383736, 31.497831)
-rotation = 0.17169547
-texture = ExtResource("4_ew1ca")
-offset = Vector2(9, -1)
-
-[node name="FrontFist" type="Sprite2D" parent="Upperarm-Front/Forearm-Front" unique_id=748303341]
-unique_name_in_owner = true
-position = Vector2(23, -5)
-rotation = -0.4215836
-scale = Vector2(1, -1)
-texture = ExtResource("5_aw06y")
-offset = Vector2(7, -2)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=689288795]
 libraries/ = SubResource("AnimationLibrary_m775y")
