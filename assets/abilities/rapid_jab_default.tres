@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RapidJabAbility" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/rapid_jab_ability.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/abilities/rapid_jab_state.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+weight = 10.0
+ability_name = "Rapid Jab"
+state_scene = ExtResource("2")
