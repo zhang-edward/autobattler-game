@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cmlb01kpah6ot" path="res://assets/skirmish/placeholder/hips.png" id="6_m775y"]
 [ext_resource type="Texture2D" uid="uid://cjpsl5b0xcbr5" path="res://assets/skirmish/placeholder/leg.png" id="7_eayux"]
 [ext_resource type="Texture2D" uid="uid://qbb7hdu60i2a" path="res://assets/skirmish/placeholder/foot-side.png" id="9_frasx"]
-[ext_resource type="AnimationLibrary" uid="uid://cbjclj3e14cpt" path="res://animations/male-rig.res" id="10_2ekpu"]
+[ext_resource type="AnimationLibrary" uid="uid://dpm461n8mk85v" path="res://animations/male-rig.res" id="10_2ekpu"]
 
 [sub_resource type="Animation" id="Animation_2ekpu"]
 length = 0.001
@@ -573,6 +573,42 @@ tracks/46/path = NodePath("Torso/UpperArm-Back/Forarm-Back/BackFist:z_index")
 tracks/46/interp = 1
 tracks/46/loop_wrap = true
 tracks/46/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/47/type = "value"
+tracks/47/imported = false
+tracks/47/enabled = true
+tracks/47/path = NodePath("Torso/UpperArm-Back:z_index")
+tracks/47/interp = 1
+tracks/47/loop_wrap = true
+tracks/47/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/48/type = "value"
+tracks/48/imported = false
+tracks/48/enabled = true
+tracks/48/path = NodePath("Torso/Upperarm-Front:z_index")
+tracks/48/interp = 1
+tracks/48/loop_wrap = true
+tracks/48/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/49/type = "value"
+tracks/49/imported = false
+tracks/49/enabled = true
+tracks/49/path = NodePath("Torso/Head:z_index")
+tracks/49/interp = 1
+tracks/49/loop_wrap = true
+tracks/49/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,

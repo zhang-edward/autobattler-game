@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="RapidJabAbility" format=3]
+[gd_resource type="Resource" script_class="RapidJabAbility" format=3 uid="uid://8vyxipvk0t4g"]
 
-[ext_resource type="Script" path="res://scripts/resources/rapid_jab_ability.gd" id="1"]
+[ext_resource type="Script" uid="uid://bsxlh84ey8t5v" path="res://scripts/resources/rapid_jab_ability.gd" id="1"]
 [ext_resource type="PackedScene" path="res://abilities/rapid_jab/rapid_jab_state.tscn" id="2"]
 
 [resource]

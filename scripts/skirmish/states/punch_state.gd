@@ -6,17 +6,8 @@ const RECOVERY_TIMES := [0.4, 0.4, 0.4]
 const BUFFER_WINDOW := 0.2
 
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
-# The two jabs are ordinary hits; the finisher knocks them down and sends them skidding
-var hits: Array[HitConfig] = [
-	HitConfig.create(20),
-	HitConfig.create(20),
-	HitConfig.create(30, 450.0, -350.0, true, 0.12),
-]
-var combo_anims = [
-	"male-rig/frontarm_jab_instant",
-	"male-rig/backarm_jab_instant",
-	"male-rig/backarm_uppercut_instant"
-]
+var hits: Array[HitConfig]
+var combo_anims: Array
 var recovery_times: Array = RECOVERY_TIMES
 var buffer_window: float = BUFFER_WINDOW
 var combo_index := 0
@@ -38,7 +29,7 @@ func enter(msg := {}) -> void:
 	comboing = false
 
 	var combo_anim: String = combo_anims[combo_index]
-	e.rig.play_animation(combo_anim)
+	e.rig.anim_player.play_section_with_markers(combo_anim, "active", "recovery")
 
 	# Squash on the lunge
 	e.scale = Vector2(1.2, 1)

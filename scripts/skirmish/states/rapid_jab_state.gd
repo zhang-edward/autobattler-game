@@ -5,16 +5,12 @@ const NUDGE_MOVE_SPEED = 50.0
 const CYCLES := 2
 const HITBOX_SIZE := Vector2(40, 40)
 const HITBOX_LIFETIME := 0.1
+const JAB_ANIM := "male-rig/punch_flurry"
+# Each jab plays from its marker to the next one. Even indices throw the front fist, odd indices the back fist
+const JAB_MARKERS: Array[StringName] = [&"", &"punch_2", &"punch_3", &"punch_4"]
 
 var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
 var hit: HitConfig = HitConfig.create(15)
-# Even indices throw the front fist, odd indices the back fist
-var jab_anims = [
-	"male-rig/punch_flurry_1",
-	"male-rig/punch_flurry_2",
-	"male-rig/punch_flurry_3",
-	"male-rig/punch_flurry_4",
-]
 var jab_interval := 0.12
 var recovery_time := 0.3
 var jab_index := 0
@@ -45,11 +41,12 @@ func physics_update(delta: float) -> void:
 		state_machine.transition_to(e.move_state)
 
 func _total_jabs() -> int:
-	return jab_anims.size() * CYCLES
+	return JAB_MARKERS.size() * CYCLES
 
 func _jab() -> void:
-	var anim_index := jab_index % jab_anims.size()
-	e.rig.play_animation(jab_anims[anim_index])
+	var anim_index := jab_index % JAB_MARKERS.size()
+	var end_marker: StringName = JAB_MARKERS[anim_index + 1] if anim_index + 1 < JAB_MARKERS.size() else &""
+	e.rig.anim_player.play_section_with_markers(JAB_ANIM, JAB_MARKERS[anim_index], end_marker)
 	# The last jab holds for the recovery time instead of the interval
 	timer = recovery_time if jab_index == _total_jabs() - 1 else jab_interval
 
