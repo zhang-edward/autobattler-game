@@ -49,13 +49,13 @@ brain = NodePath("AIBrain")
 [node name="RigWrapper" type="Sprite2D" parent="." unique_id=642401067]
 
 [node name="MaleRig" parent="RigWrapper" unique_id=1018612703 instance=ExtResource("2_gxyuk")]
-position = Vector2(18, -163)
+position = Vector2(3, -11)
 
 [node name="Shadow" type="Sprite2D" parent="RigWrapper/MaleRig" unique_id=1626133202]
 modulate = Color(1, 1, 1, 0.4)
 z_index = -1
 z_as_relative = false
-position = Vector2(-18, 163)
+position = Vector2(-3, 11)
 scale = Vector2(4, 4)
 texture = ExtResource("3_shadow")
 

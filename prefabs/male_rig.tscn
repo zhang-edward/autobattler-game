@@ -60,7 +60,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-15, 58.999992)]
+"values": [Vector2(0, -93.00001)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -84,7 +84,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-15, 72)]
+"values": [Vector2(0, -80)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -588,7 +588,7 @@ _data = {
 script = ExtResource("1_m775y")
 
 [node name="Torso" type="Sprite2D" parent="." unique_id=1896956401]
-position = Vector2(-15, 58.999992)
+position = Vector2(0, -93.00001)
 rotation = -0.013696447
 texture = ExtResource("2_2ekpu")
 offset = Vector2(7, -25)
@@ -644,7 +644,7 @@ texture = ExtResource("3_m775y")
 offset = Vector2(2, -12)
 
 [node name="Hips" type="Sprite2D" parent="." unique_id=1237521896]
-position = Vector2(-15, 72)
+position = Vector2(0, -80)
 texture = ExtResource("6_m775y")
 
 [node name="Thigh-Back" type="Sprite2D" parent="Hips" unique_id=1352693113]
