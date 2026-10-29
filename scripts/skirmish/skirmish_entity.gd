@@ -92,11 +92,10 @@ func handle_hitbox_enable():
 				var hitbox = hitbox_scene.instantiate() as Hitbox
 				rig.back_fist.add_child(hitbox)
 				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.3, self, hit_config)
-			"male-rig/backarm_uppercut", "male-rig/backarm_uppercut_instant":
+			"male-rig/backarm_uppercut", "male-rig/backarm_uppercut_instant", "male-rig/punch_big":
 				var hitbox = hitbox_scene.instantiate() as Hitbox
-				add_child(hitbox)
-				hitbox.init(Vector2(0, 0), Vector2(80, 100), 0.3, self, hit_config)
-				hitbox.global_position = rig.back_fist.global_position
+				rig_wrapper.add_child(hitbox)
+				hitbox.init(Vector2(60, -109), Vector2(80, 100), 0.3, self, hit_config)
 	elif state_machine.state is GrabState:
 		var hit_config: HitConfig = (state_machine.state as GrabState).hit
 		if rig.anim_player.current_animation == "male-rig/grab":
@@ -207,6 +206,7 @@ func _can_block() -> bool:
 		or state == tag_out_state
 		or state == is_grabbed_state
 		or state == ragdoll_state
+		or state == hurt_state
 	)
 
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:

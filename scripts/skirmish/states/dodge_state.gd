@@ -20,16 +20,11 @@ func init(ability: Ability) -> void:
 func enter(_msg := {}) -> void:
 	dodge_timer = duration
 	e.rig.play_animation("male-rig/dodge")
-	# Shift rig to the side
-	var tween = create_tween()
-	var end_pos = e.rig.position + Vector2(OFFSET_X, OFFSET_Y * -1 if randf() < 0.5 else 1)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(e.rig, "position", end_pos, duration / 2)
-	tween.tween_property(e.rig, "position", _rig_default_position, duration / 2)
+	e.absolute_velocity = Vector2(e.facing() * -400, 30 * 1 if randf() < 0.5 else -1)
 
 func physics_update(delta: float) -> void:
-	# Planted while guarding
-	e.absolute_velocity = Vector2.ZERO
+	# Dodge slide away friction
+	e.absolute_velocity *= 0.9
 
 	dodge_timer -= delta
 	if dodge_timer <= 0.0:

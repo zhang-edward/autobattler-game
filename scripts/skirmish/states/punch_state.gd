@@ -46,7 +46,7 @@ func physics_update(delta: float) -> void:
 
 	# Only another punch continues the combo
 	var wants_punch: bool = e.intent != null and e.intent.ability is PunchAbility
-	if recovery_timer <= BUFFER_WINDOW and wants_punch and combo_index < 2:
+	if recovery_timer <= BUFFER_WINDOW and wants_punch and combo_index < combo_anims.size() - 1:
 		comboing = true
 
 	if recovery_timer <= 0:

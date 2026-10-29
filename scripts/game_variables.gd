@@ -22,11 +22,8 @@ const GRAB_DEFAULT: GrabAbility = preload("res://abilities/grab/grab_default.tre
 const BLOCK_DEFAULT: BlockAbility = preload("res://abilities/block/block_default.tres")
 const DODGE_DEFAULT: DodgeAbility = preload("res://abilities/dodge/dodge_default.tres")
 const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
-var default_punch: PunchAbility = PUNCH_DEFAULT
-var default_grab: GrabAbility = GRAB_DEFAULT
-var default_block: BlockAbility = BLOCK_DEFAULT
-var default_dodge: DodgeAbility = DODGE_DEFAULT
-var default_rapid_jab: RapidJabAbility = RAPID_JAB_DEFAULT
+const UPPERCUT: PunchAbility = preload("res://abilities/uppercut/uppercut.tres")
+const BIG_PUNCH: PunchAbility = preload("res://abilities/big_punch/big_punch.tres")
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
@@ -66,7 +63,7 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_agility(randi_range(100, 150)) \
 			.with_vitality(randi_range(75, 200)) \
 			.with_charisma(randi_range(5, 15)) \
-			.with_abilities([default_punch, default_rapid_jab, default_block] as Array[Ability]) \
+			.with_abilities([UPPERCUT, BIG_PUNCH, RAPID_JAB_DEFAULT, BLOCK_DEFAULT] as Array[Ability]) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config

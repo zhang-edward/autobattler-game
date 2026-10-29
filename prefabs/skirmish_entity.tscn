@@ -33,7 +33,7 @@ collision_mask = 1024
 script = ExtResource("1_entity")
 hitbox_scene = ExtResource("2_ty1i2")
 rig = NodePath("RigWrapper/MaleRig")
-shadow = NodePath("RigWrapper/MaleRig/Shadow")
+shadow = NodePath("Shadow")
 healthbar = NodePath("ProgressBar")
 hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
@@ -51,14 +51,6 @@ brain = NodePath("AIBrain")
 [node name="MaleRig" parent="RigWrapper" unique_id=1018612703 instance=ExtResource("2_gxyuk")]
 position = Vector2(3, -11)
 
-[node name="Shadow" type="Sprite2D" parent="RigWrapper/MaleRig" unique_id=1626133202]
-modulate = Color(1, 1, 1, 0.4)
-z_index = -1
-z_as_relative = false
-position = Vector2(-3, 11)
-scale = Vector2(4, 4)
-texture = ExtResource("3_shadow")
-
 [node name="Hurtbox" type="Area2D" parent="RigWrapper" unique_id=1383962348 node_paths=PackedStringArray("parent")]
 collision_layer = 8
 collision_mask = 8
@@ -68,6 +60,13 @@ parent = NodePath("../..")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigWrapper/Hurtbox" unique_id=1709564812]
 position = Vector2(4, -109)
 shape = SubResource("CapsuleShape2D_6pmnr")
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
+modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+z_as_relative = false
+scale = Vector2(4, 4)
+texture = ExtResource("3_shadow")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=42184160]
 anchors_preset = 5

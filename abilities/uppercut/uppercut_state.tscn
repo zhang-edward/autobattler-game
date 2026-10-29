@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://kdeemlhudh0j"]
+
+[ext_resource type="Script" uid="uid://b3jcke85jjq13" path="res://scripts/skirmish/states/punch_state.gd" id="1_3fp68"]
+
+[node name="PunchState" type="Node" unique_id=1808741997]
+script = ExtResource("1_3fp68")
