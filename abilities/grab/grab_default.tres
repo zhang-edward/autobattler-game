@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_72ohn"]
 [ext_resource type="Script" uid="uid://bwwfk4bnt6ojp" path="res://scripts/resources/grab_ability.gd" id="2_gg5vv"]
-[ext_resource type="PackedScene" path="res://assets/abilities/grab_state.tscn" id="3_ts462"]
-[ext_resource type="PackedScene" path="res://assets/abilities/throw_state.tscn" id="4_20k1j"]
+[ext_resource type="PackedScene" path="res://abilities/grab/grab_state.tscn" id="3_ts462"]
+[ext_resource type="PackedScene" path="res://abilities/grab/throw_state.tscn" id="4_20k1j"]
 
 [sub_resource type="Resource" id="Resource_p78mp"]
 script = ExtResource("1_72ohn")

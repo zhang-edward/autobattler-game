@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_37t0l"]
 [ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/punch_ability.gd" id="2_j1e43"]
-[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://assets/abilities/punch_state.tscn" id="3_loolt"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/punch/punch_state.tscn" id="3_loolt"]
 
 [sub_resource type="Resource" id="Resource_bxuln"]
 script = ExtResource("1_37t0l")

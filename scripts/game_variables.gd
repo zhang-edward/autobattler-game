@@ -17,11 +17,11 @@ var selected_heroes_for_threat: Array[EntityConfig] = []
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
-const PUNCH_DEFAULT: PunchAbility = preload("res://assets/abilities/punch_default.tres")
-const GRAB_DEFAULT: GrabAbility = preload("res://assets/abilities/grab_default.tres")
-const BLOCK_DEFAULT: BlockAbility = preload("res://assets/abilities/block_default.tres")
-const DODGE_DEFAULT: DodgeAbility = preload("res://assets/abilities/dodge_default.tres")
-const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://assets/abilities/rapid_jab_default.tres")
+const PUNCH_DEFAULT: PunchAbility = preload("res://abilities/punch/punch_default.tres")
+const GRAB_DEFAULT: GrabAbility = preload("res://abilities/grab/grab_default.tres")
+const BLOCK_DEFAULT: BlockAbility = preload("res://abilities/block/block_default.tres")
+const DODGE_DEFAULT: DodgeAbility = preload("res://abilities/dodge/dodge_default.tres")
+const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
 var default_punch: PunchAbility = PUNCH_DEFAULT
 var default_grab: GrabAbility = GRAB_DEFAULT
 var default_block: BlockAbility = BLOCK_DEFAULT

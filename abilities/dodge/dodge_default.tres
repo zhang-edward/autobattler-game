@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="DodgeAbility" format=3 uid="uid://clx8f2c8jfe4d"]
 
 [ext_resource type="Script" uid="uid://culytkdy7afea" path="res://scripts/resources/dodge_ability.gd" id="1_mlqb4"]
-[ext_resource type="PackedScene" uid="uid://b7ux7dwu2ssdo" path="res://assets/abilities/dodge_state.tscn" id="2_0kq8g"]
+[ext_resource type="PackedScene" uid="uid://b7ux7dwu2ssdo" path="res://abilities/dodge/dodge_state.tscn" id="2_0kq8g"]
 
 [resource]
 script = ExtResource("1_mlqb4")
