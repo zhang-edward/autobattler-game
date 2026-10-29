@@ -63,7 +63,7 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_agility(randi_range(100, 150)) \
 			.with_vitality(randi_range(75, 200)) \
 			.with_charisma(randi_range(5, 15)) \
-			.with_abilities([UPPERCUT, BIG_PUNCH, RAPID_JAB_DEFAULT, BLOCK_DEFAULT] as Array[Ability]) \
+			.with_abilities([UPPERCUT, BIG_PUNCH, RAPID_JAB_DEFAULT, BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config

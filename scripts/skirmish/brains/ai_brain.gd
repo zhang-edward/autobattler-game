@@ -2,10 +2,12 @@ class_name AIBrain
 extends Brain
 
 """
-Closes on the nearest opponent, holds at preferred_distance, and once in range picks
+Lines up on the nearest opponent's row, holds preferred_distance horizontally, and once in range picks
 an OFFENSIVE ability from the entity's kit by weight. DEFENSIVE abilities (block)
 are reaction-only and never picked.
 """
+
+const Y_TOLERANCE := 0.2
 
 @export_group("Approach")
 @export var preferred_distance := 100.0
@@ -20,19 +22,23 @@ func get_intent(delta: float) -> Intent:
 	if target == null:
 		return null
 
-	# Vector from this entity to its target. Screen y is drawn squashed, so undo that
-	# to measure distance on the floor plane.
 	var to_target := target.global_position - entity.global_position
-	to_target.y /= IsometryUtils.DEPTH_SCALE
-	var distance := to_target.length()
 	# Face the target whatever else happens, so retreating doesn't turn the entity around
 	var facing := signf(to_target.x)
 
-	if distance > preferred_distance + deadzone:
-		return _movement(to_target.normalized(), facing)
+	var direction := Vector2.ZERO
+	# Line up on the target's row, since hits only land within Y_AXIS_HIT_RANGE
+	if absf(to_target.y) > IsometryUtils.Y_AXIS_HIT_RANGE * Y_TOLERANCE:
+		direction.y = signf(to_target.y)
+	# Hold a horizontal gap
+	var gap := absf(to_target.x)
+	if gap > preferred_distance + deadzone:
+		direction.x = facing
+	elif gap < preferred_distance - deadzone:
+		direction.x = - facing
 
-	if distance < preferred_distance - deadzone:
-		return _movement(-to_target.normalized(), facing)
+	if direction != Vector2.ZERO:
+		return _movement(direction.normalized(), facing)
 
 	if randf() < act_probability:
 		return _pick_action(facing)

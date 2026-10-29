@@ -20,7 +20,7 @@ func init(ability: Ability) -> void:
 func enter(_msg := {}) -> void:
 	dodge_timer = duration
 	e.rig.play_animation("male-rig/dodge")
-	e.absolute_velocity = Vector2(e.facing() * -400, 30 * 1 if randf() < 0.5 else -1)
+	e.absolute_velocity = Vector2(e.facing() * -400, 30 * (1 if randf() < 0.5 else -1))
 
 func physics_update(delta: float) -> void:
 	# Dodge slide away friction

@@ -46,6 +46,13 @@ tag_out_state = NodePath("StateMachine/TagOutState")
 tag_in_state = NodePath("StateMachine/TagInState")
 brain = NodePath("AIBrain")
 
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
+modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+z_as_relative = false
+scale = Vector2(4, 4)
+texture = ExtResource("3_shadow")
+
 [node name="RigWrapper" type="Sprite2D" parent="." unique_id=642401067]
 
 [node name="MaleRig" parent="RigWrapper" unique_id=1018612703 instance=ExtResource("2_gxyuk")]
@@ -60,13 +67,6 @@ parent = NodePath("../..")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigWrapper/Hurtbox" unique_id=1709564812]
 position = Vector2(4, -109)
 shape = SubResource("CapsuleShape2D_6pmnr")
-
-[node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
-modulate = Color(1, 1, 1, 0.4)
-z_index = -1
-z_as_relative = false
-scale = Vector2(4, 4)
-texture = ExtResource("3_shadow")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=42184160]
 anchors_preset = 5
