@@ -30,8 +30,12 @@ func setup_enemy_preview(threat_req_config: ThreatRequestConfig):
 		var enemy_preview = enemy_preview_scene.instantiate() as EnemyPreview
 		enemy_preview_container.add_child(enemy_preview)
 		enemy_preview.configure(c)
+		
+func reset_lineups():
+	GameVariables.selected_heroes_for_threat = []
 
 func go_to_dispatch_scene():
+	reset_lineups()
 	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
 	
 func go_to_skirmish_scene():
@@ -65,5 +69,5 @@ func update_heroes_in_slots():
 func remove_from_selected(row: HeroPreviewRow):
 	var config = row.entity_config
 	var selected_heroes = GameVariables.selected_heroes_for_threat
-	selected_heroes = selected_heroes.filter(func (c): return c != config)
+	GameVariables.selected_heroes_for_threat = selected_heroes.filter(func (c): return c != config)
 	update_heroes_in_slots()

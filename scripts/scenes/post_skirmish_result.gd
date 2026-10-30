@@ -3,10 +3,12 @@ extends Node2D
 
 @export var hero_exp_gain_panel_scene: PackedScene
 @export var skirmish_reward_panel_scene: PackedScene
+
 @onready var result_label: Label = %ResultLabel
 @onready var hero_exp_bars: VBoxContainer = %HeroExpBars
 @onready var skirmish_result_container: HBoxContainer = %SkirmishResultContainer
 @onready var continue_button: Button = %Continue
+@onready var post_skirmish_villain_details: PostSkirmishVillainDetails = %PostSkirmishVillainDetails
 
 func _ready():
 	setup_hero_exp_gain_panels()
@@ -15,7 +17,7 @@ func _ready():
 	
 func on_continue():
 	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
-	
+
 func handle_skirmish_result():
 	var threat_req_config = GameVariables.selected_threat_request_config
 	var winner = GameVariables.skirmish_winner
@@ -32,6 +34,8 @@ func handle_skirmish_result():
 			var reduced_exp = round(threat_req_config.reward.exp_gain * 0.5)
 			child.setup_reward(reduced_exp)
 	add_skirmish_reward_panels(did_player_win)
+	var enemy_config: EntityConfig = threat_req_config.enemy_configs[0]
+	post_skirmish_villain_details.configure(enemy_config)
 
 func add_skirmish_reward_panels(did_player_win: bool):
 	var threat_req_config = GameVariables.selected_threat_request_config
