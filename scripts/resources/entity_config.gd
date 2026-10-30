@@ -24,17 +24,20 @@ enum Gender {
 var gender: Gender
 var entity_name: String = ""
 var entity_type: EntityType
-var entity_power_type: EntityPowerType
-var defense := 5
+var entity_power_type: EntityPowerType # TODO: Does nothing currently
+
+## Stats
+var defense: int = 5
 var strength: int = 0
-var skill: int = 0
+var skill: int = 0 # TODO: Does nothing currently
 var agility: int = 0
 var vitality: int = 0
-var charisma: int = 0
+var charisma: int = 0 # TODO: Does nothing currently
+
 var level := 1
 var exp := 0
 var exp_to_next_level := 100
-var skirmish_moveset: Array[Move] = []
+var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
 
 # In-round state
@@ -42,11 +45,9 @@ var curr_health := 0
 var gained_exp := 0
 var num_assists := 0
 var damage_dealt := 0
-var num_civs_saved := 0
-var defeated_villain_names := []
 
 func handle_level_up():
-	level += 1	
+	level += 1
 	exp_to_next_level = get_exp_to_next_level(level)
 	defense += cond_stat_update(1, 5)
 	strength += cond_stat_update(1, 3)
@@ -64,8 +65,6 @@ func reset_all_in_round_vars():
 	gained_exp = 0
 	num_assists = 0
 	damage_dealt = 0
-	num_civs_saved = 0
-	defeated_villain_names = []
 
 func get_exp_to_next_level(level: int) -> int:
 	var base_exp: float = 100.0

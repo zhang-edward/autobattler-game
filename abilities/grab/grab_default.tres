@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="GrabAbility" format=3 uid="uid://cslxwabt8wwj6"]
+
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_72ohn"]
+[ext_resource type="Script" uid="uid://bwwfk4bnt6ojp" path="res://scripts/resources/grab_ability.gd" id="2_gg5vv"]
+[ext_resource type="PackedScene" path="res://abilities/grab/grab_state.tscn" id="3_ts462"]
+[ext_resource type="PackedScene" path="res://abilities/grab/throw_state.tscn" id="4_20k1j"]
+
+[sub_resource type="Resource" id="Resource_p78mp"]
+script = ExtResource("1_72ohn")
+kind = 1
+damage = 15
+knockback = 180.0
+launch = -220.0
+knockdown = true
+hitstop = 0.12
+
+[resource]
+script = ExtResource("2_gg5vv")
+hit = SubResource("Resource_p78mp")
+throw_state_scene = ExtResource("4_20k1j")
+weight = 2.0
+ability_name = "Grab"
+state_scene = ExtResource("3_ts462")

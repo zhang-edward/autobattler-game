@@ -56,6 +56,7 @@ func _ready() -> void:
 	_update_walls()
 	init_configs_from_game_vars()
 	if hero_team.is_empty() and villain_team.is_empty():
+		print("[WARN] Couldn't read data from GameVariables - setting up debug match...")
 		_setup_debug_matchup()
 	_build_status_rows()
 	_build_tag_in_buttons()

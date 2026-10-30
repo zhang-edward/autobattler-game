@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c7wo23uv13ypr" path="res://scripts/scenes/post_skirmish_result.gd" id="1_my2ys"]
 [ext_resource type="PackedScene" uid="uid://bxn6nabdjayvf" path="res://prefabs/ui/skirmish/hero_exp_gain_panel.tscn" id="2_8tshr"]
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="3_762vw"]
-[ext_resource type="StyleBox" uid="uid://bi7kr6q3n6da7" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="4_47rf1"]
+[ext_resource type="StyleBox" uid="uid://bdjhk7tp77l6a" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="4_47rf1"]
 [ext_resource type="PackedScene" uid="uid://c8wjugndeq23s" path="res://prefabs/ui/skirmish/post_skirmish_villain_details.tscn" id="5_762vw"]
 [ext_resource type="PackedScene" uid="uid://datqg061fjgyp" path="res://prefabs/ui/skirmish/skirmish_reward_panel.tscn" id="5_hnq2c"]
 [ext_resource type="PackedScene" uid="uid://bfixji84ylmhq" path="res://prefabs/ui/skirmish/battle_stat_panel.tscn" id="6_47rf1"]

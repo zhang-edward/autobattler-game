@@ -13,7 +13,9 @@ the three axes ourselves and let move_and_slide() handle only the floor-plane co
 enum Phase {AIRBORNE, SLIDING, DOWNED}
 
 @export var move_state: MoveState
-@export var grab_state: GrabState
+
+# Base damage for the floor-bounce hit. Initialized at spawn from the GrabAbility.
+var bounce_base_damage := 15
 
 @export_group("Physics")
 # Ragdolls fall faster than the entity gravity, so hangtime doesn't drag
@@ -102,7 +104,7 @@ func _land() -> void:
 
 	if e.z_velocity >= min_bounce_speed:
 		e.rig.play_animation(ANIM_SLAM)
-		e.healthbar.value -= HitConfig.calculate_damage(grab_state.hit.damage, thrower_entity.entity_config.strength, e.entity_config.defense)
+		e.healthbar.value -= HitConfig.calculate_damage(bounce_base_damage, thrower_entity.entity_config.strength, e.entity_config.defense)
 		e.z_velocity *= -floor_restitution
 		e.absolute_velocity *= floor_skid_retention
 		# The bounce launch happens this same frame, so show the slam for a beat
