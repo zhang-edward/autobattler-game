@@ -68,7 +68,9 @@ func reset_all_in_round_vars():
 	defeated_villain_names = []
 
 func get_exp_to_next_level(level: int) -> int:
-	var base_exp: float = 100.0
-	var exponent: float = 1.8
-	var flat_exp: float = 50.0
-	return int(floor(base_exp * pow(level, exponent) + flat_exp * level))
+	const CAP_LEVEL := 10
+	var capped := mini(level, CAP_LEVEL)
+	var exp_needed := 100 * capped + 25 * capped * capped
+	if level > CAP_LEVEL:
+		exp_needed += (level - CAP_LEVEL) * (100 + 50 * CAP_LEVEL)
+	return exp_needed
