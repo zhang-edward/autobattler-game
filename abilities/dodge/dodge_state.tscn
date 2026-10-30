@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b7ux7dwu2ssdo"]
+
+[ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="1_7dgx6"]
+
+[node name="DodgeState" type="Node" unique_id=1546188653]
+script = ExtResource("1_7dgx6")
