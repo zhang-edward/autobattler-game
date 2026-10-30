@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_w4smw"]
 [ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_adxab"]
 [ext_resource type="PackedScene" uid="uid://b7nln4cphbho4" path="res://prefabs/ui/threat_level_label.tscn" id="4_rp87b"]
-[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="5_w4smw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa2gp"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -53,12 +52,14 @@ expand_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=382283853]
+[node name="EntityName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=382283853]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Cinder Queen"
 
 [node name="EntityPowerTypeLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1612519437 instance=ExtResource("3_adxab")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 
@@ -78,6 +79,7 @@ size_flags_horizontal = 3
 text = "Level"
 
 [node name="LevelValue" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer/HBoxContainer" unique_id=1989104309]
+unique_name_in_owner = true
 layout_mode = 2
 text = "4"
 
@@ -94,6 +96,7 @@ size_flags_horizontal = 3
 text = "Total HP"
 
 [node name="HPValue" type="Label" parent="MarginContainer/VBoxContainer/NonRecruitStats/PanelContainer2/HBoxContainer" unique_id=1683555001]
+unique_name_in_owner = true
 layout_mode = 2
 text = "1,200"
 
@@ -113,21 +116,3 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 columns = 3
-
-[node name="StatLabel" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=51830719 instance=ExtResource("5_w4smw")]
-layout_mode = 2
-
-[node name="StatLabel2" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=1074566508 instance=ExtResource("5_w4smw")]
-layout_mode = 2
-
-[node name="StatLabel3" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=1361576074 instance=ExtResource("5_w4smw")]
-layout_mode = 2
-
-[node name="StatLabel4" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=555155159 instance=ExtResource("5_w4smw")]
-layout_mode = 2
-
-[node name="StatLabel5" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=769191610 instance=ExtResource("5_w4smw")]
-layout_mode = 2
-
-[node name="StatLabel6" parent="MarginContainer/VBoxContainer/StatContainer" unique_id=398557941 instance=ExtResource("5_w4smw")]
-layout_mode = 2

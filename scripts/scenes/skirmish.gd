@@ -247,4 +247,5 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 		return
 	_finished = true
 	await get_tree().create_timer(OUTRO_SECONDS).timeout
-	finished.emit(winner)
+	GameVariables.skirmish_winner = winner
+	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")

@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://c7wo23uv13ypr" path="res://scripts/scenes/post_skirmish_result.gd" id="1_my2ys"]
 [ext_resource type="PackedScene" uid="uid://bxn6nabdjayvf" path="res://prefabs/ui/skirmish/hero_exp_gain_panel.tscn" id="2_8tshr"]
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="3_762vw"]
-[ext_resource type="StyleBox" uid="uid://bdjhk7tp77l6a" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="4_47rf1"]
+[ext_resource type="PackedScene" uid="uid://datqg061fjgyp" path="res://prefabs/ui/skirmish/skirmish_reward_panel.tscn" id="3_hnq2c"]
+[ext_resource type="StyleBox" uid="uid://bi7kr6q3n6da7" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="4_47rf1"]
 [ext_resource type="PackedScene" uid="uid://c8wjugndeq23s" path="res://prefabs/ui/skirmish/post_skirmish_villain_details.tscn" id="5_762vw"]
-[ext_resource type="PackedScene" uid="uid://datqg061fjgyp" path="res://prefabs/ui/skirmish/skirmish_reward_panel.tscn" id="5_hnq2c"]
 [ext_resource type="PackedScene" uid="uid://bfixji84ylmhq" path="res://prefabs/ui/skirmish/battle_stat_panel.tscn" id="6_47rf1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_762vw"]
@@ -14,6 +14,7 @@ bg_color = Color(0.9764706, 0.8117647, 0.28235295, 1)
 [node name="PostSkirmishResult" type="Node2D" unique_id=1745463980]
 script = ExtResource("1_my2ys")
 hero_exp_gain_panel_scene = ExtResource("2_8tshr")
+skirmish_reward_panel_scene = ExtResource("3_hnq2c")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1271575141]
 
@@ -73,26 +74,13 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="HeroExpGainPanel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HeroExpBars" unique_id=1613106793 instance=ExtResource("2_8tshr")]
-layout_mode = 2
-
-[node name="HeroExpGainPanel2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HeroExpBars" unique_id=1042132104 instance=ExtResource("2_8tshr")]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer" unique_id=584938979]
+[node name="SkirmishResultContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer" unique_id=584938979]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="SkirmishResultPanel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2021521285 instance=ExtResource("5_hnq2c")]
-layout_mode = 2
-
-[node name="SkirmishResultPanel2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1346276138 instance=ExtResource("5_hnq2c")]
-layout_mode = 2
-
-[node name="SkirmishResultPanel3" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/SquadRewardsPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1459220870 instance=ExtResource("5_hnq2c")]
-layout_mode = 2
-
-[node name="VillainDetailsPanel" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1368912246 instance=ExtResource("5_762vw")]
+[node name="PostSkirmishVillainDetails" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1368912246 instance=ExtResource("5_762vw")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="BattleStatsPanel" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1573505870]
@@ -145,7 +133,8 @@ size_flags_vertical = 3
 layout_mode = 2
 alignment = 2
 
-[node name="Button" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=396564546]
+[node name="Continue" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=396564546]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 75)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)

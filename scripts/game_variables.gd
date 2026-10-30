@@ -14,6 +14,7 @@ var captured_heroes: Array[EntityConfig] = []
 var threat_request_configs: Array[ThreatRequestConfig] = []
 var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
+var skirmish_winner: EntityConfig.EntityType
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
@@ -77,28 +78,28 @@ func generate_random_threat_requests(num_requests: int):
 		var villain_config = enemy_configs[0]
 		var villain_name = villain_config.entity_name
 		# Give villain enhanced stats, since player will only fight one villain at a time
-		_enhance_villain_stats(villain_config)
-		var threat_reward = create_threat_reward(villain_config)
-		var threat_request_config = ThreatRequestConfigBuilder.new() \
-			.with_title(villain_name + " encountered") \
-			.with_description("Sample description") \
-			.with_expiry_days(randi_range(5, 8)) \
-			.with_level_requirement(1) \
-			.with_enemy_configs(enemy_configs) \
-			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN) \
-			.with_threat_reward(threat_reward) \
+		enhance_villain_stats(villain_config)
+		var threat_reward = create_threat_reward()
+		var threat_request_config = ThreatRequestConfigBuilder.new()\
+			.with_title(villain_name + " encountered")\
+			.with_description("Sample description")\
+			.with_expiry_days(randi_range(5, 8))\
+			.with_level_requirement(1)\
+			.with_enemy_configs(enemy_configs)\
+			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN)\
+			.with_threat_reward(threat_reward)\
 			.build()
 		requests.append(threat_request_config)
 	return requests
 	
-func create_threat_reward(config: EntityConfig):
+func create_threat_reward():
 	var reward = ThreatReward.new()
 	reward.exp_gain = BASE_EXP_REWARD
 	reward.money = BASE_MONEY_REWARD
 	reward.renown = BASE_RENOWN_REWARD
 	return reward
 
-func _enhance_villain_stats(config: EntityConfig):
+func enhance_villain_stats(config: EntityConfig):
 	config.vitality = round(config.vitality * 2.5)
 	
 func get_label_from_power_type(t: EntityConfig.EntityPowerType):
