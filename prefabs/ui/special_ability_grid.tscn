@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://xfegssleont1"]
+
+[ext_resource type="Script" uid="uid://ru4y8gudbhkg" path="res://scripts/ui/special_ability_grid.gd" id="1_mt06a"]
+[ext_resource type="PackedScene" uid="uid://del033dawsljk" path="res://prefabs/ui/special_ability_preview.tscn" id="2_rswr8"]
+
+[node name="SpecialMoveGrid" type="VBoxContainer" unique_id=952462957]
+script = ExtResource("1_mt06a")
+special_ability_preview_scene = ExtResource("2_rswr8")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="." unique_id=894507224]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer2" unique_id=1424436319]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="HBoxContainer2" unique_id=1523531021]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Offensive"
+
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer2" unique_id=2127404607]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AbilityGrid" type="GridContainer" parent="." unique_id=1380650043]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3

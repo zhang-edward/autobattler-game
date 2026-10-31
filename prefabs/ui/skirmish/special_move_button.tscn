@@ -1,13 +1,17 @@
-[gd_scene format=3 uid="uid://ch6bna4rv5bgv"]
+[gd_scene format=3 uid="uid://drxxfql3qqpjb"]
 
 [ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="1_3kdpt"]
-[ext_resource type="Script" uid="uid://c2ol15yycrd3r" path="res://scripts/ui/special_move_button.gd" id="2_3kdpt"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="3_7lt7j"]
+
+[sub_resource type="GDScript" id="GDScript_qrvqc"]
+script/source = "class_name SpecialMoveButton
+extends PanelContainer
+"
 
 [node name="SpecialMoveButton" type="PanelContainer" unique_id=1308431726]
 custom_minimum_size = Vector2(300, 0)
 theme_override_styles/panel = ExtResource("1_3kdpt")
-script = ExtResource("2_3kdpt")
+script = SubResource("GDScript_qrvqc")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1669887262]
 layout_mode = 2

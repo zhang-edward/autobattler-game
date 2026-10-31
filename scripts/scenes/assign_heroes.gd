@@ -3,34 +3,43 @@ extends Node2D
 
 @onready var back_button: Button = %Back
 @onready var dispatch_button: Button = %Dispatch
-@onready var add_hero_slot_1_button: Button =  %HeroSlot1Button
-@onready var add_hero_slot_2_button: Button = %HeroSlot2Button
-@onready var add_hero_slot_3_button: Button = %HeroSlot3Button
 @onready var choose_hero_modal: ChooseHeroModal = %ChooseHeroModal
-@onready var hero_slots: VBoxContainer = %HeroSlots
-@onready var add_hero_buttons: VBoxContainer = %AddHeroButtons
-@onready var enemy_preview_container: VBoxContainer = %EnemyPreviewContainer
-
-@export var hero_preview_row_scene: PackedScene
-@export var enemy_preview_scene: PackedScene
+@onready var hero_preview: MatchupHeroPreview = %MatchupHeroPreview
+@onready var villain_preview: MatchupHeroPreview = %MatchupVillainPreview
+@onready var stat_comparison: MatchupStatComparison = %MatchupStatComparison
 
 func _ready() -> void:
 	back_button.pressed.connect(go_to_dispatch_scene)
 	dispatch_button.pressed.connect(go_to_skirmish_scene)
-	add_hero_slot_1_button.pressed.connect(open_choose_hero_modal)
-	add_hero_slot_2_button.pressed.connect(open_choose_hero_modal)
-	add_hero_slot_3_button.pressed.connect(open_choose_hero_modal)
-	choose_hero_modal.on_confirm_hero_to_add.connect(add_hero_to_selected)
-	setup_enemy_preview(GameVariables.selected_threat_request_config)
+	_generate_debug_data()
+	update_entity_previews()
+	update_stat_comparison()
+	hero_preview.on_change_hero.connect(open_choose_hero_modal)
+	choose_hero_modal.on_confirm_hero_to_add.connect(update_selected_hero_for_threat_req)
 	
-func setup_enemy_preview(threat_req_config: ThreatRequestConfig):
-	for c in enemy_preview_container.get_children():
-		c.queue_free()
-	for c in threat_req_config.enemy_configs:
-		var enemy_preview = enemy_preview_scene.instantiate() as EnemyPreview
-		enemy_preview_container.add_child(enemy_preview)
-		enemy_preview.configure(c)
-		
+func update_selected_hero_for_threat_req(hero_config: EntityConfig):
+	GameVariables.selected_hero_for_threat = hero_config
+	update_stat_comparison()
+	update_entity_previews()
+	
+func _generate_debug_data():
+	if !GameVariables.selected_hero_for_threat:
+		GameVariables.selected_hero_for_threat = GameVariables.player_lineup[0]
+	if !GameVariables.selected_threat_request_config:
+		GameVariables.selected_threat_request_config = GameVariables.generate_random_threat_requests(1)[0]
+	
+func update_entity_previews():
+	var threat_req = GameVariables.selected_threat_request_config
+	var villain_config = threat_req.enemy_configs[0]
+	hero_preview.configure(GameVariables.selected_hero_for_threat)
+	villain_preview.configure(villain_config)
+	villain_preview.change_hero_button.hide()
+
+func update_stat_comparison():
+	var threat_req = GameVariables.selected_threat_request_config
+	var villain_config = threat_req.enemy_configs[0]
+	stat_comparison.configure_stat_rows(GameVariables.selected_hero_for_threat, villain_config)
+
 func reset_lineups():
 	GameVariables.selected_heroes_for_threat = []
 
@@ -44,30 +53,3 @@ func go_to_skirmish_scene():
 func open_choose_hero_modal():
 	choose_hero_modal.show()
 	choose_hero_modal.display_available_heroes(GameVariables.selected_heroes_for_threat)
-
-func add_hero_to_selected(config: EntityConfig):
-	GameVariables.selected_heroes_for_threat.append(config)
-	update_heroes_in_slots()
-
-func update_heroes_in_slots():
-	for c in hero_slots.get_children():
-		c.queue_free()
-	for sh in GameVariables.selected_heroes_for_threat:
-		var preview_row = hero_preview_row_scene.instantiate() as HeroPreviewRow
-		hero_slots.add_child(preview_row)
-		preview_row.configure(sh)
-		preview_row.enable_remove_overlay = true
-		preview_row.on_clicked.connect(remove_from_selected)
-	var num_hero_slots_to_show = 3 - GameVariables.selected_heroes_for_threat.size()
-	var add_hero_slot_buttons = add_hero_buttons.get_children()
-	for i in range(0, add_hero_slot_buttons.size()):
-		if i < num_hero_slots_to_show:
-			add_hero_slot_buttons[i].show()
-		else:
-			add_hero_slot_buttons[i].hide()
-
-func remove_from_selected(row: HeroPreviewRow):
-	var config = row.entity_config
-	var selected_heroes = GameVariables.selected_heroes_for_threat
-	GameVariables.selected_heroes_for_threat = selected_heroes.filter(func (c): return c != config)
-	update_heroes_in_slots()

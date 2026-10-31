@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://u7iw475rtmkf"]
+
+[ext_resource type="Script" uid="uid://cnx4v8xvfqwj3" path="res://scripts/ui/matchup_hero_preview.gd" id="1_fqhfw"]
+[ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="1_vmqko"]
+[ext_resource type="PackedScene" uid="uid://xfegssleont1" path="res://prefabs/ui/special_ability_grid.tscn" id="2_kgmu4"]
+[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="3_kgmu4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pmnr"]
+bg_color = Color(0.11764706, 0.12156863, 0.2, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.19215687, 0.19607843, 0.31764707, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="MatchupHeroPreview" type="PanelContainer" unique_id=1991403126]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pmnr")
+script = ExtResource("1_fqhfw")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1920020011]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=436173457]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=823606399]
+layout_mode = 2
+
+[node name="HeroName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1979584147]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 30
+text = "Hero Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=710817561]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1605058312]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Lv"
+
+[node name="LevelValue" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=806929998]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 20
+text = "3"
+
+[node name="EntityPowerTypeLabel" parent="MarginContainer/VBoxContainer" unique_id=1612519437 instance=ExtResource("1_vmqko")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="MoveGridContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=820264569]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OffenseMoves" parent="MarginContainer/VBoxContainer/MoveGridContainer" unique_id=952462957 instance=ExtResource("2_kgmu4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DefenseMoves" parent="MarginContainer/VBoxContainer/MoveGridContainer" unique_id=35730921 instance=ExtResource("2_kgmu4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ChangeHero" type="Button" parent="MarginContainer/VBoxContainer" unique_id=851548549]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("3_kgmu4")
+text = "Change Hero"

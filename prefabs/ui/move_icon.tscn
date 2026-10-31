@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cfg0si3lv2v0c"]
+[gd_scene format=3 uid="uid://dm8txwwiua4ug"]
 
 [node name="MoveIcon" type="PanelContainer" unique_id=803695537]
 custom_minimum_size = Vector2(75, 75)

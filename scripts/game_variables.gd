@@ -14,6 +14,7 @@ var captured_heroes: Array[EntityConfig] = []
 var threat_request_configs: Array[ThreatRequestConfig] = []
 var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
+var selected_hero_for_threat: EntityConfig
 var skirmish_winner: EntityConfig.EntityType
 
 # Shared default kit: identical for all characters for now (tune later).

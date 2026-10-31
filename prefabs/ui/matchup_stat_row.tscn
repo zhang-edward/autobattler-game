@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://dui54xixe7jtk"]
+
+[ext_resource type="Script" uid="uid://kslhpcmlyqmc" path="res://scripts/ui/matchup_stat_row.gd" id="1_2omoa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r7ebt"]
+
+[node name="MatchupStatRow" type="PanelContainer" unique_id=1528863362]
+theme_override_styles/panel = SubResource("StyleBoxEmpty_r7ebt")
+script = ExtResource("1_2omoa")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=392449526]
+layout_mode = 2
+
+[node name="HeroStat" type="Label" parent="HBoxContainer" unique_id=422294816]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "12"
+horizontal_alignment = 2
+
+[node name="StatLabel" type="Label" parent="HBoxContainer" unique_id=446723038]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Strength"
+horizontal_alignment = 1
+
+[node name="VillainStat" type="Label" parent="HBoxContainer" unique_id=371451551]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "12"

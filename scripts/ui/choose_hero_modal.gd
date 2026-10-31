@@ -2,7 +2,7 @@ class_name ChooseHeroModal
 extends PanelContainer
 
 @onready var hero_list_container: VBoxContainer = %HeroListContainer
-@onready var dispatch_button: Button = %Dispatch
+@onready var confirm_button: Button = %Confirm
 @onready var back_button: Button = %Back
 @export var hero_preview_row: PackedScene
 
@@ -12,7 +12,7 @@ signal on_confirm_hero_to_add(c: EntityConfig)
 
 func _ready() -> void:
 	back_button.pressed.connect(close_modal)
-	dispatch_button.pressed.connect(confirm_hero_to_add)
+	confirm_button.pressed.connect(confirm_hero_to_add)
 
 func close_modal():
 	hide()

@@ -9,7 +9,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa2gp"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_bottom = 2
-border_color = Color(0.7294118, 0.7294118, 0.7294118, 0.29411766)
+border_color = Color(0.2738727, 0.27387276, 0.27387258, 0.19607843)
+expand_margin_bottom = 5.0
 
 [node name="PostSkirmishVillainDetails" type="PanelContainer" unique_id=1368912246]
 anchors_preset = 14
@@ -65,6 +66,7 @@ size_flags_horizontal = 0
 
 [node name="NonRecruitStats" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1663535162]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/NonRecruitStats" unique_id=452920132]
 layout_mode = 2

@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://ba1emtrosnvug"]
+
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_f58gt"]
+[ext_resource type="Script" uid="uid://dh5cqcn8815vf" path="res://scripts/ui/matchup_stat_comparison.gd" id="1_qtm3p"]
+[ext_resource type="PackedScene" uid="uid://dui54xixe7jtk" path="res://prefabs/ui/matchup_stat_row.tscn" id="2_qtm3p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w4o2g"]
+
+[node name="MatchupStatComparison" type="PanelContainer" unique_id=1469548853]
+custom_minimum_size = Vector2(800, 0)
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_w4o2g")
+script = ExtResource("1_qtm3p")
+stat_row_scene = ExtResource("2_qtm3p")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=627664190]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=951613933]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1446135268]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=932293108]
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("1_f58gt")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=56601754]
+layout_mode = 2
+size_flags_horizontal = 2
+texture = ExtResource("1_f58gt")
+stretch_mode = 5
+
+[node name="MatchupStatContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=846069825]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=618478512]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1431040775]
+layout_mode = 2

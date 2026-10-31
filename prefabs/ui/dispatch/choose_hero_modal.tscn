@@ -69,11 +69,11 @@ theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = ExtResource("3_w7cy1")
 text = "Cancel"
 
-[node name="Dispatch" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1851404051]
+[node name="Confirm" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1851404051]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(175, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_us1su")
-text = "Add to Squad"
+text = "Confirm"

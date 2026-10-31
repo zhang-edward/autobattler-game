@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://del033dawsljk"]
+
+[ext_resource type="Script" uid="uid://dohwp3k1btxh6" path="res://scripts/ui/special_ability_preview.gd" id="1_y6e7l"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_d2cc8"]
+
+[node name="SpecialAbilityPreview" type="PanelContainer" unique_id=1992649153]
+size_flags_horizontal = 3
+script = ExtResource("1_y6e7l")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2085087275]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1389222549]
+layout_mode = 2
+
+[node name="AbilityIcon" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=654008129]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("2_d2cc8")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="AbilityName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1575450476]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Thunder Kick"
+horizontal_alignment = 1

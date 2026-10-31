@@ -91,7 +91,7 @@ func _place_wall(wall: StaticBody2D, center: Vector2, size: Vector2) -> void:
 func init_configs_from_game_vars():
 	var threat_req_config = GameVariables.selected_threat_request_config
 	var villain_configs = threat_req_config.enemy_configs if threat_req_config != null else ([] as Array[EntityConfig])
-	setup(GameVariables.selected_heroes_for_threat, villain_configs)
+	setup([GameVariables.selected_hero_for_threat], villain_configs)
 
 func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
 	for h in heroes:
