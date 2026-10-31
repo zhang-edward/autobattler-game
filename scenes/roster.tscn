@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dsy0vqwg615kr"]
+
+[ext_resource type="Script" uid="uid://bmu0qiiiinnyl" path="res://scripts/scenes/roster.gd" id="1_fhcv2"]
+[ext_resource type="PackedScene" uid="uid://cb01jqbyr22ns" path="res://prefabs/ui/sidebar_menu.tscn" id="2_a4gmj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwwfa"]
+bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
+
+[node name="Roster" type="Node2D" unique_id=1033576975]
+script = ExtResource("1_fhcv2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1056828901]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=1308427570]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="SidebarMenu" parent="CanvasLayer/HBoxContainer" unique_id=672150573 instance=ExtResource("2_a4gmj")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_uwwfa")

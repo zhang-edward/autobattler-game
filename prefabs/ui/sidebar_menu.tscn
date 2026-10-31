@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://cb01jqbyr22ns"]
 
 [ext_resource type="PackedScene" uid="uid://134ttetq48vj" path="res://prefabs/ui/sidebar_menu_option.tscn" id="1_chfu6"]
+[ext_resource type="Script" uid="uid://ba8mq575t6psy" path="res://scripts/ui/sidebar_menu.gd" id="1_jccjp"]
 
 [node name="SidebarMenu" type="PanelContainer" unique_id=672150573]
 anchors_preset = 9
 anchor_bottom = 1.0
 grow_vertical = 2
+script = ExtResource("1_jccjp")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=569810834]
 layout_mode = 2
@@ -17,11 +19,12 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1447355354]
 layout_mode = 2
 
-[node name="SidebarMenuOption" parent="MarginContainer/VBoxContainer" unique_id=1362751910 instance=ExtResource("1_chfu6")]
+[node name="RequestInboxOption" parent="MarginContainer/VBoxContainer" unique_id=1362751910 instance=ExtResource("1_chfu6")]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-mouse_filter = 1
 
-[node name="SidebarMenuOption2" parent="MarginContainer/VBoxContainer" unique_id=1146846148 instance=ExtResource("1_chfu6")]
+[node name="RosterOption" parent="MarginContainer/VBoxContainer" unique_id=1146846148 instance=ExtResource("1_chfu6")]
+unique_name_in_owner = true
 layout_mode = 2
 option_text = "Roster"

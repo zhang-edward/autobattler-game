@@ -27,6 +27,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="SidebarMenu" parent="CanvasLayer/HBoxContainer" unique_id=507569661 instance=ExtResource("3_x4ql8")]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1

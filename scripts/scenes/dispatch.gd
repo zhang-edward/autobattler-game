@@ -5,6 +5,7 @@ extends Node2D
 @onready var request_container: VBoxContainer = %RequestContainer
 @onready var num_threats_label: Label = %NumThreatsLabel
 @onready var threat_details_container: ThreatDetailsContainer = %ThreatDetailsContainer
+@onready var sidebar_menu: SidebarMenu = %SidebarMenu
 
 var selected_threat_req: RequestInboxThreat
 
@@ -18,6 +19,7 @@ func _ready() -> void:
 		threat_req.button.pressed.connect(select_threat_req.bind(threat_req))
 	num_threats_label.text = str(GameVariables.threat_request_configs.size()) + " threats awaiting response"
 	threat_details_container.hide()
+	sidebar_menu.select_option(sidebar_menu.request_inbox_option)
 	
 func select_threat_req(req: RequestInboxThreat):
 	if selected_threat_req != null:
