@@ -23,6 +23,7 @@ func update_selected_hero_for_threat_req(hero_config: EntityConfig):
 	update_entity_previews()
 	
 func _generate_debug_data():
+	print("generating debug data...")
 	if !GameVariables.selected_hero_for_threat:
 		GameVariables.selected_hero_for_threat = GameVariables.player_lineup[0]
 	if !GameVariables.selected_threat_request_config:

@@ -3,6 +3,7 @@
 [ext_resource type="StyleBox" uid="uid://bi7kr6q3n6da7" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="1_71o0b"]
 [ext_resource type="Script" uid="uid://7sobteydt0pc" path="res://scripts/ui/post_skirmish_villain_details.gd" id="2_viukw"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_w4smw"]
+[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="3_5s4gt"]
 [ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_adxab"]
 
 [node name="PostSkirmishVillainDetails" type="PanelContainer" unique_id=1368912246]
@@ -17,6 +18,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("1_71o0b")
 script = ExtResource("2_viukw")
+stat_label_scene = ExtResource("3_5s4gt")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=68333436]
 layout_mode = 2

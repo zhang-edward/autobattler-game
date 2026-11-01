@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://cpy2ac6m6sciq" path="res://scripts/ui/roster_hero_preview.gd" id="2_n6lhb"]
 [ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_n6lhb"]
 [ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="4_eanv6"]
+[ext_resource type="StyleBox" uid="uid://cg8t6ptha62e" path="res://prefabs/styles/exp_bar_bg.tres" id="6_eanv6"]
+[ext_resource type="StyleBox" uid="uid://lye068ferra7" path="res://prefabs/styles/exp_bar_fill.tres" id="7_qdoj4"]
 
 [node name="RosterHeroPreview" type="PanelContainer" unique_id=43850246]
 size_flags_horizontal = 3
@@ -66,6 +68,8 @@ text = "EXP 60%"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
+theme_override_styles/background = ExtResource("6_eanv6")
+theme_override_styles/fill = ExtResource("7_qdoj4")
 show_percentage = false
 
 [node name="StatGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1562007441]

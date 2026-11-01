@@ -78,8 +78,6 @@ func generate_random_threat_requests(num_requests: int):
 		var enemy_configs = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
 		var villain_config = enemy_configs[0]
 		var villain_name = villain_config.entity_name
-		# Give villain enhanced stats, since player will only fight one villain at a time
-		enhance_villain_stats(villain_config)
 		var threat_reward = create_threat_reward()
 		var threat_request_config = ThreatRequestConfigBuilder.new()\
 			.with_title(villain_name + " encountered")\

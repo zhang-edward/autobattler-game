@@ -56,7 +56,6 @@ func add_skirmish_reward_panel(reward_name: String, reward_value: int):
 	panel.setup_reward(reward_name, reward_value)
 
 func setup_hero_exp_gain_panels():
-	for h in GameVariables.selected_heroes_for_threat:
-		var hero_exp_gain = hero_exp_gain_panel_scene.instantiate() as HeroExpGainPanel
-		hero_exp_bars.add_child(hero_exp_gain)
-		hero_exp_gain.configure(h)
+	var hero_exp_gain = hero_exp_gain_panel_scene.instantiate() as HeroExpGainPanel
+	hero_exp_bars.add_child(hero_exp_gain)
+	hero_exp_gain.configure(GameVariables.selected_hero_for_threat)
