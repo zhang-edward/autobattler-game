@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://dbbs8vyydcnwg"]
+
+[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="1_wafj3"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_3jhdg"]
+[ext_resource type="Script" uid="uid://cpy2ac6m6sciq" path="res://scripts/ui/roster_hero_preview.gd" id="2_n6lhb"]
+[ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_n6lhb"]
+[ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="4_eanv6"]
+
+[node name="RosterHeroPreview" type="PanelContainer" unique_id=43850246]
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_wafj3")
+script = ExtResource("2_n6lhb")
+stat_label_scene = ExtResource("4_eanv6")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=384983096]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1070161442]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1398502439]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1863755733]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("2_3jhdg")
+expand_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=428489939]
+layout_mode = 2
+
+[node name="HeroName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=482299541]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Volt Runner"
+
+[node name="EntityPowerTypeLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1612519437 instance=ExtResource("3_n6lhb")]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1055221845]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=957923279]
+layout_mode = 2
+
+[node name="Level" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=397223749]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lv 3"
+
+[node name="ExpPct" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=2011825066]
+unique_name_in_owner = true
+layout_mode = 2
+text = "EXP 60%"
+
+[node name="ExpBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=868248112]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+show_percentage = false
+
+[node name="StatGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1562007441]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3
+
+[node name="Button" type="Button" parent="." unique_id=974316015]
+unique_name_in_owner = true
+layout_mode = 2
+flat = true

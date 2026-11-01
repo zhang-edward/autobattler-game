@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c5o2gax7s5apl"]
+
+[ext_resource type="Script" uid="uid://cgijttdp01c8o" path="res://scripts/ui/stat_label_bordered.gd" id="1_usf53"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qa2gp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 2
+border_color = Color(0.2738727, 0.27387276, 0.27387258, 0.19607843)
+expand_margin_bottom = 5.0
+
+[node name="StatLabelBordered" type="PanelContainer" unique_id=1558969229]
+theme_override_styles/panel = SubResource("StyleBoxFlat_qa2gp")
+script = ExtResource("1_usf53")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=2101100119]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer" unique_id=492210290]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+
+[node name="Value" type="Label" parent="HBoxContainer" unique_id=1243407146]
+unique_name_in_owner = true
+layout_mode = 2
+text = "4"

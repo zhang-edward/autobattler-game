@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://w1aryxpsm7uo"]
+
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="1_t6g0x"]
+[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="2_pbjxm"]
+[ext_resource type="Script" uid="uid://i8vus1d43ii3" path="res://scripts/ui/roster_hero_details.gd" id="2_usdt2"]
+[ext_resource type="PackedScene" uid="uid://cv1e7idqdjn1o" path="res://prefabs/ui/character_stats_panel.tscn" id="3_ney57"]
+[ext_resource type="PackedScene" uid="uid://bdo7ak12gg2wn" path="res://prefabs/ui/special_abilities_panel.tscn" id="8_eqg7a"]
+
+[node name="RosterHeroDetails" type="PanelContainer" unique_id=2108953206]
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("1_t6g0x")
+script = ExtResource("2_usdt2")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=956801195]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1813688848]
+layout_mode = 2
+
+[node name="HeroName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=680921115]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Volt Runner"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=56677559]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="CharacterStatsPanel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2017757596 instance=ExtResource("3_ney57")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=260293169]
+custom_minimum_size = Vector2(1050, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="SpecialAbilitiesPanel" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1616880456 instance=ExtResource("8_eqg7a")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=989548619]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("2_pbjxm")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2" unique_id=16750650]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2/MarginContainer" unique_id=728710611]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2/MarginContainer/VBoxContainer" unique_id=723203604]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Match History"
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2/MarginContainer/VBoxContainer" unique_id=1908782079]
+layout_mode = 2

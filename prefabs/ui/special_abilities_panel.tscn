@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bdo7ak12gg2wn"]
+
+[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="1_wojcu"]
+[ext_resource type="PackedScene" uid="uid://xfegssleont1" path="res://prefabs/ui/special_ability_grid.tscn" id="2_komk8"]
+[ext_resource type="Script" uid="uid://cvltge7m7r4p6" path="res://scripts/ui/special_abilities_panel.gd" id="2_v4331"]
+
+[node name="SpecialAbilitiesPanel" type="PanelContainer" unique_id=1616880456]
+custom_minimum_size = Vector2(0, 650)
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("1_wojcu")
+script = ExtResource("2_v4331")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=257056209]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=166921250]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=500261693]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Special Abilities"
+
+[node name="OffenseMoves" parent="MarginContainer/VBoxContainer" unique_id=952462957 instance=ExtResource("2_komk8")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="DefenseMoves" parent="MarginContainer/VBoxContainer" unique_id=2031499895 instance=ExtResource("2_komk8")]
+unique_name_in_owner = true
+layout_mode = 2

@@ -2,12 +2,16 @@
 
 [ext_resource type="Script" uid="uid://bmu0qiiiinnyl" path="res://scripts/scenes/roster.gd" id="1_fhcv2"]
 [ext_resource type="PackedScene" uid="uid://cb01jqbyr22ns" path="res://prefabs/ui/sidebar_menu.tscn" id="2_a4gmj"]
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="3_peknm"]
+[ext_resource type="PackedScene" uid="uid://dbbs8vyydcnwg" path="res://prefabs/ui/roster_hero_preview.tscn" id="3_uwwfa"]
+[ext_resource type="PackedScene" uid="uid://w1aryxpsm7uo" path="res://prefabs/ui/roster_hero_details.tscn" id="5_fghch"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwwfa"]
 bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
 
 [node name="Roster" type="Node2D" unique_id=1033576975]
 script = ExtResource("1_fhcv2")
+roster_hero_preview_scene = ExtResource("3_uwwfa")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1056828901]
 
@@ -25,3 +29,35 @@ layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_uwwfa")
+
+[node name="HeroList" type="PanelContainer" parent="CanvasLayer/HBoxContainer" unique_id=379688516]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("3_peknm")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HeroList" unique_id=539694740]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HeroList/MarginContainer" unique_id=1719893589]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="CanvasLayer/HBoxContainer/HeroList/MarginContainer/VBoxContainer" unique_id=143769751]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Roster"
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/HBoxContainer/HeroList/MarginContainer/VBoxContainer" unique_id=447445746]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+
+[node name="HeroDetails" parent="CanvasLayer/HBoxContainer" unique_id=2108953206 instance=ExtResource("5_fghch")]
+unique_name_in_owner = true
+layout_mode = 2

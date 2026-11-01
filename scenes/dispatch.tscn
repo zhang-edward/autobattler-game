@@ -4,13 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://udxuy8egjjio" path="res://prefabs/ui/dispatch/request_inbox_threat.tscn" id="2_nh7xv"]
 [ext_resource type="PackedScene" uid="uid://cb01jqbyr22ns" path="res://prefabs/ui/sidebar_menu.tscn" id="3_x4ql8"]
 [ext_resource type="StyleBox" uid="uid://blb5rs03cmmqx" path="res://prefabs/styles/req_inbox_stylebox.tres" id="4_l24lb"]
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="4_y0osi"]
 [ext_resource type="PackedScene" uid="uid://b0a1yswoi41lu" path="res://prefabs/ui/dispatch/threat_details_container.tscn" id="5_nh7xv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ubsd"]
 bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4ql8"]
-bg_color = Color(0.07450981, 0.07450981, 0.1254902, 1)
 
 [node name="Dispatch" type="Node2D" unique_id=1043561400]
 script = ExtResource("1_2ubsd")
@@ -36,7 +34,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_2ubsd")
 [node name="RequestInbox" type="PanelContainer" parent="CanvasLayer/HBoxContainer" unique_id=754335062]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_x4ql8")
+theme_override_styles/panel = ExtResource("4_y0osi")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/RequestInbox" unique_id=1782789076]
 layout_mode = 2

@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://cv1e7idqdjn1o"]
+
+[ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="1_0fpeh"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_cpl3w"]
+[ext_resource type="Script" uid="uid://dum58wdr4i311" path="res://scripts/ui/character_stats_panel.gd" id="2_ye81y"]
+[ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_ye81y"]
+[ext_resource type="StyleBox" uid="uid://cg8t6ptha62e" path="res://prefabs/styles/exp_bar_bg.tres" id="4_4tdto"]
+[ext_resource type="StyleBox" uid="uid://lye068ferra7" path="res://prefabs/styles/exp_bar_fill.tres" id="5_ow6jt"]
+[ext_resource type="PackedScene" uid="uid://c5o2gax7s5apl" path="res://prefabs/ui/stat_label_bordered.tscn" id="6_r47q8"]
+
+[node name="CharacterStatsPanel" type="PanelContainer" unique_id=2017757596]
+size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("1_0fpeh")
+script = ExtResource("2_ye81y")
+stat_label_scene = ExtResource("6_r47q8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=272162799]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1368249703]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=1620136185]
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+texture = ExtResource("2_cpl3w")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=130289492]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="EntityPowerTypeLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1612519437 instance=ExtResource("3_ye81y")]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Level" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1147360253]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 20
+text = "Lv 3"
+horizontal_alignment = 2
+
+[node name="ExpBar" type="ProgressBar" parent="MarginContainer/VBoxContainer" unique_id=1062186123]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+theme_override_styles/background = ExtResource("4_4tdto")
+theme_override_styles/fill = ExtResource("5_ow6jt")
+value = 50.0
+show_percentage = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=694661764]
+layout_mode = 2
+
+[node name="ExpLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=757998065]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "EXP"
+
+[node name="ExpAmount" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1356737794]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "100/100"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1482898547]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=392240844]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Stats"
+
+[node name="StatList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=872944909]
+unique_name_in_owner = true
+layout_mode = 2

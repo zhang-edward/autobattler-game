@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ru4y8gudbhkg" path="res://scripts/ui/special_ability_grid.gd" id="1_mt06a"]
 [ext_resource type="PackedScene" uid="uid://del033dawsljk" path="res://prefabs/ui/special_ability_preview.tscn" id="2_rswr8"]
 
-[node name="SpecialMoveGrid" type="VBoxContainer" unique_id=952462957]
+[node name="SpecialAbilityGrid" type="VBoxContainer" unique_id=952462957]
 script = ExtResource("1_mt06a")
 special_ability_preview_scene = ExtResource("2_rswr8")
 
