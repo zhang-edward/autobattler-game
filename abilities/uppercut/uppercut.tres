@@ -18,3 +18,4 @@ recovery_times = Array[float]([0.4])
 weight = 10.0
 ability_name = "Uppercut"
 state_scene = ExtResource("3_dewhk")
+cooldown = 9.0

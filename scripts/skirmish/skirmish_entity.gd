@@ -48,6 +48,7 @@ var intent: Intent
 var is_active := true
 var skirmish: Skirmish
 var ability_to_state: Dictionary = {}
+var ability_cooldowns: Dictionary = {}
 
 var hitstop_scale := 1.0:
 	set(value):
@@ -141,6 +142,8 @@ func set_active(value: bool) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_active or brain == null:
 		return
+	for ability in ability_cooldowns:
+		ability_cooldowns[ability] = maxf(ability_cooldowns[ability] - delta * hitstop_scale, 0.0)
 	intent = brain.get_intent(delta * hitstop_scale)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale
 	move_and_slide()
