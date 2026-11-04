@@ -17,21 +17,21 @@ func setup_reward(gain_amt: int):
 	exp_gain_amt.text = "+" + str(gain_amt)
 	exp_bar.value = entity_config.exp
 	exp_bar.max_value = entity_config.exp_to_next_level
-	# Apply rewards
-	for c in GameVariables.player_lineup:
-		if c == entity_config:
-			var new_exp_amt = c.exp + gain_amt
-			if new_exp_amt >= c.exp_to_next_level:
-				c.exp = (new_exp_amt) - c.exp_to_next_level
-				c.exp_to_next_level = c.get_exp_to_next_level(c.level)
-				c.level += 1
-			else:
-				c.exp = new_exp_amt
 	incr_exp_bar(gain_amt)
+				
+func apply_rewards(ec: EntityConfig):
+	for c in GameVariables.player_lineup:
+		if c == ec:
+			print(ec.exp)
+			print(ec.exp_to_next_level)
+			c.exp = ec.exp
+			c.exp_to_next_level = ec.exp_to_next_level
+			c.level = ec.level
 
 func incr_exp_bar(amt: float):
 	if amt <= 0:
 		entity_config.exp = int(exp_bar.value)
+		apply_rewards(entity_config)
 		return
 	exp_bar.value += 0.2
 	if exp_bar.value >= exp_bar.max_value:
