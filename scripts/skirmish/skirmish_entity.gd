@@ -218,7 +218,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	# If hitbox owner somehow transitioned into a state which invalidates its hitbox, we don't need to process this hit anymore
 	if source == null or not is_instance_valid(source) or source.is_dead or not source.is_active:
 		return
-	if source.state_machine != null:
+	if source.state_machine != null and hit.kind != HitConfig.Kind.PROJECTILE:
 		var source_state: State = source.state_machine.state
 		if source_state == source.is_grabbed_state or source_state == source.ragdoll_state or source_state == source.death_state:
 			return
@@ -230,7 +230,9 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		source.grabbed_entity = self
 		return
 
-	if hit.kind == HitConfig.Kind.STRIKE and _can_block():
+	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
+
+	if (hit.kind == HitConfig.Kind.STRIKE or hit.kind == HitConfig.Kind.PROJECTILE) and _can_block():
 		# Check block success with a "skill" stat check (d100 < 5 * skill)
 		var skill: int = entity_config.skill if entity_config != null else 0
 		if randf() * 100.0 < float(skill) * 5.0:
@@ -238,7 +240,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 			var defensive_state := _defensive_state()
 			if defensive_state != null:
 				state_machine.transition_to(defensive_state)
-				Hitstop.freeze([source, self], hit.hitstop)
+				Hitstop.freeze(frozen, hit.hitstop)
 				return
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
@@ -260,7 +262,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	else:
 		state_machine.transition_to(hurt_state, {"dir": dir})
 
-	Hitstop.freeze([source, self], hit.hitstop)
+	Hitstop.freeze(frozen, hit.hitstop)
 	if hit.knockdown:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 

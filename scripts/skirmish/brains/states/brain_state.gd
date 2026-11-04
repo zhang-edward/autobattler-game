@@ -9,7 +9,7 @@ const Y_TOLERANCE := 0.2
 func get_intent(_delta: float) -> Intent:
 	return null
 
-func _row_direction(to_target: Vector2) -> Vector2:
+func _y_direction(to_target: Vector2) -> Vector2:
 	# Line up on the target's row, since hits only land within Y_AXIS_HIT_RANGE
 	if absf(to_target.y) > IsometryUtils.Y_AXIS_HIT_RANGE * Y_TOLERANCE:
 		return Vector2(0.0, signf(to_target.y))

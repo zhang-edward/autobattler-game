@@ -40,9 +40,9 @@ func get_intent(_delta: float) -> Intent:
 	# Face the target whatever else happens, so retreating doesn't turn the entity around
 	var facing := signf(to_target.x)
 	var gap := absf(to_target.x)
-	var direction := _row_direction(to_target)
+	var direction := _y_direction(to_target)
 	if gap > preferred_distance + deadzone:
 		direction.x = facing
 	elif gap < preferred_distance - deadzone:
-		direction.x = -facing
+		direction.x = - facing
 	return _movement(direction.normalized() * SPEED, facing)
