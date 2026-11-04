@@ -1,4 +1,4 @@
-class_name ApproachState
+class_name AttackState
 extends BrainState
 
 const SPEED := 4.0
