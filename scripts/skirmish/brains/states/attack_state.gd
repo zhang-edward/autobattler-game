@@ -24,11 +24,18 @@ func get_intent(_delta: float) -> Intent:
 			return null
 
 	var direction := _y_direction(to_target)
+	var speed := SPEED
 	if absf(to_target.x) > _ability.ability_range:
 		direction.x = facing
+	elif absf(to_target.x) < _ability.ability_min_range:
+		if brain.entity.is_on_wall():
+			state_machine.transition_to(idle_state)
+			return null
+		direction.x = -facing
+		speed = IdleState.SPEED
 
 	if direction != Vector2.ZERO:
-		return _movement(direction.normalized() * SPEED, facing)
+		return _movement(direction.normalized() * speed, facing)
 
 	# # Only MoveState reads intent.ability, so firing in any other state would drop it
 	# if brain.entity.state_machine.state != brain.entity.move_state:

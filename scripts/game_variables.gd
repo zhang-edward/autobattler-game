@@ -24,6 +24,7 @@ const DODGE_DEFAULT: DodgeAbility = preload("res://abilities/dodge/dodge_default
 const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
 const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut/uppercut.tres")
 const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch/big_punch.tres")
+const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick/dash_kick.tres")
 const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast/energy_blast_default.tres")
 
 static var BASE_EXP_REWARD = 100
@@ -54,6 +55,24 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 	for i in range(0, num_heroes):
 		var rand_gender = NameGenerator.Gender.MALE if randi_range(0, 1) == 0 else NameGenerator.Gender.FEMALE
 		var rand_name = NameGenerator.generate_name_string(rand_gender)
+
+		var abilities: Array[Ability] = [
+			# UPPERCUT,
+			BIG_PUNCH,
+			DASH_KICK,
+			RAPID_JAB_DEFAULT,
+			# ENERGY_BLAST,
+			BLOCK_DEFAULT, DODGE_DEFAULT]
+
+		var random_abilities := true
+		# Debug: same fixed kit for every character
+		# var random_abilities := false
+		if random_abilities:
+			var offense_abilities: Array[Ability] = [UPPERCUT, BIG_PUNCH, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST]
+			var defense_abilities: Array[Ability] = [BLOCK_DEFAULT, DODGE_DEFAULT]
+			offense_abilities.shuffle()
+			abilities = [offense_abilities[0], offense_abilities[1], defense_abilities.pick_random()]
+
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \
 			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE) \
@@ -64,12 +83,7 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_agility(randi_range(100, 150)) \
 			.with_vitality(randi_range(75, 200)) \
 			.with_charisma(randi_range(5, 15)) \
-			.with_abilities([
-				# UPPERCUT,
-				BIG_PUNCH,
-				# RAPID_JAB_DEFAULT,
-				# ENERGY_BLAST,
-				BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
+			.with_abilities(abilities) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config
