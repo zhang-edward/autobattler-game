@@ -52,8 +52,8 @@ func handle_level_up():
 	defense += cond_stat_update(1, 5)
 	strength += cond_stat_update(1, 3)
 	skill += cond_stat_update(1, 3)
-	agility += cond_stat_update(15, 25)
-	vitality += cond_stat_update(10, 20)
+	agility += cond_stat_update(1, 3)
+	vitality += cond_stat_update(1, 3)
 	charisma += cond_stat_update(1, 3)
 
 func cond_stat_update(lo: int, hi: int):

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ok4ghcj8f1s8" path="res://scripts/ui/threat_details_container.gd" id="1_ubaie"]
 [ext_resource type="PackedScene" uid="uid://m74ym5iqu5ou" path="res://prefabs/ui/dispatch/threat_label.tscn" id="2_gllpy"]
+[ext_resource type="StyleBox" uid="uid://dmy06mntrqfa8" path="res://prefabs/ui/yellow_button.tres" id="3_gllpy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_usk72"]
 bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
@@ -9,9 +10,6 @@ bg_color = Color(0.11372549, 0.12156863, 0.19607843, 1)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l24lb"]
 content_margin_left = 0.0
 content_margin_right = 25.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nh7xv"]
-bg_color = Color(0.972549, 0.80784315, 0.28235295, 1)
 
 [node name="ThreatDetailsContainer" type="MarginContainer" unique_id=325321033]
 offset_right = 515.0
@@ -153,5 +151,5 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_nh7xv")
+theme_override_styles/normal = ExtResource("3_gllpy")
 text = "Assign Heroes"
