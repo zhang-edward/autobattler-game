@@ -11,6 +11,8 @@ func init(ability: Ability) -> void:
 	duration = block_move.duration
 
 func enter(_msg := {}) -> void:
+	if e.intent != null and e.intent.facing != 0.0:
+		e.rig_wrapper.scale.x = -1.0 if e.intent.facing < 0.0 else 1.0
 	block_timer = duration
 	e.rig.anim_player.play_section_with_markers("male-rig/block", "active")
 	e.absolute_velocity = Vector2(e.facing() * -400, 0)
