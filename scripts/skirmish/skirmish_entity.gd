@@ -38,6 +38,8 @@ const VILLAIN_LAYER_INDEX = 10
 @export var is_grabbed_state: IsGrabbedState
 @export var tag_out_state: TagOutState
 @export var tag_in_state: TagInState
+@export var block_state: BlockState
+@export var dodge_state: DodgeState
 @export var brain: Brain:
 	set(value):
 		brain = value
@@ -162,21 +164,7 @@ func _init_throw(grab_ability: GrabAbility, grab_state: GrabState) -> void:
 	grab_state.throw_state = throw_instance
 	ragdoll_state.bounce_base_damage = grab_ability.hit.damage
 
-func _defensive_ability() -> Ability:
-	if entity_config == null:
-		return null
-	for ability in entity_config.abilities:
-		if ability.category == Ability.Category.DEFENSIVE:
-			return ability
-	return null
-
-func _defensive_state() -> State:
-	var ability := _defensive_ability()
-	if ability != null and ability_to_state.has(ability):
-		return ability_to_state[ability]
-	return null
-
-func _can_block() -> bool:
+func _can_defend() -> bool:
 	var state := state_machine.state
 	return not (
 		state == death_state
@@ -207,16 +195,18 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
 
-	if (hit.kind == HitConfig.Kind.STRIKE or hit.kind == HitConfig.Kind.PROJECTILE) and _can_block():
+	if (hit.kind == HitConfig.Kind.STRIKE or hit.kind == HitConfig.Kind.PROJECTILE) and _can_defend():
+		var agility: int = entity_config.agility if entity_config != null else 0
+		if randf() * 100.0 < float(agility) / 10.0:
+			state_machine.transition_to(dodge_state)
+			return
 		# Check block success with a "skill" stat check (d100 < 5 * skill)
 		var skill: int = entity_config.skill if entity_config != null else 0
 		if randf() * 100.0 < float(skill) * 5.0:
 			print("Defending!")
-			var defensive_state := _defensive_state()
-			if defensive_state != null:
-				state_machine.transition_to(defensive_state)
-				Hitstop.freeze(frozen, hit.hitstop)
-				return
+			state_machine.transition_to(block_state)
+			Hitstop.freeze(frozen, hit.hitstop)
+			return
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
 	source.entity_config.damage_dealt += hit.damage

@@ -28,7 +28,3 @@ text = "Special Abilities"
 [node name="OffenseMoves" parent="MarginContainer/VBoxContainer" unique_id=952462957 instance=ExtResource("2_komk8")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="DefenseMoves" parent="MarginContainer/VBoxContainer" unique_id=2031499895 instance=ExtResource("2_komk8")]
-unique_name_in_owner = true
-layout_mode = 2

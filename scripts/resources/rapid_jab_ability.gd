@@ -6,5 +6,4 @@ extends Ability
 
 func _init() -> void:
 	weight = 10.0
-	category = Category.OFFENSIVE
 	ability_name = "Rapid Jab"
