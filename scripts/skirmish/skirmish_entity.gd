@@ -14,6 +14,7 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const BLOCK_PUSHBACK := 140.0
+const DASH_COOLDOWN := 3.0
 # Max depth-axis spread on a knockdown
 const KNOCKDOWN_Y_SPREAD := 0.35
 
@@ -40,6 +41,7 @@ const VILLAIN_LAYER_INDEX = 10
 @export var tag_in_state: TagInState
 @export var block_state: BlockState
 @export var dodge_state: DodgeState
+@export var dash_state: DashState
 @export var brain: Brain:
 	set(value):
 		brain = value
@@ -51,6 +53,7 @@ var is_active := true
 var skirmish: Skirmish
 var ability_to_state: Dictionary = {}
 var ability_cooldowns: Dictionary = {}
+var dash_cooldowns: Array[float] = [0.0, 0.0]
 
 var hitstop_scale := 1.0:
 	set(value):
@@ -125,6 +128,8 @@ func _physics_process(delta: float) -> void:
 		return
 	for ability in ability_cooldowns:
 		ability_cooldowns[ability] = maxf(ability_cooldowns[ability] - delta * hitstop_scale, 0.0)
+	for i in dash_cooldowns.size():
+		dash_cooldowns[i] = maxf(dash_cooldowns[i] - delta * hitstop_scale, 0.0)
 	intent = brain.get_intent(delta * hitstop_scale)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale
 	move_and_slide()

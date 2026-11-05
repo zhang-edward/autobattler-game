@@ -17,6 +17,13 @@ func physics_update(_delta: float) -> void:
 			state_machine.transition_to(next_state)
 			return
 
+	if intent != null and intent.dash != 0.0:
+		var dash_slot := e.dash_cooldowns.find(0.0)
+		if dash_slot != -1:
+			e.dash_cooldowns[dash_slot] = SkirmishEntity.DASH_COOLDOWN
+			state_machine.transition_to(e.dash_state, {"direction": intent.dash})
+			return
+
 	e.absolute_velocity = movement_direction() * e.move_speed
 	if e.absolute_velocity == Vector2.ZERO:
 		if e.rig.anim_player.current_animation != "male-rig/idle":

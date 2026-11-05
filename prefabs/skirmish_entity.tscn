@@ -21,9 +21,9 @@
 [ext_resource type="Script" uid="uid://dkmr4uicm6gs2" path="res://scripts/skirmish/states/tag_in_state.gd" id="21_tagin"]
 [ext_resource type="Script" uid="uid://cwotdy4fyh72d" path="res://scripts/skirmish/brains/states/idle_state.gd" id="22_idle"]
 [ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_state.gd" id="23_attack"]
-[ext_resource type="Script" path="res://scripts/skirmish/brains/states/defend_state.gd" id="24_defend"]
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="25_block"]
 [ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="26_dodge"]
+[ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -32,7 +32,7 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "move_state", "ragdoll_state", "is_grabbed_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "move_state", "ragdoll_state", "is_grabbed_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "brain")]
 collision_layer = 0
 collision_mask = 1024
 script = ExtResource("1_entity")
@@ -51,6 +51,7 @@ tag_out_state = NodePath("StateMachine/TagOutState")
 tag_in_state = NodePath("StateMachine/TagInState")
 block_state = NodePath("StateMachine/BlockState")
 dodge_state = NodePath("StateMachine/DodgeState")
+dash_state = NodePath("StateMachine/DashState")
 brain = NodePath("AIBrain")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
@@ -137,6 +138,9 @@ script = ExtResource("25_block")
 [node name="DodgeState" type="Node" parent="StateMachine" unique_id=627190484]
 script = ExtResource("26_dodge")
 
+[node name="DashState" type="Node" parent="StateMachine" unique_id=1940275316]
+script = ExtResource("27_dash")
+
 [node name="DebugStateLabel" type="Label" parent="." unique_id=1004657685 node_paths=PackedStringArray("state_machine")]
 offset_left = -48.0
 offset_top = -226.0
@@ -173,15 +177,10 @@ state_machine = NodePath("StateMachine")
 script = ExtResource("6_state_machine")
 initial_state = NodePath("IdleState")
 
-[node name="IdleState" type="Node" parent="AIBrain/StateMachine" unique_id=1938274651 node_paths=PackedStringArray("attack_state", "defend_state")]
+[node name="IdleState" type="Node" parent="AIBrain/StateMachine" unique_id=1938274651 node_paths=PackedStringArray("attack_state")]
 script = ExtResource("22_idle")
 attack_state = NodePath("../AttackState")
-defend_state = NodePath("../DefendState")
 
 [node name="AttackState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("23_attack")
-idle_state = NodePath("../IdleState")
-
-[node name="DefendState" type="Node" parent="AIBrain/StateMachine" unique_id=819932053 node_paths=PackedStringArray("idle_state")]
-script = ExtResource("24_defend")
 idle_state = NodePath("../IdleState")
