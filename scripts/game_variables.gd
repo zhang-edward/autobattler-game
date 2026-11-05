@@ -68,7 +68,7 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		if random_abilities:
 			var offense_abilities: Array[Ability] = [UPPERCUT, BIG_PUNCH, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST]
 			offense_abilities.shuffle()
-			abilities = [offense_abilities[0], offense_abilities[1]]
+			abilities = [offense_abilities[0], offense_abilities[1], offense_abilities[2]]
 
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \

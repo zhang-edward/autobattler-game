@@ -1,7 +1,7 @@
 class_name AttackState
 extends BrainState
 
-const SPEED := 4.0
+const SPEED := 2.5
 
 @export var idle_state: BrainState
 
@@ -25,17 +25,25 @@ func get_intent(_delta: float) -> Intent:
 
 	var direction := _y_direction(to_target)
 	var speed := SPEED
+	var dash := 0.0
 	if absf(to_target.x) > _ability.ability_range:
 		direction.x = facing
+		if absf(to_target.x) - _ability.ability_range > DASH_MIN_DISTANCE:
+			dash = facing
 	elif absf(to_target.x) < _ability.ability_min_range:
 		if brain.entity.is_on_wall():
 			state_machine.transition_to(idle_state)
 			return null
-		direction.x = -facing
+		direction.x = - facing
 		speed = IdleState.SPEED
+		if _ability.ability_min_range - absf(to_target.x) > DASH_MIN_DISTANCE:
+			dash = - facing
 
 	if direction != Vector2.ZERO:
-		return _movement(direction.normalized() * speed, facing)
+		return _movement(direction.normalized() * speed, facing, dash)
+
+	if brain.entity.state_machine.state == brain.entity.dash_state:
+		return _movement(Vector2.ZERO, facing)
 
 	# # Only MoveState reads intent.ability, so firing in any other state would drop it
 	# if brain.entity.state_machine.state != brain.entity.move_state:

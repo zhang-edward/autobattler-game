@@ -2,6 +2,7 @@ class_name BrainState
 extends State
 
 const Y_TOLERANCE := 0.2
+const DASH_MIN_DISTANCE := 150.0
 
 @onready var brain: AIBrain = entity as AIBrain
 
@@ -15,10 +16,11 @@ func _y_direction(to_target: Vector2) -> Vector2:
 		return Vector2(0.0, signf(to_target.y))
 	return Vector2.ZERO
 
-func _movement(direction: Vector2, facing: float) -> Intent:
+func _movement(direction: Vector2, facing: float, dash := 0.0) -> Intent:
 	var intent := Intent.new()
 	intent.direction = direction
 	intent.facing = facing
+	intent.dash = dash
 	return intent
 
 func _action(ability: Ability, facing: float) -> Intent:
