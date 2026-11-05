@@ -724,5 +724,6 @@ texture = ExtResource("9_frasx")
 offset = Vector2(11.887058, 7.9759827)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=689288795]
+deterministic = true
 libraries/ = SubResource("AnimationLibrary_m775y")
 libraries/male-rig = ExtResource("10_2ekpu")

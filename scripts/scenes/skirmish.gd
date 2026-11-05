@@ -80,6 +80,11 @@ func _process(_delta: float) -> void:
 		var is_active := is_instance_valid(row.entity) and (row.entity == active_hero or row.entity == active_villain)
 		row.set_active_highlight(is_active)
 
+	var sorted := $Battlefield.get_children()
+	sorted.sort_custom(func(a, b): return a.position.y < b.position.y)
+	for i in sorted.size():
+		sorted[i].z_index = (i + 1) * 4
+
 # Re-fits the four boundary walls to the current viewport so they stay on the screen edges
 func _update_walls() -> void:
 	var vp := get_viewport_rect().size

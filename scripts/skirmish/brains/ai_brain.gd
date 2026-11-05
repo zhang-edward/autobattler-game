@@ -9,7 +9,7 @@ func get_intent(delta: float) -> Intent:
 func draw_weighted() -> Ability:
 	var abilities: Array[Ability] = []
 	for ability in entity.entity_config.abilities:
-		if ability != null and ability.category == Ability.Category.OFFENSIVE and ability.weight > 0.0 \
+		if ability != null and ability.weight > 0.0 \
 				and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
 			abilities.append(ability)
 	if abilities.is_empty():

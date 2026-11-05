@@ -1,14 +1,9 @@
 class_name BlockState
-extends AbilityState
+extends SkirmishState
 
-var duration: float
+@export var duration := 0.4
+
 var block_timer := 0.0
-
-func init(ability: Ability) -> void:
-	var block_move := ability as BlockAbility
-	if block_move == null:
-		return
-	duration = block_move.duration
 
 func enter(_msg := {}) -> void:
 	if e.intent != null and e.intent.facing != 0.0:

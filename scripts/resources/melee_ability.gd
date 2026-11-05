@@ -7,4 +7,3 @@ extends Ability
 
 func _init() -> void:
 	weight = 5.0
-	category = Category.OFFENSIVE

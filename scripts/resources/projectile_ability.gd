@@ -10,6 +10,5 @@ extends Ability
 
 func _init() -> void:
 	weight = 5.0
-	category = Category.OFFENSIVE
 	ability_name = "Energy Blast"
 	ability_range = 300.0

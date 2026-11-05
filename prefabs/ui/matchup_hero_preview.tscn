@@ -77,10 +77,6 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="DefenseMoves" parent="MarginContainer/VBoxContainer/MoveGridContainer" unique_id=35730921 instance=ExtResource("2_kgmu4")]
-unique_name_in_owner = true
-layout_mode = 2
-
 [node name="ChangeHero" type="Button" parent="MarginContainer/VBoxContainer" unique_id=851548549]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 50)

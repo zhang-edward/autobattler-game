@@ -13,5 +13,4 @@ extends Ability
 
 func _init() -> void:
 	weight = 2.0
-	category = Category.OFFENSIVE
 	ability_name = "Grab"
