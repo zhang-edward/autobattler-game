@@ -26,3 +26,4 @@ hits = Array[ExtResource("1_37t0l")]([SubResource("Resource_bxuln"), SubResource
 weight = 5.0
 ability_name = "Punch"
 state_scene = ExtResource("3_loolt")
+cooldown = 6.0

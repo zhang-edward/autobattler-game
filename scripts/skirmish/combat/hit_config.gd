@@ -4,6 +4,7 @@ extends Resource
 enum Kind {
 	STRIKE,
 	GRAB,
+	PROJECTILE,
 }
 
 # Blocking negates a STRIKE but not a GRAB
