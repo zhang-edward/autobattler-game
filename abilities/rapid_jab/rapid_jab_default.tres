@@ -2,10 +2,29 @@
 
 [ext_resource type="Script" uid="uid://bsxlh84ey8t5v" path="res://scripts/resources/rapid_jab_ability.gd" id="1"]
 [ext_resource type="PackedScene" path="res://abilities/rapid_jab/rapid_jab_state.tscn" id="2"]
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="3"]
+[ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="4"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5"]
+
+[sub_resource type="Resource" id="Resource_hit"]
+script = ExtResource("3")
+damage = 15
+
+[sub_resource type="Resource" id="Resource_hitbox"]
+script = ExtResource("4")
+offset = Vector2(50, -109)
+lifetime = 0.1
+hit = SubResource("Resource_hit")
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("5")
+duration = 0.3
 
 [resource]
 script = ExtResource("1")
+hitbox = SubResource("Resource_hitbox")
 weight = 10.0
 ability_name = "Rapid Jab"
 state_scene = ExtResource("2")
 cooldown = 7.0
+recovery = SubResource("Resource_recovery")

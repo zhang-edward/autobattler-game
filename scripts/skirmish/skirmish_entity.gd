@@ -78,32 +78,11 @@ func _ready() -> void:
 	else:
 		healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
-	rig.on_emit_hitbox_enable.connect(handle_hitbox_enable)
-	
-func handle_hitbox_enable():
-	if state_machine.state is PunchState:
-		var punch := state_machine.state as PunchState
-		var hit_config: HitConfig = punch.hits[punch.combo_index]
-		match rig.anim_player.current_animation:
-			"male-rig/frontarm_jab", "male-rig/frontarm_jab_instant":
-				var hitbox = hitbox_scene.instantiate() as Hitbox
-				rig.front_fist.add_child(hitbox)
-				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.2, self, hit_config)
-			"male-rig/backarm_jab", "male-rig/backarm_jab_instant":
-				var hitbox = hitbox_scene.instantiate() as Hitbox
-				rig.back_fist.add_child(hitbox)
-				hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.3, self, hit_config)
-			"male-rig/backarm_uppercut", "male-rig/backarm_uppercut_instant", "male-rig/punch_big":
-				var hitbox = hitbox_scene.instantiate() as Hitbox
-				rig_wrapper.add_child(hitbox)
-				hitbox.init(Vector2(60, -109), Vector2(80, 100), 0.3, self, hit_config)
-	elif state_machine.state is GrabState:
-		var hit_config: HitConfig = (state_machine.state as GrabState).hit
-		if rig.anim_player.current_animation == "male-rig/grab":
-			var hitbox = hitbox_scene.instantiate() as Hitbox
-			rig.back_fist.add_child(hitbox)
-			hitbox.init(Vector2(0, 0), Vector2(40, 40), 0.2, self, hit_config)
-			hitbox.global_position = rig.back_fist.global_position
+
+func spawn_hitbox(config: HitboxConfig) -> void:
+	var hitbox = hitbox_scene.instantiate() as Hitbox
+	rig_wrapper.add_child(hitbox)
+	hitbox.init(config.offset, config.size, config.lifetime, self, config.hit)
 
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
@@ -152,10 +131,6 @@ func _process(_delta: float) -> void:
 	# Altitude plus shift that keeps the sprite's center planted when it spins
 	rig_wrapper.position.y = z
 	shadow.scale = _shadow_base_scale * IsometryUtils.scale_shadow_from(z)
-	if intent != null and intent.facing != 0.0:
-		rig_wrapper.scale.x = -1.0 if intent.facing < 0.0 else 1.0
-	elif absolute_velocity.x != 0.0:
-		rig_wrapper.scale.x = -1.0 if absolute_velocity.x < 0.0 else 1.0
 
 func _build_move_map() -> void:
 	ability_to_state.clear()

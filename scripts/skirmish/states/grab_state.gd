@@ -14,7 +14,6 @@ const GRAB_ACTIVE_TIME := 0.15
 # Assigned at spawn alongside init() — the throw half of this GrabAbility.
 var throw_state: ThrowState
 
-var hitbox_scene: PackedScene = preload("res://prefabs/hitbox.tscn")
 # Low damage; the knockdown and floor impact carry the hit
 var hit: HitConfig = HitConfig.create(15, 180.0, -220.0, true, 0.12, HitConfig.Kind.GRAB)
 var recovery_time: float = RECOVERY_TIME

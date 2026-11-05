@@ -18,6 +18,8 @@ func init(ability: Ability) -> void:
 	_rig_default_position = e.rig.position
 
 func enter(_msg := {}) -> void:
+	if e.intent != null and e.intent.facing != 0.0:
+		e.rig_wrapper.scale.x = -1.0 if e.intent.facing < 0.0 else 1.0
 	dodge_timer = duration
 	e.rig.play_animation("male-rig/dodge")
 	e.absolute_velocity = Vector2(e.facing() * -400, 30 * (1 if randf() < 0.5 else -1))

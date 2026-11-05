@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="PunchAbility" format=3 uid="uid://3r5ac8s0r0g2"]
+[gd_resource type="Resource" script_class="MeleeAbility" format=3 uid="uid://3r5ac8s0r0g2"]
 
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_hitcfg"]
-[ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/punch_ability.gd" id="2_punchab"]
-[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/punch/punch_state.tscn" id="3_pstate"]
+[ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/melee_ability.gd" id="2_punchab"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee/melee_state.tscn" id="3_pstate"]
+[ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="4_hitbox"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5_phase"]
 
 [sub_resource type="Resource" id="Resource_bigpn"]
 script = ExtResource("1_hitcfg")
@@ -12,12 +14,31 @@ launch = -350.0
 knockdown = true
 hitstop = 0.12
 
+[sub_resource type="Resource" id="Resource_hitbox"]
+script = ExtResource("4_hitbox")
+offset = Vector2(120, -100)
+size = Vector2(160, 100)
+lifetime = 0.3
+hit = SubResource("Resource_bigpn")
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("5_phase")
+duration = 0.5
+friction = 0.1
+
+[sub_resource type="Resource" id="Resource_startup"]
+script = ExtResource("5_phase")
+duration = 0.2
+velocity = Vector2(600, 0)
+
 [resource]
 script = ExtResource("2_punchab")
-hits = Array[ExtResource("1_hitcfg")]([SubResource("Resource_bigpn")])
-combo_anims = Array[String](["male-rig/punch_big"])
-recovery_times = Array[float]([0.4])
+hitbox = SubResource("Resource_hitbox")
 weight = 10.0
 ability_name = "Big Punch"
 state_scene = ExtResource("3_pstate")
-cooldown = 10.0
+cooldown = 1.0
+ability_range = 300.0
+anim = "male-rig/punch_big"
+startup = SubResource("Resource_startup")
+recovery = SubResource("Resource_recovery")

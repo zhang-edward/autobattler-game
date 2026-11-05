@@ -5,6 +5,11 @@ extends SkirmishState
 
 func physics_update(_delta: float) -> void:
 	var intent := e.intent
+	if intent != null and intent.facing != 0.0:
+		e.rig_wrapper.scale.x = -1.0 if intent.facing < 0.0 else 1.0
+	elif e.absolute_velocity.x != 0.0:
+		e.rig_wrapper.scale.x = -1.0 if e.absolute_velocity.x < 0.0 else 1.0
+
 	if intent != null and intent.ability != null:
 		var next_state: State = e.ability_to_state.get(intent.ability)
 		if next_state != null and e.ability_cooldowns.get(intent.ability, 0.0) <= 0.0:

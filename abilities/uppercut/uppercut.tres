@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="PunchAbility" format=3 uid="uid://d23pf0lhqk5uu"]
+[gd_resource type="Resource" script_class="MeleeAbility" format=3 uid="uid://d23pf0lhqk5uu"]
 
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_37t0l"]
-[ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/punch_ability.gd" id="2_j1e43"]
-[ext_resource type="PackedScene" uid="uid://kdeemlhudh0j" path="res://abilities/uppercut/uppercut_state.tscn" id="3_dewhk"]
+[ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/melee_ability.gd" id="2_j1e43"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee/melee_state.tscn" id="3_dewhk"]
+[ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="4_hitbox"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5_phase"]
 
 [sub_resource type="Resource" id="Resource_vaxc4"]
 script = ExtResource("1_37t0l")
@@ -10,12 +12,28 @@ launch = -350.0
 knockdown = true
 hitstop = 0.12
 
+[sub_resource type="Resource" id="Resource_hitbox"]
+script = ExtResource("4_hitbox")
+offset = Vector2(60, -109)
+size = Vector2(80, 100)
+lifetime = 0.3
+hit = SubResource("Resource_vaxc4")
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("5_phase")
+duration = 0.1
+
+[sub_resource type="Resource" id="Resource_startup"]
+script = ExtResource("5_phase")
+duration = 0.4
+
 [resource]
 script = ExtResource("2_j1e43")
-hits = Array[ExtResource("1_37t0l")]([SubResource("Resource_vaxc4")])
-combo_anims = Array[String](["male-rig/backarm_uppercut"])
-recovery_times = Array[float]([0.4])
+hitbox = SubResource("Resource_hitbox")
 weight = 10.0
 ability_name = "Uppercut"
 state_scene = ExtResource("3_dewhk")
 cooldown = 9.0
+anim = "male-rig/backarm_uppercut"
+startup = SubResource("Resource_startup")
+recovery = SubResource("Resource_recovery")

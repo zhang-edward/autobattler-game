@@ -19,13 +19,11 @@ var skirmish_winner: EntityConfig.EntityType
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
-const PUNCH_DEFAULT: PunchAbility = preload("res://abilities/punch/punch_default.tres")
-const GRAB_DEFAULT: GrabAbility = preload("res://abilities/grab/grab_default.tres")
 const BLOCK_DEFAULT: BlockAbility = preload("res://abilities/block/block_default.tres")
 const DODGE_DEFAULT: DodgeAbility = preload("res://abilities/dodge/dodge_default.tres")
 const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
-const UPPERCUT: PunchAbility = preload("res://abilities/uppercut/uppercut.tres")
-const BIG_PUNCH: PunchAbility = preload("res://abilities/big_punch/big_punch.tres")
+const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut/uppercut.tres")
+const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch/big_punch.tres")
 const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast/energy_blast_default.tres")
 
 static var BASE_EXP_REWARD = 100
@@ -67,10 +65,10 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_vitality(randi_range(75, 200)) \
 			.with_charisma(randi_range(5, 15)) \
 			.with_abilities([
-				# UPPERCUT, 
-				# BIG_PUNCH, 
-				# RAPID_JAB_DEFAULT, 
-				ENERGY_BLAST,
+				# UPPERCUT,
+				BIG_PUNCH,
+				# RAPID_JAB_DEFAULT,
+				# ENERGY_BLAST,
 				BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)

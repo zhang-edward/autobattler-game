@@ -4,30 +4,20 @@ extends AbilityState
 const SPAWN_OFFSET := Vector2(50, -109)
 
 var projectile_ability: ProjectileAbility
-var release_timer := 0.0
-var recovery_timer := 0.0
-var released := false
 
-func init(ability: Ability) -> void:
+func init(ability_: Ability) -> void:
+	super.init(ability_)
 	projectile_ability = ability as ProjectileAbility
 
-func enter(_msg := {}) -> void:
-	e.rig.play_animation(projectile_ability.anim)
-	release_timer = projectile_ability.release_delay
-	recovery_timer = projectile_ability.recovery_time
-	released = false
+func _active_entered() -> void:
+	phase_timer = projectile_ability.active_duration
+	e.rig.anim_player.play_section_with_markers(ability.anim, "active", "recovery")
+	_release()
 
-func physics_update(delta: float) -> void:
-	e.absolute_velocity = Vector2.ZERO
-
-	release_timer -= delta
-	if release_timer <= 0.0 and not released:
-		released = true
-		_release()
-
-	recovery_timer -= delta
-	if recovery_timer <= 0.0:
-		state_machine.transition_to(e.move_state)
+func _active_update(delta: float) -> void:
+	phase_timer -= delta
+	if phase_timer <= 0.0:
+		_enter_phase(Phase.RECOVERY)
 
 func _release() -> void:
 	var projectile := projectile_ability.projectile_scene.instantiate() as Projectile
