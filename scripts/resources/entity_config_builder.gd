@@ -54,6 +54,33 @@ func with_entity_power_type(t: EntityConfig.EntityPowerType):
 	_entity_config.entity_power_type = t
 	return self
 	
+## Starts a builder pre-filled with a copy of an existing EntityConfig, so tweaks via
+## with_*() never mutate the original. The abilities array is duplicated, but the
+## Ability resources and portrait_config inside are shared references.
+static func from_entity_config(source: EntityConfig) -> EntityConfigBuilder:
+	var builder := EntityConfigBuilder.new()
+	var copy := builder._entity_config
+	copy.gender = source.gender
+	copy.entity_name = source.entity_name
+	copy.entity_type = source.entity_type
+	copy.entity_power_type = source.entity_power_type
+	copy.defense = source.defense
+	copy.strength = source.strength
+	copy.skill = source.skill
+	copy.agility = source.agility
+	copy.vitality = source.vitality
+	copy.charisma = source.charisma
+	copy.level = source.level
+	copy.exp = source.exp
+	copy.exp_to_next_level = source.exp_to_next_level
+	copy.abilities = source.abilities.duplicate()
+	copy.portrait_config = source.portrait_config
+	copy.curr_health = source.curr_health
+	copy.gained_exp = source.gained_exp
+	copy.num_assists = source.num_assists
+	copy.damage_dealt = source.damage_dealt
+	return builder
+
 func build() -> EntityConfig:
 	var completed_entity_config = _entity_config
 	reset()
