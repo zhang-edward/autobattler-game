@@ -10,6 +10,18 @@ const DASH_MIN_DISTANCE := 150.0
 func get_intent(_delta: float) -> Intent:
 	return null
 
+func _target_is_open(target: SkirmishEntity) -> bool:
+	var target_state := target.state_machine.state
+	# Target is hurt
+	if target_state == target.hurt_state:
+		return true
+	# Target is ragdolled (but not in "downed", when they're invulnerable)
+	if target_state == target.ragdoll_state:
+		return target.ragdoll_state.phase != RagdollState.Phase.DOWNED
+	# Target is still recovering from last attack
+	var ability_state := target_state as AbilityState
+	return ability_state != null and ability_state.phase == AbilityState.Phase.RECOVERY
+
 func _y_direction(to_target: Vector2) -> Vector2:
 	# Line up on the target's row, since hits only land within Y_AXIS_HIT_RANGE
 	if absf(to_target.y) > IsometryUtils.Y_AXIS_HIT_RANGE * Y_TOLERANCE:

@@ -19,9 +19,7 @@ func get_intent(_delta: float) -> Intent:
 		state_machine.transition_to(attack_state, {"ability": follow_up})
 		return _action(follow_up, facing)
 
-	var target_state := target.state_machine.state
-	if target_state == target.hurt_state \
-			or (target_state == target.ragdoll_state and target.ragdoll_state.phase != RagdollState.Phase.DOWNED):
+	if _target_is_open(target):
 		state_machine.transition_to(attack_state, {"ability": brain.draw_weighted()})
 	else:
 		state_machine.transition_to(idle_state)

@@ -17,16 +17,16 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_time_left -= delta * brain.entity.hitstop_scale
+	var entity_state: State = brain.entity.state_machine.state
+	if entity_state == brain.entity.hurt_state or entity_state == brain.entity.block_state or entity_state == brain.entity.dodge_state:
+		_time_left = 0.0
 
 func get_intent(_delta: float) -> Intent:
 	var target := brain.nearest_opponent()
 	if target == null:
 		return null
 
-	var target_state := target.state_machine.state
-	if _time_left <= 0.0 \
-			or target_state == target.hurt_state \
-			or (target_state == target.ragdoll_state and target.ragdoll_state.phase != RagdollState.Phase.DOWNED):
+	if _time_left <= 0.0 or _target_is_open(target):
 		_time_left = randf_range(idle_time_min, idle_time_max)
 		var ability := brain.draw_weighted()
 		if ability != null:
