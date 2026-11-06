@@ -35,6 +35,7 @@ func display_available_heroes(selected_heroes: Array[EntityConfig]):
 		preview_row.on_clicked.connect(select_hero_to_add)
 
 func select_hero_to_add(row: HeroPreviewRow):
+	print("Went here!")
 	if selected_hero != null:
 		selected_hero.deselect()
 	selected_hero = row
