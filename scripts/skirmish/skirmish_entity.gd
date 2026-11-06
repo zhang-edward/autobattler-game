@@ -14,7 +14,7 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const BLOCK_PUSHBACK := 140.0
-const DASH_COOLDOWN := 3.0
+const DASH_COOLDOWN := 5.0
 # Max depth-axis spread on a knockdown
 const KNOCKDOWN_Y_SPREAD := 0.35
 

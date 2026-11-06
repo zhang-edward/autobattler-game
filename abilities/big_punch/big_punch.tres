@@ -28,8 +28,8 @@ friction = 0.1
 
 [sub_resource type="Resource" id="Resource_startup"]
 script = ExtResource("5_phase")
-duration = 0.2
-velocity = Vector2(100, 0)
+duration = 0.4
+velocity = Vector2(50, 0)
 
 [resource]
 script = ExtResource("2_punchab")
@@ -37,7 +37,7 @@ hitbox = SubResource("Resource_hitbox")
 ability_name = "Big Punch"
 tier = 2
 state_scene = ExtResource("3_pstate")
-cooldown = 3.0
+cooldown = 1.0
 ability_range = 150.0
 anim = "male-rig/punch_big"
 startup = SubResource("Resource_startup")

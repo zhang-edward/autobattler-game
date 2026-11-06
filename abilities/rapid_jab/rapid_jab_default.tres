@@ -18,7 +18,7 @@ hit = SubResource("Resource_hit")
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("5")
-duration = 0.3
+duration = 1.0
 
 [resource]
 script = ExtResource("1")
