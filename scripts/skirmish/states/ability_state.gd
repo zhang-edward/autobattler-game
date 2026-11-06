@@ -3,6 +3,8 @@ extends SkirmishState
 
 enum Phase {STARTUP, ACTIVE, RECOVERY}
 
+const AGILITY_BASELINE := 125.0
+
 var ability: Ability
 var phase: Phase
 var phase_timer := 0.0
@@ -48,17 +50,18 @@ func _enter_phase(next_phase: Phase) -> void:
 			if ability.startup.duration <= 0.0:
 				_enter_phase(Phase.ACTIVE)
 				return
-			_start_timed_phase(ability.startup, &"", &"active")
+			var duration := ability.startup.duration * AGILITY_BASELINE / maxi(e.entity_config.agility, 1)
+			_start_timed_phase(ability.startup, duration, &"", &"active")
 		Phase.ACTIVE:
 			_active_entered()
 		Phase.RECOVERY:
 			if ability.recovery.duration <= 0.0:
 				state_machine.transition_to(e.move_state)
 				return
-			_start_timed_phase(ability.recovery, &"recovery", &"")
+			_start_timed_phase(ability.recovery, ability.recovery.duration, &"recovery", &"")
 
-func _start_timed_phase(config: PhaseConfig, start_marker: StringName, end_marker: StringName) -> void:
-	phase_timer = config.duration
+func _start_timed_phase(config: PhaseConfig, duration: float, start_marker: StringName, end_marker: StringName) -> void:
+	phase_timer = duration
 	if config.velocity != Vector2.ZERO:
 		e.absolute_velocity = Vector2(e.facing() * config.velocity.x, config.velocity.y)
 	if ability.anim.is_empty():
@@ -66,7 +69,7 @@ func _start_timed_phase(config: PhaseConfig, start_marker: StringName, end_marke
 	var animation: Animation = e.rig.anim_player.get_animation(ability.anim)
 	var start_time: float = 0.0 if start_marker.is_empty() else animation.get_marker_time(start_marker)
 	var end_time: float = animation.length if end_marker.is_empty() else animation.get_marker_time(end_marker)
-	var speed: float = (end_time - start_time) / config.duration
+	var speed: float = (end_time - start_time) / duration
 	e.rig.anim_player.play_section_with_markers(ability.anim, start_marker, end_marker, -1, speed)
 
 func _spawn_hitbox(config: HitboxConfig) -> void:

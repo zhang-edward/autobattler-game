@@ -15,6 +15,8 @@ const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const BLOCK_PUSHBACK := 140.0
 const DASH_COOLDOWN := 5.0
+const BLOCK_DEFENSE_SCALE := 45.0
+const DODGE_AGILITY_SCALE := 500.0
 # Max depth-axis spread on a knockdown
 const KNOCKDOWN_Y_SPREAD := 0.35
 
@@ -201,20 +203,19 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 
 	if (hit.kind == HitConfig.Kind.STRIKE or hit.kind == HitConfig.Kind.PROJECTILE) and _can_defend():
 		var agility: int = entity_config.agility if entity_config != null else 0
-		if randf() * 100.0 < float(agility) / 10.0:
+		if randf() < float(agility) / (agility + DODGE_AGILITY_SCALE):
 			state_machine.transition_to(dodge_state, {"dir": dir})
 			return false
-		# Check block success with a "skill" stat check (d100 < 5 * skill)
-		var skill: int = entity_config.skill if entity_config != null else 0
-		if randf() * 100.0 < float(skill) * 5.0:
+		var defense: int = entity_config.defense if entity_config != null else 0
+		if randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE):
 			print("Defending!")
 			state_machine.transition_to(block_state, {"dir": dir})
 			Hitstop.freeze(frozen, hit.hitstop)
 			return false
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
-	source.entity_config.damage_dealt += hit.damage
-	healthbar.value -= hit.damage
+	source.entity_config.damage_dealt += damage
+	healthbar.value -= damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
 
@@ -231,7 +232,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
 		entered_hitstun = true
 	else:
-		state_machine.transition_to(hurt_state, {"dir": dir})
+		state_machine.transition_to(hurt_state, {"dir": dir, "strength": source.entity_config.strength})
 		entered_hitstun = true
 
 	Hitstop.freeze(frozen, hit.hitstop)
