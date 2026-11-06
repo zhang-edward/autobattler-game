@@ -19,6 +19,7 @@ var skirmish_winner: EntityConfig.EntityType
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
+const JAB: MeleeAbility = preload("res://abilities/jab/jab.tres")
 const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
 const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut/uppercut.tres")
 const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch/big_punch.tres")
@@ -66,9 +67,9 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		# Debug: same fixed kit for every character
 		# var random_abilities := false
 		if random_abilities:
-			var offense_abilities: Array[Ability] = [UPPERCUT, BIG_PUNCH, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST]
+			var offense_abilities: Array[Ability] = [UPPERCUT, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST]
 			offense_abilities.shuffle()
-			abilities = [offense_abilities[0], offense_abilities[1], offense_abilities[2]]
+			abilities = [JAB, offense_abilities[0], offense_abilities[1], BIG_PUNCH]
 
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \
