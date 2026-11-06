@@ -222,6 +222,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
 
+	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
 	var hit_connected := false
 	if healthbar.value <= 0:
 		is_dead = true
@@ -229,13 +230,13 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		died.emit()
 		state_machine.transition_to(death_state)
 	elif blocked:
-		state_machine.transition_to(block_state, {"dir": dir, "strength": source.entity_config.strength})
+		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun})
 		hit_connected = true
 	elif hit.knockdown or state_machine.state == ragdoll_state:
 		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
 		hit_connected = true
 	else:
-		state_machine.transition_to(hurt_state, {"dir": dir, "strength": source.entity_config.strength})
+		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun})
 		hit_connected = true
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]

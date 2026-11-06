@@ -17,6 +17,7 @@ enum Kind {
 # Ragdoll the target instead of putting it in ordinary hitstun
 @export var knockdown: bool = false
 @export var hitstop: float = Hitstop.DEFAULT_DURATION
+@export var base_hitstun: float = HurtState.HITSTUN_SECONDS
 
 static func create(
 	damage_: int,
