@@ -1,6 +1,12 @@
 class_name AIBrain
 extends Brain
 
+const TIER_WEIGHTS := {
+	Ability.Tier.LIGHT: 10.0,
+	Ability.Tier.MEDIUM: 5.0,
+	Ability.Tier.HEAVY: 2.0,
+}
+
 @export var state_machine: StateMachine
 
 func get_intent(delta: float) -> Intent:
@@ -12,8 +18,7 @@ func draw_weighted() -> Ability:
 func ready_abilities() -> Array[Ability]:
 	var abilities: Array[Ability] = []
 	for ability in entity.entity_config.abilities:
-		if ability != null and ability.weight > 0.0 \
-				and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
+		if ability != null and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
 			abilities.append(ability)
 	return abilities
 
@@ -23,15 +28,14 @@ func pick_weighted(abilities: Array[Ability]) -> Ability:
 
 	var total := 0.0
 	for ability in abilities:
-		total += ability.weight
-	if total <= 0.0:
-		return abilities[0]
+		total += TIER_WEIGHTS[ability.tier]
 
 	var roll := randf() * total
 	for ability in abilities:
-		if roll < ability.weight:
+		var weight: float = TIER_WEIGHTS[ability.tier]
+		if roll < weight:
 			return ability
-		roll -= ability.weight
+		roll -= weight
 	return abilities[abilities.size() - 1]
 
 func nearest_opponent() -> SkirmishEntity:

@@ -9,6 +9,5 @@ extends Ability
 @export var projectile_scene: PackedScene
 
 func _init() -> void:
-	weight = 5.0
 	ability_name = "Energy Blast"
 	ability_range = 300.0
