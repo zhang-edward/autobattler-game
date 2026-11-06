@@ -30,6 +30,7 @@ var villain_statuses: VBoxContainer
 @export var debug_hero_count := 3
 @export var debug_villain_count := 3
 
+var return_to_post_skirmish := true
 var hero_team: Array[SkirmishEntity] = []
 var villain_team: Array[SkirmishEntity] = []
 var active_hero: SkirmishEntity
@@ -246,6 +247,9 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 		return
 	_finished = true
 	await get_tree().create_timer(OUTRO_SECONDS).timeout
+	finished.emit(winner)
+	if not return_to_post_skirmish:
+		return
 	GameVariables.skirmish_winner = winner
 	var new_configs = GameVariables.threat_request_configs.filter(func (c): return c != GameVariables.selected_threat_request_config)
 	GameVariables.threat_request_configs = new_configs
