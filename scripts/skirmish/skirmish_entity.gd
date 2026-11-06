@@ -13,10 +13,10 @@ const GRAVITY := 980.0
 const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
-const BLOCK_PUSHBACK := 140.0
 const DASH_COOLDOWN := 5.0
-const BLOCK_DEFENSE_SCALE := 45.0
-const DODGE_AGILITY_SCALE := 500.0
+const BLOCK_DEFENSE_SCALE := 15.0
+const BLOCK_CHIP_FRACTION := 0.1
+const DODGE_AGILITY_SCALE := 1250.0
 # Max depth-axis spread on a knockdown
 const KNOCKDOWN_Y_SPREAD := 0.35
 
@@ -178,6 +178,7 @@ func _can_defend() -> bool:
 		or state == is_grabbed_state
 		or state == ragdoll_state
 		or state == hurt_state
+		or state is AbilityState
 	)
 
 # Returns whether or not the hit connected
@@ -194,51 +195,56 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
 
+	## Grab logic TODO: Maybe get rid of this
 	if hit.kind == HitConfig.Kind.GRAB:
 		state_machine.transition_to(is_grabbed_state, {"grabber": source})
 		source.grabbed_entity = self
 		return false
 
-	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
-
-	if (hit.kind == HitConfig.Kind.STRIKE or hit.kind == HitConfig.Kind.PROJECTILE) and _can_defend():
+	## Defensive options logic
+	var blocked := state_machine.state == block_state
+	if not blocked and _can_defend():
+		# Dodge success roll calculation
 		var agility: int = entity_config.agility if entity_config != null else 0
 		if randf() < float(agility) / (agility + DODGE_AGILITY_SCALE):
 			state_machine.transition_to(dodge_state, {"dir": dir})
 			return false
+		# Block success roll calculation
 		var defense: int = entity_config.defense if entity_config != null else 0
-		if randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE):
-			print("Defending!")
-			state_machine.transition_to(block_state, {"dir": dir})
-			Hitstop.freeze(frozen, hit.hitstop)
-			return false
+		blocked = randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE)
 
-	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
+	var damage := HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
+	# Take chip damage if blocked
+	if blocked:
+		damage = maxi(roundi(damage * BLOCK_CHIP_FRACTION), 1)
 	source.entity_config.damage_dealt += damage
 	healthbar.value -= damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
 
-	var entered_hitstun := false
+	var hit_connected := false
 	if healthbar.value <= 0:
 		is_dead = true
 		healthbar.hide()
 		died.emit()
 		state_machine.transition_to(death_state)
-
-	# A ragdolling entity can't drop back into ordinary hitstun mid-air, so any
-	# hit that connects while it's down there keeps it airborne instead
+	elif blocked:
+		state_machine.transition_to(block_state, {"dir": dir, "strength": source.entity_config.strength})
+		hit_connected = true
 	elif hit.knockdown or state_machine.state == ragdoll_state:
 		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
-		entered_hitstun = true
+		hit_connected = true
 	else:
 		state_machine.transition_to(hurt_state, {"dir": dir, "strength": source.entity_config.strength})
-		entered_hitstun = true
+		hit_connected = true
 
+	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
 	Hitstop.freeze(frozen, hit.hitstop)
-	if hit.knockdown:
+
+	if hit.knockdown and not blocked:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
-	return entered_hitstun
+
+	return hit_connected
 
 func knock_down(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
 	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
