@@ -12,5 +12,4 @@ extends Ability
 @export var throw_state_scene: PackedScene
 
 func _init() -> void:
-	weight = 2.0
 	ability_name = "Grab"

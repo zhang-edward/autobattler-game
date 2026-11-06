@@ -34,7 +34,6 @@ velocity = Vector2(100, 0)
 [resource]
 script = ExtResource("2_punchab")
 hitbox = SubResource("Resource_hitbox")
-weight = 10.0
 ability_name = "Big Punch"
 tier = 2
 state_scene = ExtResource("3_pstate")

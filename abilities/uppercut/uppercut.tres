@@ -30,7 +30,6 @@ duration = 0.2
 [resource]
 script = ExtResource("2_j1e43")
 hitbox = SubResource("Resource_hitbox")
-weight = 10.0
 ability_name = "Uppercut"
 tier = 1
 state_scene = ExtResource("3_dewhk")

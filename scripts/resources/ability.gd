@@ -3,7 +3,6 @@ extends Resource
 
 enum Tier {LIGHT, MEDIUM, HEAVY}
 
-@export var weight := 0.0
 @export var ability_name := ""
 @export var tier: Tier
 ## State scene instantiated under the entity's StateMachine at spawn.

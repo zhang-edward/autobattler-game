@@ -23,7 +23,6 @@ duration = 0.3
 [resource]
 script = ExtResource("1")
 hitbox = SubResource("Resource_hitbox")
-weight = 10.0
 ability_name = "Rapid Jab"
 tier = 1
 state_scene = ExtResource("2")
