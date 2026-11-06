@@ -83,10 +83,11 @@ func _ready() -> void:
 		healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
 
-func spawn_hitbox(config: HitboxConfig) -> void:
+func spawn_hitbox(config: HitboxConfig) -> Hitbox:
 	var hitbox = hitbox_scene.instantiate() as Hitbox
 	rig_wrapper.add_child(hitbox)
 	hitbox.init(config.offset, config.size, config.lifetime, self, config.hit)
+	return hitbox
 
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
@@ -177,23 +178,24 @@ func _can_defend() -> bool:
 		or state == hurt_state
 	)
 
-func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
+# Returns whether or not the hit connected
+func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	if is_dead or not is_active:
-		return
+		return false
 	# If hitbox owner somehow transitioned into a state which invalidates its hitbox, we don't need to process this hit anymore
 	if source == null or not is_instance_valid(source) or source.is_dead or not source.is_active:
-		return
+		return false
 	if source.state_machine != null and hit.kind != HitConfig.Kind.PROJECTILE:
 		var source_state: State = source.state_machine.state
 		if source_state == source.is_grabbed_state or source_state == source.ragdoll_state or source_state == source.death_state:
-			return
+			return false
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
 
 	if hit.kind == HitConfig.Kind.GRAB:
 		state_machine.transition_to(is_grabbed_state, {"grabber": source})
 		source.grabbed_entity = self
-		return
+		return false
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
 
@@ -201,14 +203,14 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 		var agility: int = entity_config.agility if entity_config != null else 0
 		if randf() * 100.0 < float(agility) / 10.0:
 			state_machine.transition_to(dodge_state, {"dir": dir})
-			return
+			return false
 		# Check block success with a "skill" stat check (d100 < 5 * skill)
 		var skill: int = entity_config.skill if entity_config != null else 0
 		if randf() * 100.0 < float(skill) * 5.0:
 			print("Defending!")
 			state_machine.transition_to(block_state, {"dir": dir})
 			Hitstop.freeze(frozen, hit.hitstop)
-			return
+			return false
 
 	var damage = HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
 	source.entity_config.damage_dealt += hit.damage
@@ -216,6 +218,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
 
+	var entered_hitstun := false
 	if healthbar.value <= 0:
 		is_dead = true
 		healthbar.hide()
@@ -226,12 +229,15 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	# hit that connects while it's down there keeps it airborne instead
 	elif hit.knockdown or state_machine.state == ragdoll_state:
 		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
+		entered_hitstun = true
 	else:
 		state_machine.transition_to(hurt_state, {"dir": dir})
+		entered_hitstun = true
 
 	Hitstop.freeze(frozen, hit.hitstop)
 	if hit.knockdown:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
+	return entered_hitstun
 
 func knock_down(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
 	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)

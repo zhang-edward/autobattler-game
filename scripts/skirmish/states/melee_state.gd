@@ -19,7 +19,7 @@ func _active_entered() -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(e, "scale", Vector2(1, 1), 0.05)
 
-	e.spawn_hitbox(melee_ability.hitbox)
+	_spawn_hitbox(melee_ability.hitbox)
 
 func _active_update(delta: float) -> void:
 	e.absolute_velocity *= 1.0 - melee_ability.friction

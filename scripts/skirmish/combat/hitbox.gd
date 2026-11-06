@@ -1,6 +1,8 @@
 class_name Hitbox
 extends Area2D
 
+signal hit_connected
+
 var _life_timer := 0.5
 # Dictionary used as hash set, with dummy values (true) for each key
 var _collision_exceptions := {}
@@ -42,4 +44,5 @@ func _handle_area_entered(body: Area2D):
 		return
 
 	# The target owns the outcome, including whether it warrants hitstop or shake
-	target.take_hit(_hit, _source)
+	if target.take_hit(_hit, _source):
+		hit_connected.emit()
