@@ -9,7 +9,7 @@ func enter(_msg := {}) -> void:
 	e.z_velocity = - JUMP_VELOCITY
 
 func physics_update(delta: float) -> void:
-	e.absolute_velocity = movement_direction() * e.move_speed
+	e.absolute_velocity = movement_direction(delta) * e.move_speed
 
 	e.z += e.z_velocity * delta
 	e.z_velocity += SkirmishEntity.GRAVITY * delta
