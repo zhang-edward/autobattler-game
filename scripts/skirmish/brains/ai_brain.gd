@@ -7,11 +7,17 @@ func get_intent(delta: float) -> Intent:
 	return (state_machine.state as BrainState).get_intent(delta)
 
 func draw_weighted() -> Ability:
+	return pick_weighted(ready_abilities())
+
+func ready_abilities() -> Array[Ability]:
 	var abilities: Array[Ability] = []
 	for ability in entity.entity_config.abilities:
 		if ability != null and ability.weight > 0.0 \
 				and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
 			abilities.append(ability)
+	return abilities
+
+func pick_weighted(abilities: Array[Ability]) -> Ability:
 	if abilities.is_empty():
 		return null
 

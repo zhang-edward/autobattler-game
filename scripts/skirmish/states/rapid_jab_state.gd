@@ -35,4 +35,4 @@ func _jab() -> void:
 	var end_marker: StringName = JAB_MARKERS[anim_index + 1] if anim_index + 1 < JAB_MARKERS.size() else &""
 	e.rig.anim_player.play_section_with_markers(JAB_ANIM, JAB_MARKERS[anim_index], end_marker)
 	phase_timer = rapid_jab.jab_interval
-	e.spawn_hitbox(rapid_jab.hitbox)
+	_spawn_hitbox(rapid_jab.hitbox)

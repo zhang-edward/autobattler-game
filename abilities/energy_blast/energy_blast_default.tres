@@ -26,6 +26,7 @@ hit = SubResource("Resource_blast")
 projectile_scene = ExtResource("4")
 weight = 5.0
 ability_name = "Energy Blast"
+tier = 1
 state_scene = ExtResource("3")
 cooldown = 5.0
 ability_range = 300.0

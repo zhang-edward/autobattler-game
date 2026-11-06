@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://dkmr4uicm6gs2" path="res://scripts/skirmish/states/tag_in_state.gd" id="21_tagin"]
 [ext_resource type="Script" uid="uid://cwotdy4fyh72d" path="res://scripts/skirmish/brains/states/idle_state.gd" id="22_idle"]
 [ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_state.gd" id="23_attack"]
+[ext_resource type="Script" path="res://scripts/skirmish/brains/states/follow_up_state.gd" id="24_follow_up"]
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="25_block"]
 [ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="26_dodge"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
@@ -181,6 +182,12 @@ initial_state = NodePath("IdleState")
 script = ExtResource("22_idle")
 attack_state = NodePath("../AttackState")
 
-[node name="AttackState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state")]
+[node name="AttackState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state", "follow_up_state")]
 script = ExtResource("23_attack")
+idle_state = NodePath("../IdleState")
+follow_up_state = NodePath("../FollowUpState")
+
+[node name="FollowUpState" type="Node" parent="AIBrain/StateMachine" unique_id=1472093618 node_paths=PackedStringArray("attack_state", "idle_state")]
+script = ExtResource("24_follow_up")
+attack_state = NodePath("../AttackState")
 idle_state = NodePath("../IdleState")
