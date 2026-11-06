@@ -33,6 +33,7 @@ ability_name = "Uppercut"
 tier = 1
 state_scene = ExtResource("3_dewhk")
 cooldown = 1.0
+ability_range = 100.0
 anim = "male-rig/backarm_uppercut"
 startup = SubResource("Resource_startup")
 recovery = SubResource("Resource_recovery")
