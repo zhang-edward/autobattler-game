@@ -7,6 +7,7 @@ extends RefCounted
 
 # Which way to face: -1 left, 1 right, 0 to leave facing alone. Set by the brain,
 # which knows where the target is, so backing away doesn't turn the entity around.
+# TODO: move the facing logic somewhere else so we don't have to repeatedly ask the AI brain to calculate all decision logic just for a facing dir
 var facing := 0.0
 # Floor-plane direction in absolute units, each axis in -1..1. Zero means stand still.
 var direction := Vector2.ZERO

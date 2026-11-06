@@ -8,7 +8,7 @@ func enter(msg := {}) -> void:
 	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
 	if dir.x != 0.0:
 		e.rig_wrapper.scale.x = - dir.x
-	block_timer = HurtState.hitstun_for(msg.get("strength", 0))
+	block_timer = msg.get("hitstun", HurtState.HITSTUN_SECONDS)
 	e.rig.anim_player.play_section_with_markers("male-rig/block", "active")
 	e.absolute_velocity = Vector2(e.facing() * -BLOCK_PUSHBACK, 0)
 

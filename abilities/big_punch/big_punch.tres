@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_hitcfg"]
 [ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/melee_ability.gd" id="2_punchab"]
-[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee/melee_state.tscn" id="3_pstate"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee_state.tscn" id="3_pstate"]
 [ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="4_hitbox"]
 [ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5_phase"]
 

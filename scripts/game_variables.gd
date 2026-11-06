@@ -56,10 +56,11 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		var rand_name = NameGenerator.generate_name_string(rand_gender)
 
 		var abilities: Array[Ability] = [
-			# UPPERCUT,
+			JAB,
+			UPPERCUT,
 			BIG_PUNCH,
-			DASH_KICK,
-			RAPID_JAB_DEFAULT,
+			# DASH_KICK,
+			# RAPID_JAB_DEFAULT,
 			# ENERGY_BLAST,
 		]
 
@@ -67,9 +68,9 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		# Debug: same fixed kit for every character
 		# var random_abilities := false
 		if random_abilities:
-			var offense_abilities: Array[Ability] = [UPPERCUT, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST]
+			var offense_abilities: Array[Ability] = [UPPERCUT, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST, BIG_PUNCH]
 			offense_abilities.shuffle()
-			abilities = [JAB, offense_abilities[0], offense_abilities[1], BIG_PUNCH]
+			abilities = [JAB, offense_abilities[0], offense_abilities[1]]
 
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \

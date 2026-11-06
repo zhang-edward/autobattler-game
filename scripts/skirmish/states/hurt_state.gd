@@ -11,13 +11,13 @@ const HITSTUN_STRENGTH_SCALE := 30.0
 
 var hitstun_timer := 0.0
 
-static func hitstun_for(strength: int) -> float:
-	return HITSTUN_SECONDS * (HITSTUN_STRENGTH_SCALE + strength) / HITSTUN_STRENGTH_SCALE
+static func hitstun_for(base: float, strength: int) -> float:
+	return base * (HITSTUN_STRENGTH_SCALE + strength) / HITSTUN_STRENGTH_SCALE
 
 func enter(msg := {}) -> void:
 	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
 	e.absolute_velocity = dir.normalized() * BASE_KNOCKBACK
-	hitstun_timer = hitstun_for(msg.get("strength", 0))
+	hitstun_timer = msg.get("hitstun", HITSTUN_SECONDS)
 	e.rig.play_animation("male-rig/hurt")
 
 func exit() -> void:

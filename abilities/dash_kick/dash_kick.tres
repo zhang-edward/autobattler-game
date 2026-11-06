@@ -2,24 +2,25 @@
 
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_hitcfg"]
 [ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/melee_ability.gd" id="2_kickab"]
-[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee/melee_state.tscn" id="3_kstate"]
 [ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="4_hitbox"]
 [ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5_phase"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee_state.tscn" id="5_xl7na"]
 
 [sub_resource type="Resource" id="Resource_dashkick"]
 script = ExtResource("1_hitcfg")
 damage = 20
+base_hitstun = 0.8
 
 [sub_resource type="Resource" id="Resource_hitbox"]
 script = ExtResource("4_hitbox")
 offset = Vector2(50, -90)
 size = Vector2(100, 100)
-lifetime = 0.3
+lifetime = 0.1
 hit = SubResource("Resource_dashkick")
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("5_phase")
-duration = 1.0
+duration = 0.7
 friction = 0.15
 
 [sub_resource type="Resource" id="Resource_startup"]
@@ -29,10 +30,11 @@ duration = 0.1
 [resource]
 script = ExtResource("2_kickab")
 hitbox = SubResource("Resource_hitbox")
-velocity = Vector2(1000, 0)
+velocity = Vector2(1500, 0)
+friction = 0.05
 ability_name = "Dash Kick"
-tier = 1
-state_scene = ExtResource("3_kstate")
+tier = 2
+state_scene = ExtResource("5_xl7na")
 cooldown = 3.0
 ability_range = 220.0
 anim = "male-rig/dash_kick"
