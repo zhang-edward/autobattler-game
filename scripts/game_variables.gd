@@ -26,6 +26,7 @@ const DODGE_DEFAULT: DodgeAbility = preload("res://abilities/dodge/dodge_default
 const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
 const UPPERCUT: PunchAbility = preload("res://abilities/uppercut/uppercut.tres")
 const BIG_PUNCH: PunchAbility = preload("res://abilities/big_punch/big_punch.tres")
+const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast/energy_blast_default.tres")
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
@@ -65,7 +66,12 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_agility(randi_range(10, 15)) \
 			.with_vitality(randi_range(8, 20)) \
 			.with_charisma(randi_range(5, 15)) \
-			.with_abilities([UPPERCUT, BIG_PUNCH, RAPID_JAB_DEFAULT, BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
+			.with_abilities([
+				# UPPERCUT, 
+				# BIG_PUNCH, 
+				# RAPID_JAB_DEFAULT, 
+				ENERGY_BLAST,
+				BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config
@@ -79,14 +85,14 @@ func generate_random_threat_requests(num_requests: int):
 		var villain_config = enemy_configs[0]
 		var villain_name = villain_config.entity_name
 		var threat_reward = create_threat_reward()
-		var threat_request_config = ThreatRequestConfigBuilder.new()\
-			.with_title(villain_name + " encountered")\
-			.with_description("Sample description")\
-			.with_expiry_days(randi_range(5, 8))\
-			.with_level_requirement(1)\
-			.with_enemy_configs(enemy_configs)\
-			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN)\
-			.with_threat_reward(threat_reward)\
+		var threat_request_config = ThreatRequestConfigBuilder.new() \
+			.with_title(villain_name + " encountered") \
+			.with_description("Sample description") \
+			.with_expiry_days(randi_range(5, 8)) \
+			.with_level_requirement(1) \
+			.with_enemy_configs(enemy_configs) \
+			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN) \
+			.with_threat_reward(threat_reward) \
 			.build()
 		requests.append(threat_request_config)
 	return requests

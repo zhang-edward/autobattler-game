@@ -54,10 +54,19 @@ var _status_rows: Array[SkirmishStatusRow] = []
 func _ready() -> void:
 	get_viewport().size_changed.connect(_update_walls)
 	_update_walls()
-	init_configs_from_game_vars()
-	if hero_team.is_empty() and villain_team.is_empty():
-		print("[WARN] Couldn't read data from GameVariables - setting up debug match...")
-		_setup_debug_matchup()
+	var heroes: Array[EntityConfig] = []
+	var villains: Array[EntityConfig] = []
+	if GameVariables.selected_hero_for_threat != null:
+		heroes = [GameVariables.selected_hero_for_threat]
+	else:
+		print("[WARN] No hero in GameVariables - using random debug heroes...")
+		heroes = GameVariables.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+	if GameVariables.selected_threat_request_config != null:
+		villains = GameVariables.selected_threat_request_config.enemy_configs
+	else:
+		print("[WARN] No threat request in GameVariables - using random debug villains...")
+		villains = GameVariables.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
+	setup(heroes, villains)
 	_build_status_rows()
 	_build_tag_in_buttons()
 	_build_special_move_buttons()
@@ -87,11 +96,6 @@ func _place_wall(wall: StaticBody2D, center: Vector2, size: Vector2) -> void:
 	collider.position = Vector2.ZERO
 	(collider.shape as RectangleShape2D).size = size
 	
-
-func init_configs_from_game_vars():
-	var threat_req_config = GameVariables.selected_threat_request_config
-	var villain_configs = threat_req_config.enemy_configs if threat_req_config != null else ([] as Array[EntityConfig])
-	setup([GameVariables.selected_hero_for_threat], villain_configs)
 
 func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
 	for h in heroes:
@@ -173,16 +177,6 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 			entity.set_active(false)
 		team.append(entity)
 	return team
-
-# Lets this scene be run on its own for testing, without a tactical encounter to set it up
-func _setup_debug_matchup() -> void:
-	var heroes: Array[EntityConfig] = GameVariables.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
-	var villains: Array[EntityConfig] = GameVariables.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
-	for config in heroes:
-		config.curr_health = config.vitality * 10
-	for config in villains:
-		config.curr_health = config.vitality * 10
-	setup(heroes, villains)
 
 func _on_entity_died(entity: SkirmishEntity) -> void:
 	_release_grab_links(entity)

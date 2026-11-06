@@ -21,3 +21,4 @@ throw_state_scene = ExtResource("4_20k1j")
 weight = 2.0
 ability_name = "Grab"
 state_scene = ExtResource("3_ts462")
+cooldown = 8.0
