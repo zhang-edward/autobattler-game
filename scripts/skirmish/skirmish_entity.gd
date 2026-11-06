@@ -48,7 +48,6 @@ const VILLAIN_LAYER_INDEX = 10
 		brain.entity = self
 
 var entity_config: EntityConfig
-var intent: Intent
 var is_active := true
 var skirmish: Skirmish
 var ability_to_state: Dictionary = {}
@@ -121,7 +120,6 @@ func set_active(value: bool) -> void:
 		hurtbox.set_deferred("monitoring", value)
 	if not value:
 		absolute_velocity = Vector2.ZERO
-		intent = null
 
 func _physics_process(delta: float) -> void:
 	if not is_active or brain == null:
@@ -130,7 +128,6 @@ func _physics_process(delta: float) -> void:
 		ability_cooldowns[ability] = maxf(ability_cooldowns[ability] - delta * hitstop_scale, 0.0)
 	for i in dash_cooldowns.size():
 		dash_cooldowns[i] = maxf(dash_cooldowns[i] - delta * hitstop_scale, 0.0)
-	intent = brain.get_intent(delta * hitstop_scale)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale
 	move_and_slide()
 
@@ -203,13 +200,13 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> void:
 	if (hit.kind == HitConfig.Kind.STRIKE or hit.kind == HitConfig.Kind.PROJECTILE) and _can_defend():
 		var agility: int = entity_config.agility if entity_config != null else 0
 		if randf() * 100.0 < float(agility) / 10.0:
-			state_machine.transition_to(dodge_state)
+			state_machine.transition_to(dodge_state, {"dir": dir})
 			return
 		# Check block success with a "skill" stat check (d100 < 5 * skill)
 		var skill: int = entity_config.skill if entity_config != null else 0
 		if randf() * 100.0 < float(skill) * 5.0:
 			print("Defending!")
-			state_machine.transition_to(block_state)
+			state_machine.transition_to(block_state, {"dir": dir})
 			Hitstop.freeze(frozen, hit.hitstop)
 			return
 

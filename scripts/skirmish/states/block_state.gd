@@ -5,9 +5,10 @@ extends SkirmishState
 
 var block_timer := 0.0
 
-func enter(_msg := {}) -> void:
-	if e.intent != null and e.intent.facing != 0.0:
-		e.rig_wrapper.scale.x = -1.0 if e.intent.facing < 0.0 else 1.0
+func enter(msg := {}) -> void:
+	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
+	if dir.x != 0.0:
+		e.rig_wrapper.scale.x = -dir.x
 	block_timer = duration
 	e.rig.anim_player.play_section_with_markers("male-rig/block", "active")
 	e.absolute_velocity = Vector2(e.facing() * -400, 0)

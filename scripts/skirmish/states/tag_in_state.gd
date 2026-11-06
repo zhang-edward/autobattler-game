@@ -22,7 +22,6 @@ func enter(msg := {}) -> void:
 	e.position = Vector2(_destination.x + entry_side * RUN_DISTANCE, _destination.y)
 	e.modulate.a = 0.0
 	_from = e.position
-	e.intent = null
 	e.absolute_velocity = Vector2.ZERO
 	e.z = 0.0
 	e.z_velocity = 0.0

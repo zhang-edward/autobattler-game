@@ -15,7 +15,6 @@ func enter(_msg := {}) -> void:
 	_from = e.position
 	var entry_side := -e.facing()
 	_exit_x = _from.x + entry_side * RUN_DISTANCE
-	e.intent = null
 	e.absolute_velocity = Vector2.ZERO
 	e.z = 0.0
 	e.z_velocity = 0.0
