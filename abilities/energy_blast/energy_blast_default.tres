@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1"]
 [ext_resource type="Script" uid="uid://dd17pi42daok5" path="res://scripts/resources/projectile_ability.gd" id="2"]
 [ext_resource type="PackedScene" path="res://abilities/energy_blast/energy_blast_state.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://prefabs/projectile.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://lqr7x52lgykv" path="res://prefabs/projectile.tscn" id="4"]
 
 [sub_resource type="Resource" id="Resource_blast"]
 script = ExtResource("1")

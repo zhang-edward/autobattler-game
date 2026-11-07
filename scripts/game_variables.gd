@@ -16,6 +16,7 @@ var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
 var selected_hero_for_threat: EntityConfig
 var skirmish_winner: EntityConfig.EntityType
+var levels_for_new_ability = [2, 5, 10, 15]
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
@@ -67,11 +68,9 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_vitality(randi_range(8, 20)) \
 			.with_charisma(randi_range(5, 15)) \
 			.with_abilities([
-				# UPPERCUT, 
-				# BIG_PUNCH, 
-				# RAPID_JAB_DEFAULT, 
-				ENERGY_BLAST,
-				BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
+				BIG_PUNCH,
+				RAPID_JAB_DEFAULT,
+				BLOCK_DEFAULT] as Array[Ability]) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config
@@ -119,3 +118,15 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 			return "Psychic"
 		EntityConfig.EntityPowerType.GOD:
 			return "God"
+			
+func get_all_abilities():
+	return [
+		PUNCH_DEFAULT,
+		GRAB_DEFAULT,
+		BLOCK_DEFAULT,
+		DODGE_DEFAULT,
+		RAPID_JAB_DEFAULT,
+		UPPERCUT,
+		BIG_PUNCH,
+		ENERGY_BLAST,
+	]
