@@ -129,4 +129,4 @@ func _check_glory(team: EntityConfig.EntityType) -> bool:
 	return true
 
 func _frac(e: SkirmishEntity) -> float:
-	return float(e.entity_config.curr_health) / float(maxi(e.entity_config.vitality, 1))
+	return float(e.entity_config.curr_health) / float(maxi(e.entity_config.vitality * 10, 1))

@@ -63,8 +63,8 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_defense(randi_range(10, 20)) \
 			.with_strength(randi_range(5, 15)) \
 			.with_skill(randi_range(5, 15)) \
-			.with_agility(randi_range(100, 150)) \
-			.with_vitality(randi_range(75, 200)) \
+			.with_agility(randi_range(10, 15)) \
+			.with_vitality(randi_range(8, 20)) \
 			.with_charisma(randi_range(5, 15)) \
 			.with_abilities([
 				# UPPERCUT, 

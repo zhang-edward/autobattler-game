@@ -73,7 +73,7 @@ func facing() -> float:
 
 func _ready() -> void:
 	if entity_config != null:
-		healthbar.max_value = entity_config.vitality
+		healthbar.max_value = entity_config.vitality * 10
 		healthbar.value = entity_config.curr_health
 	else:
 		healthbar.value = healthbar.max_value
@@ -108,8 +108,8 @@ func handle_hitbox_enable():
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
 	entity_type = ec.entity_type
-	move_speed = ec.agility
-	healthbar.max_value = ec.vitality
+	move_speed = ec.agility * 10
+	healthbar.max_value = ec.vitality * 10
 	healthbar.value = ec.curr_health
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)

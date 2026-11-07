@@ -10,13 +10,18 @@ extends Node2D
 @onready var continue_button: Button = %Continue
 @onready var post_skirmish_villain_details: PostSkirmishVillainDetails = %PostSkirmishVillainDetails
 
+var hero_exp_gain: HeroExpGainPanel
+
 func _ready():
 	setup_hero_exp_gain_panels()
 	handle_skirmish_result()
 	continue_button.pressed.connect(on_continue)
 	
 func on_continue():
-	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
+	if hero_exp_gain.did_level_up:
+		get_tree().change_scene_to_file("res://scenes/level_up.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
 
 func handle_skirmish_result():
 	var threat_req_config = GameVariables.selected_threat_request_config
@@ -56,6 +61,6 @@ func add_skirmish_reward_panel(reward_name: String, reward_value: int):
 	panel.setup_reward(reward_name, reward_value)
 
 func setup_hero_exp_gain_panels():
-	var hero_exp_gain = hero_exp_gain_panel_scene.instantiate() as HeroExpGainPanel
+	hero_exp_gain = hero_exp_gain_panel_scene.instantiate() as HeroExpGainPanel
 	hero_exp_bars.add_child(hero_exp_gain)
 	hero_exp_gain.configure(GameVariables.selected_hero_for_threat)

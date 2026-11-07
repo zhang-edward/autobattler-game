@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://dnwn2jc22hcdy"]
+
+[ext_resource type="Script" uid="uid://dgfsrtgvi564a" path="res://scripts/ui/level_up_stat_row.gd" id="1_812sc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pmnr"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 2
+border_color = Color(0.33660764, 0.33660764, 0.33660755, 0.39215687)
+expand_margin_bottom = 5.0
+
+[node name="LevelUpStatRow" type="PanelContainer" unique_id=1062870564]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -19.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pmnr")
+script = ExtResource("1_812sc")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1644259385]
+layout_mode = 2
+
+[node name="Stat" type="Label" parent="HBoxContainer" unique_id=816650559]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 25
+text = "Strength"
+
+[node name="Decrease" type="Button" parent="HBoxContainer" unique_id=442813096]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "-"
+
+[node name="Value" type="Label" parent="HBoxContainer" unique_id=130456054]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "12"
+
+[node name="Increase" type="Button" parent="HBoxContainer" unique_id=1074585681]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "+"

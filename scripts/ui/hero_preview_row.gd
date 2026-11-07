@@ -52,4 +52,4 @@ func deselect():
 	add_theme_stylebox_override("panel", load("res://prefabs/styles/default_ui_panel_stylebox_stroke.tres"))
 
 func select():
-	add_theme_stylebox_override("panel", load("res://prefabs/styles/default_ui_panel_stylebox_highlighted.tres"))
+	add_theme_stylebox_override("panel", load("res://prefabs/styles/default_ui_panel_stylebox_light.tres"))

@@ -18,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_us1su")
 hero_preview_row = ExtResource("2_w7cy1")
 
@@ -26,6 +27,7 @@ custom_minimum_size = Vector2(1180, 660)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+mouse_filter = 1
 theme_override_styles/panel = ExtResource("1_w7cy1")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1587509765]

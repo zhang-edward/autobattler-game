@@ -221,7 +221,7 @@ func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishE
 	for e in team:
 		if e == null or not is_instance_valid(e) or e.is_dead or e.is_active:
 			continue
-		var frac := float(e.entity_config.curr_health) / float(maxi(e.entity_config.vitality, 1))
+		var frac := float(e.entity_config.curr_health) / float(maxi(e.entity_config.vitality * 10, 1))
 		if frac > best_frac:
 			best_frac = frac
 			best = e
