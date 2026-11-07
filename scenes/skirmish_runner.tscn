@@ -45,6 +45,17 @@ layout_mode = 2
 theme_override_constants/separation = 15
 alignment = 1
 
+[node name="TeamSizeLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042012]
+layout_mode = 2
+text = "Fighters per side"
+
+[node name="TeamSize" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042013]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 3.0
+value = 2.0
+
 [node name="FightsLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042010]
 layout_mode = 2
 text = "Fights"

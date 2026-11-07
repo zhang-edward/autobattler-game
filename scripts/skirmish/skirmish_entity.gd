@@ -22,6 +22,7 @@ const KNOCKDOWN_Y_SPREAD := 0.35
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
+const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 
 @onready var rig_wrapper: Sprite2D = $RigWrapper
 @onready var debug_name_label: Label = $DebugNameLabel
@@ -98,6 +99,8 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	healthbar.value = ec.curr_health
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
+	if entity_type == EntityConfig.EntityType.VILLAIN:
+		rig.modulate = VILLAIN_TINT
 	debug_name_label.text = entity_config.entity_name
 	_build_move_map()
 

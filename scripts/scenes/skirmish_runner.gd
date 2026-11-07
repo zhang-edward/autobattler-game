@@ -8,6 +8,7 @@ extends Node
 @onready var _fight_layer: CanvasLayer = $FightLayer
 @onready var _hero_build: SkirmishRunnerBuildPanel = %HeroBuild
 @onready var _villain_build: SkirmishRunnerBuildPanel = %VillainBuild
+@onready var _team_size: SpinBox = %TeamSize
 @onready var _fights: SpinBox = %Fights
 @onready var _fight_button: Button = %FightButton
 @onready var _results_label: Label = %ResultsLabel
@@ -51,8 +52,8 @@ func _start_run() -> void:
 
 func _start_fight() -> void:
 	_fight_status_label.text = "Fight %d/%d | %s" % [_fights_done + 1, int(_fights.value), _results_text()]
-	var villains: Array[EntityConfig] = [_villain_build.build_config()]
-	GameVariables.selected_hero_for_threat = _hero_build.build_config()
+	var villains := _build_team(_villain_build)
+	GameVariables.selected_heroes_for_threat = _build_team(_hero_build)
 	GameVariables.selected_threat_request_config = ThreatRequestConfigBuilder.new().with_enemy_configs(villains).build()
 	_fight_time = 0.0
 	_skirmish = skirmish_scene.instantiate() as Skirmish
@@ -60,13 +61,23 @@ func _start_fight() -> void:
 	_skirmish.finished.connect(_on_fight_finished)
 	add_child(_skirmish)
 
+func _build_team(build: SkirmishRunnerBuildPanel) -> Array[EntityConfig]:
+	var team: Array[EntityConfig] = []
+	for i in int(_team_size.value):
+		var config := build.build_config()
+		config.entity_name += " %d" % (i + 1)
+		team.append(config)
+	return team
+
 func _on_fight_finished(winner: EntityConfig.EntityType) -> void:
 	if winner == EntityConfig.EntityType.HERO:
 		_hero_wins += 1
 	else:
 		_villain_wins += 1
 	_total_length += _fight_time
-	_total_winner_hp += _skirmish.active_for(winner).entity_config.curr_health
+	for entity in _skirmish.team_for(winner):
+		if is_instance_valid(entity) and not entity.is_dead:
+			_total_winner_hp += entity.entity_config.curr_health
 	_end_fight()
 
 func _end_fight() -> void:

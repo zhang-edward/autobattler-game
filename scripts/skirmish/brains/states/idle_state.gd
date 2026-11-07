@@ -15,11 +15,23 @@ var _time_left := 0.0
 func _ready() -> void:
 	_time_left = randf_range(idle_time_min, idle_time_max)
 
+func enter(_msg := {}) -> void:
+	brain.pick_target(preferred_distance + deadzone)
+
 func _physics_process(delta: float) -> void:
 	_time_left -= delta * brain.entity.hitstop_scale
 	var entity_state: State = brain.entity.state_machine.state
 	if entity_state == brain.entity.hurt_state or entity_state == brain.entity.block_state or entity_state == brain.entity.dodge_state:
 		_time_left = 0.0
+
+func _away_from_opponents() -> Vector2:
+	var comfort_range := preferred_distance - deadzone
+	var away := Vector2.ZERO
+	for other in brain.opponents():
+		var offset: Vector2 = brain.entity.global_position - other.global_position
+		if offset != Vector2.ZERO and offset.length() < comfort_range:
+			away += offset.normalized() * (1.0 - offset.length() / comfort_range)
+	return away
 
 func get_intent(_delta: float) -> Intent:
 	var target := brain.nearest_opponent()
@@ -45,4 +57,5 @@ func get_intent(_delta: float) -> Intent:
 		direction.x = - facing
 		if gap < dash_back_range and preferred_distance - gap > DASH_MIN_DISTANCE and not brain.entity.is_on_wall():
 			dash = - facing
+	direction = direction.normalized() + _away_from_opponents()
 	return _movement(direction.normalized() * SPEED, facing, dash)

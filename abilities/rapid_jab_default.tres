@@ -31,6 +31,6 @@ hitbox = SubResource("Resource_hitbox")
 ability_name = "Rapid Jab"
 tier = 1
 state_scene = ExtResource("2")
-cooldown = 7.0
+cooldown = 10.5
 startup = SubResource("Resource_startup")
 recovery = SubResource("Resource_recovery")

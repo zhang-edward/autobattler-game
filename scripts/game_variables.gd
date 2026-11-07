@@ -25,6 +25,7 @@ const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut.tres")
 const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch.tres")
 const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick.tres")
 const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast_default.tres")
+const ABILITIES_PATH := "res://abilities/"
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
@@ -49,6 +50,16 @@ func generate_random_prospects(num_prospects: int, prospect_type: Prospect.Prosp
 		prospects.append(Prospect.new(c, prospect_type, randi_range(200, 500)))
 	return prospects
 
+func random_ability_of_tier(tier: Ability.Tier) -> Ability:
+	var matching: Array[Ability] = []
+	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
+		if not file_name.ends_with(".tres"):
+			continue
+		var ability := load(ABILITIES_PATH + file_name) as Ability
+		if ability != null and ability.tier == tier:
+			matching.append(ability)
+	return matching.pick_random()
+
 func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.EntityType):
 	var configs: Array[EntityConfig] = []
 	for i in range(0, num_heroes):
@@ -68,9 +79,12 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		# Debug: same fixed kit for every character
 		# var random_abilities := false
 		if random_abilities:
-			var offense_abilities: Array[Ability] = [UPPERCUT, DASH_KICK, RAPID_JAB_DEFAULT, ENERGY_BLAST, BIG_PUNCH]
-			offense_abilities.shuffle()
-			abilities = [JAB, offense_abilities[0], offense_abilities[1]]
+			abilities = [
+				random_ability_of_tier(Ability.Tier.LIGHT),
+				random_ability_of_tier(Ability.Tier.MEDIUM),
+				random_ability_of_tier(Ability.Tier.MEDIUM),
+				random_ability_of_tier(Ability.Tier.HEAVY),
+			]
 
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \
