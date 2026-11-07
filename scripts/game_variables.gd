@@ -8,6 +8,7 @@ enum EncounterEndState {
 var player_lineup: Array[EntityConfig] = []
 var captured_villain_prospects: Array[Prospect] = []
 var money := 0
+var renown := 0
 var encounter_end_state: EncounterEndState
 var villain_lineup: Array[EntityConfig] = []
 var captured_heroes: Array[EntityConfig] = []
@@ -17,6 +18,7 @@ var selected_heroes_for_threat: Array[EntityConfig] = []
 var selected_hero_for_threat: EntityConfig
 var skirmish_winner: EntityConfig.EntityType
 var levels_for_new_ability = [2, 5, 10, 15]
+var curr_day: int = 1
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
@@ -153,3 +155,20 @@ func get_all_abilities():
 		BIG_PUNCH,
 		ENERGY_BLAST,
 	]
+
+func advance_day():
+	curr_day += 1
+	for t in threat_request_configs:
+		t.expiry_days -= 1
+	threat_request_configs = threat_request_configs.filter(func (t: ThreatRequestConfig): return t.expiry_days > 0)
+	# Tick down injuries, villain rehabs
+	for c in player_lineup:
+		if c.curr_status == EntityConfig.Status.INJURED:
+			c.injury_recovery_days -= 1
+			if c.injury_recovery_days == 0:
+				c.curr_status = EntityConfig.Status.HEALTHY
+		elif c.curr_status == EntityConfig.Status.REHAB:
+			c.rehab_days -= 1
+			if c.rehab_days == 0:
+				c.entity_type = EntityConfig.EntityType.HERO
+				c.curr_status = EntityConfig.Status.HEALTHY

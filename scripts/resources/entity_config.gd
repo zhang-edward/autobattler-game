@@ -7,6 +7,12 @@ enum EntityType {
 	MOB
 }
 
+enum Status {
+	HEALTHY,
+	INJURED,
+	REHAB
+}
+
 enum EntityPowerType {
 	ELEMENTAL,
 	PHYSICAL,
@@ -39,12 +45,19 @@ var exp := 0
 var exp_to_next_level := 100
 var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
+var curr_status: Status = Status.HEALTHY
+var injury_recovery_days := 0
+var rehab_days := 0
+var energy_level := BASE_ENERGY_LEVEL
 
 # In-round state
 var curr_health := 0
 var gained_exp := 0
 var num_assists := 0
 var damage_dealt := 0
+
+static var BASE_ENERGY_LEVEL := 3
+
 
 func handle_level_up():
 	level += 1

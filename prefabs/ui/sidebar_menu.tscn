@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://134ttetq48vj" path="res://prefabs/ui/sidebar_menu_option.tscn" id="1_chfu6"]
 [ext_resource type="Script" uid="uid://ba8mq575t6psy" path="res://scripts/ui/sidebar_menu.gd" id="1_jccjp"]
+[ext_resource type="StyleBox" uid="uid://dmy06mntrqfa8" path="res://prefabs/styles/yellow_button.tres" id="3_khndk"]
 
 [node name="SidebarMenu" type="PanelContainer" unique_id=672150573]
 anchors_preset = 9
@@ -28,3 +29,62 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 option_text = "Roster"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=580405573]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+alignment = 2
+
+[node name="Day" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1380702628]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Day 1"
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=47775044]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer" unique_id=1366645316]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer" unique_id=132592955]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=546382547]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2083930983]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Renown"
+
+[node name="Renown" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=601674873]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1000"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=856101694]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1353417477]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Money"
+
+[node name="Money" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1542289065]
+unique_name_in_owner = true
+layout_mode = 2
+text = "$1000"
+
+[node name="AdvanceDay" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=976235653]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = ExtResource("3_khndk")
+text = "Advance to next day"
