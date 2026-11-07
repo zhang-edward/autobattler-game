@@ -9,10 +9,14 @@ func init(ability_: Ability) -> void:
 	super.init(ability_)
 	projectile_ability = ability as ProjectileAbility
 
+func can_cancel_into(_other: Ability) -> bool:
+	return true
+
 func _active_entered() -> void:
 	phase_timer = projectile_ability.active_duration
 	e.rig.anim_player.play_section_with_markers(ability.anim, "active", "recovery")
 	_release()
+	hit_connected = true
 
 func _active_update(delta: float) -> void:
 	phase_timer -= delta

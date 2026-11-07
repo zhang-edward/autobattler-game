@@ -4,8 +4,8 @@ extends BrainState
 const SPEED := 1.0
 
 @export var attack_state: BrainState
-@export var preferred_distance := 300.0
-@export var deadzone := 20.0
+@export var preferred_distance := 500.0
+@export var deadzone := 200.0
 @export var dash_back_range := 120.0
 @export var idle_time_min := 1.0
 @export var idle_time_max := 3.0
@@ -44,5 +44,5 @@ func get_intent(_delta: float) -> Intent:
 	elif gap < preferred_distance - deadzone:
 		direction.x = - facing
 		if gap < dash_back_range and preferred_distance - gap > DASH_MIN_DISTANCE and not brain.entity.is_on_wall():
-			dash = -facing
+			dash = - facing
 	return _movement(direction.normalized() * SPEED, facing, dash)

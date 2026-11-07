@@ -95,7 +95,29 @@ horizontal_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1570031115]
 layout_mode = 2
 
-[node name="Moves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031116]
+[node name="LightLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031116]
+layout_mode = 2
+text = "Light"
+
+[node name="LightMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031117]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="MediumLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031118]
+layout_mode = 2
+text = "Medium"
+
+[node name="MediumMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031119]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="HeavyLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031120]
+layout_mode = 2
+text = "Heavy"
+
+[node name="HeavyMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031121]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 2

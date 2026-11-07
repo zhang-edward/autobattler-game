@@ -14,9 +14,9 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
-const BLOCK_DEFENSE_SCALE := 15.0
+const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_CHIP_FRACTION := 0.1
-const DODGE_AGILITY_SCALE := 1250.0
+const DODGE_CHANCE := 0.09
 # Max depth-axis spread on a knockdown
 const KNOCKDOWN_Y_SPREAD := 0.35
 
@@ -28,7 +28,7 @@ const VILLAIN_LAYER_INDEX = 10
 
 @export var hitbox_scene: PackedScene
 @export var entity_type: EntityConfig.EntityType
-@export var move_speed := 100.0
+@export var move_speed := 125.0
 @export var rig: SkirmishEntityRig
 @export var shadow: Sprite2D
 @export var healthbar: ProgressBar
@@ -94,8 +94,7 @@ func spawn_hitbox(config: HitboxConfig) -> Hitbox:
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
 	entity_type = ec.entity_type
-	move_speed = ec.agility * 10
-	healthbar.max_value = ec.vitality * 10
+	healthbar.max_value = ec.vitality
 	healthbar.value = ec.curr_health
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
@@ -205,15 +204,14 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	var blocked := state_machine.state == block_state
 	if not blocked and _can_defend():
 		# Dodge success roll calculation
-		var agility: int = entity_config.agility if entity_config != null else 0
-		if randf() < float(agility) / (agility + DODGE_AGILITY_SCALE):
+		if randf() < DODGE_CHANCE:
 			state_machine.transition_to(dodge_state, {"dir": dir})
 			return false
 		# Block success roll calculation
 		var defense: int = entity_config.defense if entity_config != null else 0
 		blocked = randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE)
 
-	var damage := HitConfig.calculate_damage(hit.damage, source.entity_config.strength, entity_config.defense)
+	var damage := HitConfig.calculate_damage(hit.damage, entity_config.defense)
 	# Take chip damage if blocked
 	if blocked:
 		damage = maxi(roundi(damage * BLOCK_CHIP_FRACTION), 1)

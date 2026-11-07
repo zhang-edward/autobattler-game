@@ -19,12 +19,12 @@ var skirmish_winner: EntityConfig.EntityType
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
-const JAB: MeleeAbility = preload("res://abilities/jab/jab.tres")
-const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
-const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut/uppercut.tres")
-const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch/big_punch.tres")
-const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick/dash_kick.tres")
-const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast/energy_blast_default.tres")
+const JAB: MeleeAbility = preload("res://abilities/jab.tres")
+const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab_default.tres")
+const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut.tres")
+const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch.tres")
+const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick.tres")
+const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast_default.tres")
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
