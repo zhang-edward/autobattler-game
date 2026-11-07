@@ -18,7 +18,7 @@ const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_CHIP_FRACTION := 0.1
 const DODGE_CHANCE := 0.09
 # Max depth-axis spread on a knockdown
-const KNOCKDOWN_Y_SPREAD := 0.35
+const KNOCKDOWN_Y_SPREAD := 0.15
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
