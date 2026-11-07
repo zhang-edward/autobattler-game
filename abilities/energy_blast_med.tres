@@ -9,9 +9,8 @@
 [sub_resource type="Resource" id="Resource_blast"]
 script = ExtResource("1_jcklo")
 kind = 2
-damage = 20
-knockback = 400.0
-base_hitstun = 0.1
+damage = 15
+knockback = 500.0
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_0wudy")
@@ -24,14 +23,14 @@ duration = 0.05
 [resource]
 script = ExtResource("4_rrby4")
 hit = SubResource("Resource_blast")
-speed = 600.0
+active_duration = 0.4
 projectile_scene = ExtResource("2_xckq6")
 ability_name = "Medium Energy Blast"
 tier = 1
 state_scene = ExtResource("5_v8ngl")
 cooldown = 4.0
 ability_range = 500.0
-ability_min_range = 50.0
+ability_min_range = 150.0
 anim = "male-rig/frontarm_jab"
 startup = SubResource("Resource_startup")
 recovery = SubResource("Resource_recovery")

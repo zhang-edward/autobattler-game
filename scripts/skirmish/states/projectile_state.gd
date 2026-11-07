@@ -14,11 +14,14 @@ func can_cancel_into(_other: Ability) -> bool:
 
 func _active_entered() -> void:
 	phase_timer = projectile_ability.active_duration
+	if projectile_ability.velocity != Vector2.ZERO:
+		e.absolute_velocity = Vector2(e.facing() * projectile_ability.velocity.x, projectile_ability.velocity.y)
 	e.rig.anim_player.play_section_with_markers(ability.anim, "active", "recovery")
 	_release()
 	hit_connected = true
 
 func _active_update(delta: float) -> void:
+	e.absolute_velocity *= 1.0 - projectile_ability.friction
 	phase_timer -= delta
 	if phase_timer <= 0.0:
 		_enter_phase(Phase.RECOVERY)
