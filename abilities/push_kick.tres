@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="MeleeAbility" format=3 uid="uid://d6yu3k3ie2qm"]
+
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_wh0kc"]
+[ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="2_yxe87"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="3_s5hy7"]
+[ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/melee_ability.gd" id="4_uljlr"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee_state.tscn" id="5_k4ada"]
+
+[sub_resource type="Resource" id="Resource_hit"]
+script = ExtResource("1_wh0kc")
+damage = 2
+knockback = 450.0
+launch = -350.0
+knockdown = true
+
+[sub_resource type="Resource" id="Resource_hitbox"]
+script = ExtResource("2_yxe87")
+offset = Vector2(75, -90)
+size = Vector2(120, 100)
+lifetime = 0.15
+hit = SubResource("Resource_hit")
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("3_s5hy7")
+duration = 0.5
+friction = 0.1
+
+[sub_resource type="Resource" id="Resource_startup"]
+script = ExtResource("3_s5hy7")
+duration = 0.1
+
+[resource]
+script = ExtResource("4_uljlr")
+hitbox = SubResource("Resource_hitbox")
+ability_name = "Push Kick"
+tier = 1
+state_scene = ExtResource("5_k4ada")
+cooldown = 7.0
+ability_range = 130.0
+anim = "male-rig/kick_heavy"
+startup = SubResource("Resource_startup")
+recovery = SubResource("Resource_recovery")

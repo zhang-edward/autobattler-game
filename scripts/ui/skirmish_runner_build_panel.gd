@@ -13,7 +13,11 @@ const ABILITIES_PATH := "res://abilities/"
 @onready var _agility: SpinBox = %Agility
 @onready var _vitality: SpinBox = %Vitality
 @onready var _points_label: Label = %PointsLabel
-@onready var _moves: GridContainer = %Moves
+@onready var _moves_by_tier: Dictionary[Ability.Tier, GridContainer] = {
+	Ability.Tier.LIGHT: %LightMoves,
+	Ability.Tier.MEDIUM: %MediumMoves,
+	Ability.Tier.HEAVY: %HeavyMoves,
+}
 
 var _move_toggles: Dictionary[Ability, CheckBox] = {}
 
@@ -44,21 +48,18 @@ func build_config() -> EntityConfig:
 	return config
 
 func _build_move_toggles() -> void:
-	for folder in ResourceLoader.list_directory(ABILITIES_PATH):
-		if not folder.ends_with("/"):
+	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
+		if not file_name.ends_with(".tres"):
 			continue
-		for file_name in ResourceLoader.list_directory(ABILITIES_PATH + folder):
-			if not file_name.ends_with(".tres"):
-				continue
-			var ability := load(ABILITIES_PATH + folder + file_name) as Ability
-			if ability == null:
-				continue
-			var toggle := CheckBox.new()
-			toggle.text = ability.ability_name
-			toggle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			toggle.toggled.connect(_on_build_changed.unbind(1))
-			_moves.add_child(toggle)
-			_move_toggles[ability] = toggle
+		var ability := load(ABILITIES_PATH + file_name) as Ability
+		if ability == null:
+			continue
+		var toggle := CheckBox.new()
+		toggle.text = ability.ability_name
+		toggle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		toggle.toggled.connect(_on_build_changed.unbind(1))
+		_moves_by_tier[ability.tier].add_child(toggle)
+		_move_toggles[ability] = toggle
 
 func _stats() -> Array[SpinBox]:
 	return [_strength, _defense, _agility, _vitality]
