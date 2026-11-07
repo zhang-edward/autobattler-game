@@ -95,7 +95,7 @@ func _enter_phase(next_phase: Phase) -> void:
 		Phase.DOWNED:
 			downed_timer = downed_seconds
 			# Downed entities are safe until they're back in play
-			e.hurtbox.set_deferred("monitorable", false)
+			# e.hurtbox.set_deferred("monitorable", false)
 			if e.is_dead:
 				e.despawn()
 

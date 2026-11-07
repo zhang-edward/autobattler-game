@@ -9,9 +9,8 @@
 [sub_resource type="Resource" id="Resource_blast"]
 script = ExtResource("1_yiee2")
 kind = 2
-damage = 20
-knockback = 200.0
-base_hitstun = 0.1
+damage = 8
+knockback = 500.0
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_48n5r")
@@ -24,10 +23,12 @@ duration = 0.05
 [resource]
 script = ExtResource("4_w7tr4")
 hit = SubResource("Resource_blast")
+active_duration = 0.3
+speed = 700.0
 projectile_scene = ExtResource("2_6pl3d")
 ability_name = "Quick Energy Blast"
 state_scene = ExtResource("5_y7mug")
-cooldown = 2.0
+cooldown = 3.0
 ability_range = 500.0
 ability_min_range = 50.0
 anim = "male-rig/frontarm_jab"

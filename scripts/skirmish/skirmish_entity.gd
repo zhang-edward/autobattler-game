@@ -228,7 +228,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		died.emit()
 		state_machine.transition_to(death_state)
 	elif blocked:
-		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun})
+		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "knockback": hit.knockback})
 		hit_connected = true
 	elif hit.knockdown or state_machine.state == ragdoll_state:
 		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
