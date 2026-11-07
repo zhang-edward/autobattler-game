@@ -54,6 +54,10 @@ func with_entity_power_type(t: EntityConfig.EntityPowerType):
 	_entity_config.entity_power_type = t
 	return self
 	
+func with_level(lv: int):
+	_entity_config.level = lv
+	return self
+	
 ## Starts a builder pre-filled with a copy of an existing EntityConfig, so tweaks via
 ## with_*() never mutate the original. The abilities array is duplicated, but the
 ## Ability resources and portrait_config inside are shared references.
