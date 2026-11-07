@@ -23,4 +23,7 @@ func update_selected_threat_req(req: RequestInboxThreat):
 	config = req.config
 	headline.text = config.title
 	description.text = config.description
+	exp_reward.text = str(config.reward.exp_gain) + " XP"
+	money.text = "$" + str(config.reward.money)
+	renown.text = str(config.reward.renown)
 	threat_label.configure(config.threat_type)
