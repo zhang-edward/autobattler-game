@@ -16,6 +16,7 @@ var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
 var selected_hero_for_threat: EntityConfig
 var skirmish_winner: EntityConfig.EntityType
+var levels_for_new_ability = [2, 5, 10, 15]
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
@@ -144,3 +145,15 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 			return "Psychic"
 		EntityConfig.EntityPowerType.GOD:
 			return "God"
+			
+func get_all_abilities():
+	return [
+		PUNCH_DEFAULT,
+		GRAB_DEFAULT,
+		BLOCK_DEFAULT,
+		DODGE_DEFAULT,
+		RAPID_JAB_DEFAULT,
+		UPPERCUT,
+		BIG_PUNCH,
+		ENERGY_BLAST,
+	]
