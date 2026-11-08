@@ -14,7 +14,7 @@ const STATUS_ROW := preload("res://prefabs/ui/skirmish/skirmish_status_row.tscn"
 
 # Wall layout, authored at this resolution and scaled to the current viewport
 const WALL_BASE_SIZE := Vector2(1920.0, 1080.0)
-const SIDE_WALL_THICKNESS := 20.0
+const SIDE_WALL_THICKNESS := 80.0
 const BOTTOM_WALL_CENTER_Y := 1000.0
 const BOTTOM_WALL_HEIGHT := 136.375
 # The top wall's lower edge sits on the horizon (see Background/Ground band fractions)
