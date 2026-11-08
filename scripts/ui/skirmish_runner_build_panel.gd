@@ -38,7 +38,7 @@ func has_moves() -> bool:
 	return not _selected_abilities().is_empty()
 
 func build_config() -> EntityConfig:
-	var config: EntityConfig = GameVariables.generate_random_entity_configs(1, entity_type)[0]
+	var config: EntityConfig = EntityGenerator.generate_random_entity_configs(1, entity_type)[0]
 	config.entity_name = _build_name()
 	config.strength = int(_strength.value)
 	config.defense = int(_defense.value)

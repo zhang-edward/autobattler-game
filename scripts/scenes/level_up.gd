@@ -19,7 +19,7 @@ var selected_new_ability: LevelUpNewAbility
 
 func _ready() -> void:
 	if GameVariables.selected_hero_for_threat == null:
-		GameVariables.selected_hero_for_threat = GameVariables.generate_random_entity_configs(1, EntityConfig.EntityType.HERO)[0]
+		GameVariables.selected_hero_for_threat = EntityGenerator.generate_random_entity_configs(1, EntityConfig.EntityType.HERO)[0]
 		GameVariables.selected_hero_for_threat.level = 2
 	hero_config = GameVariables.selected_hero_for_threat
 	subtitle.text = hero_config.entity_name + " has reached level " + str(hero_config.level)
@@ -38,7 +38,7 @@ func setup_new_ability_list(config: EntityConfig):
 	if GameVariables.levels_for_new_ability.has(config.level):
 		new_ability_header.text = "Learn a new ability"
 		var all_hero_ability_names = config.abilities.map(func(a: Ability): return a.ability_name)
-		var all_abilities = GameVariables.get_all_abilities()
+		var all_abilities = EntityGenerator.get_all_abilities()
 		all_abilities.shuffle()
 		all_abilities = all_abilities.filter(func(a: Ability): return !all_hero_ability_names.has(a.ability_name))
 		var new_abilities_to_pick_from = all_abilities.slice(0, 3)

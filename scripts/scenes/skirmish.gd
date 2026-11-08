@@ -64,13 +64,13 @@ func _ready() -> void:
 		heroes = [GameVariables.selected_hero_for_threat]
 	else:
 		print("[WARN] No hero in GameVariables - using random debug heroes...")
-		heroes = GameVariables.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+		heroes = EntityGenerator.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
 		return_to_post_skirmish = false
 	if GameVariables.selected_threat_request_config != null:
 		villains = GameVariables.selected_threat_request_config.enemy_configs
 	else:
 		print("[WARN] No threat request in GameVariables - using random debug villains...")
-		villains = GameVariables.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
+		villains = EntityGenerator.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
 	setup(heroes, villains)
 	_build_status_rows()
 	# Debug: 2v2 has no tagging

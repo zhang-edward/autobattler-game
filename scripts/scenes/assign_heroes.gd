@@ -27,7 +27,7 @@ func _generate_debug_data():
 	if !GameVariables.selected_hero_for_threat:
 		GameVariables.selected_hero_for_threat = GameVariables.player_lineup[0]
 	if !GameVariables.selected_threat_request_config:
-		GameVariables.selected_threat_request_config = GameVariables.generate_random_threat_requests(1)[0]
+		GameVariables.selected_threat_request_config = ThreatGenerator.generate_random_threat_requests(1, GameVariables.player_lineup)[0]
 	
 func update_entity_previews():
 	var threat_req = GameVariables.selected_threat_request_config

@@ -17,7 +17,7 @@ func _ready() -> void:
 	
 func update_threat_requests():
 	if GameVariables.threat_request_configs.is_empty():
-		GameVariables.threat_request_configs = GameVariables.generate_random_threat_requests(randi_range(3, 5))
+		GameVariables.threat_request_configs = ThreatGenerator.generate_random_threat_requests(randi_range(3, 5), GameVariables.player_lineup)
 	for c in request_container.get_children():
 		c.queue_free()
 	for config in GameVariables.threat_request_configs:
