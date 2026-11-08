@@ -18,7 +18,7 @@ const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_CHIP_FRACTION := 0.1
 const DODGE_CHANCE := 0.09
 # Max depth-axis spread on a knockdown
-const KNOCKDOWN_Y_SPREAD := 0.15
+const KNOCKDOWN_Y_SPREAD := 0.25
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
@@ -169,7 +169,6 @@ func _init_throw(grab_ability: GrabAbility, grab_state: GrabState) -> void:
 	throw_instance.state_machine = state_machine
 	throw_instance.init(grab_ability)
 	grab_state.throw_state = throw_instance
-	ragdoll_state.bounce_base_damage = grab_ability.hit.damage
 
 func _can_defend() -> bool:
 	var state := state_machine.state
@@ -222,6 +221,8 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	healthbar.value -= damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
+		if entity_config.curr_health > 0 and entity_config.curr_health <= entity_config.vitality * EntityConfig.LOW_HEALTH_FRACTION:
+			entity_config.reached_low_health = true
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
 	var hit_connected := false
