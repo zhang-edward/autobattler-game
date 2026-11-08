@@ -13,8 +13,6 @@ func _ready() -> void:
 	dispatch_button.pressed.connect(go_to_skirmish_scene)
 	if GameVariables.curr_threat_skirmish == null:
 		_generate_debug_data()
-	if GameVariables.curr_threat_skirmish.heroes.is_empty():
-		GameVariables.curr_threat_skirmish.heroes = [GameVariables.player_lineup[0]]
 	update_entity_previews()
 	update_stat_comparison()
 	hero_preview.on_change_hero.connect(open_choose_hero_modal)
@@ -33,17 +31,23 @@ func _generate_debug_data():
 func update_entity_previews():
 	var threat_req = GameVariables.curr_threat_skirmish.threat_request_config
 	var villain_config = threat_req.enemy_configs[0]
-	var hero_config = GameVariables.curr_threat_skirmish.heroes[0]
+	var heroes = GameVariables.curr_threat_skirmish.heroes
+	var hero_config = heroes[0] if not heroes.is_empty() else null
 	hero_preview.configure(hero_config)
 	villain_preview.configure(villain_config)
 	villain_preview.change_hero_button.hide()
-	dispatch_button.disabled = hero_config.injury_recovery_days > 0
-	dispatch_button.text = "Dispatch" if hero_config.injury_recovery_days == 0 else "Cannot dispatch! Hero is resting"
+	if hero_config == null:
+		dispatch_button.disabled = true
+		dispatch_button.text = "Cannot dispatch! No hero selected"
+	else:
+		dispatch_button.disabled = hero_config.injury_recovery_days > 0
+		dispatch_button.text = "Dispatch" if hero_config.injury_recovery_days == 0 else "Cannot dispatch! Hero is resting"
 
 func update_stat_comparison():
 	var threat_req = GameVariables.curr_threat_skirmish.threat_request_config
 	var villain_config = threat_req.enemy_configs[0]
-	stat_comparison.configure_stat_rows(GameVariables.curr_threat_skirmish.heroes[0], villain_config)
+	var heroes = GameVariables.curr_threat_skirmish.heroes
+	stat_comparison.configure_stat_rows(heroes[0] if not heroes.is_empty() else null, villain_config)
 
 func go_to_dispatch_scene():
 	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
