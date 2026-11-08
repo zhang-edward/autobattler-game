@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="1_i71j0"]
 [ext_resource type="Script" uid="uid://ca3j72b0jwkvl" path="res://scripts/ui/enemy_preview.gd" id="1_xj4uv"]
 [ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="2_xj4uv"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/health_bar.tscn" id="hb_health_bar"]
 
 [node name="EnemyPreview" type="VBoxContainer" unique_id=1792914888]
 size_flags_horizontal = 3
@@ -30,6 +31,10 @@ layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 25
 text = "Cinder Queen"
+
+[node name="HealthBar" parent="HBoxContainer/VBoxContainer" unique_id=1406259813 instance=ExtResource("hb_health_bar")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=1410663739]
 layout_mode = 2
@@ -67,7 +72,8 @@ unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="." unique_id=1012647128]
+[node name="SpecialMovesLabel" type="Label" parent="." unique_id=1012647128]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.67058825, 0.6784314, 0.77254903, 1)
 text = "Special Moves"

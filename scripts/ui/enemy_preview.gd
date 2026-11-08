@@ -6,11 +6,16 @@ extends VBoxContainer
 @onready var level_value: Label = %LevelValue
 @onready var power_type: Label = %PowerType
 @onready var enemy_name: Label = %EnemyName
+@onready var health_bar: HealthBar = %HealthBar
+@onready var special_moves_label: Label = %SpecialMovesLabel
 
 func configure(config: EntityConfig):
 	enemy_name.text = config.entity_name
+	health_bar.configure(config)
 	level_value.text = str(config.level)
 	power_type.text = GameVariables.get_label_from_power_type(config.entity_power_type)
+	for c in stat_grid.get_children():
+		c.queue_free()
 	add_stat_label("STR", config.strength)
 	add_stat_label("SKL", config.skill)
 	add_stat_label("AGI", config.agility)
