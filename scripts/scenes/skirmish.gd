@@ -260,9 +260,5 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 	if not return_to_post_skirmish:
 		return
 	GameVariables.curr_threat_skirmish.winner = winner
-	for h in hero_team:
-		h.entity_config.injury_recovery_days = GameVariables.DEFEATED_REST_DAYS if h.is_dead else GameVariables.REST_DAYS
-
-	var new_configs = GameVariables.threat_request_configs.filter(func(c): return c != GameVariables.curr_threat_skirmish.threat_request_config)
-	GameVariables.threat_request_configs = new_configs
+	GameVariables.resolve_threat_skirmish(GameVariables.curr_threat_skirmish)
 	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")

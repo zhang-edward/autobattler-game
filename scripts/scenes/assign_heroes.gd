@@ -7,6 +7,7 @@ extends Node2D
 @onready var hero_preview: MatchupHeroPreview = %MatchupHeroPreview
 @onready var villain_preview: MatchupHeroPreview = %MatchupVillainPreview
 @onready var stat_comparison: MatchupStatComparison = %MatchupStatComparison
+@onready var override_skirmish_results: CheckBox = %OverrideSkirmishResults
 
 func _ready() -> void:
 	back_button.pressed.connect(go_to_dispatch_scene)
@@ -53,7 +54,10 @@ func go_to_dispatch_scene():
 	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
 	
 func go_to_skirmish_scene():
-	get_tree().change_scene_to_file("res://scenes/skirmish.tscn")
+	if override_skirmish_results.button_pressed:
+		get_tree().change_scene_to_file("res://scenes/skirmish_override.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/skirmish.tscn")
 
 func open_choose_hero_modal():
 	choose_hero_modal.show()

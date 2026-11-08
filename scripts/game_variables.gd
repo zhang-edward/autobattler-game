@@ -28,6 +28,11 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 		EntityConfig.EntityPowerType.GOD:
 			return "God"
 			
+func resolve_threat_skirmish(threat_skirmish: ThreatSkirmish):
+	for h in threat_skirmish.heroes:
+		h.injury_recovery_days = DEFEATED_REST_DAYS if h.curr_health <= 0 else REST_DAYS
+	threat_request_configs = threat_request_configs.filter(func(c): return c != threat_skirmish.threat_request_config)
+
 func advance_day():
 	curr_day += 1
 	for t in threat_request_configs:

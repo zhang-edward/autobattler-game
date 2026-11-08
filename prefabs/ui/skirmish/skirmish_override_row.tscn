@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/skirmish_override_row.gd" id="1_row"]
+
+[node name="SkirmishOverrideRow" type="HBoxContainer" unique_id=1873402956]
+theme_override_constants/separation = 15
+script = ExtResource("1_row")
+
+[node name="EntityName" type="Label" parent="." unique_id=1129573840]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Entity Name"
+
+[node name="HealthSlider" type="HSlider" parent="." unique_id=1684021357]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+step = 1.0
+value = 100.0
+
+[node name="HealthValue" type="Label" parent="." unique_id=1390265718]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "100%"
+horizontal_alignment = 2
