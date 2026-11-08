@@ -14,6 +14,8 @@ func _ready():
 
 func configure(entity_config: EntityConfig):
 	hero_name.text = entity_config.entity_name
+	if entity_config.injury_recovery_days > 0:
+		hero_name.text += " (Resting)"
 	level_value.text = str(entity_config.level)
 	offense_moves.configure_from_abilities(entity_config.abilities)
 

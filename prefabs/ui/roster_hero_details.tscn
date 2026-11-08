@@ -4,6 +4,7 @@
 [ext_resource type="StyleBox" uid="uid://d13h66k4lrb3r" path="res://prefabs/styles/default_ui_panel_stylebox_stroke.tres" id="2_pbjxm"]
 [ext_resource type="Script" uid="uid://i8vus1d43ii3" path="res://scripts/ui/roster_hero_details.gd" id="2_usdt2"]
 [ext_resource type="PackedScene" uid="uid://cv1e7idqdjn1o" path="res://prefabs/ui/character_stats_panel.tscn" id="3_ney57"]
+[ext_resource type="Texture2D" uid="uid://wshkqtra10bx" path="res://assets/icons/kenney/arrowLeft.png" id="3_svoeg"]
 [ext_resource type="PackedScene" uid="uid://bdo7ak12gg2wn" path="res://prefabs/ui/special_abilities_panel.tscn" id="8_eqg7a"]
 
 [node name="RosterHeroDetails" type="PanelContainer" unique_id=2108953206]
@@ -21,7 +22,18 @@ theme_override_constants/margin_bottom = 15
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1813688848]
 layout_mode = 2
 
-[node name="HeroName" type="Label" parent="MarginContainer/VBoxContainer" unique_id=680921115]
+[node name="HeaderContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2039456587]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/HeaderContainer" unique_id=863026848]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+icon = ExtResource("3_svoeg")
+icon_alignment = 1
+expand_icon = true
+
+[node name="HeroName" type="Label" parent="MarginContainer/VBoxContainer/HeaderContainer" unique_id=680921115]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50

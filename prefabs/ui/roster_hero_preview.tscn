@@ -77,6 +77,20 @@ unique_name_in_owner = true
 layout_mode = 2
 columns = 3
 
+[node name="RestingOverlay" type="PanelContainer" parent="." unique_id=1734920586]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+
+[node name="RestingLabel" type="Label" parent="RestingOverlay" unique_id=1287365041]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Resting (2 days)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Button" type="Button" parent="." unique_id=974316015]
 unique_name_in_owner = true
 layout_mode = 2

@@ -221,8 +221,6 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	healthbar.value -= damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
-		if entity_config.curr_health > 0 and entity_config.curr_health <= entity_config.vitality * EntityConfig.LOW_HEALTH_FRACTION:
-			entity_config.reached_low_health = true
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
 	var hit_connected := false
@@ -264,4 +262,4 @@ func despawn() -> void:
 	var tween := create_tween()
 	tween.tween_property(rig, "modulate:a", 0.0, 0.4)
 	tween.parallel().tween_property(shadow, "modulate:a", 0.0, 0.4)
-	tween.tween_callback(queue_free)
+	tween.tween_callback(set_active.bind(false))

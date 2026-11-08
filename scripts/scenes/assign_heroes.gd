@@ -35,6 +35,8 @@ func update_entity_previews():
 	hero_preview.configure(GameVariables.selected_hero_for_threat)
 	villain_preview.configure(villain_config)
 	villain_preview.change_hero_button.hide()
+	dispatch_button.disabled = GameVariables.selected_hero_for_threat.injury_recovery_days > 0
+	dispatch_button.text = "Dispatch" if GameVariables.selected_hero_for_threat.injury_recovery_days == 0 else "Cannot dispatch! Hero is resting"
 
 func update_stat_comparison():
 	var threat_req = GameVariables.selected_threat_request_config

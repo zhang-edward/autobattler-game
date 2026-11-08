@@ -25,6 +25,8 @@ const ABILITIES_PATH := "res://abilities/"
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
 static var BASE_RENOWN_REWARD = 100
+static var REST_DAYS = 2
+static var DEFEATED_REST_DAYS = 5
 
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
@@ -159,14 +161,7 @@ func advance_day():
 	for t in threat_request_configs:
 		t.expiry_days -= 1
 	threat_request_configs = threat_request_configs.filter(func(t: ThreatRequestConfig): return t.expiry_days > 0)
-	# Tick down injuries, villain rehabs
+	# Tick down injuries
 	for c in player_lineup:
-		if c.curr_status == EntityConfig.Status.INJURED:
+		if c.injury_recovery_days > 0:
 			c.injury_recovery_days -= 1
-			if c.injury_recovery_days == 0:
-				c.curr_status = EntityConfig.Status.HEALTHY
-		elif c.curr_status == EntityConfig.Status.REHAB:
-			c.rehab_days -= 1
-			if c.rehab_days == 0:
-				c.entity_type = EntityConfig.EntityType.HERO
-				c.curr_status = EntityConfig.Status.HEALTHY

@@ -7,12 +7,6 @@ enum EntityType {
 	MOB
 }
 
-enum Status {
-	HEALTHY,
-	INJURED,
-	REHAB
-}
-
 enum EntityPowerType {
 	ELEMENTAL,
 	PHYSICAL,
@@ -45,9 +39,7 @@ var exp := 0
 var exp_to_next_level := 100
 var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
-var curr_status: Status = Status.HEALTHY
 var injury_recovery_days := 0
-var rehab_days := 0
 var energy_level := BASE_ENERGY_LEVEL
 
 # In-round state
