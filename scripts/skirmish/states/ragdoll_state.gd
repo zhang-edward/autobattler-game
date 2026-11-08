@@ -95,7 +95,7 @@ func _enter_phase(next_phase: Phase) -> void:
 		Phase.DOWNED:
 			downed_timer = downed_seconds
 			# Downed entities are safe until they're back in play
-			e.hurtbox.set_deferred("monitorable", false)
+			# e.hurtbox.set_deferred("monitorable", false)
 			if e.is_dead:
 				e.despawn()
 
@@ -104,7 +104,7 @@ func _land() -> void:
 
 	if e.z_velocity >= min_bounce_speed:
 		e.rig.play_animation(ANIM_SLAM)
-		e.healthbar.value -= HitConfig.calculate_damage(bounce_base_damage, thrower_entity.entity_config.strength, e.entity_config.defense)
+		e.healthbar.value -= HitConfig.calculate_damage(bounce_base_damage, e.entity_config.defense)
 		e.z_velocity *= -floor_restitution
 		e.absolute_velocity *= floor_skid_retention
 		# The bounce launch happens this same frame, so show the slam for a beat

@@ -1,9 +1,10 @@
 class_name AttackState
 extends BrainState
 
-const SPEED := 4.0
+const SPEED := 2.5
 
 @export var idle_state: BrainState
+@export var follow_up_state: BrainState
 
 var _ability: Ability
 
@@ -23,22 +24,24 @@ func get_intent(_delta: float) -> Intent:
 			state_machine.transition_to(idle_state)
 			return null
 
+	if _ability.in_reach(to_target):
+		state_machine.transition_to(follow_up_state)
+		return _action(_ability, facing)
+
 	var direction := _y_direction(to_target)
+	var speed := SPEED
+	var dash := 0.0
 	if absf(to_target.x) > _ability.ability_range:
 		direction.x = facing
+		if absf(to_target.x) - _ability.ability_range > DASH_MIN_DISTANCE:
+			dash = facing
+	elif absf(to_target.x) < _ability.ability_min_range:
+		if brain.entity.is_on_wall():
+			state_machine.transition_to(idle_state)
+			return null
+		direction.x = - facing
+		speed = IdleState.SPEED
+		if _ability.ability_min_range - absf(to_target.x) > DASH_MIN_DISTANCE:
+			dash = - facing
 
-	if direction != Vector2.ZERO:
-		return _movement(direction.normalized() * SPEED, facing)
-
-	# # Only MoveState reads intent.ability, so firing in any other state would drop it
-	# if brain.entity.state_machine.state != brain.entity.move_state:
-	# 	return _movement(Vector2.ZERO, facing)
-
-	var intent := _action(_ability, facing)
-	var target_state := target.state_machine.state
-	if target_state == target.hurt_state \
-			or (target_state == target.ragdoll_state and target.ragdoll_state.phase != RagdollState.Phase.DOWNED):
-		state_machine.transition_to(self, {"ability": brain.draw_weighted()})
-	else:
-		state_machine.transition_to(idle_state)
-	return intent
+	return _movement(direction.normalized() * speed, facing, dash)

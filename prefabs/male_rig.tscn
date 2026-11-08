@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cmlb01kpah6ot" path="res://assets/skirmish/placeholder/hips.png" id="6_m775y"]
 [ext_resource type="Texture2D" uid="uid://cjpsl5b0xcbr5" path="res://assets/skirmish/placeholder/leg.png" id="7_eayux"]
 [ext_resource type="Texture2D" uid="uid://qbb7hdu60i2a" path="res://assets/skirmish/placeholder/foot-side.png" id="9_frasx"]
-[ext_resource type="AnimationLibrary" uid="uid://dpm461n8mk85v" path="res://animations/male-rig.res" id="10_2ekpu"]
+[ext_resource type="AnimationLibrary" uid="uid://bt34rp2fggk36" path="res://animations/male-rig.res" id="10_2ekpu"]
 
 [sub_resource type="Animation" id="Animation_2ekpu"]
 length = 0.001
@@ -724,5 +724,6 @@ texture = ExtResource("9_frasx")
 offset = Vector2(11.887058, 7.9759827)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=689288795]
+deterministic = true
 libraries/ = SubResource("AnimationLibrary_m775y")
 libraries/male-rig = ExtResource("10_2ekpu")

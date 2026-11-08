@@ -17,6 +17,7 @@ enum Kind {
 # Ragdoll the target instead of putting it in ordinary hitstun
 @export var knockdown: bool = false
 @export var hitstop: float = Hitstop.DEFAULT_DURATION
+@export var base_hitstun: float = HurtState.HITSTUN_SECONDS
 
 static func create(
 	damage_: int,
@@ -35,7 +36,6 @@ static func create(
 	hit.kind = kind_
 	return hit
 
-static func calculate_damage(base_power: int, attacker_attack: int, defender_defense: int, attack_baseline: float = 15.0) -> int:
-	var attack_multiplier = attacker_attack / attack_baseline
+static func calculate_damage(base_power: int, defender_defense: int) -> int:
 	var defense_multiplier = 100.0 / (100.0 + defender_defense)
-	return int(round(base_power * attack_multiplier * defense_multiplier))
+	return int(round(base_power * defense_multiplier))

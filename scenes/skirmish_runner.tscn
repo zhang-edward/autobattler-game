@@ -1,0 +1,113 @@
+[gd_scene format=3 uid="uid://3rpmciky28as"]
+
+[ext_resource type="Script" uid="uid://dpxm4n7e2smii" path="res://scripts/scenes/skirmish_runner.gd" id="1_runner"]
+[ext_resource type="PackedScene" uid="uid://bfpvhsq4kc0gc" path="res://scenes/skirmish.tscn" id="2_skirmish"]
+[ext_resource type="PackedScene" uid="uid://m2m0omt2crgw" path="res://prefabs/ui/skirmish/skirmish_runner_build_panel.tscn" id="3_panel"]
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="4_style"]
+
+[node name="SkirmishRunner" type="Node" unique_id=1880042001]
+script = ExtResource("1_runner")
+skirmish_scene = ExtResource("2_skirmish")
+
+[node name="SetupLayer" type="CanvasLayer" parent="." unique_id=1880042002]
+layer = 12
+
+[node name="Root" type="PanelContainer" parent="SetupLayer" unique_id=1880042003]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("4_style")
+
+[node name="CenterContainer" type="CenterContainer" parent="SetupLayer/Root" unique_id=1880042004]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SetupLayer/Root/CenterContainer" unique_id=1880042005]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Builds" type="HBoxContainer" parent="SetupLayer/Root/CenterContainer/VBoxContainer" unique_id=1880042006]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="HeroBuild" parent="SetupLayer/Root/CenterContainer/VBoxContainer/Builds" unique_id=1880042007 instance=ExtResource("3_panel")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VillainBuild" parent="SetupLayer/Root/CenterContainer/VBoxContainer/Builds" unique_id=1880042008 instance=ExtResource("3_panel")]
+unique_name_in_owner = true
+layout_mode = 2
+entity_type = 1
+
+[node name="RunOptions" type="HBoxContainer" parent="SetupLayer/Root/CenterContainer/VBoxContainer" unique_id=1880042009]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="TeamSizeLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042012]
+layout_mode = 2
+text = "Fighters per side"
+
+[node name="TeamSize" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042013]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 3.0
+value = 2.0
+
+[node name="FightsLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042010]
+layout_mode = 2
+text = "Fights"
+
+[node name="Fights" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042011]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 200.0
+value = 10.0
+
+[node name="FightButton" type="Button" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042014]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+text = "Fight"
+
+[node name="ResultsLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer" unique_id=1880042015]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="FightLayer" type="CanvasLayer" parent="." unique_id=1880042016]
+layer = 12
+visible = false
+
+[node name="Root" type="PanelContainer" parent="FightLayer" unique_id=1880042017]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("4_style")
+
+[node name="MarginContainer" type="MarginContainer" parent="FightLayer/Root" unique_id=1880042018]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FightLayer/Root/MarginContainer" unique_id=1880042019]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="FightStatusLabel" type="Label" parent="FightLayer/Root/MarginContainer/HBoxContainer" unique_id=1880042020]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StopButton" type="Button" parent="FightLayer/Root/MarginContainer/HBoxContainer" unique_id=1880042021]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stop"

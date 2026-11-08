@@ -1,26 +1,24 @@
 class_name DodgeState
-extends AbilityState
+extends SkirmishState
 
-# Used when a brain transitions in without passing a duration
-const DEFAULT_DURATION := 0.4
-const OFFSET_X = -60
-const OFFSET_Y = 30
+const VX = 120
+const VY = 800
 
-var duration: float = DEFAULT_DURATION
+@export var duration := 0.4
+
 var dodge_timer := 0.0
 var _rig_default_position: Vector2
 
-func init(ability: Ability) -> void:
-	var dodge_move := ability as DodgeAbility
-	if dodge_move == null:
-		return
-	duration = dodge_move.duration
+func _ready() -> void:
 	_rig_default_position = e.rig.position
 
-func enter(_msg := {}) -> void:
+func enter(msg := {}) -> void:
+	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
+	if dir.x != 0.0:
+		e.rig_wrapper.scale.x = -dir.x
 	dodge_timer = duration
 	e.rig.play_animation("male-rig/dodge")
-	e.absolute_velocity = Vector2(e.facing() * -400, 30 * (1 if randf() < 0.5 else -1))
+	e.absolute_velocity = Vector2(e.facing() * -VX, VY * (1 if randf() < 0.5 else -1))
 
 func physics_update(delta: float) -> void:
 	# Dodge slide away friction

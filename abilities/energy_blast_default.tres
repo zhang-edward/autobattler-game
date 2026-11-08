@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="ProjectileAbility" format=3 uid="uid://bvb4gybxkpxw8"]
+
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1"]
+[ext_resource type="Script" uid="uid://dd17pi42daok5" path="res://scripts/resources/projectile_ability.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://c57k0qbtafe7g" path="res://abilities/energy_blast_state.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://lqr7x52lgykv" path="res://prefabs/projectile.tscn" id="4"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5"]
+
+[sub_resource type="Resource" id="Resource_blast"]
+script = ExtResource("1")
+kind = 2
+damage = 20
+knockback = 200.0
+launch = -150.0
+knockdown = true
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("5")
+duration = 0.8
+
+[sub_resource type="Resource" id="Resource_startup"]
+script = ExtResource("5")
+duration = 0.2
+
+[resource]
+script = ExtResource("2")
+hit = SubResource("Resource_blast")
+active_duration = 0.5
+speed = 300.0
+projectile_scene = ExtResource("4")
+ability_name = "Energy Blast"
+tier = 2
+state_scene = ExtResource("3")
+cooldown = 12.0
+ability_range = 500.0
+ability_min_range = 150.0
+anim = "male-rig/frontarm_jab"
+startup = SubResource("Resource_startup")
+recovery = SubResource("Resource_recovery")

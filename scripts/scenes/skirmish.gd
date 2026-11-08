@@ -7,6 +7,7 @@ const HERO_START := Vector2(400.0, 700.0)
 const VILLAIN_START := Vector2(1400.0, 700.0)
 const HERO_BENCH := Vector2(400.0, 1200.0)
 const VILLAIN_BENCH := Vector2(1400.0, 1200.0)
+const SPAWN_Y_SPACING := 100.0
 # Delay between the last death and `finished`, so the body can land and fade first
 const OUTRO_SECONDS := 1.5
 const STATUS_ROW := preload("res://prefabs/ui/skirmish/skirmish_status_row.tscn")
@@ -30,6 +31,7 @@ var villain_statuses: VBoxContainer
 @export var debug_hero_count := 3
 @export var debug_villain_count := 3
 
+var return_to_post_skirmish := true
 var hero_team: Array[SkirmishEntity] = []
 var villain_team: Array[SkirmishEntity] = []
 var active_hero: SkirmishEntity
@@ -56,11 +58,14 @@ func _ready() -> void:
 	_update_walls()
 	var heroes: Array[EntityConfig] = []
 	var villains: Array[EntityConfig] = []
-	if GameVariables.selected_hero_for_threat != null:
+	if not GameVariables.selected_heroes_for_threat.is_empty():
+		heroes = GameVariables.selected_heroes_for_threat
+	elif GameVariables.selected_hero_for_threat != null:
 		heroes = [GameVariables.selected_hero_for_threat]
 	else:
 		print("[WARN] No hero in GameVariables - using random debug heroes...")
 		heroes = GameVariables.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+		return_to_post_skirmish = false
 	if GameVariables.selected_threat_request_config != null:
 		villains = GameVariables.selected_threat_request_config.enemy_configs
 	else:
@@ -68,7 +73,8 @@ func _ready() -> void:
 		villains = GameVariables.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
 	setup(heroes, villains)
 	_build_status_rows()
-	_build_tag_in_buttons()
+	# Debug: 2v2 has no tagging
+	# _build_tag_in_buttons()
 	_build_special_move_buttons()
 
 func _exit_tree() -> void:
@@ -79,6 +85,11 @@ func _process(_delta: float) -> void:
 		row.refresh()
 		var is_active := is_instance_valid(row.entity) and (row.entity == active_hero or row.entity == active_villain)
 		row.set_active_highlight(is_active)
+
+	var sorted := $Battlefield.get_children()
+	sorted.sort_custom(func(a, b): return a.position.y < b.position.y)
+	for i in sorted.size():
+		sorted[i].z_index = (i + 1) * 4
 
 # Re-fits the four boundary walls to the current viewport so they stay on the screen edges
 func _update_walls() -> void:
@@ -169,23 +180,29 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		battlefield.add_child(entity)
 		entity.configure_from_entity_config(config)
 		entity.died.connect(_on_entity_died.bind(entity))
-		if i == 0:
-			entity.position = start
-			entity.set_active(true)
-		else:
-			entity.position = bench
-			entity.set_active(false)
+		entity.position = start + Vector2(0.0, (i - (configs.size() - 1) * 0.5) * SPAWN_Y_SPACING)
+		entity.set_active(true)
+		# Debug: 2v2 keeps everyone on the field
+		# if i == 0:
+		# 	entity.position = start
+		# 	entity.set_active(true)
+		# else:
+		# 	entity.position = bench
+		# 	entity.set_active(false)
 		team.append(entity)
 	return team
 
 func _on_entity_died(entity: SkirmishEntity) -> void:
 	_release_grab_links(entity)
 	var roster := team_for(entity.entity_type)
-	if entity != active_for(entity.entity_type):
-		if not _team_has_living(roster):
-			_finish(_winning_side(entity.entity_type))
-		return
-	director.request_avenge(entity.entity_type)
+	if not _team_has_living(roster):
+		_finish(_winning_side(entity.entity_type))
+	# Debug: 2v2 has no tagging
+	# if entity != active_for(entity.entity_type):
+	# 	if not _team_has_living(roster):
+	# 		_finish(_winning_side(entity.entity_type))
+	# 	return
+	# director.request_avenge(entity.entity_type)
 
 func swap_refs(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> void:
 	if team == EntityConfig.EntityType.HERO:
@@ -241,7 +258,10 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 		return
 	_finished = true
 	await get_tree().create_timer(OUTRO_SECONDS).timeout
+	finished.emit(winner)
+	if not return_to_post_skirmish:
+		return
 	GameVariables.skirmish_winner = winner
-	var new_configs = GameVariables.threat_request_configs.filter(func (c): return c != GameVariables.selected_threat_request_config)
+	var new_configs = GameVariables.threat_request_configs.filter(func(c): return c != GameVariables.selected_threat_request_config)
 	GameVariables.threat_request_configs = new_configs
 	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")

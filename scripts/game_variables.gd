@@ -19,14 +19,13 @@ var skirmish_winner: EntityConfig.EntityType
 
 # Shared default kit: identical for all characters for now (tune later).
 # Preloaded from .tres so tuning happens in the inspector, not code.
-const PUNCH_DEFAULT: PunchAbility = preload("res://abilities/punch/punch_default.tres")
-const GRAB_DEFAULT: GrabAbility = preload("res://abilities/grab/grab_default.tres")
-const BLOCK_DEFAULT: BlockAbility = preload("res://abilities/block/block_default.tres")
-const DODGE_DEFAULT: DodgeAbility = preload("res://abilities/dodge/dodge_default.tres")
-const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab/rapid_jab_default.tres")
-const UPPERCUT: PunchAbility = preload("res://abilities/uppercut/uppercut.tres")
-const BIG_PUNCH: PunchAbility = preload("res://abilities/big_punch/big_punch.tres")
-const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast/energy_blast_default.tres")
+const JAB: MeleeAbility = preload("res://abilities/jab.tres")
+const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab_default.tres")
+const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut.tres")
+const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch.tres")
+const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick.tres")
+const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast_default.tres")
+const ABILITIES_PATH := "res://abilities/"
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
@@ -51,11 +50,42 @@ func generate_random_prospects(num_prospects: int, prospect_type: Prospect.Prosp
 		prospects.append(Prospect.new(c, prospect_type, randi_range(200, 500)))
 	return prospects
 
+func random_ability_of_tier(tier: Ability.Tier) -> Ability:
+	var matching: Array[Ability] = []
+	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
+		if not file_name.ends_with(".tres"):
+			continue
+		var ability := load(ABILITIES_PATH + file_name) as Ability
+		if ability != null and ability.tier == tier:
+			matching.append(ability)
+	return matching.pick_random()
+
 func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.EntityType):
 	var configs: Array[EntityConfig] = []
 	for i in range(0, num_heroes):
 		var rand_gender = NameGenerator.Gender.MALE if randi_range(0, 1) == 0 else NameGenerator.Gender.FEMALE
 		var rand_name = NameGenerator.generate_name_string(rand_gender)
+
+		var abilities: Array[Ability] = [
+			JAB,
+			UPPERCUT,
+			BIG_PUNCH,
+			# DASH_KICK,
+			# RAPID_JAB_DEFAULT,
+			# ENERGY_BLAST,
+		]
+
+		var random_abilities := true
+		# Debug: same fixed kit for every character
+		# var random_abilities := false
+		if random_abilities:
+			abilities = [
+				random_ability_of_tier(Ability.Tier.LIGHT),
+				random_ability_of_tier(Ability.Tier.MEDIUM),
+				random_ability_of_tier(Ability.Tier.MEDIUM),
+				random_ability_of_tier(Ability.Tier.HEAVY),
+			]
+
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \
 			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE) \
@@ -66,12 +96,7 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 			.with_agility(randi_range(10, 15)) \
 			.with_vitality(randi_range(8, 20)) \
 			.with_charisma(randi_range(5, 15)) \
-			.with_abilities([
-				# UPPERCUT, 
-				# BIG_PUNCH, 
-				# RAPID_JAB_DEFAULT, 
-				ENERGY_BLAST,
-				BLOCK_DEFAULT, DODGE_DEFAULT] as Array[Ability]) \
+			.with_abilities(abilities) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config

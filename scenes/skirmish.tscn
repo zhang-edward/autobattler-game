@@ -166,6 +166,7 @@ shape = SubResource("RectangleShape2D_543uf")
 [node name="TagCamera" type="Camera2D" parent="." unique_id=585411401]
 unique_name_in_owner = true
 position = Vector2(960, 540)
+scale = Vector2(1.2, 1.2)
 
 [node name="TagDarken" type="ColorRect" parent="." unique_id=1328725042]
 unique_name_in_owner = true

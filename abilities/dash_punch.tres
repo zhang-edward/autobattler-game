@@ -1,0 +1,42 @@
+[gd_resource type="Resource" script_class="MeleeAbility" format=3 uid="uid://cq2qhsdddk4o3"]
+
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="1_hit"]
+[ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="2_hitbox"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="3_phase"]
+[ext_resource type="Script" uid="uid://b7o2teonvfyi3" path="res://scripts/resources/melee_ability.gd" id="4_ability"]
+[ext_resource type="PackedScene" uid="uid://cmmbch4wk2luj" path="res://abilities/melee_state.tscn" id="5_state"]
+
+[sub_resource type="Resource" id="Resource_hit"]
+script = ExtResource("1_hit")
+damage = 15
+base_hitstun = 0.6
+
+[sub_resource type="Resource" id="Resource_hitbox"]
+script = ExtResource("2_hitbox")
+offset = Vector2(50, -100)
+size = Vector2(100, 100)
+lifetime = 0.1
+hit = SubResource("Resource_hit")
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("3_phase")
+duration = 0.5
+friction = 0.15
+
+[sub_resource type="Resource" id="Resource_startup"]
+script = ExtResource("3_phase")
+duration = 0.1
+
+[resource]
+script = ExtResource("4_ability")
+hitbox = SubResource("Resource_hitbox")
+velocity = Vector2(1500, 0)
+friction = 0.05
+ability_name = "Dash Punch"
+tier = 1
+state_scene = ExtResource("5_state")
+cooldown = 9.0
+ability_range = 220.0
+anim = "male-rig/punch_big"
+startup = SubResource("Resource_startup")
+recovery = SubResource("Resource_recovery")

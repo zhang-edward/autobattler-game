@@ -1,19 +1,15 @@
 class_name BlockState
-extends AbilityState
+extends SkirmishState
 
-var duration: float
 var block_timer := 0.0
 
-func init(ability: Ability) -> void:
-	var block_move := ability as BlockAbility
-	if block_move == null:
-		return
-	duration = block_move.duration
-
-func enter(_msg := {}) -> void:
-	block_timer = duration
+func enter(msg := {}) -> void:
+	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
+	if dir.x != 0.0:
+		e.rig_wrapper.scale.x = - dir.x
+	block_timer = msg.get("hitstun", HurtState.HITSTUN_SECONDS)
 	e.rig.anim_player.play_section_with_markers("male-rig/block", "active")
-	e.absolute_velocity = Vector2(e.facing() * -400, 0)
+	e.absolute_velocity = Vector2(e.facing() * -msg.get("knockback", 0.0), 0)
 
 func physics_update(delta: float) -> void:
 	# Block pushback friction

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="RapidJabAbility" format=3 uid="uid://8vyxipvk0t4g"]
+
+[ext_resource type="Script" uid="uid://bsxlh84ey8t5v" path="res://scripts/resources/rapid_jab_ability.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://cejuk08jem0u1" path="res://abilities/rapid_jab_state.tscn" id="2"]
+[ext_resource type="Script" uid="uid://0afl0nub06ah" path="res://scripts/skirmish/combat/hit_config.gd" id="3"]
+[ext_resource type="Script" uid="uid://ccia8gkelijet" path="res://scripts/skirmish/combat/hitbox_config.gd" id="4"]
+[ext_resource type="Script" uid="uid://bv5f3qxixt2qr" path="res://scripts/resources/phase_config.gd" id="5"]
+
+[sub_resource type="Resource" id="Resource_hit"]
+script = ExtResource("3")
+damage = 4
+
+[sub_resource type="Resource" id="Resource_hitbox"]
+script = ExtResource("4")
+offset = Vector2(100, -110)
+size = Vector2(100, 80)
+lifetime = 0.1
+hit = SubResource("Resource_hit")
+
+[sub_resource type="Resource" id="Resource_recovery"]
+script = ExtResource("5")
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_startup"]
+script = ExtResource("5")
+duration = 0.1
+
+[resource]
+script = ExtResource("1")
+hitbox = SubResource("Resource_hitbox")
+ability_name = "Rapid Jab"
+tier = 1
+state_scene = ExtResource("2")
+cooldown = 10.5
+startup = SubResource("Resource_startup")
+recovery = SubResource("Resource_recovery")

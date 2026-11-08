@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c57k0qbtafe7g"]
+
+[ext_resource type="Script" uid="uid://bkpjjwpc1e1np" path="res://scripts/skirmish/states/projectile_state.gd" id="1"]
+
+[node name="EnergyBlastState" type="Node" unique_id=1193153142]
+script = ExtResource("1")
