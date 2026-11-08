@@ -1,17 +1,9 @@
 extends Node
 
-enum EncounterEndState {
-	VICTORY,
-	DEFEAT
-}
-
 var player_lineup: Array[EntityConfig] = []
 var captured_villain_prospects: Array[Prospect] = []
 var money := 0
 var renown := 0
-var encounter_end_state: EncounterEndState
-var villain_lineup: Array[EntityConfig] = []
-var captured_heroes: Array[EntityConfig] = []
 var threat_request_configs: Array[ThreatRequestConfig] = []
 var selected_threat_request_config: ThreatRequestConfig
 var selected_heroes_for_threat: Array[EntityConfig] = []
@@ -30,16 +22,7 @@ static var DEFEATED_REST_DAYS = 5
 
 func _ready():
 	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
-	villain_lineup = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
-	
-func generate_random_stat_lines(lineup: Array[EntityConfig]):
-	for ec in lineup:
-		var entity_config = ec as EntityConfig
-		entity_config.damage_dealt = randi_range(50, 100)
-		entity_config.num_assists = randi_range(0, 5)
-		entity_config.exp = randi_range(0, 100)
-		entity_config.gained_exp = randi_range(50, 100)
-		
+
 func generate_random_prospects(num_prospects: int, prospect_type: Prospect.ProspectType) -> Array[Prospect]:
 	var entity_configs = generate_random_entity_configs(num_prospects, EntityConfig.EntityType.HERO)
 	var prospects: Array[Prospect] = []
