@@ -3,7 +3,6 @@ extends RefCounted
 
 static var BASE_EXP_REWARD = 100
 static var BASE_MONEY_REWARD = 100
-static var BASE_RENOWN_REWARD = 100
 
 static func generate_random_threat_requests(num_requests: int, player_lineup: Array[EntityConfig]):
 	var requests: Array[ThreatRequestConfig] = []
@@ -38,5 +37,4 @@ static func create_threat_reward():
 	var reward = ThreatReward.new()
 	reward.exp_gain = BASE_EXP_REWARD
 	reward.money = BASE_MONEY_REWARD
-	reward.renown = BASE_RENOWN_REWARD
 	return reward

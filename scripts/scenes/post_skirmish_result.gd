@@ -46,14 +46,12 @@ func add_skirmish_reward_panels(did_player_win: bool):
 	var threat_req_config = GameVariables.curr_threat_skirmish.threat_request_config
 	var exp_gain = threat_req_config.reward.exp_gain
 	var money = threat_req_config.reward.money
-	var renown = threat_req_config.reward.renown
 	if !did_player_win:
 		exp_gain = round(exp_gain * 0.5)
 		money = round(money * 0.5)
-		renown = 0
 	add_skirmish_reward_panel("EXP", exp_gain)
 	add_skirmish_reward_panel("Money", money)
-	add_skirmish_reward_panel("Renown", renown)
+	add_skirmish_reward_panel("Reputation", GameVariables.curr_threat_skirmish.reputation_change)
 	
 func add_skirmish_reward_panel(reward_name: String, reward_value: int):
 	var panel = skirmish_reward_panel_scene.instantiate() as SkirmishRewardPanel

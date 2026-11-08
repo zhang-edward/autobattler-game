@@ -6,7 +6,7 @@ extends PanelContainer
 @onready var advance_button: Button = %AdvanceDay
 @onready var day_label: Label = %Day
 @onready var money_label: Label = %Money
-@onready var renown_label: Label = %Renown
+@onready var reputation_label: Label = %Reputation
 
 var selected_option: SidebarMenuOption
 
@@ -18,11 +18,12 @@ func _ready() -> void:
 	day_label.text = "Day " + str(GameVariables.curr_day)
 	advance_button.pressed.connect(advance_day)
 	money_label.text = "$" + str(GameVariables.money)
-	renown_label.text = str(GameVariables.renown)
+	reputation_label.text = str(GameVariables.reputation)
 	
 func advance_day():
 	GameVariables.advance_day()	
 	day_label.text = "Day " + str(GameVariables.curr_day)
+	reputation_label.text = str(GameVariables.reputation)
 	on_advance_day.emit()
 	
 func go_to_request_inbox():

@@ -26,7 +26,7 @@ The player can't directly control a fight, so fights are spectacle with real sta
 | Fight | Skirmish (`Skirmish`) |
 | Inbox | Dispatch scene |
 | Move | `Ability` |
-| Reputation | New. Replaces renown |
+| Reputation | `GameVariables.reputation`. Replaces renown |
 
 ## Daily loop
 
@@ -102,26 +102,17 @@ This means team size is a tool. The player can turn a hard fight into a 3v1, but
 
 ## Mission results
 
-### Mission margin
-
-**Margin = % of villain team health missing − % of hero team health lost**
-
-- Villain health missing includes damage from earlier attempts, so wearing a villain down counts.
-- Hero health lost only counts heroes who entered the fight.
-- The result ranges from −100 to +100.
-
 ### Reputation
+
+The run starts with 10 reputation.
 
 | Result | Reputation |
 |---|---|
 | Win | +1 |
-| Close loss (margin of −50 or higher) | −1 |
-| Crushing defeat (margin below −50) | −2 |
+| Loss | −1 |
 | Mission expired | −3 |
 
 Ignoring a mission costs more than losing it. Trying and failing is always better than not showing up.
-
-Win margin has no effect in the MVP.
 
 ### After a loss
 
@@ -249,7 +240,7 @@ This is the main use of reputation beyond surviving. The player trades safety fo
 
 ## Build order
 
-1. **Add the campaign layer.** Add days, Next Day, hero rest, reputation, mission expiry, kept villain damage, and win and game-over screens. Hide money and renown.
+1. **Add the campaign layer.** Add days, Next Day, hero rest, reputation, mission expiry, kept villain damage, and win and game-over screens. Hide money.
 2. **Support several fighters per mission.** Update hero assignment and the post-fight screen, and allow up to 3 villains. Starters only at this stage.
 3. **Add the bench and live swapping.** Include the 10-second timer and abandoning a mission.
 4. **Add level-ups and slots.** Add stat point spending and the fixed unlock order.
@@ -259,6 +250,6 @@ This is the main use of reputation beyond surviving. The player trades safety fo
 ## Open items
 
 - **Trait list.** No positive or negative traits have been chosen yet. A small list needs approval before step 6.
-- **Fight data.** We don't yet know how often heroes reach low health, or how margins are spread. Step 1 answers this.
+- **Fight data.** We don't yet know how often heroes reach low health. Step 1 answers this.
 - **Tuning.** Rest length, mission arrival rate, XP and villain difficulty will need playtesting together. With 3 heroes resting 2 days after each mission, the current numbers should leave the player slightly short of heroes if they send teams.
 - **Group fights.** Easy missions should usually end in landslides, and 2 or 3 villains should feel about as hard as 1 strong villain. The skirmish runner can test both.
