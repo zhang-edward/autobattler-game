@@ -14,7 +14,7 @@ var entity: SkirmishEntity
 func configure(e: SkirmishEntity) -> void:
 	entity = e
 	_name_label.text = e.entity_config.entity_name
-	_bar.max_value = e.entity_config.vitality * 10
+	_bar.max_value = e.entity_config.get_max_health()
 	_bar.value = e.entity_config.curr_health
 	var fill := HERO_FILL if e.entity_type == EntityConfig.EntityType.HERO else VILLAIN_FILL
 	_bar.add_theme_stylebox_override("fill", fill)

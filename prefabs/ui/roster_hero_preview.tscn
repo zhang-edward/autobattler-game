@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="4_eanv6"]
 [ext_resource type="StyleBox" uid="uid://cg8t6ptha62e" path="res://prefabs/styles/exp_bar_bg.tres" id="6_eanv6"]
 [ext_resource type="StyleBox" uid="uid://lye068ferra7" path="res://prefabs/styles/exp_bar_fill.tres" id="7_qdoj4"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/health_bar.tscn" id="hb_health_bar"]
 
 [node name="RosterHeroPreview" type="PanelContainer" unique_id=43850246]
 size_flags_horizontal = 3
@@ -71,6 +72,10 @@ layout_mode = 2
 theme_override_styles/background = ExtResource("6_eanv6")
 theme_override_styles/fill = ExtResource("7_qdoj4")
 show_percentage = false
+
+[node name="HealthBar" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=1093746251 instance=ExtResource("hb_health_bar")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="StatGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1562007441]
 unique_name_in_owner = true

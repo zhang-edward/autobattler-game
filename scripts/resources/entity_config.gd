@@ -66,10 +66,12 @@ func cond_stat_update(lo: int, hi: int):
 	return randi_range(lo, hi) if should_incr else 0
 	
 func reset_all_in_round_vars():
-	curr_health = vitality * 10
 	gained_exp = 0
 	num_assists = 0
 	damage_dealt = 0
+
+func get_max_health() -> int:
+	return vitality * 10
 
 func get_exp_to_next_level(level: int) -> int:
 	const CAP_LEVEL := 10

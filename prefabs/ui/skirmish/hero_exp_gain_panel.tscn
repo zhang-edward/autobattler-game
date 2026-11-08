@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bbuap3yc7ijyb" path="res://scripts/ui/hero_exp_gain_panel.gd" id="1_nlud2"]
 [ext_resource type="StyleBox" uid="uid://cg8t6ptha62e" path="res://prefabs/styles/exp_bar_bg.tres" id="2_nlud2"]
 [ext_resource type="StyleBox" uid="uid://lye068ferra7" path="res://prefabs/styles/exp_bar_fill.tres" id="3_hlgqs"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/health_bar.tscn" id="hb_health_bar"]
 
 [node name="HeroExpGainPanel" type="PanelContainer" unique_id=1613106793]
 script = ExtResource("1_nlud2")
@@ -61,3 +62,7 @@ theme_override_styles/background = ExtResource("2_nlud2")
 theme_override_styles/fill = ExtResource("3_hlgqs")
 value = 50.0
 show_percentage = false
+
+[node name="HealthBar" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1287640395 instance=ExtResource("hb_health_bar")]
+unique_name_in_owner = true
+layout_mode = 2

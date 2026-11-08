@@ -44,6 +44,7 @@ func build_config() -> EntityConfig:
 	config.defense = int(_defense.value)
 	config.agility = int(_agility.value)
 	config.vitality = int(_vitality.value)
+	config.curr_health = config.get_max_health()
 	config.abilities = _selected_abilities()
 	return config
 

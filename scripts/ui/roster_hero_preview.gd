@@ -9,6 +9,7 @@ extends PanelContainer
 @onready var button: Button = %Button
 @onready var resting_overlay: PanelContainer = %RestingOverlay
 @onready var resting_label: Label = %RestingLabel
+@onready var health_bar: HealthBar = %HealthBar
 
 @export var stat_label_scene: PackedScene
 var entity_config: EntityConfig
@@ -30,6 +31,7 @@ func configure(config: EntityConfig):
 	exp_pct.text = "EXP " + str(round((curr_exp / exp_to_next_level) * 100.0)) + "%"
 	exp_bar.max_value = exp_to_next_level
 	exp_bar.value = curr_exp
+	health_bar.configure(config)
 	resting_overlay.visible = config.injury_recovery_days > 0
 	resting_label.text = "Resting (" + str(config.injury_recovery_days) + (" day)" if config.injury_recovery_days == 1 else " days)")
 	for c in stat_grid.get_children():

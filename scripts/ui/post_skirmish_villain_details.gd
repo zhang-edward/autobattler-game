@@ -5,11 +5,12 @@ extends PanelContainer
 
 @onready var entity_name: Label = %EntityName
 @onready var level_value_label: Label = %LevelValue
-@onready var hp_value_label: Label = %HPValue
+@onready var health_bar: HealthBar = %HealthBar
 @onready var stat_grid: GridContainer = %StatGrid
 
 func configure(entity_config: EntityConfig):
 	entity_name.text = entity_config.entity_name
+	health_bar.configure(entity_config)
 	for c in stat_grid.get_children():
 		c.queue_free()
 	add_stat_row("STR", entity_config.strength)

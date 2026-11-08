@@ -8,6 +8,7 @@ extends PanelContainer
 @onready var remove_overlay: PanelContainer = %RemoveOverlay
 @onready var resting_overlay: PanelContainer = %RestingOverlay
 @onready var resting_label: Label = %RestingLabel
+@onready var health_bar: HealthBar = %HealthBar
 @onready var button: Button = $Button
 
 var enable_remove_overlay := false
@@ -35,6 +36,7 @@ func configure(config: EntityConfig):
 	entity_config = config
 	hero_name.text = config.entity_name
 	setup_level(config.level)
+	health_bar.configure(config)
 	resting_overlay.visible = config.injury_recovery_days > 0
 	resting_label.text = "Resting (" + str(config.injury_recovery_days) + (" day)" if config.injury_recovery_days == 1 else " days)")
 	add_stat_label("STR", config.strength)

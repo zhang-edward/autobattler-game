@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cv1e7idqdjn1o" path="res://prefabs/ui/character_stats_panel.tscn" id="3_ney57"]
 [ext_resource type="Texture2D" uid="uid://wshkqtra10bx" path="res://assets/icons/kenney/arrowLeft.png" id="3_svoeg"]
 [ext_resource type="PackedScene" uid="uid://bdo7ak12gg2wn" path="res://prefabs/ui/special_abilities_panel.tscn" id="8_eqg7a"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/health_bar.tscn" id="hb_health_bar"]
 
 [node name="RosterHeroDetails" type="PanelContainer" unique_id=2108953206]
 size_flags_horizontal = 3
@@ -38,6 +39,12 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Volt Runner"
+
+[node name="HealthBar" parent="MarginContainer/VBoxContainer/HeaderContainer" unique_id=1825064173 instance=ExtResource("hb_health_bar")]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(300, 24)
+size_flags_vertical = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=56677559]
 layout_mode = 2

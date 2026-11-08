@@ -5,6 +5,7 @@ extends PanelContainer
 @onready var hero_name: Label = %HeroName
 @onready var hero_level: Label = %HeroLevel
 @onready var exp_gain_amt: Label = %EXPGain
+@onready var health_bar: HealthBar = %HealthBar
 
 var entity_config: EntityConfig
 var did_level_up := false
@@ -16,6 +17,7 @@ func configure(config: EntityConfig):
 	entity_config = EntityConfigBuilder.from_entity_config(config).build()
 	hero_name.text = config.entity_name
 	hero_level.text = "Lv. " + str(config.level)
+	health_bar.configure(config)
 
 func setup_reward(gain_amt: int):
 	exp_gain_amt.text = "+" + str(gain_amt)

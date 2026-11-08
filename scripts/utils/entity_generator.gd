@@ -41,6 +41,7 @@ static func generate_random_entity_configs(num_heroes: int, entity_type: EntityC
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config
+		entity_config.curr_health = entity_config.get_max_health()
 		configs.append(entity_config)
 	return configs
 
@@ -55,6 +56,7 @@ static func generate_enemy_config_at_level(level: int, num_enemies: int):
 			for j in range(0, 3):
 				var random_stat = all_stat_keys.pick_random()
 				e[random_stat] += 1
+		e.curr_health = e.get_max_health()
 	return random_enemies
 
 static func enhance_villain_stats(config: EntityConfig):

@@ -30,7 +30,7 @@ func resolve_skirmish():
 	for row in override_rows:
 		var config = row.entity_config
 		config.reset_all_in_round_vars()
-		config.curr_health = roundi(config.vitality * 10 * row.health_slider.value / 100.0)
+		config.curr_health = roundi(config.get_max_health() * row.health_slider.value / 100.0)
 	var all_villains_defeated = threat_skirmish.threat_request_config.enemy_configs.all(func(v: EntityConfig): return v.curr_health <= 0)
 	threat_skirmish.winner = EntityConfig.EntityType.HERO if all_villains_defeated else EntityConfig.EntityType.VILLAIN
 	GameVariables.resolve_threat_skirmish(threat_skirmish)

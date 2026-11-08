@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/health_bar.gd" id="1_script"]
+[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="2_bg"]
+[ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="3_fill"]
+
+[node name="HealthBar" type="ProgressBar" unique_id=1572039486]
+custom_minimum_size = Vector2(0, 22)
+theme_override_styles/background = ExtResource("2_bg")
+theme_override_styles/fill = ExtResource("3_fill")
+value = 100.0
+show_percentage = false
+script = ExtResource("1_script")
+
+[node name="HealthLabel" type="Label" parent="." unique_id=1249036571]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1

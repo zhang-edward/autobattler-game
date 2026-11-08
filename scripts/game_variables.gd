@@ -31,7 +31,8 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 func resolve_threat_skirmish(threat_skirmish: ThreatSkirmish):
 	for h in threat_skirmish.heroes:
 		h.injury_recovery_days = DEFEATED_REST_DAYS if h.curr_health <= 0 else REST_DAYS
-	threat_request_configs = threat_request_configs.filter(func(c): return c != threat_skirmish.threat_request_config)
+	if threat_skirmish.winner == EntityConfig.EntityType.HERO:
+		threat_request_configs = threat_request_configs.filter(func(c): return c != threat_skirmish.threat_request_config)
 
 func advance_day():
 	curr_day += 1
@@ -42,3 +43,5 @@ func advance_day():
 	for c in player_lineup:
 		if c.injury_recovery_days > 0:
 			c.injury_recovery_days -= 1
+			if c.injury_recovery_days == 0:
+				c.curr_health = c.get_max_health()
