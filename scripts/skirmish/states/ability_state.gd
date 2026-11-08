@@ -3,7 +3,7 @@ extends SkirmishState
 
 enum Phase {STARTUP, ACTIVE, RECOVERY}
 
-const AGILITY_BASELINE := 125.0
+const AGILITY_BASELINE := 12.5
 
 var ability: Ability
 var phase: Phase

@@ -20,14 +20,6 @@ var skirmish_winner: EntityConfig.EntityType
 var levels_for_new_ability = [2, 5, 10, 15]
 var curr_day: int = 1
 
-# Shared default kit: identical for all characters for now (tune later).
-# Preloaded from .tres so tuning happens in the inspector, not code.
-const JAB: MeleeAbility = preload("res://abilities/jab.tres")
-const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab_default.tres")
-const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut.tres")
-const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch.tres")
-const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick.tres")
-const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast_default.tres")
 const ABILITIES_PATH := "res://abilities/"
 
 static var BASE_EXP_REWARD = 100
@@ -54,14 +46,8 @@ func generate_random_prospects(num_prospects: int, prospect_type: Prospect.Prosp
 	return prospects
 
 func random_ability_of_tier(tier: Ability.Tier) -> Ability:
-	var matching: Array[Ability] = []
-	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
-		if not file_name.ends_with(".tres"):
-			continue
-		var ability := load(ABILITIES_PATH + file_name) as Ability
-		if ability != null and ability.tier == tier:
-			matching.append(ability)
-	return matching.pick_random()
+	var abilities_with_matching_tier = get_all_abilities().filter(func(a: Ability): return a.tier == tier)
+	return abilities_with_matching_tier.pick_random()
 
 func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.EntityType):
 	var configs: Array[EntityConfig] = []
@@ -70,24 +56,11 @@ func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.E
 		var rand_name = NameGenerator.generate_name_string(rand_gender)
 
 		var abilities: Array[Ability] = [
-			JAB,
-			UPPERCUT,
-			BIG_PUNCH,
-			# DASH_KICK,
-			# RAPID_JAB_DEFAULT,
-			# ENERGY_BLAST,
+			random_ability_of_tier(Ability.Tier.LIGHT),
+			random_ability_of_tier(Ability.Tier.MEDIUM),
+			random_ability_of_tier(Ability.Tier.MEDIUM),
+			random_ability_of_tier(Ability.Tier.HEAVY),
 		]
-
-		var random_abilities := true
-		# Debug: same fixed kit for every character
-		# var random_abilities := false
-		if random_abilities:
-			abilities = [
-				random_ability_of_tier(Ability.Tier.LIGHT),
-				random_ability_of_tier(Ability.Tier.MEDIUM),
-				random_ability_of_tier(Ability.Tier.MEDIUM),
-				random_ability_of_tier(Ability.Tier.HEAVY),
-			]
 
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \
@@ -172,22 +145,20 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 			return "God"
 			
 func get_all_abilities():
-	return [
-		PUNCH_DEFAULT,
-		GRAB_DEFAULT,
-		BLOCK_DEFAULT,
-		DODGE_DEFAULT,
-		RAPID_JAB_DEFAULT,
-		UPPERCUT,
-		BIG_PUNCH,
-		ENERGY_BLAST,
-	]
+	var all_abilities: Array[Ability] = []
+	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
+		if not file_name.ends_with(".tres"):
+			continue
+		var ability := load(ABILITIES_PATH + file_name) as Ability
+		if ability != null:
+			all_abilities.append(ability)
+	return all_abilities
 
 func advance_day():
 	curr_day += 1
 	for t in threat_request_configs:
 		t.expiry_days -= 1
-	threat_request_configs = threat_request_configs.filter(func (t: ThreatRequestConfig): return t.expiry_days > 0)
+	threat_request_configs = threat_request_configs.filter(func(t: ThreatRequestConfig): return t.expiry_days > 0)
 	# Tick down injuries, villain rehabs
 	for c in player_lineup:
 		if c.curr_status == EntityConfig.Status.INJURED:
