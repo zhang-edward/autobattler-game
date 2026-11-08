@@ -24,8 +24,8 @@ func on_continue():
 		get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
 
 func handle_skirmish_result():
-	var threat_req_config = GameVariables.selected_threat_request_config
-	var winner = GameVariables.skirmish_winner
+	var threat_req_config = GameVariables.curr_threat_skirmish.threat_request_config
+	var winner = GameVariables.curr_threat_skirmish.winner
 	var did_player_win = winner == EntityConfig.EntityType.HERO
 	if did_player_win:
 		result_label.text = "Victory!"
@@ -43,7 +43,7 @@ func handle_skirmish_result():
 	post_skirmish_villain_details.configure(enemy_config)
 
 func add_skirmish_reward_panels(did_player_win: bool):
-	var threat_req_config = GameVariables.selected_threat_request_config
+	var threat_req_config = GameVariables.curr_threat_skirmish.threat_request_config
 	var exp_gain = threat_req_config.reward.exp_gain
 	var money = threat_req_config.reward.money
 	var renown = threat_req_config.reward.renown
@@ -63,4 +63,4 @@ func add_skirmish_reward_panel(reward_name: String, reward_value: int):
 func setup_hero_exp_gain_panels():
 	hero_exp_gain = hero_exp_gain_panel_scene.instantiate() as HeroExpGainPanel
 	hero_exp_bars.add_child(hero_exp_gain)
-	hero_exp_gain.configure(GameVariables.selected_hero_for_threat)
+	hero_exp_gain.configure(GameVariables.curr_threat_skirmish.heroes[0])

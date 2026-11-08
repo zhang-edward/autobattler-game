@@ -58,19 +58,14 @@ func _ready() -> void:
 	_update_walls()
 	var heroes: Array[EntityConfig] = []
 	var villains: Array[EntityConfig] = []
-	if not GameVariables.selected_heroes_for_threat.is_empty():
-		heroes = GameVariables.selected_heroes_for_threat
-	elif GameVariables.selected_hero_for_threat != null:
-		heroes = [GameVariables.selected_hero_for_threat]
+	if GameVariables.curr_threat_skirmish != null:
+		heroes = GameVariables.curr_threat_skirmish.heroes
+		villains = GameVariables.curr_threat_skirmish.threat_request_config.enemy_configs
 	else:
-		print("[WARN] No hero in GameVariables - using random debug heroes...")
+		print("[WARN] No threat skirmish in GameVariables - using random debug heroes and villains...")
 		heroes = EntityGenerator.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
-		return_to_post_skirmish = false
-	if GameVariables.selected_threat_request_config != null:
-		villains = GameVariables.selected_threat_request_config.enemy_configs
-	else:
-		print("[WARN] No threat request in GameVariables - using random debug villains...")
 		villains = EntityGenerator.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
+		return_to_post_skirmish = false
 	setup(heroes, villains)
 	_build_status_rows()
 	# Debug: 2v2 has no tagging
@@ -264,10 +259,10 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 
 	if not return_to_post_skirmish:
 		return
-	GameVariables.skirmish_winner = winner
+	GameVariables.curr_threat_skirmish.winner = winner
 	for h in hero_team:
 		h.entity_config.injury_recovery_days = GameVariables.DEFEATED_REST_DAYS if h.is_dead else GameVariables.REST_DAYS
 
-	var new_configs = GameVariables.threat_request_configs.filter(func(c): return c != GameVariables.selected_threat_request_config)
+	var new_configs = GameVariables.threat_request_configs.filter(func(c): return c != GameVariables.curr_threat_skirmish.threat_request_config)
 	GameVariables.threat_request_configs = new_configs
 	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")

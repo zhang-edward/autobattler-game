@@ -5,10 +5,7 @@ var captured_villain_prospects: Array[Prospect] = []
 var money := 0
 var renown := 0
 var threat_request_configs: Array[ThreatRequestConfig] = []
-var selected_threat_request_config: ThreatRequestConfig
-var selected_heroes_for_threat: Array[EntityConfig] = []
-var selected_hero_for_threat: EntityConfig
-var skirmish_winner: EntityConfig.EntityType
+var curr_threat_skirmish: ThreatSkirmish
 var levels_for_new_ability = [2, 5, 10, 15]
 var curr_day: int = 1
 

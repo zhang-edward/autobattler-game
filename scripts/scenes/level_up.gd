@@ -18,10 +18,11 @@ var stat_points_to_distribute := 3
 var selected_new_ability: LevelUpNewAbility
 
 func _ready() -> void:
-	if GameVariables.selected_hero_for_threat == null:
-		GameVariables.selected_hero_for_threat = EntityGenerator.generate_random_entity_configs(1, EntityConfig.EntityType.HERO)[0]
-		GameVariables.selected_hero_for_threat.level = 2
-	hero_config = GameVariables.selected_hero_for_threat
+	if GameVariables.curr_threat_skirmish == null:
+		hero_config = EntityGenerator.generate_random_entity_configs(1, EntityConfig.EntityType.HERO)[0]
+		hero_config.level = 2
+	else:
+		hero_config = GameVariables.curr_threat_skirmish.heroes[0]
 	subtitle.text = hero_config.entity_name + " has reached level " + str(hero_config.level)
 	stats_remaining_label.text = "Points Remaining: " + str(stat_points_to_distribute)
 	add_level_up_stat_row("Strength", hero_config.strength)

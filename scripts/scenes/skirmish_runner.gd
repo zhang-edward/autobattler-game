@@ -53,8 +53,8 @@ func _start_run() -> void:
 func _start_fight() -> void:
 	_fight_status_label.text = "Fight %d/%d | %s" % [_fights_done + 1, int(_fights.value), _results_text()]
 	var villains := _build_team(_villain_build)
-	GameVariables.selected_heroes_for_threat = _build_team(_hero_build)
-	GameVariables.selected_threat_request_config = ThreatRequestConfigBuilder.new().with_enemy_configs(villains).build()
+	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatRequestConfigBuilder.new().with_enemy_configs(villains).build())
+	GameVariables.curr_threat_skirmish.heroes = _build_team(_hero_build)
 	_fight_time = 0.0
 	_skirmish = skirmish_scene.instantiate() as Skirmish
 	_skirmish.return_to_post_skirmish = false
