@@ -38,8 +38,8 @@ func get_intent(_delta: float) -> Intent:
 	if target == null:
 		return null
 
-	var target_attacking := _target_is_attacking(target)
-	if _target_is_open(target) or (_time_left <= 0.0 and not target_attacking and _target_is_hittable(target)):
+	# var target_attacking := _target_is_attacking(target)
+	if _target_is_open(target) or (_time_left <= 0.0 and _target_is_hittable(target)):
 		_time_left = randf_range(idle_time_min, idle_time_max)
 		var ability := brain.draw_weighted()
 		if ability != null:

@@ -22,12 +22,12 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 # Fraction of floor-plane speed kept when hitting the floor
 @export var floor_skid_retention := 0.8
 @export var air_drag := 40.0
-@export var ground_friction := 400.0
+@export var ground_friction := 800.0
 # Below this altitude speed, stop bouncing and start sliding
 @export var min_bounce_speed := 300.0
 @export var wall_restitution := 0.6
 @export var min_wall_bounce_speed := 200.0
-@export var wall_damage_per_speed := 0.02
+@export var wall_damage_per_speed := 0.04
 # Below this floor speed, stop sliding and lie down
 @export var settle_speed := 40.0
 

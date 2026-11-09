@@ -28,6 +28,8 @@ func get_intent(_delta: float) -> Intent:
 func _draw_follow_up(ability_state: AbilityState, to_target: Vector2) -> Ability:
 	var candidates: Array[Ability] = []
 	for ability in brain.ready_abilities():
-		if ability_state.can_cancel_into(ability) and ability.in_reach(to_target):
+		if !ability.in_reach(to_target):
+			continue
+		if ability_state.can_cancel_into(ability) or ability.tier == Ability.Tier.LIGHT:
 			candidates.append(ability)
 	return brain.pick_weighted(candidates)

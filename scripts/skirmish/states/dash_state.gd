@@ -6,7 +6,7 @@ extends SkirmishState
 @export var fwd_duration := 0.15
 @export var bck_duration := 0.5
 
-const EVASION_DASH_SCALE := 10.0
+const AGILITY_DASH_SCALE := 20.0
 
 var dash_timer := 0.0
 
@@ -14,7 +14,7 @@ func enter(msg := {}) -> void:
 	var direction: float = msg.get("direction", 0.0)
 	var is_dash_fwd = direction == e.facing()
 	dash_timer = fwd_duration if is_dash_fwd else bck_duration
-	var speed = (fwd_speed if is_dash_fwd else bck_speed) * (1.0 + e.entity_config.evasion / EVASION_DASH_SCALE)
+	var speed = (fwd_speed if is_dash_fwd else bck_speed) * (1.0 + e.entity_config.agility / AGILITY_DASH_SCALE)
 	e.absolute_velocity = Vector2(direction * speed, 0.0)
 	e.rig.play_animation("male-rig/dash_forward" if is_dash_fwd else "male-rig/dash_back")
 

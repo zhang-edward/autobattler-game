@@ -3,8 +3,8 @@ extends SkirmishState
 
 enum Phase {STARTUP, ACTIVE, RECOVERY}
 
-const AGILITY_BASELINE := 10.0
-const AGILITY_SCALE := 5.0
+const AGILITY_BASELINE := 5.0
+const AGILITY_SCALE := 10.0
 
 var ability: Ability
 var phase: Phase
@@ -15,7 +15,8 @@ func init(ability_: Ability) -> void:
 	ability = ability_
 
 func can_cancel_into(other: Ability) -> bool:
-	return other.tier > ability.tier
+	return other.tier > ability.tier or \
+		(ability.tier == Ability.Tier.LIGHT and other.tier == Ability.Tier.LIGHT)
 
 func enter(_msg := {}) -> void:
 	hit_connected = false
