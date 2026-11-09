@@ -22,12 +22,12 @@ hit = SubResource("Resource_bigpn")
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_vyuv2")
-duration = 0.5
+duration = 0.75
 friction = 0.1
 
 [sub_resource type="Resource" id="Resource_startup"]
 script = ExtResource("3_vyuv2")
-duration = 0.08
+duration = 0.12
 velocity = Vector2(50, 0)
 
 [resource]
@@ -35,7 +35,7 @@ script = ExtResource("4_gfjk8")
 hitbox = SubResource("Resource_hitbox")
 ability_name = "Knockback Jab"
 state_scene = ExtResource("5_gtgr4")
-cooldown = 6.0
+cooldown = 4.0
 ability_range = 150.0
 anim = "male-rig/punch_big"
 startup = SubResource("Resource_startup")

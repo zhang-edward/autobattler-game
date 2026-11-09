@@ -22,12 +22,12 @@ hit = SubResource("Resource_hit")
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_phase")
-duration = 0.5
+duration = 0.75
 friction = 0.1
 
 [sub_resource type="Resource" id="Resource_startup"]
 script = ExtResource("3_phase")
-duration = 0.4
+duration = 0.6
 velocity = Vector2(50, 0)
 
 [resource]
@@ -36,7 +36,7 @@ hitbox = SubResource("Resource_hitbox")
 ability_name = "Heavy Kick"
 tier = 2
 state_scene = ExtResource("5_state")
-cooldown = 10.5
+cooldown = 7.0
 ability_range = 130.0
 anim = "male-rig/kick_heavy"
 startup = SubResource("Resource_startup")
