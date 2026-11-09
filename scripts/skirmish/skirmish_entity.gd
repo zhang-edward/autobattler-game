@@ -17,6 +17,7 @@ const DASH_COOLDOWN := 5.0
 const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_REDUCTION_PER_DEFENSE := 0.5
 const DEFENSE_LAUNCH_SCALE := 30.0
+const STRENGTH_LAUNCH_SCALE := 30.0
 const DODGE_EVASION_SCALE := 40.0
 const EVASION_PUSHBACK_SCALE := 20.0
 # Max depth-axis spread on a knockdown
@@ -226,7 +227,9 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		entity_config.curr_health = int(healthbar.value)
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
-	var pushback := hit.pushback * (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE)
+	var pushback := hit.pushback \
+		* (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE) \
+		* (AbilityState.AGILITY_SCALE + AbilityState.AGILITY_BASELINE) / (AbilityState.AGILITY_SCALE + source.entity_config.agility)
 	var hit_connected := false
 	if healthbar.value <= 0:
 		is_dead = true
@@ -237,7 +240,9 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
 	elif hit.is_launcher or state_machine.state == ragdoll_state:
-		var launch_x := hit.launch.x * DEFENSE_LAUNCH_SCALE / (DEFENSE_LAUNCH_SCALE + entity_config.defense)
+		var launch_x := hit.launch.x \
+			* (STRENGTH_LAUNCH_SCALE + source.entity_config.strength) / STRENGTH_LAUNCH_SCALE \
+			* DEFENSE_LAUNCH_SCALE / (DEFENSE_LAUNCH_SCALE + entity_config.defense)
 		launch_entity(dir * launch_x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
 		hit_connected = true
 	else:

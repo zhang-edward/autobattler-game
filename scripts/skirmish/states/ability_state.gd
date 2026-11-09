@@ -3,7 +3,8 @@ extends SkirmishState
 
 enum Phase {STARTUP, ACTIVE, RECOVERY}
 
-const AGILITY_BASELINE := 12.5
+const AGILITY_BASELINE := 10.0
+const AGILITY_SCALE := 5.0
 
 var ability: Ability
 var phase: Phase
@@ -50,7 +51,7 @@ func _enter_phase(next_phase: Phase) -> void:
 			if ability.startup.duration <= 0.0:
 				_enter_phase(Phase.ACTIVE)
 				return
-			var duration := ability.startup.duration * AGILITY_BASELINE / maxi(e.entity_config.agility, 1)
+			var duration := ability.startup.duration * (AGILITY_SCALE + AGILITY_BASELINE) / (AGILITY_SCALE + e.entity_config.agility)
 			_start_timed_phase(ability.startup, duration, &"", &"active")
 		Phase.ACTIVE:
 			_active_entered()
@@ -58,7 +59,8 @@ func _enter_phase(next_phase: Phase) -> void:
 			if ability.recovery.duration <= 0.0:
 				state_machine.transition_to(e.move_state)
 				return
-			_start_timed_phase(ability.recovery, ability.recovery.duration, &"recovery", &"")
+			var duration := ability.recovery.duration * (AGILITY_SCALE + AGILITY_BASELINE) / (AGILITY_SCALE + e.entity_config.agility)
+			_start_timed_phase(ability.recovery, duration, &"recovery", &"")
 
 func _start_timed_phase(config: PhaseConfig, duration: float, start_marker: StringName, end_marker: StringName) -> void:
 	phase_timer = duration
