@@ -37,9 +37,9 @@ func configure(config: EntityConfig):
 	for c in stat_grid.get_children():
 		c.queue_free()
 	add_stat_row("STR", config.strength)
-	add_stat_row("SKL", config.skill)
+	add_stat_row("RES", config.resilience)
 	add_stat_row("AGI", config.agility)
-	add_stat_row("VIT", config.vitality)
+	add_stat_row("EVA", config.evasion)
 	add_stat_row("DEF", config.defense)
 	add_stat_row("CHA", config.charisma)
 

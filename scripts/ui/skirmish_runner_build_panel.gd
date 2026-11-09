@@ -11,7 +11,8 @@ const ABILITIES_PATH := "res://abilities/"
 @onready var _strength: SpinBox = %Strength
 @onready var _defense: SpinBox = %Defense
 @onready var _agility: SpinBox = %Agility
-@onready var _vitality: SpinBox = %Vitality
+@onready var _evasion: SpinBox = %Evasion
+@onready var _resilience: SpinBox = %Resilience
 @onready var _points_label: Label = %PointsLabel
 @onready var _moves_by_tier: Dictionary[Ability.Tier, GridContainer] = {
 	Ability.Tier.LIGHT: %LightMoves,
@@ -43,7 +44,8 @@ func build_config() -> EntityConfig:
 	config.strength = int(_strength.value)
 	config.defense = int(_defense.value)
 	config.agility = int(_agility.value)
-	config.vitality = int(_vitality.value)
+	config.evasion = int(_evasion.value)
+	config.resilience = int(_resilience.value)
 	config.curr_health = config.get_max_health()
 	config.abilities = _selected_abilities()
 	return config
@@ -63,7 +65,7 @@ func _build_move_toggles() -> void:
 		_move_toggles[ability] = toggle
 
 func _stats() -> Array[SpinBox]:
-	return [_strength, _defense, _agility, _vitality]
+	return [_strength, _defense, _agility, _evasion, _resilience]
 
 func _selected_abilities() -> Array[Ability]:
 	var abilities: Array[Ability] = []

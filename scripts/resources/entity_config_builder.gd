@@ -30,16 +30,16 @@ func with_strength(s: int):
 	_entity_config.strength = s
 	return self
 
-func with_skill(sk: int):
-	_entity_config.skill = sk
+func with_resilience(res: int):
+	_entity_config.resilience = res
 	return self
 
 func with_agility(ag: int):
 	_entity_config.agility = ag
 	return self
 
-func with_vitality(vit: int):
-	_entity_config.vitality = vit
+func with_evasion(eva: int):
+	_entity_config.evasion = eva
 	return self
 
 func with_charisma(cha: int):
@@ -70,9 +70,9 @@ static func from_entity_config(source: EntityConfig) -> EntityConfigBuilder:
 	copy.entity_power_type = source.entity_power_type
 	copy.defense = source.defense
 	copy.strength = source.strength
-	copy.skill = source.skill
+	copy.resilience = source.resilience
 	copy.agility = source.agility
-	copy.vitality = source.vitality
+	copy.evasion = source.evasion
 	copy.charisma = source.charisma
 	copy.level = source.level
 	copy.exp = source.exp

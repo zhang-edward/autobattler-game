@@ -15,7 +15,7 @@ static func generate_random_threat_requests(num_requests: int, player_lineup: Ar
 		var enemy_configs = EntityGenerator.generate_enemy_config_at_level(rand_enemy_level, num_villains)
 		var stat_scale = [1.0, 0.75, 0.6][num_villains - 1]
 		for e in enemy_configs:
-			for stat in ["strength", "defense", "skill", "agility", "vitality", "charisma"]:
+			for stat in ["strength", "defense", "resilience", "agility", "evasion", "charisma"]:
 				e[stat] = roundi(e[stat] * stat_scale)
 			e.curr_health = e.get_max_health()
 		var villain_config = enemy_configs[0]

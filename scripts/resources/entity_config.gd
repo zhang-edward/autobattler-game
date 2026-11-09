@@ -29,9 +29,9 @@ var entity_power_type: EntityPowerType # TODO: Does nothing currently
 ## Stats
 var defense: int = 5
 var strength: int = 0
-var skill: int = 0 # TODO: Does nothing currently
+var resilience: int = 0 # TODO: Does nothing currently
 var agility: int = 0
-var vitality: int = 0
+var evasion: int = 0
 var charisma: int = 0 # TODO: Does nothing currently
 
 var level := 1
@@ -50,15 +50,18 @@ var damage_dealt := 0
 
 static var BASE_ENERGY_LEVEL := 3
 
+const BASE_HEALTH := 140
+const HEALTH_PER_LEVEL := 20
+
 
 func handle_level_up():
 	level += 1
 	exp_to_next_level = get_exp_to_next_level(level)
 	defense += cond_stat_update(1, 5)
 	strength += cond_stat_update(1, 3)
-	skill += cond_stat_update(1, 3)
+	resilience += cond_stat_update(1, 3)
 	agility += cond_stat_update(1, 3)
-	vitality += cond_stat_update(1, 3)
+	evasion += cond_stat_update(1, 3)
 	charisma += cond_stat_update(1, 3)
 
 func cond_stat_update(lo: int, hi: int):
@@ -71,7 +74,7 @@ func reset_all_in_round_vars():
 	damage_dealt = 0
 
 func get_max_health() -> int:
-	return vitality * 10
+	return BASE_HEALTH + HEALTH_PER_LEVEL * (level - 1)
 
 func get_exp_to_next_level(level: int) -> int:
 	const CAP_LEVEL := 10

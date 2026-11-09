@@ -49,9 +49,9 @@ func configure(config: EntityConfig):
 	resting_overlay.visible = config.injury_recovery_days > 0
 	resting_label.text = "Resting (" + str(config.injury_recovery_days) + (" day)" if config.injury_recovery_days == 1 else " days)")
 	add_stat_label("STR", config.strength)
-	add_stat_label("SKL", config.skill)
+	add_stat_label("RES", config.resilience)
 	add_stat_label("AGI", config.agility)
-	add_stat_label("VIT", config.vitality)
+	add_stat_label("EVA", config.evasion)
 	add_stat_label("DEF", config.defense)
 	add_stat_label("CHA", config.charisma)
 

@@ -33,9 +33,9 @@ static func generate_random_entity_configs(num_heroes: int, entity_type: EntityC
 			.with_entity_name(rand_name) \
 			.with_defense(randi_range(10, 20)) \
 			.with_strength(randi_range(5, 15)) \
-			.with_skill(randi_range(5, 15)) \
+			.with_resilience(randi_range(5, 15)) \
 			.with_agility(randi_range(10, 15)) \
-			.with_vitality(randi_range(8, 20)) \
+			.with_evasion(randi_range(5, 15)) \
 			.with_charisma(randi_range(5, 15)) \
 			.with_abilities(abilities) \
 			.build()
@@ -52,7 +52,7 @@ static func generate_enemy_config_at_level(level: int, num_enemies: int):
 		e.exp_to_next_level = e.get_exp_to_next_level(e.level)
 		# simulate level ups
 		for i in range(1, level):
-			var all_stat_keys = ["strength", "defense", "skill", "agility", "vitality", "charisma"]
+			var all_stat_keys = ["strength", "defense", "resilience", "agility", "evasion", "charisma"]
 			for j in range(0, 3):
 				var random_stat = all_stat_keys.pick_random()
 				e[random_stat] += 1
@@ -60,7 +60,7 @@ static func generate_enemy_config_at_level(level: int, num_enemies: int):
 	return random_enemies
 
 static func enhance_villain_stats(config: EntityConfig):
-	config.vitality = round(config.vitality * 2.5)
+	pass
 
 static func get_all_abilities():
 	var all_abilities: Array[Ability] = []

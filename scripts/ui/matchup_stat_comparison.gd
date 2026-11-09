@@ -9,9 +9,9 @@ func configure_stat_rows(hero_config: EntityConfig, villain_config: EntityConfig
 		c.queue_free()
 	add_stat_row("Strength", str(hero_config.strength) if hero_config else "–", villain_config.strength)
 	add_stat_row("Defense", str(hero_config.defense) if hero_config else "–", villain_config.defense)
-	add_stat_row("Skill", str(hero_config.skill) if hero_config else "–", villain_config.skill)
+	add_stat_row("Resilience", str(hero_config.resilience) if hero_config else "–", villain_config.resilience)
 	add_stat_row("Agility", str(hero_config.agility) if hero_config else "–", villain_config.agility)
-	add_stat_row("Vitality", str(hero_config.vitality) if hero_config else "–", villain_config.vitality)
+	add_stat_row("Evasion", str(hero_config.evasion) if hero_config else "–", villain_config.evasion)
 
 func add_stat_row(stat_name: String, hero_value: String, villain_value: int):
 	var stat_row = stat_row_scene.instantiate() as MatchupStatRow
