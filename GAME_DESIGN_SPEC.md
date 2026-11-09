@@ -98,6 +98,24 @@ This means team size is a tool. The player can turn a hard fight into a 3v1, but
 
 - If bench heroes remain, a 10-second timer starts. The player can send a bench hero in, or abandon the mission.
 - If the timer runs out, the mission is lost.
+
+## Stats
+
+Health comes from level, not a stat. A level 1 fighter has 140 health, plus 20 per level.
+
+Every stat helps in fights, and more is always better. Each stat wins a different way, so a hero can specialize in one or two.
+
+| Stat | What it does |
+|---|---|
+| Strength | Launched targets fly further sideways. Hits keep targets in hitstun longer. |
+| Agility | Moves start and recover faster. Multi-hit moves land more hits. Its hits push targets back less, so follow-up hits stay in range. |
+| Defense | Higher chance to block. A block holds against every hit that follows. Blocked hits lose a flat amount of damage, so small hits barely hurt and big hits still do. Launched less far. |
+| Evasion | Higher chance to dodge. Pushed further back by hits, so it slides out of flurries. Faster dashes. |
+| Resilience | After taking enough damage while launched, the fighter can't be hit until they get up. Higher resilience reaches this sooner. Has a chance to shrug off a hit without flinching. Small hits are almost always shrugged off, and big hits almost never are. Higher resilience raises the cutoff. |
+
+**Block versus dodge.** Both only work when the fighter isn't already being hit. A block lasts through a whole flurry, unless the fighter dodges out of it. A dodge is rolled for each hit. So Defense beats many small hits, and Evasion beats single big hits. A fighter can dodge in the middle of a move, but can't block during one.
+
+**Walls.** Launched fighters bounce off the side walls and take damage based on how fast they hit. A wall hit can finish a fighter.
 - If no bench heroes remain, the mission is lost right away.
 
 ## Mission results
@@ -155,14 +173,7 @@ Heroes who fall to 25% health or below get no XP from that fight. Heroes who nev
 
 ### Level-ups
 
-Each level gives 3 stat points for the player to spend. One point adds:
-
-| Stat | Increase |
-|---|---|
-| Strength | +2 |
-| Defense | +3 |
-| Agility | +20 |
-| Vitality | +15 |
+Each level gives 3 stat points for the player to spend. One point adds 1 to Strength, Agility, Defense, Evasion or Resilience.
 
 Slots unlock in a fixed order:
 
@@ -225,7 +236,7 @@ This is the main use of reputation beyond surviving. The player trades safety fo
 - The player can see the final villain's stats and moves from the start.
 - It works like any other mission. It can be attempted at any time and as often as the player likes.
 - A loss costs reputation, and the villain keeps their damage and recovers over time.
-- The final villain fights alone. They're level 8, with 2.5 times normal vitality.
+- The final villain fights alone. They're level 8, with 2.5 times normal health.
 - Beating them wins the run.
 
 ## Not in the MVP
@@ -234,7 +245,7 @@ This is the main use of reputation beyond surviving. The player trades safety fo
 - Hero death.
 - Villains growing from close fights.
 - Money and renown.
-- Charisma, skill and power types.
+- Charisma and power types.
 - Mid-fight team meter.
 - Traits on villains.
 
@@ -252,4 +263,5 @@ This is the main use of reputation beyond surviving. The player trades safety fo
 - **Trait list.** No positive or negative traits have been chosen yet. A small list needs approval before step 6.
 - **Fight data.** We don't yet know how often heroes reach low health. Step 1 answers this.
 - **Tuning.** Rest length, mission arrival rate, XP and villain difficulty will need playtesting together. With 3 heroes resting 2 days after each mission, the current numbers should leave the player slightly short of heroes if they send teams.
+- **Stat points.** Stat point totals need retuning for the current stats. This spec gives a level 1 fighter 26 points, but the skirmish runner's default build is 50, with 10 in each stat.
 - **Group fights.** Easy missions should usually end in landslides, and 2 or 3 villains should feel about as hard as 1 strong villain. The skirmish runner can test both.

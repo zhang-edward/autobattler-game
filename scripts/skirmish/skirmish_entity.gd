@@ -14,12 +14,15 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
+const BLOCK_BASE_CHANCE := 0.3
 const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_REDUCTION_PER_DEFENSE := 0.5
 const DEFENSE_LAUNCH_SCALE := 30.0
 const STRENGTH_LAUNCH_SCALE := 30.0
-const DODGE_EVASION_SCALE := 40.0
+const DODGE_EVASION_SCALE := 20.0
 const EVASION_PUSHBACK_SCALE := 20.0
+const IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE := 0.8
+const IGNORE_HITSTUN_STEEPNESS := 4.0
 # Max depth-axis spread on a knockdown
 const LAUNCH_Y_SPREAD := 0.25
 
@@ -158,7 +161,7 @@ func _build_move_map() -> void:
 		instance.init(ability)
 		ability_to_state[ability] = instance
 
-func _can_defend() -> bool:
+func _can_block() -> bool:
 	var state := state_machine.state
 	return not (
 		state == death_state
@@ -167,6 +170,16 @@ func _can_defend() -> bool:
 		or state == ragdoll_state
 		or state == hurt_state
 		or state is AbilityState
+	)
+
+func _can_dodge() -> bool:
+	var state := state_machine.state
+	return not (
+		state == death_state
+		or state == tag_in_state
+		or state == tag_out_state
+		or state == ragdoll_state
+		or state == hurt_state
 	)
 
 # Returns whether or not the hit connected
@@ -185,15 +198,16 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 
 	## Defensive options logic
 	var blocked := state_machine.state == block_state
-	if not blocked and _can_defend():
+	if _can_dodge():
 		# Dodge success roll calculation
 		var evasion: int = entity_config.evasion if entity_config != null else 0
 		if randf() < float(evasion) / (evasion + DODGE_EVASION_SCALE):
 			state_machine.transition_to(dodge_state, {"dir": dir})
 			return false
-		# Block success roll calculation
+	# Block success roll calculation
+	if not blocked and _can_block():
 		var defense: int = entity_config.defense if entity_config != null else 0
-		blocked = randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE)
+		blocked = randf() < BLOCK_BASE_CHANCE + (1.0 - BLOCK_BASE_CHANCE) * defense / (defense + BLOCK_DEFENSE_SCALE)
 
 	var damage := hit.damage
 	# Take chip damage if blocked
@@ -225,7 +239,12 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		ragdoll_state.add_ragdoll_damage(damage)
 		hit_connected = true
 	else:
-		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
+		var ignore_hitstun_threshold := entity_config.resilience * IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE
+		var ignore_hitstun_chance := 0.0
+		if ignore_hitstun_threshold > 0.0:
+			ignore_hitstun_chance = 1.0 / (1.0 + pow(damage / ignore_hitstun_threshold, IGNORE_HITSTUN_STEEPNESS))
+		if randf() >= ignore_hitstun_chance:
+			state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
