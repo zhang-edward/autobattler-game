@@ -9,9 +9,8 @@
 [sub_resource type="Resource" id="Resource_hit"]
 script = ExtResource("1_hit")
 damage = 30
-knockback = 450.0
-launch = -350.0
-knockdown = true
+launch = Vector2(450, -350)
+is_launcher = true
 hitstop = 0.12
 
 [sub_resource type="Resource" id="Resource_hitbox"]

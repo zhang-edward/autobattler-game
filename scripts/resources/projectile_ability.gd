@@ -1,7 +1,7 @@
 class_name ProjectileAbility
 extends Ability
 
-@export var hit: HitConfig = HitConfig.create(20, 200.0, 0.0, false, Hitstop.DEFAULT_DURATION, HitConfig.Kind.PROJECTILE)
+@export var hit: HitConfig = HitConfig.create(20, Vector2(200.0, 0.0), false, Hitstop.DEFAULT_DURATION, HitConfig.Kind.PROJECTILE)
 @export var active_duration := 0.2
 @export var velocity := Vector2.ZERO
 @export_range(0.0, 0.5) var friction := 0.0

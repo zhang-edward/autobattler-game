@@ -1,7 +1,7 @@
 class_name GrabAbility
 extends Ability
 
-@export var hit: HitConfig = HitConfig.create(15, 180.0, -220.0, true, 0.12, HitConfig.Kind.GRAB)
+@export var hit: HitConfig = HitConfig.create(15, Vector2(180.0, -220.0), true, 0.12, HitConfig.Kind.GRAB)
 @export var recovery_time := 1.0
 @export var grab_size := Vector2(72, 72)
 @export var active_time := 0.15

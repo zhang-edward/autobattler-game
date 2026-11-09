@@ -10,9 +10,8 @@
 script = ExtResource("1")
 kind = 2
 damage = 20
-knockback = 200.0
-launch = -150.0
-knockdown = true
+launch = Vector2(200, -150)
+is_launcher = true
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("5")

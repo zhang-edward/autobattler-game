@@ -18,7 +18,7 @@ const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_CHIP_FRACTION := 0.1
 const DODGE_CHANCE := 0.09
 # Max depth-axis spread on a knockdown
-const KNOCKDOWN_Y_SPREAD := 0.25
+const LAUNCH_Y_SPREAD := 0.25
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
@@ -230,25 +230,25 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		died.emit()
 		state_machine.transition_to(death_state)
 	elif blocked:
-		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "knockback": hit.knockback})
+		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": hit.pushback})
 		hit_connected = true
-	elif hit.knockdown or state_machine.state == ragdoll_state:
-		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
+	elif hit.is_launcher or state_machine.state == ragdoll_state:
+		launch_entity(dir * hit.launch.x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
 		hit_connected = true
 	else:
-		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun})
+		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": hit.pushback})
 		hit_connected = true
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
 	Hitstop.freeze(frozen, hit.hitstop)
 
-	if hit.knockdown and not blocked:
+	if hit.is_launcher and not blocked:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 
 	return hit_connected
 
-func knock_down(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
-	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
+func launch_entity(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
+	impulse.y += impulse.length() * randf_range(-LAUNCH_Y_SPREAD, LAUNCH_Y_SPREAD)
 
 	if state_machine.state == ragdoll_state:
 		# Already ragdolling: relaunch in place rather than re-entering the state,

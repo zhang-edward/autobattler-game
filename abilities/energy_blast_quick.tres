@@ -10,7 +10,7 @@
 script = ExtResource("1_yiee2")
 kind = 2
 damage = 8
-knockback = 500.0
+launch = Vector2(500, 0)
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_48n5r")

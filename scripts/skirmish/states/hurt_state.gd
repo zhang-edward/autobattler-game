@@ -16,7 +16,7 @@ static func hitstun_for(base: float, strength: int) -> float:
 
 func enter(msg := {}) -> void:
 	var dir: Vector2 = msg.get("dir", Vector2.ZERO)
-	e.absolute_velocity = dir.normalized() * BASE_KNOCKBACK
+	e.absolute_velocity = dir.normalized() * msg.get("pushback", BASE_KNOCKBACK)
 	hitstun_timer = msg.get("hitstun", HITSTUN_SECONDS)
 	e.rig.play_animation("male-rig/hurt")
 

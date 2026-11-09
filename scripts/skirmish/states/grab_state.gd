@@ -15,7 +15,7 @@ const GRAB_ACTIVE_TIME := 0.15
 var throw_state: ThrowState
 
 # Low damage; the knockdown and floor impact carry the hit
-var hit: HitConfig = HitConfig.create(15, 180.0, -220.0, true, 0.12, HitConfig.Kind.GRAB)
+var hit: HitConfig = HitConfig.create(15, Vector2(180.0, -220.0), true, 0.12, HitConfig.Kind.GRAB)
 var recovery_time: float = RECOVERY_TIME
 
 var recovery_timer := 0.0
