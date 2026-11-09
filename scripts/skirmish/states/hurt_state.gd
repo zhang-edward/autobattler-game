@@ -3,7 +3,7 @@ extends SkirmishState
 
 const BASE_KNOCKBACK := 100.0
 const HITSTUN_SECONDS := 0.3
-const HITSTUN_STRENGTH_SCALE := 30.0
+const HITSTUN_STRENGTH_SCALE := 10.0
 
 @export var move_state: MoveState
 @export var fall_state: FallState
