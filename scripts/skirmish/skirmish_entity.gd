@@ -15,8 +15,10 @@ const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
 const BLOCK_DEFENSE_SCALE := 10.0
-const BLOCK_CHIP_FRACTION := 0.1
-const DODGE_CHANCE := 0.09
+const BLOCK_REDUCTION_PER_DEFENSE := 0.5
+const DEFENSE_LAUNCH_SCALE := 30.0
+const DODGE_EVASION_SCALE := 40.0
+const EVASION_PUSHBACK_SCALE := 20.0
 # Max depth-axis spread on a knockdown
 const LAUNCH_Y_SPREAD := 0.25
 
@@ -206,23 +208,25 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	var blocked := state_machine.state == block_state
 	if not blocked and _can_defend():
 		# Dodge success roll calculation
-		if randf() < DODGE_CHANCE:
+		var evasion: int = entity_config.evasion if entity_config != null else 0
+		if randf() < float(evasion) / (evasion + DODGE_EVASION_SCALE):
 			state_machine.transition_to(dodge_state, {"dir": dir})
 			return false
 		# Block success roll calculation
 		var defense: int = entity_config.defense if entity_config != null else 0
 		blocked = randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE)
 
-	var damage := HitConfig.calculate_damage(hit.damage, entity_config.defense)
+	var damage := hit.damage
 	# Take chip damage if blocked
 	if blocked:
-		damage = maxi(roundi(damage * BLOCK_CHIP_FRACTION), 1)
+		damage = maxi(hit.damage - roundi(entity_config.defense * BLOCK_REDUCTION_PER_DEFENSE), 1)
 	source.entity_config.damage_dealt += damage
 	healthbar.value -= damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
+	var pushback := hit.pushback * (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE)
 	var hit_connected := false
 	if healthbar.value <= 0:
 		is_dead = true
@@ -230,13 +234,14 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		died.emit()
 		state_machine.transition_to(death_state)
 	elif blocked:
-		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": hit.pushback})
+		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
 	elif hit.is_launcher or state_machine.state == ragdoll_state:
-		launch_entity(dir * hit.launch.x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
+		var launch_x := hit.launch.x * DEFENSE_LAUNCH_SCALE / (DEFENSE_LAUNCH_SCALE + entity_config.defense)
+		launch_entity(dir * launch_x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
 		hit_connected = true
 	else:
-		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": hit.pushback})
+		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]

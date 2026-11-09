@@ -33,7 +33,3 @@ static func create(
 	hit.hitstop = hitstop_
 	hit.kind = kind_
 	return hit
-
-static func calculate_damage(base_power: int, defender_defense: int) -> int:
-	var defense_multiplier = 100.0 / (100.0 + defender_defense)
-	return int(round(base_power * defense_multiplier))
