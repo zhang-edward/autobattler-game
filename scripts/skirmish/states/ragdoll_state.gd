@@ -25,6 +25,8 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 @export var ground_friction := 400.0
 # Below this altitude speed, stop bouncing and start sliding
 @export var min_bounce_speed := 300.0
+@export var wall_restitution := 0.6
+@export var min_wall_bounce_speed := 200.0
 # Below this floor speed, stop sliding and lie down
 @export var settle_speed := 40.0
 
@@ -33,6 +35,7 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 
 const ANIM_THROWN := "male-rig/is_thrown"
 const ANIM_SLAM := "male-rig/ground_slam1"
+const ANIM_WALL_SLAM := "male-rig/wall_slam"
 const ANIM_BOUNCE := "male-rig/bounce"
 const ANIM_CRUMPLE := "male-rig/ground_crumple"
 # How long the slam pose shows after an impact that bounces, before switching to ANIM_BOUNCE
@@ -70,6 +73,7 @@ func physics_update(delta: float) -> void:
 			e.z_velocity += SkirmishEntity.GRAVITY * gravity_scale * delta
 			e.z += e.z_velocity * delta
 			e.absolute_velocity = e.absolute_velocity.move_toward(Vector2.ZERO, air_drag * delta)
+			_bounce_off_side_walls()
 			if e.z >= 0.0 and e.z_velocity > 0.0:
 				_land()
 		Phase.SLIDING:
@@ -95,6 +99,23 @@ func _enter_phase(next_phase: Phase) -> void:
 			# e.hurtbox.set_deferred("monitorable", false)
 			if e.is_dead:
 				e.despawn()
+
+func _bounce_off_side_walls() -> void:
+	# usually this is only 1 collision, but can be 2 collisions in the case of a corner
+	for i in e.get_slide_collision_count():
+		var wall_normal := e.get_slide_collision(i).get_normal()
+		var is_side_wall := absf(wall_normal.x) > 0.5
+		var is_moving_into_wall := signf(e.absolute_velocity.x) == -signf(wall_normal.x)
+		if not is_side_wall or not is_moving_into_wall:
+			continue
+		if absf(e.absolute_velocity.x) < min_wall_bounce_speed:
+			return
+		e.absolute_velocity.x *= -wall_restitution
+		e.rig.play_animation(ANIM_WALL_SLAM)
+		_bounce_anim_timer = 0.5
+		Hitstop.freeze([e], 0.25)
+		ScreenShake.shake_horizontal(12, 0.1, 12)
+		return
 
 func _land() -> void:
 	e.z = 0.0
