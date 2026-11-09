@@ -43,11 +43,11 @@ var downed_timer := 0.0
 # > 0 while a bounce animation is pending. Driven by the state, not the animation player,
 # so a long or looping slam animation can't hold it up.
 var _bounce_anim_timer := 0.0
-var thrower_entity: SkirmishEntity
+var launched_by: SkirmishEntity
 
 func enter(msg := {}) -> void:
 	relaunch(msg.get("impulse", Vector2.ZERO), msg.get("launch", 0.0))
-	thrower_entity = msg["thrower"]
+	launched_by = msg["launched_by"]
 
 # Applied on a fresh knockdown, and again on every hit that lands mid-ragdoll
 func relaunch(impulse: Vector2, launch: float) -> void:

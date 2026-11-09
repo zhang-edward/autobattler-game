@@ -42,7 +42,6 @@ const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 @export var death_state: DeathState
 @export var move_state: MoveState
 @export var ragdoll_state: RagdollState
-@export var is_grabbed_state: IsGrabbedState
 @export var tag_out_state: TagOutState
 @export var tag_in_state: TagInState
 @export var block_state: BlockState
@@ -73,7 +72,6 @@ var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
 
-var grabbed_entity
 
 var _shadow_base_scale: Vector2
 
@@ -159,19 +157,6 @@ func _build_move_map() -> void:
 		instance.state_machine = state_machine
 		instance.init(ability)
 		ability_to_state[ability] = instance
-		if ability is GrabAbility:
-			_init_throw(ability, instance as GrabState)
-
-func _init_throw(grab_ability: GrabAbility, grab_state: GrabState) -> void:
-	if grab_ability.throw_state_scene == null or grab_state == null:
-		return
-	var throw_instance := grab_ability.throw_state_scene.instantiate() as ThrowState
-	if throw_instance == null:
-		return
-	state_machine.add_child(throw_instance)
-	throw_instance.state_machine = state_machine
-	throw_instance.init(grab_ability)
-	grab_state.throw_state = throw_instance
 
 func _can_defend() -> bool:
 	var state := state_machine.state
@@ -179,7 +164,6 @@ func _can_defend() -> bool:
 		state == death_state
 		or state == tag_in_state
 		or state == tag_out_state
-		or state == is_grabbed_state
 		or state == ragdoll_state
 		or state == hurt_state
 		or state is AbilityState
@@ -194,16 +178,10 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		return false
 	if source.state_machine != null and hit.kind != HitConfig.Kind.PROJECTILE:
 		var source_state: State = source.state_machine.state
-		if source_state == source.is_grabbed_state or source_state == source.ragdoll_state or source_state == source.death_state:
+		if source_state == source.ragdoll_state or source_state == source.death_state:
 			return false
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
-
-	## Grab logic TODO: Maybe get rid of this
-	if hit.kind == HitConfig.Kind.GRAB:
-		state_machine.transition_to(is_grabbed_state, {"grabber": source})
-		source.grabbed_entity = self
-		return false
 
 	## Defensive options logic
 	var blocked := state_machine.state == block_state
@@ -257,16 +235,16 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 
 	return hit_connected
 
-func launch_entity(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
+func launch_entity(impulse: Vector2, launch: float, launched_by: SkirmishEntity) -> void:
 	impulse.y += impulse.length() * randf_range(-LAUNCH_Y_SPREAD, LAUNCH_Y_SPREAD)
 
 	if state_machine.state == ragdoll_state:
 		# Already ragdolling: relaunch in place rather than re-entering the state,
 		# which would reset the altitude we're trying to add to
 		ragdoll_state.relaunch(impulse, launch)
-		ragdoll_state.thrower_entity = thrower
+		ragdoll_state.launched_by = launched_by
 	else:
-		state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch, "thrower": thrower})
+		state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch, "launched_by": launched_by})
 
 func despawn() -> void:
 	var tween := create_tween()

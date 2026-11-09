@@ -3,11 +3,9 @@ extends Resource
 
 enum Kind {
 	STRIKE,
-	GRAB,
 	PROJECTILE,
 }
 
-# Blocking negates a STRIKE but not a GRAB
 @export var kind: Kind = Kind.STRIKE
 @export var damage: int = 10
 # Airborne knockback. X is sideways speed. Y is vertical speed: negative goes up, 0 falls back to JUGGLE_LAUNCH.

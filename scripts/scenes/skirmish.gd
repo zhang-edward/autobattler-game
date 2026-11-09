@@ -159,8 +159,6 @@ func can_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
 	if current != null and is_instance_valid(current) and not current.is_dead:
 		if current.state_machine == null or not (current.state_machine.state is MoveState):
 			return false
-	if _is_grab_in_progress():
-		return false
 	return true
 
 func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -> Array[SkirmishEntity]:
@@ -188,7 +186,6 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 	return team
 
 func _on_entity_died(entity: SkirmishEntity) -> void:
-	_release_grab_links(entity)
 	var roster := team_for(entity.entity_type)
 	if not _team_has_living(roster):
 		_finish(_winning_side(entity.entity_type))
@@ -204,28 +201,6 @@ func swap_refs(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> void:
 		active_hero = incoming
 	else:
 		active_villain = incoming
-
-func _is_grab_in_progress() -> bool:
-	for e in [active_hero, active_villain]:
-		if e == null or not is_instance_valid(e) or e.is_dead:
-			continue
-		if e.grabbed_entity != null and is_instance_valid(e.grabbed_entity):
-			return true
-		if e.state_machine == null:
-			continue
-		var st = e.state_machine.state
-		if st is GrabState or st is IsGrabbedState or st is ThrowState:
-			return true
-	return false
-
-func _release_grab_links(dead: SkirmishEntity) -> void:
-	for e in hero_team + villain_team:
-		if e != null and is_instance_valid(e) and e.grabbed_entity == dead:
-			e.grabbed_entity = null
-	var victim := dead.grabbed_entity as SkirmishEntity
-	dead.grabbed_entity = null
-	if victim != null and is_instance_valid(victim) and not victim.is_dead:
-		victim.state_machine.transition_to(victim.hurt_state, {"dir": Vector2.ZERO})
 
 func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishEntity:
 	var best: SkirmishEntity = null
