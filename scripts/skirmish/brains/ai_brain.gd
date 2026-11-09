@@ -8,6 +8,7 @@ const TIER_WEIGHTS := {
 }
 
 @export var state_machine: StateMachine
+@export var fleeing_state: FleeingState
 
 var target: SkirmishEntity
 

@@ -10,10 +10,10 @@ var _t := 0.0
 var _from := Vector2.ZERO
 var _exit_x := 0.0
 
-func enter(_msg := {}) -> void:
+func enter(msg := {}) -> void:
 	_t = 0.0
 	_from = e.position
-	var entry_side := -e.facing()
+	var entry_side: float = msg.get("entry_side", -e.facing())
 	_exit_x = _from.x + entry_side * RUN_DISTANCE
 	e.absolute_velocity = Vector2.ZERO
 	e.z = 0.0

@@ -78,8 +78,13 @@ func _exit_tree() -> void:
 func _process(_delta: float) -> void:
 	for row in _status_rows:
 		row.refresh()
-		var is_active := is_instance_valid(row.entity) and (row.entity == active_hero or row.entity == active_villain)
+		var is_active := is_instance_valid(row.entity) and row.entity.is_active and not row.entity.is_dead
 		row.set_active_highlight(is_active)
+		var can_retreat := is_active and not _finished and row.entity.entity_type == EntityConfig.EntityType.HERO
+		if can_retreat:
+			var brain := row.entity.brain as AIBrain
+			can_retreat = brain.state_machine.state != brain.fleeing_state
+		row.retreat_button.visible = can_retreat
 
 	var sorted := $Battlefield.get_children()
 	sorted.sort_custom(func(a, b): return a.position.y < b.position.y)
@@ -145,7 +150,12 @@ func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> 
 		var row := STATUS_ROW.instantiate() as SkirmishStatusRow
 		container.add_child(row)
 		row.configure(entity)
+		row.retreat_pressed.connect(_retreat)
 		_status_rows.append(row)
+
+func _retreat(entity: SkirmishEntity) -> void:
+	var brain := entity.brain as AIBrain
+	brain.state_machine.transition_to(brain.fleeing_state)
 
 func can_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
 	if _finished or incoming == null or not is_instance_valid(incoming) or incoming.is_dead:
@@ -173,6 +183,7 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		battlefield.add_child(entity)
 		entity.configure_from_entity_config(config)
 		entity.died.connect(_on_entity_died.bind(entity))
+		entity.tag_out_state.finished.connect(_on_entity_retreated.bind(entity))
 		entity.position = start + Vector2(0.0, (i - (configs.size() - 1) * 0.5) * SPAWN_Y_SPACING)
 		entity.set_active(true)
 		# Debug: 2v2 keeps everyone on the field
@@ -196,6 +207,10 @@ func _on_entity_died(entity: SkirmishEntity) -> void:
 	# 	return
 	# director.request_avenge(entity.entity_type)
 
+func _on_entity_retreated(entity: SkirmishEntity) -> void:
+	if not _team_has_living(team_for(entity.entity_type)):
+		_finish(_winning_side(entity.entity_type))
+
 func swap_refs(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> void:
 	if team == EntityConfig.EntityType.HERO:
 		active_hero = incoming
@@ -216,7 +231,7 @@ func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishE
 
 func _team_has_living(roster: Array[SkirmishEntity]) -> bool:
 	for e in roster:
-		if e != null and is_instance_valid(e) and not e.is_dead:
+		if e != null and is_instance_valid(e) and not e.is_dead and e.is_active:
 			return true
 	return false
 

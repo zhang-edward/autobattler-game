@@ -5,6 +5,7 @@ extends CharacterBody2D
 # and altitude is faked in `z`, so gravity is integrated by the states, not the physics engine.
 
 signal died
+signal took_hit
 
 const GRAVITY := 980.0
 
@@ -253,6 +254,8 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	if hit.is_launcher and not blocked:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 
+	if hit_connected:
+		took_hit.emit()
 	return hit_connected
 
 func launch_entity(impulse: Vector2, launch: float, launched_by: SkirmishEntity) -> void:

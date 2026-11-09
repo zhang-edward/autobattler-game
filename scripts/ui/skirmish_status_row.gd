@@ -8,8 +8,14 @@ const ACTIVE_BORDER := Color(1, 1, 0)
 
 @onready var _name_label: Label = $HBox/NameLabel
 @onready var _bar: ProgressBar = $HBox/HealthBar
+@onready var retreat_button: Button = $HBox/RetreatButton
 
 var entity: SkirmishEntity
+
+signal retreat_pressed(e: SkirmishEntity)
+
+func _ready() -> void:
+	retreat_button.pressed.connect(func(): retreat_pressed.emit(entity))
 
 func configure(e: SkirmishEntity) -> void:
 	entity = e

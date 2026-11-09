@@ -27,3 +27,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/background = ExtResource("2_p85x6")
 show_percentage = false
+
+[node name="RetreatButton" type="Button" parent="HBox" unique_id=873140256]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Retreat"

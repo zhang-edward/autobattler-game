@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="25_block"]
 [ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="26_dodge"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
+[ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_state.gd" id="28_fleeing"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -165,9 +166,10 @@ offset_bottom = 40.0
 text = "hero name"
 horizontal_alignment = 1
 
-[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine")]
+[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_state")]
 script = ExtResource("17_brain")
 state_machine = NodePath("StateMachine")
+fleeing_state = NodePath("StateMachine/FleeingState")
 
 [node name="StateMachine" type="Node" parent="AIBrain" unique_id=482915573]
 script = ExtResource("6_state_machine")
@@ -186,3 +188,6 @@ follow_up_state = NodePath("../FollowUpState")
 script = ExtResource("24_follow_up")
 attack_state = NodePath("../AttackState")
 idle_state = NodePath("../IdleState")
+
+[node name="FleeingState" type="Node" parent="AIBrain/StateMachine" unique_id=1290476513]
+script = ExtResource("28_fleeing")
