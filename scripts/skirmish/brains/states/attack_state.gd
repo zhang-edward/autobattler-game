@@ -15,6 +15,9 @@ func get_intent(_delta: float) -> Intent:
 	var target := brain.nearest_opponent()
 	if target == null:
 		return null
+	if not _target_is_hittable(target):
+		state_machine.transition_to(idle_state)
+		return null
 
 	var to_target := target.global_position - brain.entity.global_position
 	var facing := signf(to_target.x)

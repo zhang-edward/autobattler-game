@@ -12,7 +12,7 @@ func get_intent(_delta: float) -> Intent:
 	var to_target := target.global_position - brain.entity.global_position
 	var facing := signf(to_target.x)
 	var ability_state := brain.entity.state_machine.state as AbilityState
-	if ability_state != null:
+	if ability_state != null and _target_is_hittable(target):
 		var follow_up := _draw_follow_up(ability_state, to_target)
 		if follow_up == null:
 			return null

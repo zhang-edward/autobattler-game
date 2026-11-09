@@ -11,6 +11,8 @@ func get_intent(_delta: float) -> Intent:
 	return null
 
 func _target_is_open(target: SkirmishEntity) -> bool:
+	if not _target_is_hittable(target):
+		return false
 	var target_state := target.state_machine.state
 	# Target is hurt
 	if target_state == target.hurt_state:
@@ -21,6 +23,9 @@ func _target_is_open(target: SkirmishEntity) -> bool:
 	# Target is still recovering from last attack
 	var ability_state := target_state as AbilityState
 	return ability_state != null and ability_state.phase == AbilityState.Phase.RECOVERY
+
+func _target_is_hittable(target: SkirmishEntity) -> bool:
+	return target.hurtbox.monitorable
 
 func _target_is_attacking(target: SkirmishEntity) -> bool:
 	var target_mode := (target.brain as AIBrain).state_machine.state
