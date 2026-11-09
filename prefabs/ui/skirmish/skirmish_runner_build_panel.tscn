@@ -4,7 +4,7 @@
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="2_style"]
 
 [node name="SkirmishRunnerBuildPanel" type="PanelContainer" unique_id=1570031101]
-custom_minimum_size = Vector2(420, 0)
+custom_minimum_size = Vector2(850, 0)
 theme_override_styles/panel = ExtResource("2_style")
 script = ExtResource("1_panel")
 
@@ -29,7 +29,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 8
-columns = 2
+columns = 3
 
 [node name="StrengthLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031106]
 layout_mode = 2
@@ -39,10 +39,15 @@ text = "Strength"
 [node name="Strength" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031107]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 2.0
 max_value = 60.0
-value = 10.0
 allow_greater = true
+
+[node name="StrengthInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031124]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 
 [node name="DefenseLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031108]
 layout_mode = 2
@@ -53,8 +58,14 @@ text = "Defense"
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 90.0
-value = 10.0
 allow_greater = true
+
+[node name="DefenseInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031126]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 
 [node name="AgilityLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031110]
 layout_mode = 2
@@ -64,10 +75,15 @@ text = "Agility"
 [node name="Agility" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031111]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 2.0
 max_value = 40.0
-value = 10.0
 allow_greater = true
+
+[node name="AgilityInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031128]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 
 [node name="EvasionLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031112]
 layout_mode = 2
@@ -78,8 +94,14 @@ text = "Evasion"
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 60.0
-value = 10.0
 allow_greater = true
+
+[node name="EvasionInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031130]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 
 [node name="ResilienceLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031122]
 layout_mode = 2
@@ -90,8 +112,14 @@ text = "Resilience"
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 60.0
-value = 10.0
 allow_greater = true
+
+[node name="ResilienceInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031132]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.65)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 
 [node name="PointsLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031114]
 unique_name_in_owner = true
@@ -109,7 +137,7 @@ text = "Light"
 [node name="LightMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031117]
 unique_name_in_owner = true
 layout_mode = 2
-columns = 2
+columns = 4
 
 [node name="MediumLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031118]
 layout_mode = 2
@@ -118,7 +146,7 @@ text = "Medium"
 [node name="MediumMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031119]
 unique_name_in_owner = true
 layout_mode = 2
-columns = 2
+columns = 4
 
 [node name="HeavyLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031120]
 layout_mode = 2
@@ -127,4 +155,4 @@ text = "Heavy"
 [node name="HeavyMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031121]
 unique_name_in_owner = true
 layout_mode = 2
-columns = 2
+columns = 4
