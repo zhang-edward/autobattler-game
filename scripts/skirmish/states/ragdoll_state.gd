@@ -37,13 +37,16 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 @export var wall_hitstop_per_speed := 0.0004
 
 const ANIM_THROWN := "male-rig/is_thrown"
-const ANIM_SLAM := "male-rig/ground_slam1"
+const ANIM_SLAM := "male-rig/ground_slam"
 const ANIM_WALL_SLAM := "male-rig/wall_slam"
 const ANIM_BOUNCE := "male-rig/bounce"
 const ANIM_CRUMPLE := "male-rig/ground_crumple"
 # How long the slam pose shows after an impact that bounces, before switching to ANIM_BOUNCE
 const BOUNCE_ANIM_DELAY := 0.12
 const MAX_WALL_SLAM_HITSTOP = 0.4
+const RAGDOLL_ESCAPE_HEALTH_FRACTION := 0.4
+const RESILIENCE_SCALE := 10.0
+const ESCAPE_BLINK_SECONDS := 0.08
 
 var phase: Phase
 var downed_timer := 0.0
@@ -52,8 +55,13 @@ var downed_timer := 0.0
 var _bounce_anim_timer := 0.0
 var _wall_slam_animation_resume_tween: Tween
 var launched_by: SkirmishEntity
+var ragdoll_damage := 0
+var has_escaped_ragdoll := false
+var _escape_blink_tween: Tween
 
 func enter(msg := {}) -> void:
+	ragdoll_damage = 0
+	has_escaped_ragdoll = false
 	relaunch(msg.get("impulse", Vector2.ZERO), msg.get("launch", 0.0))
 	launched_by = msg["launched_by"]
 
@@ -62,7 +70,7 @@ func relaunch(impulse: Vector2, launch: float) -> void:
 	e.absolute_velocity = impulse
 	e.z_velocity = launch
 	# Reset hurtbox if previously lying down
-	if not e.is_dead:
+	if not e.is_dead and not has_escaped_ragdoll:
 		e.hurtbox.set_deferred("monitorable", true)
 	_enter_phase(Phase.AIRBORNE)
 	_bounce_anim_timer = 0.0
@@ -88,6 +96,7 @@ func physics_update(delta: float) -> void:
 			if e.absolute_velocity.length() <= settle_speed:
 				e.absolute_velocity = Vector2.ZERO
 				_enter_phase(Phase.DOWNED)
+			_bounce_off_side_walls()
 		_:
 			e.absolute_velocity = Vector2.ZERO
 
@@ -101,6 +110,7 @@ func _enter_phase(next_phase: Phase) -> void:
 	phase = next_phase
 	match phase:
 		Phase.DOWNED:
+			e.rig.play_animation(ANIM_CRUMPLE)
 			downed_timer = downed_seconds
 			# Downed entities are safe until they're back in play
 			# e.hurtbox.set_deferred("monitorable", false)
@@ -147,7 +157,24 @@ func _bounce_off_side_walls() -> void:
 				e.is_dead = true
 				e.healthbar.hide()
 				e.died.emit()
+			add_ragdoll_damage(damage)
 		return
+
+# Once the entity takes enough damage while ragdolled, it can't be hit again until it gets up.
+# Higher "resilience" stat => lowers damage threshold.
+func add_ragdoll_damage(damage: int) -> void:
+	ragdoll_damage += damage
+	if has_escaped_ragdoll or e.is_dead:
+		return
+	var threshold := e.entity_config.get_max_health() * RAGDOLL_ESCAPE_HEALTH_FRACTION \
+		* RESILIENCE_SCALE / (RESILIENCE_SCALE + e.entity_config.resilience)
+	if ragdoll_damage < threshold:
+		return
+	has_escaped_ragdoll = true
+	e.hurtbox.set_deferred("monitorable", false)
+	_escape_blink_tween = create_tween().set_loops()
+	_escape_blink_tween.tween_property(e.rig, "modulate:a", 0.3, ESCAPE_BLINK_SECONDS)
+	_escape_blink_tween.tween_property(e.rig, "modulate:a", 1.0, ESCAPE_BLINK_SECONDS)
 
 func _land() -> void:
 	e.z = 0.0
@@ -174,6 +201,9 @@ func _land() -> void:
 
 func exit() -> void:
 	_bounce_anim_timer = 0.0
+	if _escape_blink_tween != null:
+		_escape_blink_tween.kill()
+		e.rig.modulate.a = 1.0
 	if _wall_slam_animation_resume_tween != null:
 		_wall_slam_animation_resume_tween.kill()
 	e.absolute_velocity = Vector2.ZERO
