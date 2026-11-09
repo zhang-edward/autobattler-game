@@ -27,11 +27,14 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 @export var min_bounce_speed := 300.0
 @export var wall_restitution := 0.6
 @export var min_wall_bounce_speed := 200.0
+@export var wall_damage_per_speed := 0.02
 # Below this floor speed, stop sliding and lie down
 @export var settle_speed := 40.0
 
 @export_group("Timing")
 @export var downed_seconds := 0.5
+# Seconds of hitstop per unit of sideways speed when hitting a side wall
+@export var wall_hitstop_per_speed := 0.0004
 
 const ANIM_THROWN := "male-rig/is_thrown"
 const ANIM_SLAM := "male-rig/ground_slam1"
@@ -40,12 +43,14 @@ const ANIM_BOUNCE := "male-rig/bounce"
 const ANIM_CRUMPLE := "male-rig/ground_crumple"
 # How long the slam pose shows after an impact that bounces, before switching to ANIM_BOUNCE
 const BOUNCE_ANIM_DELAY := 0.12
+const MAX_WALL_SLAM_HITSTOP = 0.4
 
 var phase: Phase
 var downed_timer := 0.0
 # > 0 while a bounce animation is pending. Driven by the state, not the animation player,
 # so a long or looping slam animation can't hold it up.
 var _bounce_anim_timer := 0.0
+var _wall_slam_animation_resume_tween: Tween
 var launched_by: SkirmishEntity
 
 func enter(msg := {}) -> void:
@@ -61,6 +66,8 @@ func relaunch(impulse: Vector2, launch: float) -> void:
 		e.hurtbox.set_deferred("monitorable", true)
 	_enter_phase(Phase.AIRBORNE)
 	_bounce_anim_timer = 0.0
+	if _wall_slam_animation_resume_tween != null:
+		_wall_slam_animation_resume_tween.kill()
 	e.rig.play_animation(ANIM_THROWN)
 
 func physics_update(delta: float) -> void:
@@ -108,17 +115,46 @@ func _bounce_off_side_walls() -> void:
 		var is_moving_into_wall := signf(e.absolute_velocity.x) == -signf(wall_normal.x)
 		if not is_side_wall or not is_moving_into_wall:
 			continue
-		if absf(e.absolute_velocity.x) < min_wall_bounce_speed:
+		var impact_speed := absf(e.absolute_velocity.x)
+		if impact_speed < min_wall_bounce_speed:
 			return
 		e.absolute_velocity.x *= -wall_restitution
+
+		# Hold the wall slam animation's first frame for the hitstop. Faster impacts freeze longer.
+		e.rig_wrapper.scale.x = signf(wall_normal.x) # set flipX so slam animation plays in the right direction
 		e.rig.play_animation(ANIM_WALL_SLAM)
-		_bounce_anim_timer = 0.5
-		Hitstop.freeze([e], 0.25)
+		e.rig.anim_player.seek(0.0, true)
+		e.rig.anim_player.pause()
+		_bounce_anim_timer = 0.0
+		var hitstop := minf(MAX_WALL_SLAM_HITSTOP, impact_speed * wall_hitstop_per_speed) # More speed = more hitstop
+		Hitstop.freeze([e], hitstop)
+		# Resume wall slam animation (from "bounce_off" frame) right after hitstop
+		_wall_slam_animation_resume_tween = create_tween()
+		_wall_slam_animation_resume_tween.tween_callback(
+			e.rig.anim_player.play_section_with_markers.bind(ANIM_WALL_SLAM, &"bounce_off")
+		).set_delay(hitstop)
 		ScreenShake.shake_horizontal(12, 0.1, 12)
+
+		# Wall impact damage calculation
+		if not e.is_dead:
+			var damage := roundi(impact_speed * wall_damage_per_speed)
+			if launched_by != null and is_instance_valid(launched_by):
+				launched_by.entity_config.damage_dealt += damage
+			e.healthbar.value -= damage
+			if e.entity_config != null:
+				e.entity_config.curr_health = int(e.healthbar.value)
+			if e.healthbar.value <= 0:
+				e.is_dead = true
+				e.healthbar.hide()
+				e.died.emit()
 		return
 
 func _land() -> void:
 	e.z = 0.0
+
+	if e.is_dead:
+		state_machine.transition_to(e.death_state)
+		return
 
 	if e.z_velocity >= min_bounce_speed:
 		e.rig.play_animation(ANIM_SLAM)
@@ -138,6 +174,8 @@ func _land() -> void:
 
 func exit() -> void:
 	_bounce_anim_timer = 0.0
+	if _wall_slam_animation_resume_tween != null:
+		_wall_slam_animation_resume_tween.kill()
 	e.absolute_velocity = Vector2.ZERO
 	e.z = 0.0
 	e.z_velocity = 0.0
