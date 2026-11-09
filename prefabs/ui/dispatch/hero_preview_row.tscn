@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_roh7t"]
 [ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="3_6ahc5"]
 [ext_resource type="PackedScene" path="res://prefabs/ui/health_bar.tscn" id="hb_health_bar"]
+[ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="4_dkstr"]
 
 [node name="HeroPreviewRow" type="PanelContainer" unique_id=1883060387]
 custom_maximum_size = Vector2(-1, 120)
@@ -69,18 +70,6 @@ text = "[font_size=20]Lv[/font_size] [font_size=32]2[/font_size]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RemoveOverlay" type="PanelContainer" parent="." unique_id=582377987]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="Label" type="Label" parent="RemoveOverlay" unique_id=1051738499]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Remove"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="RestingOverlay" type="PanelContainer" parent="." unique_id=906417253]
 unique_name_in_owner = true
 visible = false
@@ -99,3 +88,45 @@ vertical_alignment = 1
 layout_mode = 2
 mouse_filter = 1
 flat = true
+
+[node name="ActionsOverlay" type="PanelContainer" parent="." unique_id=582377987]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ActionsOverlay" unique_id=1051738499]
+layout_mode = 2
+mouse_filter = 1
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ChangeButton" type="Button" parent="ActionsOverlay/HBoxContainer" unique_id=1229405871]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("4_dkstr")
+text = "Change"
+
+[node name="RemoveButton" type="Button" parent="ActionsOverlay/HBoxContainer" unique_id=1873350492]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("4_dkstr")
+text = "Remove"
+
+[node name="ViewButton" type="Button" parent="ActionsOverlay/HBoxContainer" unique_id=640187235]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 50)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("4_dkstr")
+text = "View"

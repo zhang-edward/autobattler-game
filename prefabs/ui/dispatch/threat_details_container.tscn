@@ -133,7 +133,7 @@ theme_override_font_sizes/font_size = 22
 text = "$1,500"
 horizontal_alignment = 2
 
-[node name="AssignHeroesButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=950879448]
+[node name="ActionButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=950879448]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2

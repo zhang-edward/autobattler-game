@@ -5,29 +5,38 @@ extends PanelContainer
 @onready var stat_grid: GridContainer = %StatGrid
 @onready var level_label: RichTextLabel = %LevelLabel
 @onready var hero_name: Label = %HeroName
-@onready var remove_overlay: PanelContainer = %RemoveOverlay
+@onready var actions_overlay: PanelContainer = %ActionsOverlay
+@onready var change_button: Button = %ChangeButton
+@onready var remove_button: Button = %RemoveButton
+@onready var view_button: Button = %ViewButton
 @onready var resting_overlay: PanelContainer = %RestingOverlay
 @onready var resting_label: Label = %RestingLabel
 @onready var health_bar: HealthBar = %HealthBar
 @onready var button: Button = $Button
 
-var enable_remove_overlay := false
+var enable_actions_overlay := false
 var entity_config: EntityConfig
 
 signal on_clicked(r: HeroPreviewRow)
+signal on_change_clicked(r: HeroPreviewRow)
+signal on_remove_clicked(r: HeroPreviewRow)
+signal on_view_clicked(r: HeroPreviewRow)
 
 func _ready() -> void:
 	button.pressed.connect(click_hero)
-	button.mouse_entered.connect(show_remove_overlay)
-	button.mouse_exited.connect(hide_remove_overlay)
+	mouse_entered.connect(show_actions_overlay)
+	mouse_exited.connect(hide_actions_overlay)
+	change_button.pressed.connect(func(): on_change_clicked.emit(self))
+	remove_button.pressed.connect(func(): on_remove_clicked.emit(self))
+	view_button.pressed.connect(func(): on_view_clicked.emit(self))
 
-func show_remove_overlay():
-	if enable_remove_overlay:
-		remove_overlay.show()
-	
-func hide_remove_overlay():
-	if enable_remove_overlay:
-		remove_overlay.hide()
+func show_actions_overlay():
+	if enable_actions_overlay:
+		actions_overlay.show()
+
+func hide_actions_overlay():
+	if enable_actions_overlay:
+		actions_overlay.hide()
 
 func click_hero():
 	on_clicked.emit(self)

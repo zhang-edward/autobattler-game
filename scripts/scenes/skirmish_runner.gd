@@ -8,7 +8,8 @@ extends Node
 @onready var _fight_layer: CanvasLayer = $FightLayer
 @onready var _hero_build: SkirmishRunnerBuildPanel = %HeroBuild
 @onready var _villain_build: SkirmishRunnerBuildPanel = %VillainBuild
-@onready var _team_size: SpinBox = %TeamSize
+@onready var _hero_count: SpinBox = %HeroCount
+@onready var _villain_count: SpinBox = %VillainCount
 @onready var _fights: SpinBox = %Fights
 @onready var _fight_button: Button = %FightButton
 @onready var _results_label: Label = %ResultsLabel
@@ -52,18 +53,18 @@ func _start_run() -> void:
 
 func _start_fight() -> void:
 	_fight_status_label.text = "Fight %d/%d | %s" % [_fights_done + 1, int(_fights.value), _results_text()]
-	var villains := _build_team(_villain_build)
+	var villains := _build_team(_villain_build, int(_villain_count.value))
 	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatRequestConfigBuilder.new().with_enemy_configs(villains).build())
-	GameVariables.curr_threat_skirmish.heroes = _build_team(_hero_build)
+	GameVariables.curr_threat_skirmish.heroes = _build_team(_hero_build, int(_hero_count.value))
 	_fight_time = 0.0
 	_skirmish = skirmish_scene.instantiate() as Skirmish
 	_skirmish.return_to_post_skirmish = false
 	_skirmish.finished.connect(_on_fight_finished)
 	add_child(_skirmish)
 
-func _build_team(build: SkirmishRunnerBuildPanel) -> Array[EntityConfig]:
+func _build_team(build: SkirmishRunnerBuildPanel, count: int) -> Array[EntityConfig]:
 	var team: Array[EntityConfig] = []
-	for i in int(_team_size.value):
+	for i in count:
 		var config := build.build_config()
 		config.entity_name += " %d" % (i + 1)
 		team.append(config)
@@ -115,7 +116,7 @@ func _refresh_fight_button() -> void:
 		_fight_button.disabled = true
 	elif hero_points != villain_points:
 		_fight_button.text = "Fight (Point totals differ)" % [hero_points, villain_points]
-		# _fight_button.disabled = true
+		_fight_button.disabled = false
 	else:
 		_fight_button.text = "Fight"
 		_fight_button.disabled = false

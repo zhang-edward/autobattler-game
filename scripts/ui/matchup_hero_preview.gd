@@ -4,32 +4,40 @@ extends PanelContainer
 @onready var hero_name: Label = %HeroName
 @onready var level_value: Label = %LevelValue
 @onready var offense_moves: SpecialAbilityGrid = %OffenseMoves
-@onready var change_hero_button: Button = %ChangeHero
 @onready var level_container: HBoxContainer = %LevelContainer
 @onready var move_grid_container: VBoxContainer = %MoveGridContainer
 @onready var health_bar: HealthBar = %HealthBar
+@onready var stat_grid: GridContainer = %StatGrid
 
-signal on_change_hero()
+@export var stat_label_scene: PackedScene
 
 func _ready():
-	change_hero_button.pressed.connect(change_hero_clicked)
 	offense_moves.heading_label.text = "Offense"
 
 func configure(entity_config: EntityConfig):
 	level_container.visible = entity_config != null
 	move_grid_container.visible = entity_config != null
 	health_bar.visible = entity_config != null
+	stat_grid.visible = entity_config != null
 	if entity_config == null:
 		hero_name.text = "No hero selected"
-		change_hero_button.text = "Choose Hero"
 		return
-	change_hero_button.text = "Change Hero"
 	health_bar.configure(entity_config)
 	hero_name.text = entity_config.entity_name
 	if entity_config.injury_recovery_days > 0:
 		hero_name.text += " (Resting)"
 	level_value.text = str(entity_config.level)
 	offense_moves.configure_from_abilities(entity_config.abilities)
+	for c in stat_grid.get_children():
+		c.queue_free()
+	add_stat_row("STR", entity_config.strength)
+	add_stat_row("SKL", entity_config.skill)
+	add_stat_row("AGI", entity_config.agility)
+	add_stat_row("VIT", entity_config.vitality)
+	add_stat_row("DEF", entity_config.defense)
+	add_stat_row("CHA", entity_config.charisma)
 
-func change_hero_clicked():
-	on_change_hero.emit()
+func add_stat_row(stat_name: String, stat_value: int):
+	var stat_label = stat_label_scene.instantiate() as StatLabel
+	stat_grid.add_child(stat_label)
+	stat_label.configure(stat_name, stat_value)
