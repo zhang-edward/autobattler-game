@@ -10,7 +10,7 @@ gravity would pull bodies toward the front of the screen instead of down. We int
 the three axes ourselves and let move_and_slide() handle only the floor-plane collisions.
 """
 
-enum Phase {AIRBORNE, SLIDING, DOWNED}
+enum Phase {AIRBORNE, SLIDING, RECOVERING}
 
 @export var move_state: MoveState
 
@@ -32,7 +32,7 @@ enum Phase {AIRBORNE, SLIDING, DOWNED}
 @export var settle_speed := 40.0
 
 @export_group("Timing")
-@export var downed_seconds := 0.5
+@export var recovering_seconds := 0.5
 # Seconds of hitstop per unit of sideways speed when hitting a side wall
 @export var wall_hitstop_per_speed := 0.0004
 
@@ -49,7 +49,7 @@ const RESILIENCE_SCALE := 10.0
 const ESCAPE_BLINK_SECONDS := 0.08
 
 var phase: Phase
-var downed_timer := 0.0
+var recovering_timer := 0.0
 # > 0 while a bounce animation is pending. Driven by the state, not the animation player,
 # so a long or looping slam animation can't hold it up.
 var _bounce_anim_timer := 0.0
@@ -95,24 +95,24 @@ func physics_update(delta: float) -> void:
 			e.absolute_velocity = e.absolute_velocity.move_toward(Vector2.ZERO, ground_friction * delta)
 			if e.absolute_velocity.length() <= settle_speed:
 				e.absolute_velocity = Vector2.ZERO
-				_enter_phase(Phase.DOWNED)
+				_enter_phase(Phase.RECOVERING)
 			_bounce_off_side_walls()
 		_:
 			e.absolute_velocity = Vector2.ZERO
 
 func update(delta: float) -> void:
-	if phase == Phase.DOWNED:
-		downed_timer -= delta
-		if downed_timer <= 0.0:
+	if phase == Phase.RECOVERING:
+		recovering_timer -= delta
+		if recovering_timer <= 0.0:
 			state_machine.transition_to(move_state)
 
 func _enter_phase(next_phase: Phase) -> void:
 	phase = next_phase
 	match phase:
-		Phase.DOWNED:
+		Phase.RECOVERING:
 			e.rig.play_animation(ANIM_CRUMPLE)
-			downed_timer = downed_seconds
-			# Downed entities are safe until they're back in play
+			recovering_timer = recovering_seconds
+			# Recovering entities are safe until they're back in play
 			# e.hurtbox.set_deferred("monitorable", false)
 			if e.is_dead:
 				e.despawn()
@@ -150,13 +150,12 @@ func _bounce_off_side_walls() -> void:
 			var damage := roundi(impact_speed * wall_damage_per_speed)
 			if launched_by != null and is_instance_valid(launched_by):
 				launched_by.entity_config.damage_dealt += damage
+			var was_at_zero_health := e.healthbar.value <= 0
 			e.healthbar.value -= damage
 			if e.entity_config != null:
 				e.entity_config.curr_health = int(e.healthbar.value)
-			if e.healthbar.value <= 0:
-				e.is_dead = true
-				e.healthbar.hide()
-				e.died.emit()
+			if e.healthbar.value <= 0 and not was_at_zero_health:
+				e.move_speed *= SkirmishEntity.ZERO_HEALTH_SPEED_SCALE
 			add_ragdoll_damage(damage)
 		return
 

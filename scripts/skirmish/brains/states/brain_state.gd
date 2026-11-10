@@ -17,9 +17,9 @@ func _target_is_open(target: SkirmishEntity) -> bool:
 	# Target is hurt
 	if target_state == target.hurt_state:
 		return true
-	# Target is ragdolled (but not in "downed", when they're invulnerable)
+	# Target is ragdolled (but not in "recovering", when they're invulnerable)
 	if target_state == target.ragdoll_state:
-		return target.ragdoll_state.phase != RagdollState.Phase.DOWNED
+		return target.ragdoll_state.phase != RagdollState.Phase.RECOVERING
 	# Target is still recovering from last attack
 	var ability_state := target_state as AbilityState
 	return ability_state != null and ability_state.phase == AbilityState.Phase.RECOVERY

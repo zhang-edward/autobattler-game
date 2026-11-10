@@ -24,6 +24,8 @@ const DODGE_EVASION_SCALE := 40.0
 const EVASION_PUSHBACK_SCALE := 20.0
 const IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE := 0.8
 const IGNORE_HITSTUN_STEEPNESS := 4.0
+const ZERO_HEALTH_SPEED_SCALE := 0.5
+const DOWNED_CHANCE := 0.25
 # Max depth-axis spread on a knockdown
 const LAUNCH_Y_SPREAD := 0.25
 
@@ -45,6 +47,7 @@ const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
 @export var death_state: DeathState
+@export var downed_state: DownedState
 @export var move_state: MoveState
 @export var ragdoll_state: RagdollState
 @export var tag_out_state: TagOutState
@@ -215,21 +218,22 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	# Take chip damage if blocked
 	if blocked:
 		damage = maxi(hit.damage - roundi(entity_config.defense * BLOCK_REDUCTION_PER_DEFENSE), 1)
+	var was_at_zero_health := healthbar.value <= 0
 	source.entity_config.damage_dealt += damage
 	healthbar.value -= damage
 	if entity_config != null:
 		entity_config.curr_health = int(healthbar.value)
+	if healthbar.value <= 0 and not was_at_zero_health:
+		move_speed *= ZERO_HEALTH_SPEED_SCALE
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
 	var pushback := hit.pushback \
 		* (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE) \
 		* (AbilityState.AGILITY_SCALE + AbilityState.AGILITY_BASELINE) / (AbilityState.AGILITY_SCALE + source.entity_config.agility)
 	var hit_connected := false
-	if healthbar.value <= 0:
-		is_dead = true
-		healthbar.hide()
-		died.emit()
-		state_machine.transition_to(death_state)
+	if was_at_zero_health and randf() < DOWNED_CHANCE:
+		state_machine.transition_to(downed_state)
+		hit_connected = true
 	elif blocked:
 		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true

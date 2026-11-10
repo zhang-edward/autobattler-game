@@ -20,8 +20,8 @@ func _ready() -> void:
 func _on_took_hit() -> void:
 	if entity.entity_type != EntityConfig.EntityType.VILLAIN or state_machine.state == fleeing_brain_state:
 		return
-	if entity.entity_config.curr_health <= entity.entity_config.get_max_health() * FLEE_HEALTH_FRACTION and randf() < FLEE_CHANCE:
-		state_machine.transition_to(fleeing_brain_state)
+	# if entity.entity_config.curr_health <= entity.entity_config.get_max_health() * FLEE_HEALTH_FRACTION and randf() < FLEE_CHANCE:
+	# 	state_machine.transition_to(fleeing_brain_state)
 
 func get_intent(delta: float) -> Intent:
 	return (state_machine.state as BrainState).get_intent(delta)
