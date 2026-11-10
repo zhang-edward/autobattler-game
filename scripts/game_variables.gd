@@ -12,12 +12,21 @@ var curr_day: int = 1
 static var REST_DAYS = 2
 static var DEFEATED_REST_DAYS = 5
 static var WOUND_HEAL_PER_DAY = 0.1
+static var VILLAIN_HEAL_PER_DAY = 0.1
 static var WIN_REPUTATION = 1
-static var LOSS_REPUTATION = -2
+static var LOSS_REPUTATION = -1
 static var EXPIRED_REPUTATION = -3
 
 func _ready():
-	player_lineup = EntityGenerator.generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
+	new_game()
+
+func new_game():
+	player_lineup = EntityGenerator.generate_random_entity_configs(3, EntityConfig.EntityType.HERO)
+	money = 0
+	reputation = 10
+	curr_day = 1
+	curr_threat_skirmish = null
+	threat_request_configs = ThreatGenerator.generate_random_threat_requests(3, curr_day)
 
 func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 	match t:
@@ -58,3 +67,7 @@ func advance_day():
 			c.injury_recovery_days -= 1
 			if c.injury_recovery_days == 0:
 				c.curr_health = c.get_max_health()
+	for t in threat_request_configs:
+		for v in t.enemy_configs:
+			v.curr_health = mini(v.curr_health + roundi(v.get_max_health() * VILLAIN_HEAL_PER_DAY), v.get_max_health())
+	threat_request_configs.append_array(ThreatGenerator.generate_random_threat_requests(1, curr_day))

@@ -38,7 +38,7 @@ func confirm_hero_from_modal(hero_config: EntityConfig):
 
 func _generate_debug_data():
 	print("generating debug data...")
-	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatGenerator.generate_random_threat_requests(1, GameVariables.player_lineup)[0])
+	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatGenerator.generate_random_threat_requests(1, GameVariables.curr_day)[0])
 	GameVariables.curr_threat_skirmish.heroes = [GameVariables.player_lineup[0]]
 
 func update_entity_previews():
@@ -52,6 +52,9 @@ func update_entity_previews():
 	if hero_config == null:
 		dispatch_button.disabled = true
 		dispatch_button.text = "Cannot dispatch! No hero selected"
+	elif villain_config.curr_health <= 0:
+		dispatch_button.disabled = true
+		dispatch_button.text = "Cannot dispatch! Villain is recovering"
 	else:
 		dispatch_button.disabled = hero_config.injury_recovery_days > 0
 		dispatch_button.text = "Dispatch" if hero_config.injury_recovery_days == 0 else "Cannot dispatch! Hero is resting"

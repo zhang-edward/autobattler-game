@@ -114,25 +114,6 @@ theme_override_font_sizes/font_size = 22
 text = "320 XP"
 horizontal_alignment = 2
 
-[node name="MoneyRewardContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2029499133]
-layout_mode = 2
-
-[node name="MoneyRewardLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/MoneyRewardContainer" unique_id=309731768]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.61960787, 0.62352943, 0.6862745, 1)
-theme_override_font_sizes/font_size = 22
-text = "Money"
-
-[node name="MoneyRewardValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/MoneyRewardContainer" unique_id=720560693]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 22
-text = "$1,500"
-horizontal_alignment = 2
-
 [node name="ActionButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=950879448]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)

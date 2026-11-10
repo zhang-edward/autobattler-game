@@ -42,10 +42,6 @@ func with_evasion(eva: int):
 	_entity_config.evasion = eva
 	return self
 
-func with_charisma(cha: int):
-	_entity_config.charisma = cha
-	return self
-	
 func with_abilities(abilities: Array[Ability]):
 	_entity_config.abilities = abilities
 	return self
@@ -73,7 +69,6 @@ static func from_entity_config(source: EntityConfig) -> EntityConfigBuilder:
 	copy.resilience = source.resilience
 	copy.agility = source.agility
 	copy.evasion = source.evasion
-	copy.charisma = source.charisma
 	copy.level = source.level
 	copy.exp = source.exp
 	copy.exp_to_next_level = source.exp_to_next_level

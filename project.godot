@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="superhero-autobattler"
-run/main_scene="uid://kcb742xwenma"
+run/main_scene="res://scenes/title.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -21,7 +21,6 @@ GameVariables="*uid://hq5y664o8xm3"
 BeehaveGlobalMetrics="*uid://c3ktl6ontsdt7"
 BeehaveGlobalDebugger="*uid://bl3ma400hpvsh"
 ScreenShake="*res://scripts/skirmish/screen_shake.gd"
-TacticalDebugConsole="*res://scripts/debug/debug_console.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]

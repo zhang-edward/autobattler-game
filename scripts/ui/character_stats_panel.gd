@@ -20,7 +20,6 @@ func configure(entity_config: EntityConfig):
 	add_stat_label("Agility", entity_config.agility)
 	add_stat_label("Evasion", entity_config.evasion)
 	add_stat_label("Defense", entity_config.defense)
-	add_stat_label("Charisma", entity_config.charisma)
 
 func add_stat_label(stat_name: String, stat_value: int):
 	var stat_label = stat_label_scene.instantiate() as StatLabelBordered

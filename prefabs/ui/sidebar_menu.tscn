@@ -68,19 +68,6 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "1000"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=856101694]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1353417477]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Money"
-
-[node name="Money" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1542289065]
-unique_name_in_owner = true
-layout_mode = 2
-text = "$1000"
-
 [node name="AdvanceDay" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=976235653]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)

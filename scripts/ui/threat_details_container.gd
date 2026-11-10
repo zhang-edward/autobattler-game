@@ -7,7 +7,6 @@ extends MarginContainer
 @onready var description: RichTextLabel = %Description
 @onready var threat_type: Label = %TypeValue
 @onready var exp_reward: Label = %ExpRewardValue
-@onready var money: Label = %MoneyRewardValue
 @onready var threat_label: ThreatLabel = %ThreatLabel
 @onready var action_button: Button = %ActionButton
 @onready var villain_previews: VBoxContainer = %VillainPreviews
@@ -24,7 +23,6 @@ func update_selected_threat_req(threat_req_config: ThreatRequestConfig):
 	headline.text = config.title
 	description.text = config.description
 	exp_reward.text = str(config.reward.exp_gain) + " XP"
-	money.text = "$" + str(config.reward.money)
 	threat_label.configure(config.threat_type)
 	for c in villain_previews.get_children():
 		c.queue_free()

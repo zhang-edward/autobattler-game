@@ -18,7 +18,6 @@ func configure(entity_config: EntityConfig):
 	add_stat_row("AGI", entity_config.agility)
 	add_stat_row("EVA", entity_config.evasion)
 	add_stat_row("DEF", entity_config.defense)
-	add_stat_row("CHA", entity_config.charisma)
 
 func add_stat_row(stat_name: String, stat_value: int):
 	var stat_label = stat_label_scene.instantiate() as StatLabel

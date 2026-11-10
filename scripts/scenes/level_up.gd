@@ -30,7 +30,6 @@ func _ready() -> void:
 	add_level_up_stat_row("Resilience", hero_config.resilience)
 	add_level_up_stat_row("Agility", hero_config.agility)
 	add_level_up_stat_row("Evasion", hero_config.evasion)
-	add_level_up_stat_row("Charisma", hero_config.charisma)
 	confirm_button.pressed.connect(apply_and_transition_to_roster)
 	setup_curr_ability_list(hero_config)
 	setup_new_ability_list(hero_config)

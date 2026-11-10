@@ -2,6 +2,8 @@ class_name EntityGenerator
 extends RefCounted
 
 const ABILITIES_PATH := "res://abilities/"
+const STARTING_STAT_POINTS := 26
+const ALL_STAT_KEYS := ["strength", "defense", "resilience", "agility", "evasion"]
 
 static func generate_random_prospects(num_prospects: int, prospect_type: Prospect.ProspectType) -> Array[Prospect]:
 	var entity_configs = generate_random_entity_configs(num_prospects, EntityConfig.EntityType.HERO)
@@ -29,14 +31,10 @@ static func generate_random_entity_configs(num_heroes: int, entity_type: EntityC
 			.with_entity_type(entity_type) \
 			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE) \
 			.with_entity_name(rand_name) \
-			.with_defense(randi_range(1, 5)) \
-			.with_strength(randi_range(1, 5)) \
-			.with_resilience(randi_range(1, 5)) \
-			.with_agility(randi_range(1, 5)) \
-			.with_evasion(randi_range(1, 5)) \
-			.with_charisma(randi_range(1, 5)) \
 			.with_abilities(abilities) \
 			.build()
+		for j in range(0, STARTING_STAT_POINTS):
+			entity_config[ALL_STAT_KEYS.pick_random()] += 1
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
 		entity_config.portrait_config = portrait_config
 		entity_config.curr_health = entity_config.get_max_health()
@@ -50,9 +48,8 @@ static func generate_enemy_config_at_level(level: int, num_enemies: int):
 		e.exp_to_next_level = e.get_exp_to_next_level(e.level)
 		# simulate level ups
 		for i in range(1, level):
-			var all_stat_keys = ["strength", "defense", "resilience", "agility", "evasion", "charisma"]
 			for j in range(0, 3):
-				var random_stat = all_stat_keys.pick_random()
+				var random_stat = ALL_STAT_KEYS.pick_random()
 				e[random_stat] += 1
 		e.curr_health = e.get_max_health()
 	return random_enemies

@@ -27,12 +27,11 @@ var entity_type: EntityType
 var entity_power_type: EntityPowerType # TODO: Does nothing currently
 
 ## Stats
-var defense: int = 5
+var defense: int = 0
 var strength: int = 0
 var resilience: int = 0 # TODO: Does nothing currently
 var agility: int = 0
 var evasion: int = 0
-var charisma: int = 0 # TODO: Does nothing currently
 
 var level := 1
 var exp := 0
@@ -51,8 +50,8 @@ var damage_dealt := 0
 
 static var BASE_ENERGY_LEVEL := 3
 
-const BASE_HEALTH := 100
-const HEALTH_PER_LEVEL := 40
+const BASE_HEALTH := 140
+const HEALTH_PER_LEVEL := 20
 
 
 func handle_level_up():
@@ -63,7 +62,6 @@ func handle_level_up():
 	resilience += cond_stat_update(1, 3)
 	agility += cond_stat_update(1, 3)
 	evasion += cond_stat_update(1, 3)
-	charisma += cond_stat_update(1, 3)
 
 func cond_stat_update(lo: int, hi: int):
 	var should_incr = randi_range(0, 1) == 0

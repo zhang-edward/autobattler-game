@@ -16,7 +16,9 @@ func _ready():
 	continue_button.pressed.connect(on_continue)
 
 func on_continue():
-	if not GameVariables.curr_threat_skirmish.leveled_up_heroes.is_empty():
+	if GameVariables.reputation < 0:
+		get_tree().change_scene_to_file("res://scenes/game_over.tscn")
+	elif not GameVariables.curr_threat_skirmish.leveled_up_heroes.is_empty():
 		get_tree().change_scene_to_file("res://scenes/level_up.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
@@ -33,12 +35,9 @@ func handle_skirmish_result():
 func add_skirmish_reward_panels(did_player_win: bool):
 	var threat_req_config = GameVariables.curr_threat_skirmish.threat_request_config
 	var exp_gain = threat_req_config.reward.exp_gain
-	var money = threat_req_config.reward.money
 	if !did_player_win:
 		exp_gain = round(exp_gain * 0.5)
-		money = round(money * 0.5)
 	add_skirmish_reward_panel("EXP", exp_gain)
-	add_skirmish_reward_panel("Money", money)
 	add_skirmish_reward_panel("Reputation", GameVariables.curr_threat_skirmish.reputation_change)
 	
 func add_skirmish_reward_panel(reward_name: String, reward_value: int):

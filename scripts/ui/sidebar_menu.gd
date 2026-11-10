@@ -5,7 +5,6 @@ extends PanelContainer
 @onready var roster_option: SidebarMenuOption = %RosterOption
 @onready var advance_button: Button = %AdvanceDay
 @onready var day_label: Label = %Day
-@onready var money_label: Label = %Money
 @onready var reputation_label: Label = %Reputation
 
 var selected_option: SidebarMenuOption
@@ -17,11 +16,13 @@ func _ready() -> void:
 	roster_option.clicked.connect(go_to_roster)
 	day_label.text = "Day " + str(GameVariables.curr_day)
 	advance_button.pressed.connect(advance_day)
-	money_label.text = "$" + str(GameVariables.money)
 	reputation_label.text = str(GameVariables.reputation)
 	
 func advance_day():
-	GameVariables.advance_day()	
+	GameVariables.advance_day()
+	if GameVariables.reputation < 0:
+		get_tree().change_scene_to_file("res://scenes/game_over.tscn")
+		return
 	day_label.text = "Day " + str(GameVariables.curr_day)
 	reputation_label.text = str(GameVariables.reputation)
 	on_advance_day.emit()
