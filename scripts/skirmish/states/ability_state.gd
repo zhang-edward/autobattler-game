@@ -15,8 +15,8 @@ func init(ability_: Ability) -> void:
 	ability = ability_
 
 func can_cancel_into(other: Ability) -> bool:
-	return other.tier > ability.tier or \
-		(ability.tier == Ability.Tier.LIGHT and other.tier == Ability.Tier.LIGHT)
+	return other.tier > ability.tier # or \
+		# (ability.tier == Ability.Tier.LIGHT and other.tier == Ability.Tier.LIGHT)
 
 func enter(_msg := {}) -> void:
 	hit_connected = false
