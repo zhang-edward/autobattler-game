@@ -92,8 +92,13 @@ This means team size is a tool. The player can turn a hard fight into a 3v1, but
 - At any point, the player can send a bench hero into the fight.
 - At any point, the player can order an active hero to retreat.
 - A retreating hero stops attacking and tries to keep away from opponents.
-- They leave the fight after 3 seconds without taking a connected hit. Each connected hit restarts the 3 seconds. Blocked hits count as connected. Dodged hits don't.
+- They leave the fight by running off the left or right edge of the arena. A fleeing hero can still be damaged or knocked down before they are able to escape.
 - A retreated hero is out of the fight for good. They don't return to the bench.
+
+### Fleeing villains
+
+- A villain at low health may flee.
+- A villain who flees counts as defeated.
 
 ### When no active heroes remain
 

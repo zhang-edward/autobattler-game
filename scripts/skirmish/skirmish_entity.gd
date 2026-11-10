@@ -29,6 +29,7 @@ const LAUNCH_Y_SPREAD := 0.25
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
+const SIDE_WALL_LAYER_INDEX = 12
 const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 
 @onready var rig_wrapper: Sprite2D = $RigWrapper

@@ -1,25 +1,18 @@
 class_name FleeingState
 extends BrainState
 
-const FLEE_SECONDS := 3.0
-
-var _time_left := 0.0
-
-func _ready() -> void:
-	brain.entity.took_hit.connect(_on_took_hit)
-
-func enter(_msg := {}) -> void:
-	_time_left = FLEE_SECONDS
-
-func _on_took_hit() -> void:
-	_time_left = FLEE_SECONDS
-
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if state_machine == null or state_machine.state != self:
 		return
-	_time_left -= delta * brain.entity.hitstop_scale
-	if _time_left <= 0.0 and brain.entity.state_machine.state == brain.entity.move_state:
-		brain.entity.state_machine.transition_to(brain.entity.tag_out_state, {"entry_side": brain.entity.facing()})
+	var e := brain.entity
+	var e_state: State = e.state_machine.state
+	# Allow fleeing entities to pass through side walls to escape (but only when they are moving / dashing)
+	# Fleeing entities that are launched by an attack will bounce off walls, so they cannot get knocked out of bounds and allowed to escape
+	var passing := e_state == e.move_state or e_state == e.dash_state or e_state == e.tag_out_state
+	e.set_collision_mask_value(SkirmishEntity.SIDE_WALL_LAYER_INDEX, not passing)
+	var arena_width := e.get_viewport_rect().size.x
+	if e_state == e.move_state and (e.global_position.x < 0.0 or e.global_position.x > arena_width):
+		e.state_machine.transition_to(e.tag_out_state, {"entry_side": e.facing()})
 
 func get_intent(_delta: float) -> Intent:
 	var away := Vector2.ZERO

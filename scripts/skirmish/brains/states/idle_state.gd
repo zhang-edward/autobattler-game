@@ -39,7 +39,8 @@ func get_intent(_delta: float) -> Intent:
 		return null
 
 	# var target_attacking := _target_is_attacking(target)
-	if _target_is_open(target) or (_time_left <= 0.0 and _target_is_hittable(target)):
+	var chase := brain.entity.entity_type == EntityConfig.EntityType.HERO and _target_is_fleeing(target)
+	if _target_is_open(target) or ((chase or _time_left <= 0.0) and _target_is_hittable(target)):
 		_time_left = randf_range(idle_time_min, idle_time_max)
 		var ability := brain.draw_weighted()
 		if ability != null:

@@ -45,6 +45,7 @@ enabled=PackedStringArray("res://addons/beehave/plugin.cfg", "res://addons/godot
 2d_physics/layer_9="SkirmishHero"
 2d_physics/layer_10="SkirmishVillain"
 2d_physics/layer_11="SkirmishWall"
+2d_physics/layer_12="SkirmishSideWall"
 
 [physics]
 

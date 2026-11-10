@@ -129,7 +129,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="VWall" type="StaticBody2D" parent="." unique_id=320051880]
-collision_layer = 1024
+collision_layer = 2048
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VWall" unique_id=1960425404]
@@ -137,7 +137,7 @@ position = Vector2(0, 540)
 shape = SubResource("RectangleShape2D_u42sw")
 
 [node name="VWall2" type="StaticBody2D" parent="." unique_id=172121651]
-collision_layer = 1024
+collision_layer = 2048
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VWall2" unique_id=1249207026]
