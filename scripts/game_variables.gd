@@ -11,6 +11,7 @@ var curr_day: int = 1
 
 static var REST_DAYS = 2
 static var DEFEATED_REST_DAYS = 5
+static var WOUND_HEAL_PER_DAY = 0.1
 static var WIN_REPUTATION = 1
 static var LOSS_REPUTATION = -2
 static var EXPIRED_REPUTATION = -3
@@ -52,6 +53,7 @@ func advance_day():
 	threat_request_configs = threat_request_configs.filter(func(t: ThreatRequestConfig): return t.expiry_days > 0)
 	# Tick down injuries
 	for c in player_lineup:
+		c.curr_wounds = maxi(c.curr_wounds - roundi(c.get_max_health() * WOUND_HEAL_PER_DAY), 0)
 		if c.injury_recovery_days > 0:
 			c.injury_recovery_days -= 1
 			if c.injury_recovery_days == 0:

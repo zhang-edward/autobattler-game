@@ -41,6 +41,7 @@ var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
 var injury_recovery_days := 0
 var energy_level := BASE_ENERGY_LEVEL
+var curr_wounds := 0
 
 # In-round state
 var curr_health := 0

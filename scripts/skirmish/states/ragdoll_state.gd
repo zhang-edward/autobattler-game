@@ -57,11 +57,13 @@ var _wall_slam_animation_resume_tween: Tween
 var launched_by: SkirmishEntity
 var ragdoll_damage := 0
 var has_escaped_ragdoll := false
+var is_downed := false
 var _escape_blink_tween: Tween
 
 func enter(msg := {}) -> void:
 	ragdoll_damage = 0
 	has_escaped_ragdoll = false
+	is_downed = false
 	relaunch(msg.get("impulse", Vector2.ZERO), msg.get("launch", 0.0))
 	launched_by = msg["launched_by"]
 
@@ -104,7 +106,7 @@ func update(delta: float) -> void:
 	if phase == Phase.RECOVERING:
 		recovering_timer -= delta
 		if recovering_timer <= 0.0:
-			state_machine.transition_to(move_state)
+			state_machine.transition_to(e.downed_state if is_downed else move_state)
 
 func _enter_phase(next_phase: Phase) -> void:
 	phase = next_phase
@@ -151,11 +153,16 @@ func _bounce_off_side_walls() -> void:
 			if launched_by != null and is_instance_valid(launched_by):
 				launched_by.entity_config.damage_dealt += damage
 			var was_at_zero_health := e.healthbar.value <= 0
+			var wound_damage := maxi(damage - int(e.healthbar.value), 0)
 			e.healthbar.value -= damage
-			if e.entity_config != null:
-				e.entity_config.curr_health = int(e.healthbar.value)
+			e.entity_config.curr_health = int(e.healthbar.value)
+			e.entity_config.curr_wounds = mini(e.entity_config.curr_wounds + wound_damage, e.entity_config.get_max_health())
+			e.wounds_bar.value = e.entity_config.curr_wounds
+			e.wounds_bar.visible = e.healthbar.value <= 0
 			if e.healthbar.value <= 0 and not was_at_zero_health:
 				e.move_speed *= SkirmishEntity.ZERO_HEALTH_SPEED_SCALE
+			if e.entity_config.curr_wounds >= e.entity_config.get_max_health():
+				is_downed = true
 			add_ragdoll_damage(damage)
 		return
 

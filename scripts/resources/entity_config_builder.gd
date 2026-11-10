@@ -80,6 +80,7 @@ static func from_entity_config(source: EntityConfig) -> EntityConfigBuilder:
 	copy.abilities = source.abilities.duplicate()
 	copy.portrait_config = source.portrait_config
 	copy.curr_health = source.curr_health
+	copy.curr_wounds = source.curr_wounds
 	copy.gained_exp = source.gained_exp
 	copy.num_assists = source.num_assists
 	copy.damage_dealt = source.damage_dealt

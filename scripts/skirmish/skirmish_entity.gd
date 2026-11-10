@@ -25,7 +25,6 @@ const EVASION_PUSHBACK_SCALE := 20.0
 const IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE := 0.8
 const IGNORE_HITSTUN_STEEPNESS := 4.0
 const ZERO_HEALTH_SPEED_SCALE := 0.5
-const DOWNED_CHANCE := 0.25
 # Max depth-axis spread on a knockdown
 const LAUNCH_Y_SPREAD := 0.25
 
@@ -43,6 +42,7 @@ const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 @export var rig: SkirmishEntityRig
 @export var shadow: Sprite2D
 @export var healthbar: ProgressBar
+@export var wounds_bar: ProgressBar
 @export var hurtbox: Hurtbox
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
@@ -91,6 +91,9 @@ func _ready() -> void:
 	if entity_config != null:
 		healthbar.max_value = entity_config.get_max_health()
 		healthbar.value = entity_config.curr_health
+		wounds_bar.max_value = entity_config.get_max_health()
+		wounds_bar.value = entity_config.curr_wounds
+		wounds_bar.visible = healthbar.value <= 0
 	else:
 		healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
@@ -106,6 +109,9 @@ func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_type = ec.entity_type
 	healthbar.max_value = ec.get_max_health()
 	healthbar.value = ec.curr_health
+	wounds_bar.max_value = ec.get_max_health()
+	wounds_bar.value = ec.curr_wounds
+	wounds_bar.visible = healthbar.value <= 0
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
 	if entity_type == EntityConfig.EntityType.VILLAIN:
@@ -220,18 +226,23 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		damage = maxi(hit.damage - roundi(entity_config.defense * BLOCK_REDUCTION_PER_DEFENSE), 1)
 	var was_at_zero_health := healthbar.value <= 0
 	source.entity_config.damage_dealt += damage
+	var wound_damage := maxi(damage - int(healthbar.value), 0)
 	healthbar.value -= damage
-	if entity_config != null:
-		entity_config.curr_health = int(healthbar.value)
+	entity_config.curr_health = int(healthbar.value)
+	entity_config.curr_wounds = mini(entity_config.curr_wounds + wound_damage, entity_config.get_max_health())
+	wounds_bar.value = entity_config.curr_wounds
+	wounds_bar.visible = healthbar.value <= 0
 	if healthbar.value <= 0 and not was_at_zero_health:
 		move_speed *= ZERO_HEALTH_SPEED_SCALE
+	var wound_fraction := float(entity_config.curr_wounds) / entity_config.get_max_health()
+	var downed := wound_fraction >= 1.0 or (was_at_zero_health and randf() < wound_fraction)
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
 	var pushback := hit.pushback \
 		* (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE) \
 		* (AbilityState.AGILITY_SCALE + AbilityState.AGILITY_BASELINE) / (AbilityState.AGILITY_SCALE + source.entity_config.agility)
 	var hit_connected := false
-	if was_at_zero_health and randf() < DOWNED_CHANCE:
+	if downed and state_machine.state != ragdoll_state:
 		state_machine.transition_to(downed_state)
 		hit_connected = true
 	elif blocked:
@@ -243,6 +254,8 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 			* DEFENSE_LAUNCH_SCALE / (DEFENSE_LAUNCH_SCALE + entity_config.defense)
 		launch_entity(dir * launch_x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
 		ragdoll_state.add_ragdoll_damage(damage)
+		if downed:
+			ragdoll_state.is_downed = true
 		hit_connected = true
 	else:
 		var ignore_hitstun_threshold := entity_config.resilience * IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE

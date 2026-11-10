@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dam53r2pxydtv" path="res://scripts/ui/skirmish_status_row.gd" id="1_v4q45"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="2_p85x6"]
+[ext_resource type="StyleBox" path="res://prefabs/styles/wounds_bar.tres" id="3_wounds_fill"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wounds_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_row"]
 resource_local_to_scene = true
@@ -26,6 +29,19 @@ custom_minimum_size = Vector2(180, 16)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/background = ExtResource("2_p85x6")
+show_percentage = false
+
+[node name="WoundsBar" type="ProgressBar" parent="HBox/HealthBar" unique_id=1937046602]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_wounds_bg")
+theme_override_styles/fill = ExtResource("3_wounds_fill")
 show_percentage = false
 
 [node name="RetreatButton" type="Button" parent="HBox" unique_id=873140256]

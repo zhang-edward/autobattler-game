@@ -26,6 +26,9 @@
 [ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
 [ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_brain_state.gd" id="28_fleeing"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/downed_state.gd" id="29_downed"]
+[ext_resource type="StyleBox" path="res://prefabs/styles/wounds_bar.tres" id="30_wounds_fill"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wounds_bg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -34,7 +37,7 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "wounds_bar", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "brain")]
 collision_layer = 0
 collision_mask = 3072
 script = ExtResource("1_entity")
@@ -42,6 +45,7 @@ hitbox_scene = ExtResource("2_ty1i2")
 rig = NodePath("RigWrapper/MaleRig")
 shadow = NodePath("Shadow")
 healthbar = NodePath("ProgressBar")
+wounds_bar = NodePath("ProgressBar/WoundsBar")
 hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
@@ -90,6 +94,19 @@ grow_horizontal = 2
 theme_override_styles/background = ExtResource("4_bar_bg")
 theme_override_styles/fill = ExtResource("5_bar_fill")
 value = 100.0
+show_percentage = false
+
+[node name="WoundsBar" type="ProgressBar" parent="ProgressBar" unique_id=1768245031]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_wounds_bg")
+theme_override_styles/fill = ExtResource("30_wounds_fill")
 show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=843592500]
@@ -171,10 +188,15 @@ offset_bottom = 40.0
 text = "hero name"
 horizontal_alignment = 1
 
-[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_brain_state")]
+[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_brain_state", "flee_roll_timer")]
 script = ExtResource("17_brain")
 state_machine = NodePath("StateMachine")
 fleeing_brain_state = NodePath("StateMachine/FleeingBrainState")
+flee_roll_timer = NodePath("FleeRollTimer")
+
+[node name="FleeRollTimer" type="Timer" parent="AIBrain" unique_id=1846203957]
+process_callback = 0
+one_shot = true
 
 [node name="StateMachine" type="Node" parent="AIBrain" unique_id=482915573]
 script = ExtResource("6_state_machine")

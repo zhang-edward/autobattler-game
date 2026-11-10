@@ -6,22 +6,28 @@ const TIER_WEIGHTS := {
 	Ability.Tier.MEDIUM: 5.0,
 	Ability.Tier.HEAVY: 2.0,
 }
-const FLEE_HEALTH_FRACTION := 1.0 / 3.0
 const FLEE_CHANCE := 0.25
+const FLEE_ROLL_SECONDS_MIN := 1.0
+const FLEE_ROLL_SECONDS_MAX := 2.0
 
 @export var state_machine: StateMachine
 @export var fleeing_brain_state: FleeingBrainState
+@export var flee_roll_timer: Timer
 
 var target: SkirmishEntity
 
 func _ready() -> void:
-	entity.took_hit.connect(_on_took_hit)
+	flee_roll_timer.timeout.connect(_on_flee_roll_timer_timeout)
+	flee_roll_timer.start(randf_range(FLEE_ROLL_SECONDS_MIN, FLEE_ROLL_SECONDS_MAX))
 
-func _on_took_hit() -> void:
-	if entity.entity_type != EntityConfig.EntityType.VILLAIN or state_machine.state == fleeing_brain_state:
+func _on_flee_roll_timer_timeout() -> void:
+	flee_roll_timer.start(randf_range(FLEE_ROLL_SECONDS_MIN, FLEE_ROLL_SECONDS_MAX))
+	if entity.entity_type != EntityConfig.EntityType.VILLAIN or entity.is_dead or entity.entity_config.curr_health > 0:
 		return
-	# if entity.entity_config.curr_health <= entity.entity_config.get_max_health() * FLEE_HEALTH_FRACTION and randf() < FLEE_CHANCE:
-	# 	state_machine.transition_to(fleeing_brain_state)
+	if state_machine.state == fleeing_brain_state or entity.state_machine.state == entity.downed_state:
+		return
+	if randf() < FLEE_CHANCE:
+		state_machine.transition_to(fleeing_brain_state)
 
 func get_intent(delta: float) -> Intent:
 	return (state_machine.state as BrainState).get_intent(delta)
