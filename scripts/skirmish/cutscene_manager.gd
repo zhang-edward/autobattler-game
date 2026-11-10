@@ -40,6 +40,12 @@ func tag_in(entity: SkirmishEntity, destination: Vector2, entry_side: float) -> 
 	entity.process_mode = Node.PROCESS_MODE_ALWAYS
 	await entity.tag_in_state.finished
 
+func character_moment(entity: SkirmishEntity) -> void:
+	entity.process_mode = Node.PROCESS_MODE_ALWAYS
+	entity.state_machine.transition_to(entity.character_moment_state)
+	await entity.character_moment_state.finished
+	entity.process_mode = Node.PROCESS_MODE_INHERIT
+
 func tag_out(entity: SkirmishEntity) -> void:
 	if entity == null or not is_instance_valid(entity) or entity.is_dead:
 		return

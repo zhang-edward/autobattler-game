@@ -58,12 +58,14 @@ var launched_by: SkirmishEntity
 var ragdoll_damage := 0
 var has_escaped_ragdoll := false
 var is_downed := false
+var character_moment_on_land := false
 var _escape_blink_tween: Tween
 
 func enter(msg := {}) -> void:
 	ragdoll_damage = 0
 	has_escaped_ragdoll = false
 	is_downed = false
+	character_moment_on_land = false
 	relaunch(msg.get("impulse", Vector2.ZERO), msg.get("launch", 0.0))
 	launched_by = msg["launched_by"]
 
@@ -161,6 +163,12 @@ func _bounce_off_side_walls() -> void:
 			e.wounds_bar.visible = e.healthbar.value <= 0
 			if e.healthbar.value <= 0 and not was_at_zero_health:
 				e.move_speed *= SkirmishEntity.ZERO_HEALTH_SPEED_SCALE
+				if e.entity_type == EntityConfig.EntityType.HERO and not e.character_moment_state.has_played \
+					and randf() < SkirmishEntity.CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE:
+					if phase == Phase.AIRBORNE:
+						character_moment_on_land = true
+					else:
+						e.character_moment_rolled.emit()
 			if e.entity_config.curr_wounds >= e.entity_config.get_max_health():
 				is_downed = true
 			add_ragdoll_damage(damage)
@@ -184,6 +192,9 @@ func add_ragdoll_damage(damage: int) -> void:
 
 func _land() -> void:
 	e.z = 0.0
+	if character_moment_on_land:
+		character_moment_on_land = false
+		e.character_moment_rolled.emit()
 
 	if e.is_dead:
 		state_machine.transition_to(e.death_state)

@@ -27,6 +27,7 @@
 [ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_brain_state.gd" id="28_fleeing"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/downed_state.gd" id="29_downed"]
 [ext_resource type="StyleBox" path="res://prefabs/styles/wounds_bar.tres" id="30_wounds_fill"]
+[ext_resource type="Script" path="res://scripts/skirmish/states/character_moment_state.gd" id="31_character_moment"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wounds_bg"]
 
@@ -37,7 +38,7 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "wounds_bar", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "wounds_bar", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "character_moment_state", "brain")]
 collision_layer = 0
 collision_mask = 3072
 script = ExtResource("1_entity")
@@ -58,6 +59,7 @@ tag_in_state = NodePath("StateMachine/TagInState")
 block_state = NodePath("StateMachine/BlockState")
 dodge_state = NodePath("StateMachine/DodgeState")
 dash_state = NodePath("StateMachine/DashState")
+character_moment_state = NodePath("StateMachine/CharacterMomentState")
 brain = NodePath("AIBrain")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
@@ -143,6 +145,9 @@ script = ExtResource("19_pkptp")
 
 [node name="DownedState" type="Node" parent="StateMachine" unique_id=1520384917]
 script = ExtResource("29_downed")
+
+[node name="CharacterMomentState" type="Node" parent="StateMachine" unique_id=1609384712]
+script = ExtResource("31_character_moment")
 
 [node name="TagOutState" type="Node" parent="StateMachine" unique_id=1833548725]
 script = ExtResource("20_tagout")

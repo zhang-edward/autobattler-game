@@ -38,6 +38,7 @@ var _roll_countdown := 0.0       # seconds until the next re-roll
 var target: Node = null
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(false)
 
 ## Shake left-and-right. `strength` is the peak offset in pixels.

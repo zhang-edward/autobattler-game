@@ -6,6 +6,7 @@ extends CharacterBody2D
 
 signal died
 signal took_hit
+signal character_moment_rolled
 
 const GRAVITY := 980.0
 
@@ -18,6 +19,7 @@ const DASH_COOLDOWN := 5.0
 const BLOCK_BASE_CHANCE := 0.3
 const BLOCK_DEFENSE_SCALE := 10.0
 const BLOCK_REDUCTION_PER_DEFENSE := 0.5
+const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.5
 const DEFENSE_LAUNCH_SCALE := 30.0
 const STRENGTH_LAUNCH_SCALE := 30.0
 const DODGE_EVASION_SCALE := 40.0
@@ -55,6 +57,7 @@ const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 @export var block_state: BlockState
 @export var dodge_state: DodgeState
 @export var dash_state: DashState
+@export var character_moment_state: CharacterMomentState
 @export var brain: Brain:
 	set(value):
 		brain = value
@@ -265,6 +268,14 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		if randf() >= ignore_hitstun_chance:
 			state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
+
+	if entity_type == EntityConfig.EntityType.HERO and healthbar.value <= 0 and not was_at_zero_health \
+		and not character_moment_state.has_played and state_machine.state != downed_state \
+		and randf() < CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE:
+		if state_machine.state == ragdoll_state:
+			ragdoll_state.character_moment_on_land = true
+		else:
+			character_moment_rolled.emit()
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
 	Hitstop.freeze(frozen, hit.hitstop)

@@ -198,6 +198,7 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		entity.configure_from_entity_config(config)
 		entity.died.connect(_on_entity_died.bind(entity))
 		entity.tag_out_state.finished.connect(_on_entity_retreated.bind(entity))
+		entity.character_moment_rolled.connect(_play_character_moment.bind(entity))
 		entity.position = start + Vector2(0.0, (i - (configs.size() - 1) * 0.5) * SPAWN_Y_SPACING)
 		entity.set_active(true)
 		# Debug: 2v2 keeps everyone on the field
@@ -220,6 +221,15 @@ func _on_entity_died(entity: SkirmishEntity) -> void:
 	# 		_finish(_winning_side(entity.entity_type))
 	# 	return
 	# director.request_avenge(entity.entity_type)
+
+func _play_character_moment(entity: SkirmishEntity) -> void:
+	if _finished or director.is_playing:
+		return
+	await director.cutscene.darken_screen(entity.position, [entity])
+	director.cutscene.speak(entity, "I won't give up!")
+	ScreenShake.shake_horizontal(8.0, 1)
+	await director.cutscene.character_moment(entity)
+	await director.cutscene.release()
 
 func _on_entity_retreated(entity: SkirmishEntity) -> void:
 	if not _team_has_living(team_for(entity.entity_type)):

@@ -51,8 +51,8 @@ var damage_dealt := 0
 
 static var BASE_ENERGY_LEVEL := 3
 
-const BASE_HEALTH := 300
-const HEALTH_PER_LEVEL := 20
+const BASE_HEALTH := 100
+const HEALTH_PER_LEVEL := 40
 
 
 func handle_level_up():
