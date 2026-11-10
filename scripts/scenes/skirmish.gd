@@ -29,10 +29,12 @@ var villain_statuses: VBoxContainer
 
 @export_group("Standalone testing")
 @export var debug_hero_count := 3
+@export var debug_bench_count := 2
 @export var debug_villain_count := 3
 
 var return_to_post_skirmish := true
 var hero_team: Array[SkirmishEntity] = []
+var hero_bench: Array[SkirmishEntity] = []
 var villain_team: Array[SkirmishEntity] = []
 var active_hero: SkirmishEntity
 var active_villain: SkirmishEntity
@@ -57,19 +59,21 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_update_walls)
 	_update_walls()
 	var heroes: Array[EntityConfig] = []
+	var bench: Array[EntityConfig] = []
 	var villains: Array[EntityConfig] = []
 	if GameVariables.curr_threat_skirmish != null:
 		heroes = GameVariables.curr_threat_skirmish.heroes
+		bench = GameVariables.curr_threat_skirmish.bench_heroes
 		villains = GameVariables.curr_threat_skirmish.threat_request_config.enemy_configs
 	else:
 		print("[WARN] No threat skirmish in GameVariables - using random debug heroes and villains...")
 		heroes = EntityGenerator.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+		bench = EntityGenerator.generate_random_entity_configs(debug_bench_count, EntityConfig.EntityType.HERO)
 		villains = EntityGenerator.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
 		return_to_post_skirmish = false
-	setup(heroes, villains)
+	setup(heroes, bench, villains)
 	_build_status_rows()
-	# Debug: 2v2 has no tagging
-	# _build_tag_in_buttons()
+	_build_tag_in_buttons()
 	_build_special_move_buttons()
 
 func _exit_tree() -> void:
@@ -80,11 +84,14 @@ func _process(_delta: float) -> void:
 		row.refresh()
 		var is_active := is_instance_valid(row.entity) and row.entity.is_active and not row.entity.is_dead
 		row.set_active_highlight(is_active)
-		var can_retreat := is_active and not _finished and row.entity.entity_type == EntityConfig.EntityType.HERO
+		var can_retreat := is_active and not _finished and row.entity.entity_type == EntityConfig.EntityType.HERO \
+			and row.entity.state_machine.state != row.entity.tag_in_state
 		if can_retreat:
 			var brain := row.entity.brain as AIBrain
 			can_retreat = brain.state_machine.state != brain.fleeing_state
 		row.retreat_button.visible = can_retreat
+	for button in tag_in_buttons.get_children():
+		button.visible = not _finished and hero_bench.has((button as TagInButton).hero_to_switch_to)
 
 	var sorted := $Battlefield.get_children()
 	sorted.sort_custom(func(a, b): return a.position.y < b.position.y)
@@ -108,12 +115,16 @@ func _place_wall(wall: StaticBody2D, center: Vector2, size: Vector2) -> void:
 	(collider.shape as RectangleShape2D).size = size
 	
 
-func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
-	for h in heroes:
+func setup(heroes: Array[EntityConfig], bench: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
+	for h in heroes + bench:
 		h.reset_all_in_round_vars()
 	for v in villains:
 		v.reset_all_in_round_vars()
 	hero_team = _spawn_side(heroes, HERO_START, HERO_BENCH)
+	hero_bench = _spawn_side(bench, HERO_BENCH, HERO_BENCH)
+	for e in hero_bench:
+		e.set_active(false)
+	hero_team.append_array(hero_bench)
 	villain_team = _spawn_side(villains, VILLAIN_START, VILLAIN_BENCH)
 	active_hero = hero_team[0] if not hero_team.is_empty() else null
 	active_villain = villain_team[0] if not villain_team.is_empty() else null
@@ -133,14 +144,17 @@ func _build_status_rows() -> void:
 	_add_status_rows(villain_team, villain_statuses)
 	
 func _build_tag_in_buttons() -> void:
-	for h in hero_team:
+	for h in hero_bench:
 		var tag_in_button = tag_in_button_scene.instantiate() as TagInButton
 		tag_in_buttons.add_child(tag_in_button)
 		tag_in_button.init(h)
 		tag_in_button.on_click.connect(_manual_tag_in)
 		
 func _manual_tag_in(entity: SkirmishEntity):
-	director.request_manual_tag(EntityConfig.EntityType.HERO, entity)
+	if _finished or not hero_bench.has(entity):
+		return
+	hero_bench.erase(entity)
+	entity.begin_tag_in(HERO_START, -1.0)
 	
 func _build_special_move_buttons() -> void:
 	pass
@@ -231,7 +245,7 @@ func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishE
 
 func _team_has_living(roster: Array[SkirmishEntity]) -> bool:
 	for e in roster:
-		if e != null and is_instance_valid(e) and not e.is_dead and e.is_active:
+		if e != null and is_instance_valid(e) and not e.is_dead and (e.is_active or hero_bench.has(e)):
 			return true
 	return false
 

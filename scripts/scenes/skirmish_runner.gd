@@ -9,6 +9,7 @@ extends Node
 @onready var _hero_build: SkirmishRunnerBuildPanel = %HeroBuild
 @onready var _villain_build: SkirmishRunnerBuildPanel = %VillainBuild
 @onready var _hero_count: SpinBox = %HeroCount
+@onready var _bench_count: SpinBox = %BenchCount
 @onready var _villain_count: SpinBox = %VillainCount
 @onready var _fights: SpinBox = %Fights
 @onready var _fight_button: Button = %FightButton
@@ -55,7 +56,9 @@ func _start_fight() -> void:
 	_fight_status_label.text = "Fight %d/%d | %s" % [_fights_done + 1, int(_fights.value), _results_text()]
 	var villains := _build_team(_villain_build, int(_villain_count.value))
 	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatRequestConfigBuilder.new().with_enemy_configs(villains).build())
-	GameVariables.curr_threat_skirmish.heroes = _build_team(_hero_build, int(_hero_count.value))
+	var heroes := _build_team(_hero_build, int(_hero_count.value + _bench_count.value))
+	GameVariables.curr_threat_skirmish.heroes = heroes.slice(0, int(_hero_count.value))
+	GameVariables.curr_threat_skirmish.bench_heroes = heroes.slice(int(_hero_count.value))
 	_fight_time = 0.0
 	_skirmish = skirmish_scene.instantiate() as Skirmish
 	_skirmish.return_to_post_skirmish = false
