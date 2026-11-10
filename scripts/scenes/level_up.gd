@@ -22,7 +22,7 @@ func _ready() -> void:
 		hero_config = EntityGenerator.generate_random_entity_configs(1, EntityConfig.EntityType.HERO)[0]
 		hero_config.level = 2
 	else:
-		hero_config = GameVariables.curr_threat_skirmish.heroes[0]
+		hero_config = GameVariables.curr_threat_skirmish.leveled_up_heroes.pop_front()
 	subtitle.text = hero_config.entity_name + " has reached level " + str(hero_config.level)
 	stats_remaining_label.text = "Points Remaining: " + str(stat_points_to_distribute)
 	add_level_up_stat_row("Strength", hero_config.strength)
@@ -70,7 +70,10 @@ func setup_curr_ability_list(config: EntityConfig):
 func apply_and_transition_to_roster():
 	if selected_new_ability != null:
 		hero_config.abilities.append(selected_new_ability.ability)
-	get_tree().change_scene_to_file("res://scenes/roster.tscn")
+	if GameVariables.curr_threat_skirmish != null and not GameVariables.curr_threat_skirmish.leveled_up_heroes.is_empty():
+		get_tree().change_scene_to_file("res://scenes/level_up.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/roster.tscn")
 
 func add_level_up_stat_row(stat_name: String, stat_value: int):
 	var level_up_stat_row = level_up_stat_row_scene.instantiate() as LevelUpStatRow

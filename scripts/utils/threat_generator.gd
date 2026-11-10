@@ -1,7 +1,7 @@
 class_name ThreatGenerator
 extends RefCounted
 
-static var BASE_EXP_REWARD = 100
+static var BASE_EXP_REWARD = 400
 static var BASE_MONEY_REWARD = 100
 
 static func generate_random_threat_requests(num_requests: int, player_lineup: Array[EntityConfig]):

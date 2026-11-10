@@ -163,14 +163,14 @@ Training unlocks slots. Character moments fill them. A hero needs both to grow.
 
 ### Training
 
-A hero gains XP if they entered the fight and finished above 25% health.
+A hero gains XP if they entered the fight. The mission's XP is split evenly among the heroes who entered.
 
 | Mission result | XP |
 |---|---|
 | Win | 200 |
 | Loss | 100 |
 
-Heroes who fall to 25% health or below get no XP from that fight. Heroes who never entered get no XP either.
+Heroes who never entered get no XP.
 
 ### Level-ups
 

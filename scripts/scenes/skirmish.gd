@@ -264,5 +264,8 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 	if not return_to_post_skirmish:
 		return
 	GameVariables.curr_threat_skirmish.winner = winner
+	for e in hero_team:
+		if not hero_bench.has(e):
+			GameVariables.curr_threat_skirmish.entered_heroes.append(e.entity_config)
 	GameVariables.resolve_threat_skirmish(GameVariables.curr_threat_skirmish)
 	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")
