@@ -1,4 +1,4 @@
-class_name AttackState
+class_name AttackBrainState
 extends BrainState
 
 const SPEED := 2.5
@@ -43,7 +43,7 @@ func get_intent(_delta: float) -> Intent:
 			state_machine.transition_to(idle_state)
 			return null
 		direction.x = - facing
-		speed = IdleState.SPEED
+		speed = IdleBrainState.SPEED
 		if _ability.ability_min_range - absf(to_target.x) > DASH_MIN_DISTANCE:
 			dash = - facing
 

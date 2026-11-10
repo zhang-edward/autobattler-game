@@ -30,7 +30,7 @@ func physics_update(delta: float) -> void:
 		if e.rig.anim_player.current_animation != "male-rig/idle":
 			e.rig.play_animation("male-rig/idle")
 	else:
-		var anim := "male-rig/run" if direction.length() > IdleState.SPEED else "male-rig/walk"
+		var anim := "male-rig/run" if direction.length() > IdleBrainState.SPEED else "male-rig/walk"
 		if e.rig.anim_player.current_animation != anim:
 			e.rig.play_animation(anim)
 

@@ -1,4 +1,4 @@
-class_name FleeingState
+class_name FleeingBrainState
 extends BrainState
 
 func _physics_process(_delta: float) -> void:
@@ -29,4 +29,4 @@ func get_intent(_delta: float) -> Intent:
 	var dash := 0.0
 	if nearest_dist < DASH_MIN_DISTANCE and not brain.entity.is_on_wall():
 		dash = facing
-	return _movement(away.normalized() * AttackState.SPEED, facing, dash)
+	return _movement(away.normalized() * AttackBrainState.SPEED, facing, dash)

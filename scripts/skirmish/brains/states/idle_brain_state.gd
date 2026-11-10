@@ -1,4 +1,4 @@
-class_name IdleState
+class_name IdleBrainState
 extends BrainState
 
 const SPEED := 1.0

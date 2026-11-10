@@ -1,4 +1,4 @@
-class_name FollowUpState
+class_name FollowUpBrainState
 extends BrainState
 
 @export var attack_state: BrainState

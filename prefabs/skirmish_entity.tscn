@@ -18,13 +18,13 @@
 [ext_resource type="Script" uid="uid://bhqwo0ypavxl5" path="res://scripts/skirmish/states/death_state.gd" id="19_pkptp"]
 [ext_resource type="Script" uid="uid://51rw8eli5wvp" path="res://scripts/skirmish/states/tag_out_state.gd" id="20_tagout"]
 [ext_resource type="Script" uid="uid://dkmr4uicm6gs2" path="res://scripts/skirmish/states/tag_in_state.gd" id="21_tagin"]
-[ext_resource type="Script" uid="uid://cwotdy4fyh72d" path="res://scripts/skirmish/brains/states/idle_state.gd" id="22_idle"]
-[ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_state.gd" id="23_attack"]
-[ext_resource type="Script" path="res://scripts/skirmish/brains/states/follow_up_state.gd" id="24_follow_up"]
+[ext_resource type="Script" uid="uid://cwotdy4fyh72d" path="res://scripts/skirmish/brains/states/idle_brain_state.gd" id="22_idle"]
+[ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_brain_state.gd" id="23_attack"]
+[ext_resource type="Script" path="res://scripts/skirmish/brains/states/follow_up_brain_state.gd" id="24_follow_up"]
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="25_block"]
 [ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="26_dodge"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
-[ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_state.gd" id="28_fleeing"]
+[ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_brain_state.gd" id="28_fleeing"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -166,28 +166,28 @@ offset_bottom = 40.0
 text = "hero name"
 horizontal_alignment = 1
 
-[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_state")]
+[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_brain_state")]
 script = ExtResource("17_brain")
 state_machine = NodePath("StateMachine")
-fleeing_state = NodePath("StateMachine/FleeingState")
+fleeing_brain_state = NodePath("StateMachine/FleeingBrainState")
 
 [node name="StateMachine" type="Node" parent="AIBrain" unique_id=482915573]
 script = ExtResource("6_state_machine")
-initial_state = NodePath("IdleState")
+initial_state = NodePath("IdleBrainState")
 
-[node name="IdleState" type="Node" parent="AIBrain/StateMachine" unique_id=1938274651 node_paths=PackedStringArray("attack_state")]
+[node name="IdleBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1938274651 node_paths=PackedStringArray("attack_state")]
 script = ExtResource("22_idle")
-attack_state = NodePath("../AttackState")
+attack_state = NodePath("../AttackBrainState")
 
-[node name="AttackState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state", "follow_up_state")]
+[node name="AttackBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state", "follow_up_state")]
 script = ExtResource("23_attack")
-idle_state = NodePath("../IdleState")
-follow_up_state = NodePath("../FollowUpState")
+idle_state = NodePath("../IdleBrainState")
+follow_up_state = NodePath("../FollowUpBrainState")
 
-[node name="FollowUpState" type="Node" parent="AIBrain/StateMachine" unique_id=1472093618 node_paths=PackedStringArray("attack_state", "idle_state")]
+[node name="FollowUpBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1472093618 node_paths=PackedStringArray("attack_state", "idle_state")]
 script = ExtResource("24_follow_up")
-attack_state = NodePath("../AttackState")
-idle_state = NodePath("../IdleState")
+attack_state = NodePath("../AttackBrainState")
+idle_state = NodePath("../IdleBrainState")
 
-[node name="FleeingState" type="Node" parent="AIBrain/StateMachine" unique_id=1290476513]
+[node name="FleeingBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1290476513]
 script = ExtResource("28_fleeing")

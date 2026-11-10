@@ -29,11 +29,11 @@ func _target_is_hittable(target: SkirmishEntity) -> bool:
 
 func _target_is_attacking(target: SkirmishEntity) -> bool:
 	var target_mode := (target.brain as AIBrain).state_machine.state
-	return target_mode is AttackState or target_mode is FollowUpState
+	return target_mode is AttackBrainState or target_mode is FollowUpBrainState
 
 func _target_is_fleeing(target: SkirmishEntity) -> bool:
 	var target_brain := target.brain as AIBrain
-	return target_brain.state_machine.state == target_brain.fleeing_state
+	return target_brain.state_machine.state == target_brain.fleeing_brain_state
 
 func _y_direction(to_target: Vector2) -> Vector2:
 	# Line up on the target's row, since hits only land within Y_AXIS_HIT_RANGE

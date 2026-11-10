@@ -88,7 +88,7 @@ func _process(_delta: float) -> void:
 			and row.entity.state_machine.state != row.entity.tag_in_state
 		if can_retreat:
 			var brain := row.entity.brain as AIBrain
-			can_retreat = brain.state_machine.state != brain.fleeing_state
+			can_retreat = brain.state_machine.state != brain.fleeing_brain_state
 		row.retreat_button.visible = can_retreat
 	for button in tag_in_buttons.get_children():
 		button.visible = not _finished and hero_bench.has((button as TagInButton).hero_to_switch_to)
@@ -169,7 +169,7 @@ func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> 
 
 func _retreat(entity: SkirmishEntity) -> void:
 	var brain := entity.brain as AIBrain
-	brain.state_machine.transition_to(brain.fleeing_state)
+	brain.state_machine.transition_to(brain.fleeing_brain_state)
 
 func can_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
 	if _finished or incoming == null or not is_instance_valid(incoming) or incoming.is_dead:
