@@ -43,5 +43,11 @@ func _handle_area_entered(body: Area2D) -> void:
 	if abs(position.y - target.position.y) > IsometryUtils.Y_AXIS_HIT_RANGE:
 		return
 
-	target.take_hit(_hit, _source)
+	if target.take_hit(_hit, _source):
+		var config = EffectConfig.new()
+		config.pos = lerp(global_position, body.global_position, 0.5)
+		config.anim = HitEffectRegistry.HIT_1 if target.state_machine.state == target.block_state else HitEffectRegistry.HIT_NEW
+		config.dir = target.global_position - _source.global_position
+		config.angle_range_rad = Hitbox.EFFECT_ANGLE_RANGE
+		EffectManager.spawn_effect(config)
 	queue_free()

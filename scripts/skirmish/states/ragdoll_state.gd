@@ -148,6 +148,7 @@ func _bounce_off_side_walls() -> void:
 			e.rig.anim_player.play_section_with_markers.bind(ANIM_WALL_SLAM, &"bounce_off")
 		).set_delay(hitstop)
 		ScreenShake.shake_horizontal(12, 0.1, 12)
+		_spawn_dust()
 
 		# Wall impact damage calculation
 		if not e.is_dead:
@@ -174,6 +175,12 @@ func _bounce_off_side_walls() -> void:
 			add_ragdoll_damage(damage)
 		return
 
+func _spawn_dust() -> void:
+	var config := EffectConfig.new()
+	config.pos = e.global_position
+	config.anim = HitEffectRegistry.DUST
+	EffectManager.spawn_effect(config)
+
 # Once the entity takes enough damage while ragdolled, it can't be hit again until it gets up.
 # Higher "resilience" stat => lowers damage threshold.
 func add_ragdoll_damage(damage: int) -> void:
@@ -192,6 +199,7 @@ func add_ragdoll_damage(damage: int) -> void:
 
 func _land() -> void:
 	e.z = 0.0
+	_spawn_dust()
 	if character_moment_on_land:
 		character_moment_on_land = false
 		e.character_moment_rolled.emit()
