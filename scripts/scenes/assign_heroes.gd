@@ -1,6 +1,9 @@
 class_name AssignHeroes
 extends Node2D
 
+const MAX_ACTIVE_HEROES := 2
+const MAX_BENCH_HEROES := 2
+
 @export var hero_preview_row: PackedScene
 
 @onready var back_button: Button = %BackButton
@@ -11,19 +14,20 @@ extends Node2D
 @onready var active_hero_rows: VBoxContainer = %ActiveHeroRows
 @onready var bench_hero_rows: VBoxContainer = %BenchHeroRows
 @onready var add_hero_button: Button = %AddHeroButton
+@onready var bench_add_hero_button: Button = %BenchAddHeroButton
 
 var hero_to_change: EntityConfig
+var adding_to_bench := false
 var viewed_hero: EntityConfig
 
 func _ready() -> void:
 	back_button.pressed.connect(go_to_dispatch_scene)
-	add_hero_button.pressed.connect(open_choose_hero_modal.bind(null))
+	add_hero_button.pressed.connect(add_hero.bind(false))
+	bench_add_hero_button.pressed.connect(add_hero.bind(true))
 	threat_details_container.on_action_pressed.connect(go_to_skirmish_scene)
 	choose_hero_modal.on_confirm_hero_to_add.connect(confirm_hero_from_modal)
 	if GameVariables.curr_threat_skirmish == null:
 		_generate_debug_data()
-	for c in bench_hero_rows.get_children():
-		c.queue_free()
 	threat_details_container.update_selected_threat_req(GameVariables.curr_threat_skirmish.threat_request_config)
 	threat_details_container.action_button.text = "Dispatch"
 	view_hero_config(null)
@@ -35,27 +39,38 @@ func _generate_debug_data():
 	GameVariables.curr_threat_skirmish.heroes = [GameVariables.player_lineup[0]]
 
 func update_hero_rows():
-	for c in active_hero_rows.get_children():
-		if c != add_hero_button:
+	var threat_skirmish := GameVariables.curr_threat_skirmish
+	_update_hero_rows_in(active_hero_rows, add_hero_button, threat_skirmish.heroes, MAX_ACTIVE_HEROES)
+	_update_hero_rows_in(bench_hero_rows, bench_add_hero_button, threat_skirmish.bench_heroes, MAX_BENCH_HEROES)
+	threat_details_container.action_button.disabled = threat_skirmish.heroes.is_empty()
+
+func _update_hero_rows_in(container: VBoxContainer, add_button: Button, heroes: Array[EntityConfig], max_heroes: int):
+	for c in container.get_children():
+		if c != add_button:
 			c.queue_free()
-	var heroes = GameVariables.curr_threat_skirmish.heroes
 	for hero_config in heroes:
 		var row = hero_preview_row.instantiate() as HeroPreviewRow
-		active_hero_rows.add_child(row)
+		container.add_child(row)
 		row.configure(hero_config)
 		row.enable_actions_overlay = true
 		row.on_change_clicked.connect(change_hero)
 		row.on_remove_clicked.connect(remove_hero)
 		row.on_view_clicked.connect(view_hero)
-	active_hero_rows.move_child(add_hero_button, -1)
-	add_hero_button.visible = GameVariables.player_lineup.any(func(c): return not heroes.has(c)) and heroes.size() < 3
-	threat_details_container.action_button.disabled = heroes.is_empty()
+	container.move_child(add_button, -1)
+	var threat_skirmish := GameVariables.curr_threat_skirmish
+	var has_unassigned_hero := GameVariables.player_lineup.any(func(c): return not threat_skirmish.heroes.has(c) and not threat_skirmish.bench_heroes.has(c))
+	add_button.visible = has_unassigned_hero and heroes.size() < max_heroes
+
+func add_hero(to_bench: bool):
+	adding_to_bench = to_bench
+	open_choose_hero_modal(null)
 
 func change_hero(row: HeroPreviewRow):
 	open_choose_hero_modal(row.entity_config)
 
 func remove_hero(row: HeroPreviewRow):
 	GameVariables.curr_threat_skirmish.heroes.erase(row.entity_config)
+	GameVariables.curr_threat_skirmish.bench_heroes.erase(row.entity_config)
 	if viewed_hero == row.entity_config:
 		view_hero_config(null)
 	update_hero_rows()
@@ -68,10 +83,12 @@ func view_hero_config(hero_config: EntityConfig):
 	hero_preview.configure(hero_config)
 
 func confirm_hero_from_modal(hero_config: EntityConfig):
-	var heroes = GameVariables.curr_threat_skirmish.heroes
+	var threat_skirmish := GameVariables.curr_threat_skirmish
 	if hero_to_change == null:
+		var heroes := threat_skirmish.bench_heroes if adding_to_bench else threat_skirmish.heroes
 		heroes.append(hero_config)
 	else:
+		var heroes := threat_skirmish.heroes if threat_skirmish.heroes.has(hero_to_change) else threat_skirmish.bench_heroes
 		heroes[heroes.find(hero_to_change)] = hero_config
 		if viewed_hero == hero_to_change:
 			view_hero_config(hero_config)
@@ -89,4 +106,6 @@ func go_to_skirmish_scene():
 func open_choose_hero_modal(hero_config: EntityConfig):
 	hero_to_change = hero_config
 	choose_hero_modal.show()
-	choose_hero_modal.display_available_heroes(GameVariables.curr_threat_skirmish.heroes)
+	var assigned_heroes: Array[EntityConfig] = GameVariables.curr_threat_skirmish.heroes.duplicate()
+	assigned_heroes.append_array(GameVariables.curr_threat_skirmish.bench_heroes)
+	choose_hero_modal.display_available_heroes(assigned_heroes)

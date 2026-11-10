@@ -33,7 +33,7 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 			
 func resolve_threat_skirmish(threat_skirmish: ThreatSkirmish):
 	# Calculate hero recovery time
-	for h in threat_skirmish.heroes:
+	for h in threat_skirmish.heroes + threat_skirmish.bench_heroes:
 		h.injury_recovery_days = DEFEATED_REST_DAYS if h.curr_health <= 0 else REST_DAYS
 
 	threat_skirmish.reputation_change = WIN_REPUTATION if threat_skirmish.winner == EntityConfig.EntityType.HERO else LOSS_REPUTATION

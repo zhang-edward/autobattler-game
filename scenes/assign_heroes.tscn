@@ -148,6 +148,15 @@ layout_mode = 2
 [node name="HeroPreviewRow2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer2/BenchHeroRows" unique_id=1515456212 instance=ExtResource("4_r7ebt")]
 layout_mode = 2
 
+[node name="BenchAddHeroButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer2/BenchHeroRows" unique_id=694611824]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("9_addhr")
+text = "+"
+
 [node name="MatchupHeroPreview" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=505220403 instance=ExtResource("5_w4o2g")]
 unique_name_in_owner = true
 layout_mode = 2

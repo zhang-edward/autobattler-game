@@ -75,7 +75,7 @@ On an easy mission, villains are 2 levels lower, down to a minimum of level 1, a
 
 ## Sending heroes
 
-The player picks **starters** and a **bench** for each mission. A mission needs at least 1 starter.
+The player picks **starters** and a **bench** for each mission. A mission needs at least 1 starter. A mission takes up to 2 starters and up to 2 bench heroes.
 
 The player judges the matchup themselves. The screen shows stat totals and moves for both sides. It doesn't show a win chance.
 
@@ -86,18 +86,20 @@ This means team size is a tool. The player can turn a hard fight into a 3v1, but
 - Starters begin in the fight. Bench heroes wait.
 - The mission is won when all villains are defeated.
 - Every hero starts each fight at full health.
-- Retreating to the bench doesn't restore a hero's health.
 
 ### Swapping
 
 - At any point, the player can send a bench hero into the fight.
-- At any point, the player can order an active hero to retreat to the bench.
-- A hero can only leave when they're free to move. A hero being attacked must wait for an opening.
+- At any point, the player can order an active hero to retreat.
+- A retreating hero stops attacking and tries to keep away from opponents.
+- They leave the fight after 3 seconds without taking a connected hit. Each connected hit restarts the 3 seconds. Blocked hits count as connected. Dodged hits don't.
+- A retreated hero is out of the fight for good. They don't return to the bench.
 
 ### When no active heroes remain
 
 - If bench heroes remain, a 10-second timer starts. The player can send a bench hero in, or abandon the mission.
 - If the timer runs out, the mission is lost.
+- If no bench heroes remain, the mission is lost right away.
 
 ## Stats
 
@@ -116,7 +118,6 @@ Every stat helps in fights, and more is always better. Each stat wins a differen
 **Block versus dodge.** Both only work when the fighter isn't already being hit. A block lasts through a whole flurry, unless the fighter dodges out of it. A dodge is rolled for each hit. So Defense beats many small hits, and Evasion beats single big hits. A fighter can dodge in the middle of a move, but can't block during one.
 
 **Walls.** Launched fighters bounce off the side walls and take damage based on how fast they hit. A wall hit can finish a fighter.
-- If no bench heroes remain, the mission is lost right away.
 
 ## Mission results
 
