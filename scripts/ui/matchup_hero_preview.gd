@@ -4,6 +4,7 @@ extends PanelContainer
 @onready var hero_name: Label = %HeroName
 @onready var level_value: Label = %LevelValue
 @onready var offense_moves: SpecialAbilityGrid = %OffenseMoves
+@onready var change_hero_button: Button = %ChangeHero
 @onready var level_container: HBoxContainer = %LevelContainer
 @onready var move_grid_container: VBoxContainer = %MoveGridContainer
 @onready var health_bar: HealthBar = %HealthBar
@@ -11,7 +12,10 @@ extends PanelContainer
 
 @export var stat_label_scene: PackedScene
 
+signal on_change_hero()
+
 func _ready():
+	change_hero_button.pressed.connect(change_hero_clicked)
 	offense_moves.heading_label.text = "Offense"
 
 func configure(entity_config: EntityConfig):
@@ -21,7 +25,9 @@ func configure(entity_config: EntityConfig):
 	stat_grid.visible = entity_config != null
 	if entity_config == null:
 		hero_name.text = "No hero selected"
+		change_hero_button.text = "Choose Hero"
 		return
+	change_hero_button.text = "Change Hero"
 	health_bar.configure(entity_config)
 	hero_name.text = entity_config.entity_name
 	if entity_config.injury_recovery_days > 0:
@@ -41,3 +47,6 @@ func add_stat_row(stat_name: String, stat_value: int):
 	var stat_label = stat_label_scene.instantiate() as StatLabel
 	stat_grid.add_child(stat_label)
 	stat_label.configure(stat_name, stat_value)
+
+func change_hero_clicked():
+	on_change_hero.emit()

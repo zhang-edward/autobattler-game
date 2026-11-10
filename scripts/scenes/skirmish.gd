@@ -28,9 +28,9 @@ var hero_statuses: VBoxContainer
 var villain_statuses: VBoxContainer
 
 @export_group("Standalone testing")
-@export var debug_hero_count := 3
-@export var debug_bench_count := 2
-@export var debug_villain_count := 3
+@export var debug_hero_count := 1
+@export var debug_bench_count := 1
+@export var debug_villain_count := 1
 
 var return_to_post_skirmish := true
 var hero_team: Array[SkirmishEntity] = []
@@ -73,7 +73,6 @@ func _ready() -> void:
 		return_to_post_skirmish = false
 	setup(heroes, bench, villains)
 	_build_status_rows()
-	_build_tag_in_buttons()
 	_build_special_move_buttons()
 
 func _exit_tree() -> void:
@@ -212,6 +211,8 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 	return team
 
 func _on_entity_died(entity: SkirmishEntity) -> void:
+	if entity.entity_type == EntityConfig.EntityType.HERO and not hero_bench.is_empty():
+		_manual_tag_in(hero_bench[0])
 	var roster := team_for(entity.entity_type)
 	if not _team_has_living(roster):
 		_finish(_winning_side(entity.entity_type))
@@ -232,6 +233,8 @@ func _play_character_moment(entity: SkirmishEntity) -> void:
 	await director.cutscene.release()
 
 func _on_entity_retreated(entity: SkirmishEntity) -> void:
+	if entity.entity_type == EntityConfig.EntityType.HERO and not hero_bench.is_empty():
+		_manual_tag_in(hero_bench[0])
 	if not _team_has_living(team_for(entity.entity_type)):
 		_finish(_winning_side(entity.entity_type))
 

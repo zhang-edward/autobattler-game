@@ -1,98 +1,87 @@
 class_name AssignHeroes
 extends Node2D
 
-const MAX_ACTIVE_HEROES := 2
-const MAX_BENCH_HEROES := 2
-
 @export var hero_preview_row: PackedScene
 
-@onready var back_button: Button = %BackButton
+@onready var back_button: Button = %Back
+@onready var dispatch_button: Button = %Dispatch
 @onready var choose_hero_modal: ChooseHeroModal = %ChooseHeroModal
 @onready var hero_preview: MatchupHeroPreview = %MatchupHeroPreview
-@onready var threat_details_container: ThreatDetailsContainer = %ThreatDetailsContainer
+@onready var villain_preview: MatchupHeroPreview = %MatchupVillainPreview
+@onready var stat_comparison: MatchupStatComparison = %MatchupStatComparison
 @onready var override_skirmish_results: CheckBox = %OverrideSkirmishResults
-@onready var active_hero_rows: VBoxContainer = %ActiveHeroRows
-@onready var bench_hero_rows: VBoxContainer = %BenchHeroRows
-@onready var add_hero_button: Button = %AddHeroButton
-@onready var bench_add_hero_button: Button = %BenchAddHeroButton
+@onready var backup_rows: VBoxContainer = %BackupRows
+@onready var backup_add_hero_button: Button = %BackupAddHeroButton
 
-var hero_to_change: EntityConfig
-var adding_to_bench := false
-var viewed_hero: EntityConfig
+var choosing_backup := false
 
 func _ready() -> void:
 	back_button.pressed.connect(go_to_dispatch_scene)
-	add_hero_button.pressed.connect(add_hero.bind(false))
-	bench_add_hero_button.pressed.connect(add_hero.bind(true))
-	threat_details_container.on_action_pressed.connect(go_to_skirmish_scene)
-	choose_hero_modal.on_confirm_hero_to_add.connect(confirm_hero_from_modal)
+	dispatch_button.pressed.connect(go_to_skirmish_scene)
 	if GameVariables.curr_threat_skirmish == null:
 		_generate_debug_data()
-	threat_details_container.update_selected_threat_req(GameVariables.curr_threat_skirmish.threat_request_config)
-	threat_details_container.action_button.text = "Dispatch"
-	view_hero_config(null)
-	update_hero_rows()
+	update_entity_previews()
+	update_stat_comparison()
+	update_backup_rows()
+	hero_preview.on_change_hero.connect(open_choose_hero_modal.bind(false))
+	backup_add_hero_button.pressed.connect(open_choose_hero_modal.bind(true))
+	choose_hero_modal.on_confirm_hero_to_add.connect(confirm_hero_from_modal)
+
+func confirm_hero_from_modal(hero_config: EntityConfig):
+	if choosing_backup:
+		GameVariables.curr_threat_skirmish.bench_heroes = [hero_config]
+	else:
+		GameVariables.curr_threat_skirmish.heroes = [hero_config]
+	update_stat_comparison()
+	update_entity_previews()
+	update_backup_rows()
 
 func _generate_debug_data():
 	print("generating debug data...")
 	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatGenerator.generate_random_threat_requests(1, GameVariables.player_lineup)[0])
 	GameVariables.curr_threat_skirmish.heroes = [GameVariables.player_lineup[0]]
 
-func update_hero_rows():
-	var threat_skirmish := GameVariables.curr_threat_skirmish
-	_update_hero_rows_in(active_hero_rows, add_hero_button, threat_skirmish.heroes, MAX_ACTIVE_HEROES)
-	_update_hero_rows_in(bench_hero_rows, bench_add_hero_button, threat_skirmish.bench_heroes, MAX_BENCH_HEROES)
-	threat_details_container.action_button.disabled = threat_skirmish.heroes.is_empty()
+func update_entity_previews():
+	var threat_req = GameVariables.curr_threat_skirmish.threat_request_config
+	var villain_config = threat_req.enemy_configs[0]
+	var heroes = GameVariables.curr_threat_skirmish.heroes
+	var hero_config = heroes[0] if not heroes.is_empty() else null
+	hero_preview.configure(hero_config)
+	villain_preview.configure(villain_config)
+	villain_preview.change_hero_button.hide()
+	if hero_config == null:
+		dispatch_button.disabled = true
+		dispatch_button.text = "Cannot dispatch! No hero selected"
+	else:
+		dispatch_button.disabled = hero_config.injury_recovery_days > 0
+		dispatch_button.text = "Dispatch" if hero_config.injury_recovery_days == 0 else "Cannot dispatch! Hero is resting"
 
-func _update_hero_rows_in(container: VBoxContainer, add_button: Button, heroes: Array[EntityConfig], max_heroes: int):
-	for c in container.get_children():
-		if c != add_button:
+func update_stat_comparison():
+	var threat_req = GameVariables.curr_threat_skirmish.threat_request_config
+	var villain_config = threat_req.enemy_configs[0]
+	var heroes = GameVariables.curr_threat_skirmish.heroes
+	stat_comparison.configure_stat_rows(heroes[0] if not heroes.is_empty() else null, villain_config)
+
+func update_backup_rows():
+	for c in backup_rows.get_children():
+		if c != backup_add_hero_button:
 			c.queue_free()
-	for hero_config in heroes:
+	var bench := GameVariables.curr_threat_skirmish.bench_heroes
+	for hero_config in bench:
 		var row = hero_preview_row.instantiate() as HeroPreviewRow
-		container.add_child(row)
+		backup_rows.add_child(row)
 		row.configure(hero_config)
 		row.enable_actions_overlay = true
-		row.on_change_clicked.connect(change_hero)
-		row.on_remove_clicked.connect(remove_hero)
-		row.on_view_clicked.connect(view_hero)
-	container.move_child(add_button, -1)
-	var threat_skirmish := GameVariables.curr_threat_skirmish
-	var has_unassigned_hero := GameVariables.player_lineup.any(func(c): return not threat_skirmish.heroes.has(c) and not threat_skirmish.bench_heroes.has(c))
-	add_button.visible = has_unassigned_hero and heroes.size() < max_heroes
+		row.view_button.hide()
+		row.stat_grid.hide()
+		row.on_change_clicked.connect(open_choose_hero_modal.bind(true).unbind(1))
+		row.on_remove_clicked.connect(remove_backup.unbind(1))
+	backup_rows.move_child(backup_add_hero_button, -1)
+	backup_add_hero_button.visible = bench.is_empty()
 
-func add_hero(to_bench: bool):
-	adding_to_bench = to_bench
-	open_choose_hero_modal(null)
-
-func change_hero(row: HeroPreviewRow):
-	open_choose_hero_modal(row.entity_config)
-
-func remove_hero(row: HeroPreviewRow):
-	GameVariables.curr_threat_skirmish.heroes.erase(row.entity_config)
-	GameVariables.curr_threat_skirmish.bench_heroes.erase(row.entity_config)
-	if viewed_hero == row.entity_config:
-		view_hero_config(null)
-	update_hero_rows()
-
-func view_hero(row: HeroPreviewRow):
-	view_hero_config(row.entity_config)
-
-func view_hero_config(hero_config: EntityConfig):
-	viewed_hero = hero_config
-	hero_preview.configure(hero_config)
-
-func confirm_hero_from_modal(hero_config: EntityConfig):
-	var threat_skirmish := GameVariables.curr_threat_skirmish
-	if hero_to_change == null:
-		var heroes := threat_skirmish.bench_heroes if adding_to_bench else threat_skirmish.heroes
-		heroes.append(hero_config)
-	else:
-		var heroes := threat_skirmish.heroes if threat_skirmish.heroes.has(hero_to_change) else threat_skirmish.bench_heroes
-		heroes[heroes.find(hero_to_change)] = hero_config
-		if viewed_hero == hero_to_change:
-			view_hero_config(hero_config)
-	update_hero_rows()
+func remove_backup():
+	GameVariables.curr_threat_skirmish.bench_heroes.clear()
+	update_backup_rows()
 
 func go_to_dispatch_scene():
 	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
@@ -103,8 +92,8 @@ func go_to_skirmish_scene():
 	else:
 		get_tree().change_scene_to_file("res://scenes/skirmish.tscn")
 
-func open_choose_hero_modal(hero_config: EntityConfig):
-	hero_to_change = hero_config
+func open_choose_hero_modal(for_backup: bool):
+	choosing_backup = for_backup
 	choose_hero_modal.show()
 	var assigned_heroes: Array[EntityConfig] = GameVariables.curr_threat_skirmish.heroes.duplicate()
 	assigned_heroes.append_array(GameVariables.curr_threat_skirmish.bench_heroes)

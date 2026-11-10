@@ -2,13 +2,11 @@
 
 [ext_resource type="Script" uid="uid://siqt5rf0wyto" path="res://scripts/scenes/assign_heroes.gd" id="1_ihonc"]
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="1_vd65o"]
-[ext_resource type="StyleBox" uid="uid://bi7kr6q3n6da7" path="res://prefabs/styles/default_ui_panel_stylebox.tres" id="3_7dyfs"]
 [ext_resource type="PackedScene" uid="uid://c8138g287jm2q" path="res://prefabs/ui/dispatch/hero_preview_row.tscn" id="4_r7ebt"]
-[ext_resource type="Texture2D" uid="uid://wshkqtra10bx" path="res://assets/icons/kenney/arrowLeft.png" id="5_ihonc"]
+[ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="5_ihonc"]
 [ext_resource type="PackedScene" uid="uid://u7iw475rtmkf" path="res://prefabs/ui/matchup_hero_preview.tscn" id="5_w4o2g"]
 [ext_resource type="PackedScene" uid="uid://ba1emtrosnvug" path="res://prefabs/ui/matchup_stat_comparison.tscn" id="6_7dyfs"]
 [ext_resource type="PackedScene" uid="uid://dydjhnktgrenw" path="res://prefabs/ui/dispatch/choose_hero_modal.tscn" id="7_7dyfs"]
-[ext_resource type="PackedScene" uid="uid://b0a1yswoi41lu" path="res://prefabs/ui/dispatch/threat_details_container.tscn" id="8_thrdt"]
 [ext_resource type="StyleBox" uid="uid://i1qkj3ru8ce2" path="res://prefabs/styles/add_hero_stylebox.tres" id="9_addhr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pmnr"]
@@ -22,6 +20,13 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7dyfs"]
+bg_color = Color(0.972549, 0.80784315, 0.28235295, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="AssignHeroes" type="Node2D" unique_id=1143530313]
 script = ExtResource("1_ihonc")
@@ -48,31 +53,60 @@ theme_override_constants/margin_bottom = 25
 layout_mode = 2
 theme_override_constants/separation = 25
 
-[node name="HeaderContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1702938514]
+[node name="Title" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1318938922]
 layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="BackButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HeaderContainer" unique_id=1569527682]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-icon = ExtResource("5_ihonc")
-icon_alignment = 1
-expand_icon = true
-
-[node name="Title" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HeaderContainer" unique_id=1318938922]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 50
 text = "Assign Heroes"
 
-[node name="DebugMenuColorRect" type="ColorRect" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HeaderContainer" unique_id=618885003]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1147484220]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 25
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=140324794]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MatchupHeroPreview" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=505220403 instance=ExtResource("5_w4o2g")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pmnr")
+
+[node name="BackupLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=2142639494]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Backup"
+
+[node name="BackupRows" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=2046645317]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BackupAddHeroButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/BackupRows" unique_id=266582743]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("9_addhr")
+text = "+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=192347051]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="MatchupStatComparison" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1469548853 instance=ExtResource("6_7dyfs")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DebugMenuColorRect" type="ColorRect" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=618885003]
 custom_minimum_size = Vector2(600, 50)
 layout_mode = 2
-size_flags_vertical = 4
+size_flags_horizontal = 4
 color = Color(0.4745098, 0, 0, 1)
 
-[node name="OverrideSkirmishResults" type="CheckBox" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HeaderContainer/DebugMenuColorRect" unique_id=1408257316]
+[node name="OverrideSkirmishResults" type="CheckBox" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/DebugMenuColorRect" unique_id=1408257316]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -90,93 +124,34 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 20
 text = "[DEBUG] Manually override Skirmish results"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1147484220]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=989389574]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 25
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
 
-[node name="HeroList" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1496077038]
+[node name="Back" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1569527682]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("5_ihonc")
+text = "Back"
 
-[node name="ActiveHeroesLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList" unique_id=316951475]
+[node name="Dispatch" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" unique_id=694611823]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Active"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_7dyfs")
+text = "Dispatch"
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList" unique_id=1479762890]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = ExtResource("3_7dyfs")
-
-[node name="ActiveHeroRows" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer" unique_id=1337796244]
+[node name="MatchupVillainPreview" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1991403126 instance=ExtResource("5_w4o2g")]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="HeroPreviewRow2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer/ActiveHeroRows" unique_id=261499976 instance=ExtResource("4_r7ebt")]
-layout_mode = 2
-
-[node name="HeroPreviewRow" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer/ActiveHeroRows" unique_id=1883060387 instance=ExtResource("4_r7ebt")]
-layout_mode = 2
-
-[node name="AddHeroButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer/ActiveHeroRows" unique_id=694611823]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_vertical = 2
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("9_addhr")
-text = "+"
-
-[node name="ActiveHeroesLabel2" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList" unique_id=1460719709]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
-text = "Bench"
-
-[node name="PanelContainer2" type="PanelContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList" unique_id=1772458441]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/panel = ExtResource("3_7dyfs")
-
-[node name="BenchHeroRows" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer2" unique_id=1438033457]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="HeroPreviewRow" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer2/BenchHeroRows" unique_id=305227768 instance=ExtResource("4_r7ebt")]
-layout_mode = 2
-
-[node name="HeroPreviewRow2" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer2/BenchHeroRows" unique_id=1515456212 instance=ExtResource("4_r7ebt")]
-layout_mode = 2
-
-[node name="BenchAddHeroButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroList/PanelContainer2/BenchHeroRows" unique_id=694611824]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_vertical = 2
-theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = ExtResource("9_addhr")
-text = "+"
-
-[node name="MatchupHeroPreview" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=505220403 instance=ExtResource("5_w4o2g")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_stretch_ratio = 1.5
 theme_override_styles/panel = SubResource("StyleBoxFlat_6pmnr")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=192347051]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="MatchupStatComparison" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1469548853 instance=ExtResource("6_7dyfs")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ThreatDetailsContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=325321033 instance=ExtResource("8_thrdt")]
-unique_name_in_owner = true
-layout_mode = 2
 
 [node name="ChooseHeroModal" parent="CanvasLayer" unique_id=977992407 instance=ExtResource("7_7dyfs")]
 unique_name_in_owner = true

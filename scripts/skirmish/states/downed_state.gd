@@ -2,7 +2,8 @@ class_name DownedState
 extends SkirmishState
 
 const DOWNED_SECONDS := 3.0
-const CHARACTER_MOMENT_ON_DOWNED_CHANCE := 0.5
+const CHARACTER_MOMENT_ON_DOWNED_CHANCE := 0.0
+# const CHARACTER_MOMENT_ON_DOWNED_CHANCE := 0.5
 const CHARACTER_MOMENT_DELAY_SECONDS := 1.0
 
 var _time_left := 0.0

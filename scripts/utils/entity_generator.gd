@@ -23,20 +23,18 @@ static func generate_random_entity_configs(num_heroes: int, entity_type: EntityC
 		var abilities: Array[Ability] = [
 			random_ability_of_tier(Ability.Tier.LIGHT),
 			random_ability_of_tier(Ability.Tier.MEDIUM),
-			random_ability_of_tier(Ability.Tier.MEDIUM),
-			random_ability_of_tier(Ability.Tier.HEAVY),
 		]
 
 		var entity_config = EntityConfigBuilder.new() \
 			.with_entity_type(entity_type) \
 			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE) \
 			.with_entity_name(rand_name) \
-			.with_defense(randi_range(10, 20)) \
-			.with_strength(randi_range(5, 15)) \
-			.with_resilience(randi_range(5, 15)) \
-			.with_agility(randi_range(10, 15)) \
-			.with_evasion(randi_range(5, 15)) \
-			.with_charisma(randi_range(5, 15)) \
+			.with_defense(randi_range(1, 5)) \
+			.with_strength(randi_range(1, 5)) \
+			.with_resilience(randi_range(1, 5)) \
+			.with_agility(randi_range(1, 5)) \
+			.with_evasion(randi_range(1, 5)) \
+			.with_charisma(randi_range(1, 5)) \
 			.with_abilities(abilities) \
 			.build()
 		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)

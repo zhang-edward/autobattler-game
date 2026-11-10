@@ -11,7 +11,7 @@ static func generate_random_threat_requests(num_requests: int, player_lineup: Ar
 	var enemy_level_range_hi = average_player_level + 1
 	for i in range(0, num_requests):
 		var rand_enemy_level = randi_range(enemy_level_range_lo, enemy_level_range_hi)
-		var num_villains = randi_range(1, 3)
+		var num_villains = randi_range(1, 1)
 		var enemy_configs = EntityGenerator.generate_enemy_config_at_level(rand_enemy_level, num_villains)
 		var stat_scale = [1.0, 0.75, 0.6][num_villains - 1]
 		for e in enemy_configs:
