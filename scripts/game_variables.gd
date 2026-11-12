@@ -8,6 +8,7 @@ var threat_request_configs: Array[ThreatRequestConfig] = []
 var curr_threat_skirmish: ThreatSkirmish
 var levels_for_new_ability = [2, 5, 10, 15]
 var curr_day: int = 1
+var ability_inventory: Array[Ability] = []
 
 static var REST_DAYS = 2
 static var DEFEATED_REST_DAYS = 5
@@ -27,6 +28,10 @@ func new_game():
 	curr_day = 1
 	curr_threat_skirmish = null
 	threat_request_configs = ThreatGenerator.generate_random_threat_requests(3, curr_day)
+	ability_inventory.clear()
+	var all_abilities = EntityGenerator.get_all_abilities()
+	for i in range(0, 4):
+		ability_inventory.append(all_abilities.pick_random().duplicate())
 
 func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 	match t:

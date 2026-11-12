@@ -16,7 +16,6 @@ signal on_change_hero()
 
 func _ready():
 	change_hero_button.pressed.connect(change_hero_clicked)
-	offense_moves.heading_label.text = "Offense"
 
 func configure(entity_config: EntityConfig):
 	level_container.visible = entity_config != null

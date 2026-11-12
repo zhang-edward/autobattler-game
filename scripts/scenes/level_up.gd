@@ -63,12 +63,11 @@ func select_ability_to_acquire(a: LevelUpNewAbility):
 	
 func setup_curr_ability_list(config: EntityConfig):
 	var off_abilities = config.abilities
-	curr_offensive_abilities.heading_label.text = "Offensive"
 	curr_offensive_abilities.configure_from_abilities(off_abilities)
 
 func apply_and_transition_to_roster():
 	if selected_new_ability != null:
-		hero_config.abilities.append(selected_new_ability.ability)
+		hero_config.abilities.append(selected_new_ability.ability.duplicate())
 	if GameVariables.curr_threat_skirmish != null and not GameVariables.curr_threat_skirmish.leveled_up_heroes.is_empty():
 		get_tree().change_scene_to_file("res://scenes/level_up.tscn")
 	else:
