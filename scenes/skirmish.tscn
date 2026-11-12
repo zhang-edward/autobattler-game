@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://d1vbhgexbdvrx" path="res://scripts/skirmish/cutscene_manager.gd" id="4_543uf"]
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="4_pisl1"]
 [ext_resource type="Script" uid="uid://wb0ebrob2lgi" path="res://scripts/skirmish/fx/effect_manager.gd" id="5_effects"]
+[ext_resource type="Texture2D" uid="uid://b6cmvlb5d1djt" path="res://assets/maple-fx/angel-ray-effect.png" id="9_tuv8q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u42sw"]
 size = Vector2(20, 1080)
@@ -20,6 +21,105 @@ size = Vector2(1920, 136.375)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_543uf"]
 size = Vector2(1890, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_04ywe"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(0, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qfwjl"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(620, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ii020"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(1240, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n484t"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(1860, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f6u3v"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(2480, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhefc"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(3100, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyv2b"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(3720, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gw45y"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(4340, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x46ec"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(4960, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qjty"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(5580, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5edcl"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(6200, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0b22c"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(6820, 0, 620, 390)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61jiw"]
+atlas = ExtResource("9_tuv8q")
+region = Rect2(7440, 0, 620, 390)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mod73"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04ywe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qfwjl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ii020")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n484t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f6u3v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dhefc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyv2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gw45y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x46ec")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1qjty")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5edcl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0b22c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_61jiw")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 15.0
+}]
 
 [node name="Skirmish" type="Node2D" unique_id=1631750039]
 script = ExtResource("1_skirmish")
@@ -187,3 +287,7 @@ script = ExtResource("4_543uf")
 [node name="TagDirector" type="Node" parent="." unique_id=1114085817 node_paths=PackedStringArray("cutscene")]
 script = ExtResource("4_0dkc3")
 cutscene = NodePath("../CutsceneManager")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1505686690]
+position = Vector2(639, 619)
+sprite_frames = SubResource("SpriteFrames_mod73")
