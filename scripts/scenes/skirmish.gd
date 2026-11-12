@@ -50,6 +50,8 @@ var _status_rows: Array[SkirmishStatusRow] = []
 
 @onready var tag_in_buttons: HBoxContainer = %TagInButtons
 @onready var special_moves: HBoxContainer = %SpecialMoves
+@onready var hero_combo_counter: ComboCounter = %HeroComboCounter
+@onready var villain_combo_counter: ComboCounter = %VillainComboCounter
 
 @export_group("UI Elements")
 @export var tag_in_button_scene: PackedScene
@@ -198,6 +200,8 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		entity.died.connect(_on_entity_died.bind(entity))
 		entity.tag_out_state.finished.connect(_on_entity_retreated.bind(entity))
 		entity.character_moment_rolled.connect(_play_character_moment.bind(entity))
+		entity.took_hit.connect(_on_entity_took_hit.bind(entity))
+		entity.combo_ended.connect(_on_entity_combo_ended.bind(entity))
 		entity.position = start + Vector2(0.0, (i - (configs.size() - 1) * 0.5) * SPAWN_Y_SPACING)
 		entity.set_active(true)
 		# Debug: 2v2 keeps everyone on the field
@@ -209,6 +213,17 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		# 	entity.set_active(false)
 		team.append(entity)
 	return team
+
+func _on_entity_took_hit(combo_hits: int, is_punish: bool, entity: SkirmishEntity) -> void:
+	var counter: ComboCounter = villain_combo_counter if entity.entity_type == EntityConfig.EntityType.HERO else hero_combo_counter
+	if combo_hits >= 2:
+		counter.show_hits(combo_hits)
+	if is_punish:
+		counter.show_punish()
+
+func _on_entity_combo_ended(entity: SkirmishEntity) -> void:
+	var counter: ComboCounter = villain_combo_counter if entity.entity_type == EntityConfig.EntityType.HERO else hero_combo_counter
+	counter.end_combo()
 
 func _on_entity_died(entity: SkirmishEntity) -> void:
 	if entity.entity_type == EntityConfig.EntityType.HERO and not hero_bench.is_empty():

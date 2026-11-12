@@ -173,6 +173,9 @@ func _bounce_off_side_walls() -> void:
 			if e.entity_config.curr_wounds >= e.entity_config.get_max_health():
 				is_downed = true
 			add_ragdoll_damage(damage)
+			EffectManager.spawn_damage_number(e.global_position + Vector2(0.0, e.z) + SkirmishEntity.DAMAGE_NUMBER_OFFSET, damage)
+			e.combo_hits += 1
+			e.took_hit.emit(e.combo_hits, false)
 		return
 
 func _spawn_dust() -> void:

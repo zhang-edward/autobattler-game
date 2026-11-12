@@ -3,6 +3,7 @@ extends Node2D
 
 static var instance: EffectManager
 static var _effect_scene: PackedScene = preload("res://prefabs/effect.tscn")
+static var _damage_number_scene: PackedScene = preload("res://prefabs/damage_number.tscn")
 
 func _ready() -> void:
 	instance = self
@@ -21,3 +22,11 @@ static func spawn_effect(config: EffectConfig) -> void:
 	effect.rotation = config.dir.angle() + randf_range(-config.angle_range_rad / 2, config.angle_range_rad / 2)
 	effect.scale *= randf_range(0.9, 1.1)
 	effect.play()
+
+static func spawn_damage_number(pos: Vector2, damage: int) -> void:
+	if instance == null:
+		return
+	var damage_number: DamageNumber = _damage_number_scene.instantiate()
+	instance.add_child(damage_number)
+	damage_number.global_position = pos + Vector2(randf_range(-20, 20), randf_range(-10, 10))
+	damage_number.play(damage)

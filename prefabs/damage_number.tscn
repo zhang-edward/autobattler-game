@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://uhmjdsfwo0wl"]
+
+[ext_resource type="Script" uid="uid://k3qi4mf80h0w" path="res://scripts/skirmish/fx/damage_number.gd" id="1_dmgnum"]
+[ext_resource type="FontFile" uid="uid://ctgfblhwofni0" path="res://assets/fonts/AldotheApache.ttf" id="2_i4gvm"]
+
+[node name="DamageNumber" type="Node2D" unique_id=1530861427]
+script = ExtResource("1_dmgnum")
+
+[node name="Label" type="Label" parent="." unique_id=884213590]
+offset_left = -80.0
+offset_top = -30.0
+offset_right = 80.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("2_i4gvm")
+theme_override_font_sizes/font_size = 50
+text = "12"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -5,7 +5,8 @@ extends CharacterBody2D
 # and altitude is faked in `z`, so gravity is integrated by the states, not the physics engine.
 
 signal died
-signal took_hit
+signal took_hit(combo_hits: int, is_punish: bool)
+signal combo_ended
 signal character_moment_rolled
 
 const GRAVITY := 980.0
@@ -30,6 +31,7 @@ const IGNORE_HITSTUN_STEEPNESS := 4.0
 const ZERO_HEALTH_SPEED_SCALE := 0.7
 # Max depth-axis spread on a knockdown
 const LAUNCH_Y_SPREAD := 0.25
+const DAMAGE_NUMBER_OFFSET := Vector2(0.0, -160.0)
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
@@ -83,6 +85,7 @@ var absolute_velocity := Vector2.ZERO
 var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
+var combo_hits := 0
 
 
 var _shadow_base_scale: Vector2
@@ -101,6 +104,13 @@ func _ready() -> void:
 	else:
 		healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
+	state_machine.transitioned.connect(_on_state_transitioned, CONNECT_DEFERRED)
+
+func _on_state_transitioned(_state_name: String) -> void:
+	if combo_hits == 0 or state_machine.state == hurt_state or state_machine.state == ragdoll_state:
+		return
+	combo_hits = 0
+	combo_ended.emit()
 
 func spawn_hitbox(config: HitboxConfig) -> Hitbox:
 	var hitbox = hitbox_scene.instantiate() as Hitbox
@@ -210,6 +220,9 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 			return false
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
+	var in_combo := state_machine.state == hurt_state or state_machine.state == ragdoll_state
+	var is_punish := state_machine.state is AbilityState \
+		and (state_machine.state as AbilityState).phase == AbilityState.Phase.RECOVERY
 
 	## Defensive options logic
 	var blocked := state_machine.state == block_state
@@ -238,6 +251,9 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	wounds_bar.visible = healthbar.value <= 0
 	if healthbar.value <= 0 and not was_at_zero_health:
 		move_speed *= ZERO_HEALTH_SPEED_SCALE
+	if not blocked:
+		combo_hits = combo_hits + 1 if in_combo else 1
+		EffectManager.spawn_damage_number(global_position + Vector2(0.0, z) + DAMAGE_NUMBER_OFFSET, damage)
 	var wound_fraction := float(entity_config.curr_wounds) / entity_config.get_max_health()
 	var downed := wound_fraction >= 1.0 or (was_at_zero_health and randf() < wound_fraction)
 
@@ -285,7 +301,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 
 	if hit_connected:
-		took_hit.emit()
+		took_hit.emit(combo_hits, is_punish and not blocked)
 	return hit_connected
 
 func launch_entity(impulse: Vector2, launch: float, launched_by: SkirmishEntity) -> void:
