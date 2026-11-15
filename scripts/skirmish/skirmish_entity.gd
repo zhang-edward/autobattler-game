@@ -5,6 +5,9 @@ extends CharacterBody2D
 # and altitude is faked in `z`, so gravity is integrated by the states, not the physics engine.
 
 signal died
+signal took_hit(combo_hits: int, is_punish: bool)
+signal combo_ended
+signal character_moment_rolled
 
 const GRAVITY := 980.0
 
@@ -14,14 +17,25 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
+const BLOCK_BASE_CHANCE := 0.3
 const BLOCK_DEFENSE_SCALE := 10.0
-const BLOCK_CHIP_FRACTION := 0.1
-const DODGE_CHANCE := 0.09
+const BLOCK_REDUCTION_PER_DEFENSE := 0.5
+const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.0
+# const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.5
+const DEFENSE_LAUNCH_SCALE := 30.0
+const STRENGTH_LAUNCH_SCALE := 30.0
+const DODGE_EVASION_SCALE := 40.0
+const EVASION_PUSHBACK_SCALE := 20.0
+const IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE := 0.8
+const IGNORE_HITSTUN_STEEPNESS := 4.0
+const ZERO_HEALTH_SPEED_SCALE := 0.7
 # Max depth-axis spread on a knockdown
-const KNOCKDOWN_Y_SPREAD := 0.15
+const LAUNCH_Y_SPREAD := 0.25
+const DAMAGE_NUMBER_OFFSET := Vector2(0.0, -160.0)
 
 const HERO_LAYER_INDEX = 9
 const VILLAIN_LAYER_INDEX = 10
+const SIDE_WALL_LAYER_INDEX = 12
 const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 
 @onready var rig_wrapper: Sprite2D = $RigWrapper
@@ -33,18 +47,20 @@ const VILLAIN_TINT := Color(1.0, 0.45, 0.45)
 @export var rig: SkirmishEntityRig
 @export var shadow: Sprite2D
 @export var healthbar: ProgressBar
+@export var wounds_bar: ProgressBar
 @export var hurtbox: Hurtbox
 @export var state_machine: StateMachine
 @export var hurt_state: HurtState
 @export var death_state: DeathState
+@export var downed_state: DownedState
 @export var move_state: MoveState
 @export var ragdoll_state: RagdollState
-@export var is_grabbed_state: IsGrabbedState
 @export var tag_out_state: TagOutState
 @export var tag_in_state: TagInState
 @export var block_state: BlockState
 @export var dodge_state: DodgeState
 @export var dash_state: DashState
+@export var character_moment_state: CharacterMomentState
 @export var brain: Brain:
 	set(value):
 		brain = value
@@ -69,8 +85,8 @@ var absolute_velocity := Vector2.ZERO
 var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
+var combo_hits := 0
 
-var grabbed_entity
 
 var _shadow_base_scale: Vector2
 
@@ -80,11 +96,21 @@ func facing() -> float:
 
 func _ready() -> void:
 	if entity_config != null:
-		healthbar.max_value = entity_config.vitality * 10
+		healthbar.max_value = entity_config.get_max_health()
 		healthbar.value = entity_config.curr_health
+		wounds_bar.max_value = entity_config.get_max_health()
+		wounds_bar.value = entity_config.curr_wounds
+		wounds_bar.visible = healthbar.value <= 0
 	else:
 		healthbar.value = healthbar.max_value
 	_shadow_base_scale = shadow.scale
+	state_machine.transitioned.connect(_on_state_transitioned, CONNECT_DEFERRED)
+
+func _on_state_transitioned(_state_name: String) -> void:
+	if combo_hits == 0 or state_machine.state == hurt_state or state_machine.state == ragdoll_state:
+		return
+	combo_hits = 0
+	combo_ended.emit()
 
 func spawn_hitbox(config: HitboxConfig) -> Hitbox:
 	var hitbox = hitbox_scene.instantiate() as Hitbox
@@ -95,8 +121,11 @@ func spawn_hitbox(config: HitboxConfig) -> Hitbox:
 func configure_from_entity_config(ec: EntityConfig) -> void:
 	entity_config = ec
 	entity_type = ec.entity_type
-	healthbar.max_value = ec.vitality
+	healthbar.max_value = ec.get_max_health()
 	healthbar.value = ec.curr_health
+	wounds_bar.max_value = ec.get_max_health()
+	wounds_bar.value = ec.curr_wounds
+	wounds_bar.visible = healthbar.value <= 0
 	var layer_index = HERO_LAYER_INDEX if entity_type == EntityConfig.EntityType.HERO else VILLAIN_LAYER_INDEX
 	set_collision_layer_value(layer_index, true)
 	if entity_type == EntityConfig.EntityType.VILLAIN:
@@ -156,31 +185,26 @@ func _build_move_map() -> void:
 		instance.state_machine = state_machine
 		instance.init(ability)
 		ability_to_state[ability] = instance
-		if ability is GrabAbility:
-			_init_throw(ability, instance as GrabState)
 
-func _init_throw(grab_ability: GrabAbility, grab_state: GrabState) -> void:
-	if grab_ability.throw_state_scene == null or grab_state == null:
-		return
-	var throw_instance := grab_ability.throw_state_scene.instantiate() as ThrowState
-	if throw_instance == null:
-		return
-	state_machine.add_child(throw_instance)
-	throw_instance.state_machine = state_machine
-	throw_instance.init(grab_ability)
-	grab_state.throw_state = throw_instance
-	ragdoll_state.bounce_base_damage = grab_ability.hit.damage
-
-func _can_defend() -> bool:
+func _can_block() -> bool:
 	var state := state_machine.state
 	return not (
 		state == death_state
 		or state == tag_in_state
 		or state == tag_out_state
-		or state == is_grabbed_state
 		or state == ragdoll_state
 		or state == hurt_state
 		or state is AbilityState
+	)
+
+func _can_dodge() -> bool:
+	var state := state_machine.state
+	return not (
+		state == death_state
+		or state == tag_in_state
+		or state == tag_out_state
+		or state == ragdoll_state
+		or state == hurt_state
 	)
 
 # Returns whether or not the hit connected
@@ -192,75 +216,107 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		return false
 	if source.state_machine != null and hit.kind != HitConfig.Kind.PROJECTILE:
 		var source_state: State = source.state_machine.state
-		if source_state == source.is_grabbed_state or source_state == source.ragdoll_state or source_state == source.death_state:
+		if source_state == source.ragdoll_state or source_state == source.death_state:
 			return false
 
 	var dir := Vector2(signf(position.x - source.position.x), 0.0)
-
-	## Grab logic TODO: Maybe get rid of this
-	if hit.kind == HitConfig.Kind.GRAB:
-		state_machine.transition_to(is_grabbed_state, {"grabber": source})
-		source.grabbed_entity = self
-		return false
+	var in_combo := state_machine.state == hurt_state or state_machine.state == ragdoll_state
+	var is_punish := state_machine.state is AbilityState \
+		and (state_machine.state as AbilityState).phase == AbilityState.Phase.RECOVERY
 
 	## Defensive options logic
 	var blocked := state_machine.state == block_state
-	if not blocked and _can_defend():
+	if _can_dodge():
 		# Dodge success roll calculation
-		if randf() < DODGE_CHANCE:
+		var evasion: int = entity_config.evasion if entity_config != null else 0
+		if randf() < float(evasion) / (evasion + DODGE_EVASION_SCALE):
 			state_machine.transition_to(dodge_state, {"dir": dir})
 			return false
-		# Block success roll calculation
+	# Block success roll calculation
+	if not blocked and _can_block():
 		var defense: int = entity_config.defense if entity_config != null else 0
-		blocked = randf() < float(defense) / (defense + BLOCK_DEFENSE_SCALE)
+		blocked = randf() < BLOCK_BASE_CHANCE + (1.0 - BLOCK_BASE_CHANCE) * defense / (defense + BLOCK_DEFENSE_SCALE)
 
-	var damage := HitConfig.calculate_damage(hit.damage, entity_config.defense)
+	var damage := hit.damage
 	# Take chip damage if blocked
 	if blocked:
-		damage = maxi(roundi(damage * BLOCK_CHIP_FRACTION), 1)
+		damage = maxi(hit.damage - roundi(entity_config.defense * BLOCK_REDUCTION_PER_DEFENSE), 1)
+	var was_at_zero_health := healthbar.value <= 0
 	source.entity_config.damage_dealt += damage
+	var wound_damage := maxi(damage - int(healthbar.value), 0)
 	healthbar.value -= damage
-	if entity_config != null:
-		entity_config.curr_health = int(healthbar.value)
+	entity_config.curr_health = int(healthbar.value)
+	entity_config.curr_wounds = mini(entity_config.curr_wounds + wound_damage, entity_config.get_max_health())
+	wounds_bar.value = entity_config.curr_wounds
+	wounds_bar.visible = healthbar.value <= 0
+	if healthbar.value <= 0 and not was_at_zero_health:
+		move_speed *= ZERO_HEALTH_SPEED_SCALE
+	if not blocked:
+		combo_hits = combo_hits + 1 if in_combo else 1
+		EffectManager.spawn_damage_number(global_position + Vector2(0.0, z) + DAMAGE_NUMBER_OFFSET, damage)
+	var wound_fraction := float(entity_config.curr_wounds) / entity_config.get_max_health()
+	var downed := wound_fraction >= 1.0 or (was_at_zero_health and randf() < wound_fraction)
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
+	var pushback := hit.pushback \
+		* (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE) \
+		* (AbilityState.AGILITY_SCALE + AbilityState.AGILITY_BASELINE) / (AbilityState.AGILITY_SCALE + source.entity_config.agility)
 	var hit_connected := false
-	if healthbar.value <= 0:
-		is_dead = true
-		healthbar.hide()
-		died.emit()
-		state_machine.transition_to(death_state)
-	elif blocked:
-		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "knockback": hit.knockback})
+	if downed and state_machine.state != ragdoll_state:
+		state_machine.transition_to(downed_state)
 		hit_connected = true
-	elif hit.knockdown or state_machine.state == ragdoll_state:
-		knock_down(dir * hit.knockback, hit.launch if hit.launch != 0.0 else JUGGLE_LAUNCH, source)
+	elif blocked:
+		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
+		hit_connected = true
+	elif hit.is_launcher or state_machine.state == ragdoll_state:
+		var launch_x := hit.launch.x \
+			* (STRENGTH_LAUNCH_SCALE + source.entity_config.strength) / STRENGTH_LAUNCH_SCALE \
+			* DEFENSE_LAUNCH_SCALE / (DEFENSE_LAUNCH_SCALE + entity_config.defense)
+		launch_entity(dir * launch_x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
+		ragdoll_state.add_ragdoll_damage(damage)
+		if downed:
+			ragdoll_state.is_downed = true
 		hit_connected = true
 	else:
-		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun})
+		var ignore_hitstun_threshold := entity_config.resilience * IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE
+		var ignore_hitstun_chance := 0.0
+		if ignore_hitstun_threshold > 0.0:
+			ignore_hitstun_chance = 1.0 / (1.0 + pow(damage / ignore_hitstun_threshold, IGNORE_HITSTUN_STEEPNESS))
+		if randf() >= ignore_hitstun_chance:
+			state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
+
+	if entity_type == EntityConfig.EntityType.HERO and healthbar.value <= 0 and not was_at_zero_health \
+		and not character_moment_state.has_played and state_machine.state != downed_state \
+		and randf() < CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE:
+		if state_machine.state == ragdoll_state:
+			ragdoll_state.character_moment_on_land = true
+		else:
+			character_moment_rolled.emit()
 
 	var frozen: Array = [self] if hit.kind == HitConfig.Kind.PROJECTILE else [source, self]
 	Hitstop.freeze(frozen, hit.hitstop)
 
-	if hit.knockdown and not blocked:
+	if hit.is_launcher and not blocked:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 
+	if hit_connected:
+		took_hit.emit(combo_hits, is_punish and not blocked)
 	return hit_connected
 
-func knock_down(impulse: Vector2, launch: float, thrower: SkirmishEntity) -> void:
-	impulse.y += impulse.length() * randf_range(-KNOCKDOWN_Y_SPREAD, KNOCKDOWN_Y_SPREAD)
+func launch_entity(impulse: Vector2, launch: float, launched_by: SkirmishEntity) -> void:
+	impulse.y += impulse.length() * randf_range(-LAUNCH_Y_SPREAD, LAUNCH_Y_SPREAD)
 
 	if state_machine.state == ragdoll_state:
 		# Already ragdolling: relaunch in place rather than re-entering the state,
 		# which would reset the altitude we're trying to add to
 		ragdoll_state.relaunch(impulse, launch)
-		ragdoll_state.thrower_entity = thrower
+		ragdoll_state.launched_by = launched_by
 	else:
-		state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch, "thrower": thrower})
+		state_machine.transition_to(ragdoll_state, {"impulse": impulse, "launch": launch, "launched_by": launched_by})
 
 func despawn() -> void:
 	var tween := create_tween()
 	tween.tween_property(rig, "modulate:a", 0.0, 0.4)
 	tween.parallel().tween_property(shadow, "modulate:a", 0.0, 0.4)
-	tween.tween_callback(queue_free)
+	tween.tween_callback(set_active.bind(false))

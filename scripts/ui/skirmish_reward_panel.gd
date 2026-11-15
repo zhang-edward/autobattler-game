@@ -6,4 +6,4 @@ extends PanelContainer
 
 func setup_reward(n: String, amt: int):
 	reward_name.text = n
-	value.text = "+" + str(amt)
+	value.text = ("+" if amt >= 0 else "") + str(amt)

@@ -30,28 +30,28 @@ func with_strength(s: int):
 	_entity_config.strength = s
 	return self
 
-func with_skill(sk: int):
-	_entity_config.skill = sk
+func with_resilience(res: int):
+	_entity_config.resilience = res
 	return self
 
 func with_agility(ag: int):
 	_entity_config.agility = ag
 	return self
 
-func with_vitality(vit: int):
-	_entity_config.vitality = vit
+func with_evasion(eva: int):
+	_entity_config.evasion = eva
 	return self
 
-func with_charisma(cha: int):
-	_entity_config.charisma = cha
-	return self
-	
 func with_abilities(abilities: Array[Ability]):
 	_entity_config.abilities = abilities
 	return self
 	
 func with_entity_power_type(t: EntityConfig.EntityPowerType):
 	_entity_config.entity_power_type = t
+	return self
+	
+func with_level(lv: int):
+	_entity_config.level = lv
 	return self
 	
 ## Starts a builder pre-filled with a copy of an existing EntityConfig, so tweaks via
@@ -66,16 +66,16 @@ static func from_entity_config(source: EntityConfig) -> EntityConfigBuilder:
 	copy.entity_power_type = source.entity_power_type
 	copy.defense = source.defense
 	copy.strength = source.strength
-	copy.skill = source.skill
+	copy.resilience = source.resilience
 	copy.agility = source.agility
-	copy.vitality = source.vitality
-	copy.charisma = source.charisma
+	copy.evasion = source.evasion
 	copy.level = source.level
 	copy.exp = source.exp
 	copy.exp_to_next_level = source.exp_to_next_level
 	copy.abilities = source.abilities.duplicate()
 	copy.portrait_config = source.portrait_config
 	copy.curr_health = source.curr_health
+	copy.curr_wounds = source.curr_wounds
 	copy.gained_exp = source.gained_exp
 	copy.num_assists = source.num_assists
 	copy.damage_dealt = source.damage_dealt

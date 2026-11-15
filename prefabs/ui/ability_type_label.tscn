@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cfqc4agt8pji8"]
+
+[ext_resource type="Script" uid="uid://gduicxnnvtu4" path="res://scripts/ui/ability_type_label.gd" id="1_k4ws1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8uqo"]
+
+[node name="AbilityTypeLabel" type="PanelContainer" unique_id=1612519437]
+custom_minimum_size = Vector2(120, 0)
+custom_maximum_size = Vector2(120, -1)
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_u8uqo")
+script = ExtResource("1_k4ws1")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=43440037]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer" unique_id=1782258638]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "Offensive"
+horizontal_alignment = 1

@@ -2,7 +2,7 @@ class_name SpecialAbilityGrid
 extends VBoxContainer
 
 @export var special_ability_preview_scene: PackedScene
-@onready var heading_label: Label = %Heading
+@export var draggable := false
 @onready var ability_grid: GridContainer = %AbilityGrid
 
 func configure_from_abilities(abilities: Array[Ability]):
@@ -12,3 +12,4 @@ func configure_from_abilities(abilities: Array[Ability]):
 		var sap = special_ability_preview_scene.instantiate() as SpecialAbilityPreview
 		ability_grid.add_child(sap)
 		sap.configure_from_ability(a)
+		sap.draggable = draggable

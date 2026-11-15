@@ -25,12 +25,16 @@ func physics_update(delta: float) -> void:
 			return
 
 	var direction := intent.direction if intent != null else Vector2.ZERO
+	# # If entity is wounded, they can only walk
+	# if e.entity_config.curr_health <= 0:
+	# 	direction = direction.limit_length(IdleBrainState.SPEED)
+
 	e.absolute_velocity = direction * e.move_speed
 	if e.absolute_velocity == Vector2.ZERO:
 		if e.rig.anim_player.current_animation != "male-rig/idle":
 			e.rig.play_animation("male-rig/idle")
 	else:
-		var anim := "male-rig/run" if direction.length() > IdleState.SPEED else "male-rig/walk"
+		var anim := "male-rig/run" if direction.length() > IdleBrainState.SPEED else "male-rig/walk"
 		if e.rig.anim_player.current_animation != anim:
 			e.rig.play_animation(anim)
 

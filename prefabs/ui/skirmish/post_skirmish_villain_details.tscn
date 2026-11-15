@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_w4smw"]
 [ext_resource type="PackedScene" uid="uid://bonodf36dkj5n" path="res://prefabs/ui/stat_label.tscn" id="3_5s4gt"]
 [ext_resource type="PackedScene" uid="uid://d1a4y86q0hr6x" path="res://prefabs/ui/entity_power_type_label.tscn" id="3_adxab"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/health_bar.tscn" id="hb_health_bar"]
 
 [node name="PostSkirmishVillainDetails" type="PanelContainer" unique_id=1368912246]
 anchors_preset = 14
@@ -58,6 +59,10 @@ text = "Cinder Queen"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="HealthBar" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1530497218 instance=ExtResource("hb_health_bar")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="StatGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1921995914]
 unique_name_in_owner = true

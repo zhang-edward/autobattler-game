@@ -20,12 +20,12 @@ hit = SubResource("Resource_hit")
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_phase")
-duration = 0.5
+duration = 0.75
 friction = 0.15
 
 [sub_resource type="Resource" id="Resource_startup"]
 script = ExtResource("3_phase")
-duration = 0.1
+duration = 0.15
 
 [resource]
 script = ExtResource("4_ability")
@@ -35,7 +35,7 @@ friction = 0.05
 ability_name = "Dash Punch"
 tier = 1
 state_scene = ExtResource("5_state")
-cooldown = 9.0
+cooldown = 6.0
 ability_range = 220.0
 anim = "male-rig/punch_big"
 startup = SubResource("Resource_startup")

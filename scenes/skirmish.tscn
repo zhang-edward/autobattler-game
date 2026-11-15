@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://d04ukv4j57sv3" path="res://scripts/skirmish/tag_director.gd" id="4_0dkc3"]
 [ext_resource type="Script" uid="uid://d1vbhgexbdvrx" path="res://scripts/skirmish/cutscene_manager.gd" id="4_543uf"]
 [ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="4_pisl1"]
+[ext_resource type="Script" uid="uid://wb0ebrob2lgi" path="res://scripts/skirmish/fx/effect_manager.gd" id="5_effects"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/skirmish/combo_counter.tscn" id="10_combo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u42sw"]
 size = Vector2(20, 1080)
@@ -46,6 +48,10 @@ top_fraction = 0.287037
 
 [node name="Battlefield" type="Node2D" parent="." unique_id=1219586791]
 y_sort_enabled = true
+
+[node name="EffectManager" type="Node2D" parent="." unique_id=1290573416]
+z_index = 100
+script = ExtResource("5_effects")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=418282212]
 layer = 11
@@ -95,7 +101,6 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="PanelContainer" type="PanelContainer" parent="HUD/Root" unique_id=2008688599]
-visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -129,8 +134,28 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="HeroComboCounter" parent="HUD/Root" unique_id=1162975320 instance=ExtResource("10_combo")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 40.0
+offset_top = 220.0
+offset_right = 440.0
+offset_bottom = 380.0
+
+[node name="VillainComboCounter" parent="HUD/Root" unique_id=1873402155 instance=ExtResource("10_combo")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -440.0
+offset_top = 220.0
+offset_right = -40.0
+offset_bottom = 380.0
+grow_horizontal = 0
+
 [node name="VWall" type="StaticBody2D" parent="." unique_id=320051880]
-collision_layer = 1024
+collision_layer = 2048
 collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VWall" unique_id=1960425404]
@@ -138,7 +163,7 @@ position = Vector2(0, 540)
 shape = SubResource("RectangleShape2D_u42sw")
 
 [node name="VWall2" type="StaticBody2D" parent="." unique_id=172121651]
-collision_layer = 1024
+collision_layer = 2048
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VWall2" unique_id=1249207026]

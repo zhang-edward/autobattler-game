@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/scenes/skirmish_override.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/skirmish/skirmish_override_row.tscn" id="2_row"]
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="3_panel"]
+[ext_resource type="StyleBox" uid="uid://bmsub2y7m5tpa" path="res://prefabs/styles/dark_panel_stroke.tres" id="4_stroke"]
+[ext_resource type="StyleBox" uid="uid://dmy06mntrqfa8" path="res://prefabs/styles/yellow_button.tres" id="5_yellow"]
+
+[node name="SkirmishOverride" type="Node2D" unique_id=1520846372]
+script = ExtResource("1_script")
+override_row_scene = ExtResource("2_row")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1947210583]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer" unique_id=1236598047]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer" unique_id=1765039281]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer" unique_id=1402987165]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="Title" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1087345226]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "[DEBUG] Override Skirmish Results"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1659380274]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 50
+
+[node name="HeroColumn" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1318047562]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="HeroHeader" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroColumn" unique_id=1953627014]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Heroes (end health)"
+
+[node name="HeroRows" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/HeroColumn" unique_id=1186402395]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VillainColumn" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1724091836]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+
+[node name="VillainHeader" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VillainColumn" unique_id=1407586213]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Villains (end health)"
+
+[node name="VillainRows" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/VillainColumn" unique_id=1590738241]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ButtonRow" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1265870439]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 15
+
+[node name="Back" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/ButtonRow" unique_id=1832650917]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("4_stroke")
+text = "Back"
+
+[node name="Resolve" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/ButtonRow" unique_id=1478203659]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("5_yellow")
+text = "Resolve"

@@ -25,6 +25,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Special Abilities"
 
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer" unique_id=322361475]
+layout_mode = 2
+text = "Drag and drop to modify abilities"
+
 [node name="OffenseMoves" parent="MarginContainer/VBoxContainer" unique_id=952462957 instance=ExtResource("2_komk8")]
 unique_name_in_owner = true
 layout_mode = 2
+draggable = true

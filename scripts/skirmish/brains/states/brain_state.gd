@@ -11,20 +11,29 @@ func get_intent(_delta: float) -> Intent:
 	return null
 
 func _target_is_open(target: SkirmishEntity) -> bool:
+	if not _target_is_hittable(target):
+		return false
 	var target_state := target.state_machine.state
 	# Target is hurt
 	if target_state == target.hurt_state:
 		return true
-	# Target is ragdolled (but not in "downed", when they're invulnerable)
+	# Target is ragdolled (but not in "recovering", when they're invulnerable)
 	if target_state == target.ragdoll_state:
-		return target.ragdoll_state.phase != RagdollState.Phase.DOWNED
+		return target.ragdoll_state.phase != RagdollState.Phase.RECOVERING
 	# Target is still recovering from last attack
 	var ability_state := target_state as AbilityState
 	return ability_state != null and ability_state.phase == AbilityState.Phase.RECOVERY
 
+func _target_is_hittable(target: SkirmishEntity) -> bool:
+	return target.hurtbox.monitorable
+
 func _target_is_attacking(target: SkirmishEntity) -> bool:
 	var target_mode := (target.brain as AIBrain).state_machine.state
-	return target_mode is AttackState or target_mode is FollowUpState
+	return target_mode is AttackBrainState or target_mode is FollowUpBrainState
+
+func _target_is_fleeing(target: SkirmishEntity) -> bool:
+	var target_brain := target.brain as AIBrain
+	return target_brain.state_machine.state == target_brain.fleeing_brain_state
 
 func _y_direction(to_target: Vector2) -> Vector2:
 	# Line up on the target's row, since hits only land within Y_AXIS_HIT_RANGE

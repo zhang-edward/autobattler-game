@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://del033dawsljk"]
 
+[ext_resource type="StyleBox" uid="uid://dya0yxdxg7s11" path="res://prefabs/styles/dark_panel.tres" id="1_d2cc8"]
 [ext_resource type="Script" uid="uid://dohwp3k1btxh6" path="res://scripts/ui/special_ability_preview.gd" id="1_y6e7l"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_d2cc8"]
 
 [node name="SpecialAbilityPreview" type="PanelContainer" unique_id=1992649153]
-size_flags_horizontal = 3
+custom_minimum_size = Vector2(200, 200)
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("1_d2cc8")
 script = ExtResource("1_y6e7l")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=2085087275]

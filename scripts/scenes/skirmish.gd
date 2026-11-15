@@ -14,7 +14,7 @@ const STATUS_ROW := preload("res://prefabs/ui/skirmish/skirmish_status_row.tscn"
 
 # Wall layout, authored at this resolution and scaled to the current viewport
 const WALL_BASE_SIZE := Vector2(1920.0, 1080.0)
-const SIDE_WALL_THICKNESS := 20.0
+const SIDE_WALL_THICKNESS := 80.0
 const BOTTOM_WALL_CENTER_Y := 1000.0
 const BOTTOM_WALL_HEIGHT := 136.375
 # The top wall's lower edge sits on the horizon (see Background/Ground band fractions)
@@ -28,11 +28,13 @@ var hero_statuses: VBoxContainer
 var villain_statuses: VBoxContainer
 
 @export_group("Standalone testing")
-@export var debug_hero_count := 3
-@export var debug_villain_count := 3
+@export var debug_hero_count := 1
+@export var debug_bench_count := 1
+@export var debug_villain_count := 1
 
 var return_to_post_skirmish := true
 var hero_team: Array[SkirmishEntity] = []
+var hero_bench: Array[SkirmishEntity] = []
 var villain_team: Array[SkirmishEntity] = []
 var active_hero: SkirmishEntity
 var active_villain: SkirmishEntity
@@ -48,6 +50,8 @@ var _status_rows: Array[SkirmishStatusRow] = []
 
 @onready var tag_in_buttons: HBoxContainer = %TagInButtons
 @onready var special_moves: HBoxContainer = %SpecialMoves
+@onready var hero_combo_counter: ComboCounter = %HeroComboCounter
+@onready var villain_combo_counter: ComboCounter = %VillainComboCounter
 
 @export_group("UI Elements")
 @export var tag_in_button_scene: PackedScene
@@ -57,24 +61,20 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_update_walls)
 	_update_walls()
 	var heroes: Array[EntityConfig] = []
+	var bench: Array[EntityConfig] = []
 	var villains: Array[EntityConfig] = []
-	if not GameVariables.selected_heroes_for_threat.is_empty():
-		heroes = GameVariables.selected_heroes_for_threat
-	elif GameVariables.selected_hero_for_threat != null:
-		heroes = [GameVariables.selected_hero_for_threat]
+	if GameVariables.curr_threat_skirmish != null:
+		heroes = GameVariables.curr_threat_skirmish.heroes
+		bench = GameVariables.curr_threat_skirmish.bench_heroes
+		villains = GameVariables.curr_threat_skirmish.threat_request_config.enemy_configs
 	else:
-		print("[WARN] No hero in GameVariables - using random debug heroes...")
-		heroes = GameVariables.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+		print("[WARN] No threat skirmish in GameVariables - using random debug heroes and villains...")
+		heroes = EntityGenerator.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+		bench = EntityGenerator.generate_random_entity_configs(debug_bench_count, EntityConfig.EntityType.HERO)
+		villains = EntityGenerator.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
 		return_to_post_skirmish = false
-	if GameVariables.selected_threat_request_config != null:
-		villains = GameVariables.selected_threat_request_config.enemy_configs
-	else:
-		print("[WARN] No threat request in GameVariables - using random debug villains...")
-		villains = GameVariables.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
-	setup(heroes, villains)
+	setup(heroes, bench, villains)
 	_build_status_rows()
-	# Debug: 2v2 has no tagging
-	# _build_tag_in_buttons()
 	_build_special_move_buttons()
 
 func _exit_tree() -> void:
@@ -83,8 +83,16 @@ func _exit_tree() -> void:
 func _process(_delta: float) -> void:
 	for row in _status_rows:
 		row.refresh()
-		var is_active := is_instance_valid(row.entity) and (row.entity == active_hero or row.entity == active_villain)
+		var is_active := is_instance_valid(row.entity) and row.entity.is_active and not row.entity.is_dead
 		row.set_active_highlight(is_active)
+		var can_retreat := is_active and not _finished and row.entity.entity_type == EntityConfig.EntityType.HERO \
+			and row.entity.state_machine.state != row.entity.tag_in_state
+		if can_retreat:
+			var brain := row.entity.brain as AIBrain
+			can_retreat = brain.state_machine.state != brain.fleeing_brain_state
+		row.retreat_button.visible = can_retreat
+	for button in tag_in_buttons.get_children():
+		button.visible = not _finished and hero_bench.has((button as TagInButton).hero_to_switch_to)
 
 	var sorted := $Battlefield.get_children()
 	sorted.sort_custom(func(a, b): return a.position.y < b.position.y)
@@ -108,12 +116,16 @@ func _place_wall(wall: StaticBody2D, center: Vector2, size: Vector2) -> void:
 	(collider.shape as RectangleShape2D).size = size
 	
 
-func setup(heroes: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
-	for h in heroes:
+func setup(heroes: Array[EntityConfig], bench: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
+	for h in heroes + bench:
 		h.reset_all_in_round_vars()
 	for v in villains:
 		v.reset_all_in_round_vars()
 	hero_team = _spawn_side(heroes, HERO_START, HERO_BENCH)
+	hero_bench = _spawn_side(bench, HERO_BENCH, HERO_BENCH)
+	for e in hero_bench:
+		e.set_active(false)
+	hero_team.append_array(hero_bench)
 	villain_team = _spawn_side(villains, VILLAIN_START, VILLAIN_BENCH)
 	active_hero = hero_team[0] if not hero_team.is_empty() else null
 	active_villain = villain_team[0] if not villain_team.is_empty() else null
@@ -133,14 +145,17 @@ func _build_status_rows() -> void:
 	_add_status_rows(villain_team, villain_statuses)
 	
 func _build_tag_in_buttons() -> void:
-	for h in hero_team:
+	for h in hero_bench:
 		var tag_in_button = tag_in_button_scene.instantiate() as TagInButton
 		tag_in_buttons.add_child(tag_in_button)
 		tag_in_button.init(h)
 		tag_in_button.on_click.connect(_manual_tag_in)
 		
 func _manual_tag_in(entity: SkirmishEntity):
-	director.request_manual_tag(EntityConfig.EntityType.HERO, entity)
+	if _finished or not hero_bench.has(entity):
+		return
+	hero_bench.erase(entity)
+	entity.begin_tag_in(HERO_START, -1.0)
 	
 func _build_special_move_buttons() -> void:
 	pass
@@ -150,7 +165,12 @@ func _add_status_rows(team: Array[SkirmishEntity], container: VBoxContainer) -> 
 		var row := STATUS_ROW.instantiate() as SkirmishStatusRow
 		container.add_child(row)
 		row.configure(entity)
+		row.retreat_pressed.connect(_retreat)
 		_status_rows.append(row)
+
+func _retreat(entity: SkirmishEntity) -> void:
+	var brain := entity.brain as AIBrain
+	brain.state_machine.transition_to(brain.fleeing_brain_state)
 
 func can_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
 	if _finished or incoming == null or not is_instance_valid(incoming) or incoming.is_dead:
@@ -164,8 +184,6 @@ func can_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> bool:
 	if current != null and is_instance_valid(current) and not current.is_dead:
 		if current.state_machine == null or not (current.state_machine.state is MoveState):
 			return false
-	if _is_grab_in_progress():
-		return false
 	return true
 
 func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -> Array[SkirmishEntity]:
@@ -180,6 +198,10 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		battlefield.add_child(entity)
 		entity.configure_from_entity_config(config)
 		entity.died.connect(_on_entity_died.bind(entity))
+		entity.tag_out_state.finished.connect(_on_entity_retreated.bind(entity))
+		entity.character_moment_rolled.connect(_play_character_moment.bind(entity))
+		entity.took_hit.connect(_on_entity_took_hit.bind(entity))
+		entity.combo_ended.connect(_on_entity_combo_ended.bind(entity))
 		entity.position = start + Vector2(0.0, (i - (configs.size() - 1) * 0.5) * SPAWN_Y_SPACING)
 		entity.set_active(true)
 		# Debug: 2v2 keeps everyone on the field
@@ -192,8 +214,20 @@ func _spawn_side(configs: Array[EntityConfig], start: Vector2, bench: Vector2) -
 		team.append(entity)
 	return team
 
+func _on_entity_took_hit(combo_hits: int, is_punish: bool, entity: SkirmishEntity) -> void:
+	var counter: ComboCounter = villain_combo_counter if entity.entity_type == EntityConfig.EntityType.HERO else hero_combo_counter
+	if combo_hits >= 2:
+		counter.show_hits(combo_hits)
+	if is_punish:
+		counter.show_punish()
+
+func _on_entity_combo_ended(entity: SkirmishEntity) -> void:
+	var counter: ComboCounter = villain_combo_counter if entity.entity_type == EntityConfig.EntityType.HERO else hero_combo_counter
+	counter.end_combo()
+
 func _on_entity_died(entity: SkirmishEntity) -> void:
-	_release_grab_links(entity)
+	if entity.entity_type == EntityConfig.EntityType.HERO and not hero_bench.is_empty():
+		_manual_tag_in(hero_bench[0])
 	var roster := team_for(entity.entity_type)
 	if not _team_has_living(roster):
 		_finish(_winning_side(entity.entity_type))
@@ -204,33 +238,26 @@ func _on_entity_died(entity: SkirmishEntity) -> void:
 	# 	return
 	# director.request_avenge(entity.entity_type)
 
+func _play_character_moment(entity: SkirmishEntity) -> void:
+	if _finished or director.is_playing:
+		return
+	await director.cutscene.darken_screen(entity.position, [entity])
+	director.cutscene.speak(entity, "I won't give up!")
+	ScreenShake.shake_horizontal(8.0, 1)
+	await director.cutscene.character_moment(entity)
+	await director.cutscene.release()
+
+func _on_entity_retreated(entity: SkirmishEntity) -> void:
+	if entity.entity_type == EntityConfig.EntityType.HERO and not hero_bench.is_empty():
+		_manual_tag_in(hero_bench[0])
+	if not _team_has_living(team_for(entity.entity_type)):
+		_finish(_winning_side(entity.entity_type))
+
 func swap_refs(team: EntityConfig.EntityType, incoming: SkirmishEntity) -> void:
 	if team == EntityConfig.EntityType.HERO:
 		active_hero = incoming
 	else:
 		active_villain = incoming
-
-func _is_grab_in_progress() -> bool:
-	for e in [active_hero, active_villain]:
-		if e == null or not is_instance_valid(e) or e.is_dead:
-			continue
-		if e.grabbed_entity != null and is_instance_valid(e.grabbed_entity):
-			return true
-		if e.state_machine == null:
-			continue
-		var st = e.state_machine.state
-		if st is GrabState or st is IsGrabbedState or st is ThrowState:
-			return true
-	return false
-
-func _release_grab_links(dead: SkirmishEntity) -> void:
-	for e in hero_team + villain_team:
-		if e != null and is_instance_valid(e) and e.grabbed_entity == dead:
-			e.grabbed_entity = null
-	var victim := dead.grabbed_entity as SkirmishEntity
-	dead.grabbed_entity = null
-	if victim != null and is_instance_valid(victim) and not victim.is_dead:
-		victim.state_machine.transition_to(victim.hurt_state, {"dir": Vector2.ZERO})
 
 func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishEntity:
 	var best: SkirmishEntity = null
@@ -238,7 +265,7 @@ func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishE
 	for e in team:
 		if e == null or not is_instance_valid(e) or e.is_dead or e.is_active:
 			continue
-		var frac := float(e.entity_config.curr_health) / float(maxi(e.entity_config.vitality * 10, 1))
+		var frac := float(e.entity_config.curr_health) / float(maxi(e.entity_config.get_max_health(), 1))
 		if frac > best_frac:
 			best_frac = frac
 			best = e
@@ -246,7 +273,7 @@ func _healthiest_living_entity_on_team(team: Array[SkirmishEntity]) -> SkirmishE
 
 func _team_has_living(roster: Array[SkirmishEntity]) -> bool:
 	for e in roster:
-		if e != null and is_instance_valid(e) and not e.is_dead:
+		if e != null and is_instance_valid(e) and not e.is_dead and (e.is_active or hero_bench.has(e)):
 			return true
 	return false
 
@@ -257,11 +284,16 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 	if _finished:
 		return
 	_finished = true
+
+	# Short delay before running finish logic 
 	await get_tree().create_timer(OUTRO_SECONDS).timeout
 	finished.emit(winner)
+
 	if not return_to_post_skirmish:
 		return
-	GameVariables.skirmish_winner = winner
-	var new_configs = GameVariables.threat_request_configs.filter(func(c): return c != GameVariables.selected_threat_request_config)
-	GameVariables.threat_request_configs = new_configs
+	GameVariables.curr_threat_skirmish.winner = winner
+	for e in hero_team:
+		if not hero_bench.has(e):
+			GameVariables.curr_threat_skirmish.entered_heroes.append(e.entity_config)
+	GameVariables.resolve_threat_skirmish(GameVariables.curr_threat_skirmish)
 	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")

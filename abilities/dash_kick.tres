@@ -20,12 +20,12 @@ hit = SubResource("Resource_dashkick")
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("5_phase")
-duration = 0.7
+duration = 1.05
 friction = 0.15
 
 [sub_resource type="Resource" id="Resource_startup"]
 script = ExtResource("5_phase")
-duration = 0.1
+duration = 0.15
 
 [resource]
 script = ExtResource("2_kickab")
@@ -35,7 +35,7 @@ friction = 0.05
 ability_name = "Dash Kick"
 tier = 2
 state_scene = ExtResource("5_xl7na")
-cooldown = 12.0
+cooldown = 8.0
 ability_range = 220.0
 anim = "male-rig/dash_kick"
 startup = SubResource("Resource_startup")

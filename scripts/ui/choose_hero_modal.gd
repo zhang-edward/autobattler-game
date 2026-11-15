@@ -32,7 +32,8 @@ func display_available_heroes(selected_heroes: Array[EntityConfig]):
 		var preview_row = hero_preview_row.instantiate() as HeroPreviewRow
 		hero_list_container.add_child(preview_row)
 		preview_row.configure(config)
-		preview_row.on_clicked.connect(select_hero_to_add)
+		if config.injury_recovery_days == 0:
+			preview_row.on_clicked.connect(select_hero_to_add)
 
 func select_hero_to_add(row: HeroPreviewRow):
 	print("Went here!")

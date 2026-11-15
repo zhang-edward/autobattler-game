@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cy27atf2shvwq"]
+
+[ext_resource type="Script" uid="uid://ddekrb7qtokr6" path="res://scripts/ui/combo_counter.gd" id="1_combo"]
+[ext_resource type="FontFile" uid="uid://ctgfblhwofni0" path="res://assets/fonts/AldotheApache.ttf" id="2_uketq"]
+
+[node name="ComboCounter" type="VBoxContainer" unique_id=1062457718]
+custom_minimum_size = Vector2(400, 0)
+mouse_filter = 2
+script = ExtResource("1_combo")
+
+[node name="HitsLabel" type="Label" parent="." unique_id=1735590264]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = ExtResource("2_uketq")
+theme_override_font_sizes/font_size = 64
+text = "3 HITS"
+horizontal_alignment = 1
+
+[node name="PunishLabel" type="Label" parent="." unique_id=420795133]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("2_uketq")
+theme_override_font_sizes/font_size = 44
+text = "PUNISH"
+horizontal_alignment = 1

@@ -1,137 +1,38 @@
 extends Node
 
-enum EncounterEndState {
-	VICTORY,
-	DEFEAT
-}
-
 var player_lineup: Array[EntityConfig] = []
 var captured_villain_prospects: Array[Prospect] = []
 var money := 0
-var encounter_end_state: EncounterEndState
-var villain_lineup: Array[EntityConfig] = []
-var captured_heroes: Array[EntityConfig] = []
+var reputation := 10
 var threat_request_configs: Array[ThreatRequestConfig] = []
-var selected_threat_request_config: ThreatRequestConfig
-var selected_heroes_for_threat: Array[EntityConfig] = []
-var selected_hero_for_threat: EntityConfig
-var skirmish_winner: EntityConfig.EntityType
+var curr_threat_skirmish: ThreatSkirmish
+var levels_for_new_ability = [2, 5, 10, 15]
+var curr_day: int = 1
+var ability_inventory: Array[Ability] = []
 
-# Shared default kit: identical for all characters for now (tune later).
-# Preloaded from .tres so tuning happens in the inspector, not code.
-const JAB: MeleeAbility = preload("res://abilities/jab.tres")
-const RAPID_JAB_DEFAULT: RapidJabAbility = preload("res://abilities/rapid_jab_default.tres")
-const UPPERCUT: MeleeAbility = preload("res://abilities/uppercut.tres")
-const BIG_PUNCH: MeleeAbility = preload("res://abilities/big_punch.tres")
-const DASH_KICK: MeleeAbility = preload("res://abilities/dash_kick.tres")
-const ENERGY_BLAST: ProjectileAbility = preload("res://abilities/energy_blast_default.tres")
-const ABILITIES_PATH := "res://abilities/"
-
-static var BASE_EXP_REWARD = 100
-static var BASE_MONEY_REWARD = 100
-static var BASE_RENOWN_REWARD = 100
+static var REST_DAYS = 2
+static var DEFEATED_REST_DAYS = 5
+static var WOUND_HEAL_PER_DAY = 0.1
+static var VILLAIN_HEAL_PER_DAY = 0.1
+static var WIN_REPUTATION = 1
+static var LOSS_REPUTATION = -1
+static var EXPIRED_REPUTATION = -3
 
 func _ready():
-	player_lineup = generate_random_entity_configs(5, EntityConfig.EntityType.HERO)
-	villain_lineup = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
-	
-func generate_random_stat_lines(lineup: Array[EntityConfig]):
-	for ec in lineup:
-		var entity_config = ec as EntityConfig
-		entity_config.damage_dealt = randi_range(50, 100)
-		entity_config.num_assists = randi_range(0, 5)
-		entity_config.exp = randi_range(0, 100)
-		entity_config.gained_exp = randi_range(50, 100)
-		
-func generate_random_prospects(num_prospects: int, prospect_type: Prospect.ProspectType) -> Array[Prospect]:
-	var entity_configs = generate_random_entity_configs(num_prospects, EntityConfig.EntityType.HERO)
-	var prospects: Array[Prospect] = []
-	for c in entity_configs:
-		prospects.append(Prospect.new(c, prospect_type, randi_range(200, 500)))
-	return prospects
+	new_game()
 
-func random_ability_of_tier(tier: Ability.Tier) -> Ability:
-	var matching: Array[Ability] = []
-	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
-		if not file_name.ends_with(".tres"):
-			continue
-		var ability := load(ABILITIES_PATH + file_name) as Ability
-		if ability != null and ability.tier == tier:
-			matching.append(ability)
-	return matching.pick_random()
+func new_game():
+	player_lineup = EntityGenerator.generate_random_entity_configs(3, EntityConfig.EntityType.HERO)
+	money = 0
+	reputation = 10
+	curr_day = 1
+	curr_threat_skirmish = null
+	threat_request_configs = ThreatGenerator.generate_random_threat_requests(3, curr_day)
+	ability_inventory.clear()
+	var all_abilities = EntityGenerator.get_all_abilities()
+	for i in range(0, 4):
+		ability_inventory.append(all_abilities.pick_random().duplicate())
 
-func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.EntityType):
-	var configs: Array[EntityConfig] = []
-	for i in range(0, num_heroes):
-		var rand_gender = NameGenerator.Gender.MALE if randi_range(0, 1) == 0 else NameGenerator.Gender.FEMALE
-		var rand_name = NameGenerator.generate_name_string(rand_gender)
-
-		var abilities: Array[Ability] = [
-			JAB,
-			UPPERCUT,
-			BIG_PUNCH,
-			# DASH_KICK,
-			# RAPID_JAB_DEFAULT,
-			# ENERGY_BLAST,
-		]
-
-		var random_abilities := true
-		# Debug: same fixed kit for every character
-		# var random_abilities := false
-		if random_abilities:
-			abilities = [
-				random_ability_of_tier(Ability.Tier.LIGHT),
-				random_ability_of_tier(Ability.Tier.MEDIUM),
-				random_ability_of_tier(Ability.Tier.MEDIUM),
-				random_ability_of_tier(Ability.Tier.HEAVY),
-			]
-
-		var entity_config = EntityConfigBuilder.new() \
-			.with_entity_type(entity_type) \
-			.with_gender(EntityConfig.Gender.MALE if rand_gender == NameGenerator.Gender.MALE else EntityConfig.Gender.FEMALE) \
-			.with_entity_name(rand_name) \
-			.with_defense(randi_range(10, 20)) \
-			.with_strength(randi_range(5, 15)) \
-			.with_skill(randi_range(5, 15)) \
-			.with_agility(randi_range(10, 15)) \
-			.with_vitality(randi_range(8, 20)) \
-			.with_charisma(randi_range(5, 15)) \
-			.with_abilities(abilities) \
-			.build()
-		var portrait_config = PortraitConfig.generate_random_portrait_config(entity_config.gender)
-		entity_config.portrait_config = portrait_config
-		configs.append(entity_config)
-	return configs
-
-func generate_random_threat_requests(num_requests: int):
-	var requests: Array[ThreatRequestConfig] = []
-	for i in range(0, num_requests):
-		var enemy_configs = generate_random_entity_configs(1, EntityConfig.EntityType.VILLAIN)
-		var villain_config = enemy_configs[0]
-		var villain_name = villain_config.entity_name
-		var threat_reward = create_threat_reward()
-		var threat_request_config = ThreatRequestConfigBuilder.new() \
-			.with_title(villain_name + " encountered") \
-			.with_description("Sample description") \
-			.with_expiry_days(randi_range(5, 8)) \
-			.with_level_requirement(1) \
-			.with_enemy_configs(enemy_configs) \
-			.with_threat_type(ThreatRequestConfig.ThreatType.VILLAIN) \
-			.with_threat_reward(threat_reward) \
-			.build()
-		requests.append(threat_request_config)
-	return requests
-	
-func create_threat_reward():
-	var reward = ThreatReward.new()
-	reward.exp_gain = BASE_EXP_REWARD
-	reward.money = BASE_MONEY_REWARD
-	reward.renown = BASE_RENOWN_REWARD
-	return reward
-
-func enhance_villain_stats(config: EntityConfig):
-	config.vitality = round(config.vitality * 2.5)
-	
 func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 	match t:
 		EntityConfig.EntityPowerType.ELEMENTAL:
@@ -144,3 +45,34 @@ func get_label_from_power_type(t: EntityConfig.EntityPowerType):
 			return "Psychic"
 		EntityConfig.EntityPowerType.GOD:
 			return "God"
+			
+func resolve_threat_skirmish(threat_skirmish: ThreatSkirmish):
+	# Calculate hero recovery time
+	for h in threat_skirmish.heroes + threat_skirmish.bench_heroes:
+		h.injury_recovery_days = DEFEATED_REST_DAYS if h.curr_health <= 0 else REST_DAYS
+
+	threat_skirmish.reputation_change = WIN_REPUTATION if threat_skirmish.winner == EntityConfig.EntityType.HERO else LOSS_REPUTATION
+	reputation += threat_skirmish.reputation_change
+
+	# If player won this skirmish, villains are defeated - remove this threat from threat list
+	if threat_skirmish.winner == EntityConfig.EntityType.HERO:
+		threat_request_configs = threat_request_configs.filter(func(c): return c != threat_skirmish.threat_request_config)
+
+func advance_day():
+	curr_day += 1
+	for t in threat_request_configs:
+		t.expiry_days -= 1
+		if t.expiry_days <= 0:
+			reputation += EXPIRED_REPUTATION
+	threat_request_configs = threat_request_configs.filter(func(t: ThreatRequestConfig): return t.expiry_days > 0)
+	# Tick down injuries
+	for c in player_lineup:
+		c.curr_wounds = maxi(c.curr_wounds - roundi(c.get_max_health() * WOUND_HEAL_PER_DAY), 0)
+		if c.injury_recovery_days > 0:
+			c.injury_recovery_days -= 1
+			if c.injury_recovery_days == 0:
+				c.curr_health = c.get_max_health()
+	for t in threat_request_configs:
+		for v in t.enemy_configs:
+			v.curr_health = mini(v.curr_health + roundi(v.get_max_health() * VILLAIN_HEAL_PER_DAY), v.get_max_health())
+	threat_request_configs.append_array(ThreatGenerator.generate_random_threat_requests(1, curr_day))

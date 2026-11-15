@@ -3,6 +3,8 @@ extends Area2D
 
 signal hit_connected
 
+const EFFECT_ANGLE_RANGE := PI / 4
+
 var _life_timer := 0.5
 # Dictionary used as hash set, with dummy values (true) for each key
 var _collision_exceptions := {}
@@ -45,4 +47,13 @@ func _handle_area_entered(body: Area2D):
 
 	# The target owns the outcome, including whether it warrants hitstop or shake
 	if target.take_hit(_hit, _source):
+		spawn_effect(lerp(global_position, body.global_position, 0.5), target.global_position - _source.global_position, target)
 		hit_connected.emit()
+
+func spawn_effect(pos: Vector2, dir: Vector2, target: SkirmishEntity):
+	var config = EffectConfig.new()
+	config.pos = pos
+	config.anim = HitEffectRegistry.HIT_1 if target.state_machine.state == target.block_state else HitEffectRegistry.HIT_NEW
+	config.dir = dir
+	config.angle_range_rad = EFFECT_ANGLE_RANGE
+	EffectManager.spawn_effect(config)

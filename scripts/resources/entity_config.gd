@@ -27,18 +27,20 @@ var entity_type: EntityType
 var entity_power_type: EntityPowerType # TODO: Does nothing currently
 
 ## Stats
-var defense: int = 5
+var defense: int = 0
 var strength: int = 0
-var skill: int = 0 # TODO: Does nothing currently
+var resilience: int = 0 # TODO: Does nothing currently
 var agility: int = 0
-var vitality: int = 0
-var charisma: int = 0 # TODO: Does nothing currently
+var evasion: int = 0
 
 var level := 1
 var exp := 0
 var exp_to_next_level := 100
 var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
+var injury_recovery_days := 0
+var energy_level := BASE_ENERGY_LEVEL
+var curr_wounds := 0
 
 # In-round state
 var curr_health := 0
@@ -46,25 +48,32 @@ var gained_exp := 0
 var num_assists := 0
 var damage_dealt := 0
 
+static var BASE_ENERGY_LEVEL := 3
+
+const BASE_HEALTH := 140
+const HEALTH_PER_LEVEL := 20
+
+
 func handle_level_up():
 	level += 1
 	exp_to_next_level = get_exp_to_next_level(level)
 	defense += cond_stat_update(1, 5)
 	strength += cond_stat_update(1, 3)
-	skill += cond_stat_update(1, 3)
+	resilience += cond_stat_update(1, 3)
 	agility += cond_stat_update(1, 3)
-	vitality += cond_stat_update(1, 3)
-	charisma += cond_stat_update(1, 3)
+	evasion += cond_stat_update(1, 3)
 
 func cond_stat_update(lo: int, hi: int):
 	var should_incr = randi_range(0, 1) == 0
 	return randi_range(lo, hi) if should_incr else 0
 	
 func reset_all_in_round_vars():
-	curr_health = vitality * 10
 	gained_exp = 0
 	num_assists = 0
 	damage_dealt = 0
+
+func get_max_health() -> int:
+	return BASE_HEALTH + HEALTH_PER_LEVEL * (level - 1)
 
 func get_exp_to_next_level(level: int) -> int:
 	const CAP_LEVEL := 10

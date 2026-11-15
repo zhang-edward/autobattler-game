@@ -8,14 +8,22 @@ const ACTIVE_BORDER := Color(1, 1, 0)
 
 @onready var _name_label: Label = $HBox/NameLabel
 @onready var _bar: ProgressBar = $HBox/HealthBar
+@onready var _wounds_bar: ProgressBar = $HBox/HealthBar/WoundsBar
+@onready var retreat_button: Button = $HBox/RetreatButton
 
 var entity: SkirmishEntity
+
+signal retreat_pressed(e: SkirmishEntity)
+
+func _ready() -> void:
+	retreat_button.pressed.connect(func(): retreat_pressed.emit(entity))
 
 func configure(e: SkirmishEntity) -> void:
 	entity = e
 	_name_label.text = e.entity_config.entity_name
-	_bar.max_value = e.entity_config.vitality * 10
+	_bar.max_value = e.entity_config.get_max_health()
 	_bar.value = e.entity_config.curr_health
+	_wounds_bar.max_value = e.entity_config.get_max_health()
 	var fill := HERO_FILL if e.entity_type == EntityConfig.EntityType.HERO else VILLAIN_FILL
 	_bar.add_theme_stylebox_override("fill", fill)
 	refresh()
@@ -23,8 +31,11 @@ func configure(e: SkirmishEntity) -> void:
 func refresh() -> void:
 	if entity == null or not is_instance_valid(entity) or entity.entity_config == null:
 		_bar.value = 0
+		_wounds_bar.visible = false
 		return
 	_bar.value = entity.entity_config.curr_health
+	_wounds_bar.value = entity.entity_config.curr_wounds
+	_wounds_bar.visible = entity.entity_config.curr_health <= 0
 
 func set_active_highlight(active: bool) -> void:
 	var stylebox := get_theme_stylebox("panel") as StyleBoxFlat

@@ -15,16 +15,21 @@
 [ext_resource type="Script" uid="uid://dc2t1v1odtx5q" path="res://scripts/skirmish/states/ragdoll_state.gd" id="13_ragdoll"]
 [ext_resource type="Script" uid="uid://duxyumqotb4sq" path="res://scripts/skirmish/combat/hurtbox.gd" id="14_hurtbox"]
 [ext_resource type="Script" uid="uid://1remksd10of4" path="res://scripts/skirmish/brains/ai_brain.gd" id="17_brain"]
-[ext_resource type="Script" uid="uid://dkuwi6fc0w2qa" path="res://scripts/skirmish/states/is_grabbed_state.gd" id="17_qu6eo"]
 [ext_resource type="Script" uid="uid://bhqwo0ypavxl5" path="res://scripts/skirmish/states/death_state.gd" id="19_pkptp"]
 [ext_resource type="Script" uid="uid://51rw8eli5wvp" path="res://scripts/skirmish/states/tag_out_state.gd" id="20_tagout"]
 [ext_resource type="Script" uid="uid://dkmr4uicm6gs2" path="res://scripts/skirmish/states/tag_in_state.gd" id="21_tagin"]
-[ext_resource type="Script" uid="uid://cwotdy4fyh72d" path="res://scripts/skirmish/brains/states/idle_state.gd" id="22_idle"]
-[ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_state.gd" id="23_attack"]
-[ext_resource type="Script" path="res://scripts/skirmish/brains/states/follow_up_state.gd" id="24_follow_up"]
+[ext_resource type="Script" uid="uid://cwotdy4fyh72d" path="res://scripts/skirmish/brains/states/idle_brain_state.gd" id="22_idle"]
+[ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_brain_state.gd" id="23_attack"]
+[ext_resource type="Script" path="res://scripts/skirmish/brains/states/follow_up_brain_state.gd" id="24_follow_up"]
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="25_block"]
 [ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="26_dodge"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
+[ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_brain_state.gd" id="28_fleeing"]
+[ext_resource type="Script" path="res://scripts/skirmish/states/downed_state.gd" id="29_downed"]
+[ext_resource type="StyleBox" path="res://prefabs/styles/wounds_bar.tres" id="30_wounds_fill"]
+[ext_resource type="Script" path="res://scripts/skirmish/states/character_moment_state.gd" id="31_character_moment"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wounds_bg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -33,26 +38,28 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "hurtbox", "state_machine", "hurt_state", "death_state", "move_state", "ragdoll_state", "is_grabbed_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "wounds_bar", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "character_moment_state", "brain")]
 collision_layer = 0
-collision_mask = 1024
+collision_mask = 3072
 script = ExtResource("1_entity")
 hitbox_scene = ExtResource("2_ty1i2")
 rig = NodePath("RigWrapper/MaleRig")
 shadow = NodePath("Shadow")
 healthbar = NodePath("ProgressBar")
+wounds_bar = NodePath("ProgressBar/WoundsBar")
 hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
 death_state = NodePath("StateMachine/DeathState")
+downed_state = NodePath("StateMachine/DownedState")
 move_state = NodePath("StateMachine/MoveState")
 ragdoll_state = NodePath("StateMachine/RagdollState")
-is_grabbed_state = NodePath("StateMachine/IsGrabbedState")
 tag_out_state = NodePath("StateMachine/TagOutState")
 tag_in_state = NodePath("StateMachine/TagInState")
 block_state = NodePath("StateMachine/BlockState")
 dodge_state = NodePath("StateMachine/DodgeState")
 dash_state = NodePath("StateMachine/DashState")
+character_moment_state = NodePath("StateMachine/CharacterMomentState")
 brain = NodePath("AIBrain")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1626133202]
@@ -91,6 +98,19 @@ theme_override_styles/fill = ExtResource("5_bar_fill")
 value = 100.0
 show_percentage = false
 
+[node name="WoundsBar" type="ProgressBar" parent="ProgressBar" unique_id=1768245031]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_wounds_bg")
+theme_override_styles/fill = ExtResource("30_wounds_fill")
+show_percentage = false
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=843592500]
 shape = SubResource("CircleShape2D_feet")
 
@@ -120,11 +140,14 @@ death_state = NodePath("../DeathState")
 script = ExtResource("13_ragdoll")
 move_state = NodePath("../MoveState")
 
-[node name="IsGrabbedState" type="Node" parent="StateMachine" unique_id=96898516]
-script = ExtResource("17_qu6eo")
-
 [node name="DeathState" type="Node" parent="StateMachine" unique_id=1186784855]
 script = ExtResource("19_pkptp")
+
+[node name="DownedState" type="Node" parent="StateMachine" unique_id=1520384917]
+script = ExtResource("29_downed")
+
+[node name="CharacterMomentState" type="Node" parent="StateMachine" unique_id=1609384712]
+script = ExtResource("31_character_moment")
 
 [node name="TagOutState" type="Node" parent="StateMachine" unique_id=1833548725]
 script = ExtResource("20_tagout")
@@ -170,24 +193,33 @@ offset_bottom = 40.0
 text = "hero name"
 horizontal_alignment = 1
 
-[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine")]
+[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_brain_state", "flee_roll_timer")]
 script = ExtResource("17_brain")
 state_machine = NodePath("StateMachine")
+fleeing_brain_state = NodePath("StateMachine/FleeingBrainState")
+flee_roll_timer = NodePath("FleeRollTimer")
+
+[node name="FleeRollTimer" type="Timer" parent="AIBrain" unique_id=1846203957]
+process_callback = 0
+one_shot = true
 
 [node name="StateMachine" type="Node" parent="AIBrain" unique_id=482915573]
 script = ExtResource("6_state_machine")
-initial_state = NodePath("IdleState")
+initial_state = NodePath("IdleBrainState")
 
-[node name="IdleState" type="Node" parent="AIBrain/StateMachine" unique_id=1938274651 node_paths=PackedStringArray("attack_state")]
+[node name="IdleBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1938274651 node_paths=PackedStringArray("attack_state")]
 script = ExtResource("22_idle")
-attack_state = NodePath("../AttackState")
+attack_state = NodePath("../AttackBrainState")
 
-[node name="AttackState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state", "follow_up_state")]
+[node name="AttackBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=726104839 node_paths=PackedStringArray("idle_state", "follow_up_state")]
 script = ExtResource("23_attack")
-idle_state = NodePath("../IdleState")
-follow_up_state = NodePath("../FollowUpState")
+idle_state = NodePath("../IdleBrainState")
+follow_up_state = NodePath("../FollowUpBrainState")
 
-[node name="FollowUpState" type="Node" parent="AIBrain/StateMachine" unique_id=1472093618 node_paths=PackedStringArray("attack_state", "idle_state")]
+[node name="FollowUpBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1472093618 node_paths=PackedStringArray("attack_state", "idle_state")]
 script = ExtResource("24_follow_up")
-attack_state = NodePath("../AttackState")
-idle_state = NodePath("../IdleState")
+attack_state = NodePath("../AttackBrainState")
+idle_state = NodePath("../IdleBrainState")
+
+[node name="FleeingBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1290476513]
+script = ExtResource("28_fleeing")
