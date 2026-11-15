@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ability_cooldown_row.gd" id="1_row"]
+[ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_icon"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_overlay_bg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay_fill"]
+bg_color = Color(0, 0, 0, 0.75)
+
+[node name="AbilityCooldownRow" type="HBoxContainer"]
+mouse_filter = 2
+theme_override_constants/separation = 8
+script = ExtResource("1_row")
+
+[node name="AbilityIcon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CooldownOverlay" type="ProgressBar" parent="AbilityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_overlay_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_overlay_fill")
+fill_mode = 3
+show_percentage = false
+
+[node name="AbilityName" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Jab"

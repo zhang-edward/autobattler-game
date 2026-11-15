@@ -14,24 +14,28 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_row")
 script = ExtResource("1_v4q45")
 
-[node name="HBox" type="HBoxContainer" parent="." unique_id=252070609]
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HBox" type="HBoxContainer" parent="VBox" unique_id=252070609]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="NameLabel" type="Label" parent="HBox" unique_id=288033]
+[node name="NameLabel" type="Label" parent="VBox/HBox" unique_id=288033]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Name"
 
-[node name="HealthBar" type="ProgressBar" parent="HBox" unique_id=224715193]
+[node name="HealthBar" type="ProgressBar" parent="VBox/HBox" unique_id=224715193]
 custom_minimum_size = Vector2(180, 16)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/background = ExtResource("2_p85x6")
 show_percentage = false
 
-[node name="WoundsBar" type="ProgressBar" parent="HBox/HealthBar" unique_id=1937046602]
+[node name="WoundsBar" type="ProgressBar" parent="VBox/HBox/HealthBar" unique_id=1937046602]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -44,8 +48,13 @@ theme_override_styles/background = SubResource("StyleBoxEmpty_wounds_bg")
 theme_override_styles/fill = ExtResource("3_wounds_fill")
 show_percentage = false
 
-[node name="RetreatButton" type="Button" parent="HBox" unique_id=873140256]
+[node name="RetreatButton" type="Button" parent="VBox/HBox" unique_id=873140256]
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Retreat"
+
+[node name="Abilities" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
