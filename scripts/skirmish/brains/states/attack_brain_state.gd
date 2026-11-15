@@ -6,7 +6,7 @@ const SPEED := 2.5
 @export var idle_state: BrainState
 @export var follow_up_state: BrainState
 
-var _ability: Ability
+var _ability: OffensiveAbility
 
 func enter(msg := {}) -> void:
 	_ability = msg.get("ability")

@@ -60,7 +60,7 @@ func _build_move_toggles() -> void:
 	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
 		if not file_name.ends_with(".tres"):
 			continue
-		var ability := load(ABILITIES_PATH + file_name) as Ability
+		var ability := load(ABILITIES_PATH + file_name) as OffensiveAbility
 		if ability == null:
 			continue
 		var toggle := CheckBox.new()

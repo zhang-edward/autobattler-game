@@ -48,7 +48,7 @@ func _movement(direction: Vector2, facing: float, dash := 0.0) -> Intent:
 	intent.dash = dash
 	return intent
 
-func _action(ability: Ability, facing: float) -> Intent:
+func _action(ability: OffensiveAbility, facing: float) -> Intent:
 	var intent := Intent.new()
 	intent.facing = facing
 	intent.ability = ability

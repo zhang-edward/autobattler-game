@@ -25,8 +25,8 @@ func get_intent(_delta: float) -> Intent:
 		state_machine.transition_to(idle_state)
 	return _movement(Vector2.ZERO, facing)
 
-func _draw_follow_up(ability_state: AbilityState, to_target: Vector2) -> Ability:
-	var candidates: Array[Ability] = []
+func _draw_follow_up(ability_state: AbilityState, to_target: Vector2) -> OffensiveAbility:
+	var candidates: Array[OffensiveAbility] = []
 	for ability in brain.ready_abilities():
 		if !ability.in_reach(to_target):
 			continue

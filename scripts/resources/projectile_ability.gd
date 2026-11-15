@@ -1,5 +1,5 @@
 class_name ProjectileAbility
-extends Ability
+extends OffensiveAbility
 
 @export var hit: HitConfig = HitConfig.create(20, Vector2(200.0, 0.0), false, Hitstop.DEFAULT_DURATION, HitConfig.Kind.PROJECTILE)
 @export var active_duration := 0.2

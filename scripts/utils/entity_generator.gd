@@ -13,7 +13,7 @@ static func generate_random_prospects(num_prospects: int, prospect_type: Prospec
 	return prospects
 
 static func random_ability_of_tier(tier: Ability.Tier) -> Ability:
-	var abilities_with_matching_tier = get_all_abilities().filter(func(a: Ability): return a.tier == tier)
+	var abilities_with_matching_tier = get_all_abilities().filter(func(a: OffensiveAbility): return a.tier == tier)
 	return abilities_with_matching_tier.pick_random().duplicate()
 
 static func generate_random_entity_configs(num_heroes: int, entity_type: EntityConfig.EntityType):

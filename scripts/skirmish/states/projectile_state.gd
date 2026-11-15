@@ -5,11 +5,11 @@ const SPAWN_OFFSET := Vector2(50, -109)
 
 var projectile_ability: ProjectileAbility
 
-func init(ability_: Ability) -> void:
+func init(ability_: OffensiveAbility) -> void:
 	super.init(ability_)
 	projectile_ability = ability as ProjectileAbility
 
-func can_cancel_into(_other: Ability) -> bool:
+func can_cancel_into(_other: OffensiveAbility) -> bool:
 	return true
 
 func _active_entered() -> void:

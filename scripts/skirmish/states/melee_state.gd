@@ -3,7 +3,7 @@ extends AbilityState
 
 var melee_ability: MeleeAbility
 
-func init(ability_: Ability) -> void:
+func init(ability_: OffensiveAbility) -> void:
 	super.init(ability_)
 	melee_ability = ability as MeleeAbility
 

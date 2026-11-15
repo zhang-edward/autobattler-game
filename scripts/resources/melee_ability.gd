@@ -1,5 +1,5 @@
 class_name MeleeAbility
-extends Ability
+extends OffensiveAbility
 
 @export var hitbox: HitboxConfig
 @export var velocity := Vector2.ZERO

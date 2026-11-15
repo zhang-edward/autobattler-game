@@ -175,16 +175,17 @@ func _build_move_map() -> void:
 	if entity_config == null:
 		return
 	for ability in entity_config.abilities:
-		if ability == null or ability.state_scene == null:
+		var offensive_ability := ability as OffensiveAbility
+		if offensive_ability == null or offensive_ability.state_scene == null:
 			continue
-		var instance := ability.state_scene.instantiate() as AbilityState
+		var instance := offensive_ability.state_scene.instantiate() as AbilityState
 		if instance == null:
 			continue
 		state_machine.add_child(instance)
 		# StateMachine._ready already ran, so wire manually.
 		instance.state_machine = state_machine
-		instance.init(ability)
-		ability_to_state[ability] = instance
+		instance.init(offensive_ability)
+		ability_to_state[offensive_ability] = instance
 
 func _can_block() -> bool:
 	var state := state_machine.state

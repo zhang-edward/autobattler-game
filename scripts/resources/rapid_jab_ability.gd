@@ -1,5 +1,5 @@
 class_name RapidJabAbility
-extends Ability
+extends OffensiveAbility
 
 @export var jab_interval := 0.12
 @export var hitbox: HitboxConfig

@@ -32,17 +32,17 @@ func _on_flee_roll_timer_timeout() -> void:
 func get_intent(delta: float) -> Intent:
 	return (state_machine.state as BrainState).get_intent(delta)
 
-func draw_weighted() -> Ability:
+func draw_weighted() -> OffensiveAbility:
 	return pick_weighted(ready_abilities())
 
-func ready_abilities() -> Array[Ability]:
-	var abilities: Array[Ability] = []
+func ready_abilities() -> Array[OffensiveAbility]:
+	var abilities: Array[OffensiveAbility] = []
 	for ability in entity.entity_config.abilities:
-		if ability != null and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
+		if ability is OffensiveAbility and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
 			abilities.append(ability)
 	return abilities
 
-func pick_weighted(abilities: Array[Ability]) -> Ability:
+func pick_weighted(abilities: Array[OffensiveAbility]) -> OffensiveAbility:
 	if abilities.is_empty():
 		return null
 

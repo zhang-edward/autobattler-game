@@ -6,15 +6,15 @@ enum Phase {STARTUP, ACTIVE, RECOVERY}
 const AGILITY_BASELINE := 5.0
 const AGILITY_SCALE := 10.0
 
-var ability: Ability
+var ability: OffensiveAbility
 var phase: Phase
 var phase_timer := 0.0
 var hit_connected := false
 
-func init(ability_: Ability) -> void:
+func init(ability_: OffensiveAbility) -> void:
 	ability = ability_
 
-func can_cancel_into(other: Ability) -> bool:
+func can_cancel_into(other: OffensiveAbility) -> bool:
 	return other.tier > ability.tier # or \
 		# (ability.tier == Ability.Tier.LIGHT and other.tier == Ability.Tier.LIGHT)
 

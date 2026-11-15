@@ -9,7 +9,7 @@ const JAB_MARKERS: Array[StringName] = [&"", &"punch_2", &"punch_3", &"punch_4"]
 var rapid_jab: RapidJabAbility
 var jab_index := 0
 
-func init(ability_: Ability) -> void:
+func init(ability_: OffensiveAbility) -> void:
 	super.init(ability_)
 	rapid_jab = ability as RapidJabAbility
 

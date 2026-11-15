@@ -14,5 +14,5 @@ var direction := Vector2.ZERO
 # True only on the frame the jump is requested. The brain owns the edge detection.
 var jump := false
 # Which ability from the entity's kit to perform. Null means no ability this frame.
-var ability: Ability
+var ability: OffensiveAbility
 var dash := 0.0
