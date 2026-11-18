@@ -156,3 +156,12 @@ text = "Heavy"
 unique_name_in_owner = true
 layout_mode = 2
 columns = 4
+
+[node name="DefensiveLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031133]
+layout_mode = 2
+text = "Defensive"
+
+[node name="DefensiveMoves" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031134]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 4

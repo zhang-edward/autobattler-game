@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="BlockAbility" format=3 uid="uid://ci6yuinsh6fdy"]
+
+[ext_resource type="Script" uid="uid://tkrrd1yyqmso" path="res://scripts/resources/block_ability.gd" id="1_block"]
+
+[resource]
+script = ExtResource("1_block")
+block = 60
+ability_name = "Heavy Block"
+cooldown = 10.0

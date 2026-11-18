@@ -17,14 +17,10 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
-const BLOCK_BASE_CHANCE := 0.3
-const BLOCK_DEFENSE_SCALE := 10.0
-const BLOCK_REDUCTION_PER_DEFENSE := 0.5
 const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.0
 # const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.5
 const DEFENSE_LAUNCH_SCALE := 30.0
 const STRENGTH_LAUNCH_SCALE := 30.0
-const DODGE_EVASION_SCALE := 40.0
 const EVASION_PUSHBACK_SCALE := 20.0
 const IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE := 0.8
 const IGNORE_HITSTUN_STEEPNESS := 4.0
@@ -86,6 +82,8 @@ var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
 var combo_hits := 0
+var defensive_status: DefensiveAbility
+var block := 0
 
 
 var _shadow_base_scale: Vector2
@@ -195,7 +193,7 @@ func _can_block() -> bool:
 		or state == tag_out_state
 		or state == ragdoll_state
 		or state == hurt_state
-		or state is AbilityState
+		# or state is AbilityState
 	)
 
 func _can_dodge() -> bool:
@@ -226,22 +224,19 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		and (state_machine.state as AbilityState).phase == AbilityState.Phase.RECOVERY
 
 	## Defensive options logic
-	var blocked := state_machine.state == block_state
-	if _can_dodge():
-		# Dodge success roll calculation
-		var evasion: int = entity_config.evasion if entity_config != null else 0
-		if randf() < float(evasion) / (evasion + DODGE_EVASION_SCALE):
-			state_machine.transition_to(dodge_state, {"dir": dir})
-			return false
-	# Block success roll calculation
-	if not blocked and _can_block():
-		var defense: int = entity_config.defense if entity_config != null else 0
-		blocked = randf() < BLOCK_BASE_CHANCE + (1.0 - BLOCK_BASE_CHANCE) * defense / (defense + BLOCK_DEFENSE_SCALE)
-
+	if defensive_status is DodgeAbility and _can_dodge():
+		defensive_status = null
+		state_machine.transition_to(dodge_state, {"dir": dir})
+		return false
 	var damage := hit.damage
-	# Take chip damage if blocked
-	if blocked:
-		damage = maxi(hit.damage - roundi(entity_config.defense * BLOCK_REDUCTION_PER_DEFENSE), 1)
+	var blocked := false
+	if defensive_status is BlockAbility and _can_block():
+		var absorbed := mini(block, damage)
+		block -= absorbed
+		damage -= absorbed
+		blocked = damage == 0
+		if block == 0:
+			defensive_status = null
 	var was_at_zero_health := healthbar.value <= 0
 	source.entity_config.damage_dealt += damage
 	var wound_damage := maxi(damage - int(healthbar.value), 0)
@@ -256,7 +251,7 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		combo_hits = combo_hits + 1 if in_combo else 1
 		EffectManager.spawn_damage_number(global_position + Vector2(0.0, z) + DAMAGE_NUMBER_OFFSET, damage)
 	var wound_fraction := float(entity_config.curr_wounds) / entity_config.get_max_health()
-	var downed := wound_fraction >= 1.0 or (was_at_zero_health and randf() < wound_fraction)
+	var downed := not blocked and (wound_fraction >= 1.0 or (was_at_zero_health and randf() < wound_fraction))
 
 	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
 	var pushback := hit.pushback \

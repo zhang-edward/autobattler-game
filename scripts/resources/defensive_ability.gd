@@ -1,0 +1,2 @@
+class_name DefensiveAbility
+extends Ability

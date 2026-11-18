@@ -4,6 +4,7 @@ extends PanelContainer
 signal build_changed
 
 const ABILITIES_PATH := "res://abilities/"
+const DEFENSIVE_ABILITIES_PATH := "res://abilities/defensive/"
 
 @export var entity_type: EntityConfig.EntityType
 
@@ -24,6 +25,7 @@ const ABILITIES_PATH := "res://abilities/"
 	Ability.Tier.MEDIUM: %MediumMoves,
 	Ability.Tier.HEAVY: %HeavyMoves,
 }
+@onready var _defensive_moves: GridContainer = %DefensiveMoves
 
 var _move_toggles: Dictionary[Ability, CheckBox] = {}
 
@@ -57,18 +59,22 @@ func build_config() -> EntityConfig:
 	return config
 
 func _build_move_toggles() -> void:
-	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
-		if not file_name.ends_with(".tres"):
-			continue
-		var ability := load(ABILITIES_PATH + file_name) as OffensiveAbility
-		if ability == null:
-			continue
-		var toggle := CheckBox.new()
-		toggle.text = ability.ability_name
-		toggle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		toggle.toggled.connect(_on_build_changed.unbind(1))
-		_moves_by_tier[ability.tier].add_child(toggle)
-		_move_toggles[ability] = toggle
+	for path in [ABILITIES_PATH, DEFENSIVE_ABILITIES_PATH]:
+		for file_name in ResourceLoader.list_directory(path):
+			if not file_name.ends_with(".tres"):
+				continue
+			var ability := load(path + file_name) as Ability
+			if ability == null:
+				continue
+			var toggle := CheckBox.new()
+			toggle.text = ability.ability_name
+			toggle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			toggle.toggled.connect(_on_build_changed.unbind(1))
+			if ability is DefensiveAbility:
+				_defensive_moves.add_child(toggle)
+			else:
+				_moves_by_tier[(ability as OffensiveAbility).tier].add_child(toggle)
+			_move_toggles[ability] = toggle
 
 func _stats() -> Array[SpinBox]:
 	return [_strength, _defense, _agility, _evasion, _resilience]
@@ -102,15 +108,12 @@ func _refresh_stat_info() -> void:
 	]
 
 	var defense := _defense.value
-	_defense_info.text = "Block %d%%   ·   Blocked hits −%d damage   ·   Launch taken ×%.2f" % [
-		roundi(100.0 * (SkirmishEntity.BLOCK_BASE_CHANCE + (1.0 - SkirmishEntity.BLOCK_BASE_CHANCE) * defense / (defense + SkirmishEntity.BLOCK_DEFENSE_SCALE))),
-		roundi(defense * SkirmishEntity.BLOCK_REDUCTION_PER_DEFENSE),
+	_defense_info.text = "Launch taken ×%.2f" % [
 		SkirmishEntity.DEFENSE_LAUNCH_SCALE / (SkirmishEntity.DEFENSE_LAUNCH_SCALE + defense),
 	]
 
 	var evasion := _evasion.value
-	_evasion_info.text = "Dodge %d%%   ·   Pushback taken ×%.2f" % [
-		roundi(100.0 * evasion / (evasion + SkirmishEntity.DODGE_EVASION_SCALE)),
+	_evasion_info.text = "Pushback taken ×%.2f" % [
 		1.0 + evasion / SkirmishEntity.EVASION_PUSHBACK_SCALE,
 	]
 

@@ -15,4 +15,5 @@ var direction := Vector2.ZERO
 var jump := false
 # Which ability from the entity's kit to perform. Null means no ability this frame.
 var ability: OffensiveAbility
+var defensive_ability: DefensiveAbility
 var dash := 0.0

@@ -11,6 +11,7 @@ const ACTIVE_BORDER := Color(1, 1, 0)
 @onready var _bar: ProgressBar = $VBox/HBox/HealthBar
 @onready var _wounds_bar: ProgressBar = $VBox/HBox/HealthBar/WoundsBar
 @onready var retreat_button: Button = $VBox/HBox/RetreatButton
+@onready var _defensive_status_label: Label = $VBox/DefensiveStatusLabel
 @onready var _abilities: VBoxContainer = $VBox/Abilities
 
 var entity: SkirmishEntity
@@ -42,6 +43,12 @@ func refresh() -> void:
 	_bar.value = entity.entity_config.curr_health
 	_wounds_bar.value = entity.entity_config.curr_wounds
 	_wounds_bar.visible = entity.entity_config.curr_health <= 0
+	if entity.defensive_status is BlockAbility:
+		_defensive_status_label.text = "Block %d" % entity.block
+	elif entity.defensive_status is DodgeAbility:
+		_defensive_status_label.text = "Dodge"
+	else:
+		_defensive_status_label.text = ""
 	for ability_cooldown_row in _abilities.get_children():
 		(ability_cooldown_row as AbilityCooldownRow).refresh()
 

@@ -42,6 +42,16 @@ func ready_abilities() -> Array[OffensiveAbility]:
 			abilities.append(ability)
 	return abilities
 
+func ready_defensive_ability() -> DefensiveAbility:
+	for ability in entity.entity_config.abilities:
+		if ability is not DefensiveAbility or entity.ability_cooldowns.get(ability, 0.0) > 0.0:
+			continue
+		if entity.defensive_status == null:
+			return ability
+		if ability is BlockAbility and entity.defensive_status is BlockAbility and (ability as BlockAbility).block > entity.block:
+			return ability
+	return null
+
 func pick_weighted(abilities: Array[OffensiveAbility]) -> OffensiveAbility:
 	if abilities.is_empty():
 		return null

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DodgeAbility" format=3 uid="uid://di8ms71cqqry7"]
+
+[ext_resource type="Script" uid="uid://bdrv114xcuj4c" path="res://scripts/resources/dodge_ability.gd" id="1_dodge"]
+
+[resource]
+script = ExtResource("1_dodge")
+ability_name = "Dodge"
+cooldown = 4.0
