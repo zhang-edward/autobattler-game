@@ -2,6 +2,7 @@ class_name OffensiveAbility
 extends Ability
 
 @export var tier: Tier
+@export var stamina_cost := 1
 ## State scene instantiated under the entity's StateMachine at spawn.
 @export var state_scene: PackedScene
 @export var ability_range := 80.0

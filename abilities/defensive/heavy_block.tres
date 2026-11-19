@@ -6,4 +6,4 @@
 script = ExtResource("1_block")
 block = 60
 ability_name = "Heavy Block"
-stamina_cost = 20
+composure_cost = 3

@@ -3,11 +3,15 @@
 [ext_resource type="Script" uid="uid://dam53r2pxydtv" path="res://scripts/ui/skirmish_status_row.gd" id="1_v4q45"]
 [ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="2_p85x6"]
 [ext_resource type="StyleBox" path="res://prefabs/styles/wounds_bar.tres" id="3_wounds_fill"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/skirmish/segmented_bar.tscn" id="4_segmented_bar"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wounds_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_fill"]
 bg_color = Color(0.95, 0.8, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_composure_fill"]
+bg_color = Color(0.3, 0.6, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_row"]
 resource_local_to_scene = true
@@ -57,13 +61,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Retreat"
 
-[node name="StaminaBar" type="ProgressBar" parent="VBox"]
-custom_minimum_size = Vector2(0, 8)
+[node name="StaminaBar" parent="VBox" instance=ExtResource("4_segmented_bar")]
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/background = ExtResource("2_p85x6")
-theme_override_styles/fill = SubResource("StyleBoxFlat_stamina_fill")
-show_percentage = false
+fill_style = SubResource("StyleBoxFlat_stamina_fill")
+
+[node name="ComposureBar" parent="VBox" instance=ExtResource("4_segmented_bar")]
+layout_mode = 2
+fill_style = SubResource("StyleBoxFlat_composure_fill")
 
 [node name="Abilities" type="VBoxContainer" parent="VBox"]
 layout_mode = 2

@@ -13,7 +13,8 @@ const ACTIVE_BORDER := Color(1, 1, 0)
 @onready var _bar: ProgressBar = $VBox/HBox/HealthBar
 @onready var _wounds_bar: ProgressBar = $VBox/HBox/HealthBar/WoundsBar
 @onready var retreat_button: Button = $VBox/HBox/RetreatButton
-@onready var _stamina_bar: ProgressBar = $VBox/StaminaBar
+@onready var _stamina_bar: SegmentedBar = $VBox/StaminaBar
+@onready var _composure_bar: SegmentedBar = $VBox/ComposureBar
 @onready var _abilities: VBoxContainer = $VBox/Abilities
 
 var entity: SkirmishEntity
@@ -30,7 +31,8 @@ func configure(e: SkirmishEntity) -> void:
 	_bar.max_value = e.entity_config.get_max_health()
 	_bar.value = e.entity_config.curr_health
 	_wounds_bar.max_value = e.entity_config.get_max_health()
-	_stamina_bar.max_value = SkirmishEntity.STAMINA_MAX
+	_stamina_bar.configure(int(SkirmishEntity.STAMINA_MAX))
+	_composure_bar.configure(int(SkirmishEntity.COMPOSURE_MAX))
 	var fill := HERO_FILL if e.entity_type == EntityConfig.EntityType.HERO else VILLAIN_FILL
 	_bar.add_theme_stylebox_override("fill", fill)
 	for chain in e.chains:
@@ -45,7 +47,7 @@ func configure(e: SkirmishEntity) -> void:
 		if ability is DefensiveAbility:
 			var chain_row := CHAIN_ROW.instantiate() as ChainRow
 			_abilities.add_child(chain_row)
-			chain_row.configure(e, ability.ability_name, ability.stamina_cost)
+			chain_row.configure(e, ability.ability_name, (ability as DefensiveAbility).composure_cost, true)
 	refresh()
 
 func refresh() -> void:
@@ -56,7 +58,8 @@ func refresh() -> void:
 	_bar.value = entity.entity_config.curr_health
 	_wounds_bar.value = entity.entity_config.curr_wounds
 	_wounds_bar.visible = entity.entity_config.curr_health <= 0
-	_stamina_bar.value = entity.stamina
+	_stamina_bar.set_value(entity.stamina)
+	_composure_bar.set_value(entity.composure)
 	for chain_row in _abilities.get_children():
 		(chain_row as ChainRow).refresh()
 	var queued_chain := (entity.brain as AIBrain).queued_chain

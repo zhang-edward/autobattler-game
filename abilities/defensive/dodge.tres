@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_dodge")
 ability_name = "Dodge"
-stamina_cost = 15
+composure_cost = 2

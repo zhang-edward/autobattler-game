@@ -57,7 +57,7 @@ func _load_abilities() -> void:
 				_offensive_abilities.append(ability)
 			elif ability is DefensiveAbility:
 				var toggle := CheckBox.new()
-				toggle.text = "%s (%d)" % [ability.ability_name, ability.stamina_cost]
+				toggle.text = "%s (%d composure)" % [ability.ability_name, (ability as DefensiveAbility).composure_cost]
 				toggle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				toggle.toggled.connect(_on_build_changed.unbind(1))
 				_defensive_moves.add_child(toggle)
