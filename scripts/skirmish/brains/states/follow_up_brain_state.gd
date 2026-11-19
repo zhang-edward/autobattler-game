@@ -13,23 +13,16 @@ func get_intent(_delta: float) -> Intent:
 	var facing := signf(to_target.x)
 	var ability_state := brain.entity.state_machine.state as AbilityState
 	if ability_state != null and _target_is_hittable(target):
-		var follow_up := _draw_follow_up(ability_state, to_target)
+		var follow_up := brain.next_chain_link()
 		if follow_up == null:
 			return null
 		state_machine.transition_to(attack_state, {"ability": follow_up})
 		return _action(follow_up, facing)
 
-	if _target_is_open(target):
-		state_machine.transition_to(attack_state, {"ability": brain.take_queued_ability()})
+	brain.active_chain = null
+	var chain := brain.take_queued_chain() if _target_is_open(target) else null
+	if chain != null:
+		state_machine.transition_to(attack_state, {"ability": chain.abilities[0]})
 	else:
 		state_machine.transition_to(idle_state)
 	return _movement(Vector2.ZERO, facing)
-
-func _draw_follow_up(ability_state: AbilityState, to_target: Vector2) -> OffensiveAbility:
-	var candidates: Array[OffensiveAbility] = []
-	for ability in brain.ready_abilities():
-		if !ability.in_reach(to_target):
-			continue
-		if ability_state.can_cancel_into(ability):
-			candidates.append(ability)
-	return null if candidates.is_empty() else candidates.pick_random()

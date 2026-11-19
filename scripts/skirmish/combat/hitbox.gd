@@ -48,7 +48,8 @@ func _handle_area_entered(body: Area2D):
 	# The target owns the outcome, including whether it warrants hitstop or shake
 	if target.take_hit(_hit, _source):
 		spawn_effect(lerp(global_position, body.global_position, 0.5), target.global_position - _source.global_position, target)
-		hit_connected.emit()
+		if target.state_machine.state != target.block_state:
+			hit_connected.emit()
 
 func spawn_effect(pos: Vector2, dir: Vector2, target: SkirmishEntity):
 	var config = EffectConfig.new()

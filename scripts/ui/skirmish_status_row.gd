@@ -3,7 +3,9 @@ extends PanelContainer
 
 const HERO_FILL := preload("res://prefabs/styles/hero_health_bar.tres")
 const VILLAIN_FILL := preload("res://prefabs/styles/villain_health_bar.tres")
-const ABILITY_COOLDOWN_ROW := preload("res://prefabs/ui/skirmish/ability_cooldown_row.tscn")
+const CHAIN_ROW := preload("res://prefabs/ui/skirmish/chain_row.tscn")
+const QUEUED_ALPHA := 1.0
+const UNQUEUED_ALPHA := 0.45
 
 const ACTIVE_BORDER := Color(1, 1, 0)
 
@@ -16,6 +18,7 @@ const ACTIVE_BORDER := Color(1, 1, 0)
 @onready var _abilities: VBoxContainer = $VBox/Abilities
 
 var entity: SkirmishEntity
+var _chain_rows: Dictionary[AbilityChain, ChainRow] = {}
 
 signal retreat_pressed(e: SkirmishEntity)
 
@@ -31,10 +34,19 @@ func configure(e: SkirmishEntity) -> void:
 	_stamina_bar.max_value = SkirmishEntity.STAMINA_MAX
 	var fill := HERO_FILL if e.entity_type == EntityConfig.EntityType.HERO else VILLAIN_FILL
 	_bar.add_theme_stylebox_override("fill", fill)
+	for chain in e.chains:
+		var chain_row := CHAIN_ROW.instantiate() as ChainRow
+		_abilities.add_child(chain_row)
+		var names: Array[String] = []
+		for ability in chain.abilities:
+			names.append(ability.ability_name)
+		chain_row.configure(e, " > ".join(names), chain.stamina_cost())
+		_chain_rows[chain] = chain_row
 	for ability in e.entity_config.abilities:
-		var ability_cooldown_row := ABILITY_COOLDOWN_ROW.instantiate() as AbilityCooldownRow
-		_abilities.add_child(ability_cooldown_row)
-		ability_cooldown_row.configure(e, ability)
+		if ability is DefensiveAbility:
+			var chain_row := CHAIN_ROW.instantiate() as ChainRow
+			_abilities.add_child(chain_row)
+			chain_row.configure(e, ability.ability_name, ability.stamina_cost)
 	refresh()
 
 func refresh() -> void:
@@ -52,8 +64,11 @@ func refresh() -> void:
 		_defensive_status_label.text = "Dodge"
 	else:
 		_defensive_status_label.text = ""
-	for ability_cooldown_row in _abilities.get_children():
-		(ability_cooldown_row as AbilityCooldownRow).refresh()
+	for chain_row in _abilities.get_children():
+		(chain_row as ChainRow).refresh()
+	var queued_chain := (entity.brain as AIBrain).queued_chain
+	for chain in _chain_rows:
+		_chain_rows[chain].modulate.a = QUEUED_ALPHA if chain == queued_chain else UNQUEUED_ALPHA
 
 func set_active_highlight(active: bool) -> void:
 	var stylebox := get_theme_stylebox("panel") as StyleBoxFlat

@@ -11,10 +11,6 @@ var hit_connected := false
 func init(ability_: OffensiveAbility) -> void:
 	ability = ability_
 
-func can_cancel_into(other: OffensiveAbility) -> bool:
-	return other.tier > ability.tier # or \
-		# (ability.tier == Ability.Tier.LIGHT and other.tier == Ability.Tier.LIGHT)
-
 func enter(_msg := {}) -> void:
 	hit_connected = false
 	e.absolute_velocity = Vector2.ZERO
@@ -27,7 +23,7 @@ func physics_update(delta: float) -> void:
 
 	if phase == Phase.RECOVERY and hit_connected:
 		var intent := e.brain.get_intent(delta)
-		if intent != null and intent.ability != null and can_cancel_into(intent.ability):
+		if intent != null and intent.ability != null:
 			state_machine.transition_to(e.move_state)
 			return
 

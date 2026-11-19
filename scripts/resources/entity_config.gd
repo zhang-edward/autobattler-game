@@ -37,6 +37,7 @@ var level := 1
 var exp := 0
 var exp_to_next_level := 100
 var abilities: Array[Ability] = []
+var chains: Array[AbilityChain] = []
 var portrait_config: PortraitConfig
 var injury_recovery_days := 0
 var energy_level := BASE_ENERGY_LEVEL

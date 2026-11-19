@@ -10,7 +10,9 @@ const FLEE_ROLL_SECONDS_MAX := 2.0
 @export var flee_roll_timer: Timer
 
 var target: SkirmishEntity
-var queued_ability: OffensiveAbility
+var queued_chain: AbilityChain
+var active_chain: AbilityChain
+var chain_index := 0
 
 func _ready() -> void:
 	flee_roll_timer.timeout.connect(_on_flee_roll_timer_timeout)
@@ -26,28 +28,29 @@ func _on_flee_roll_timer_timeout() -> void:
 		state_machine.transition_to(fleeing_brain_state)
 
 func get_intent(delta: float) -> Intent:
+	if queued_chain == null:
+		queued_chain = _draw_chain()
 	return (state_machine.state as BrainState).get_intent(delta)
 
-func take_queued_ability() -> OffensiveAbility:
-	if queued_ability == null:
-		var abilities: Array[OffensiveAbility] = []
-		for ability in entity.entity_config.abilities:
-			if ability is OffensiveAbility:
-				abilities.append(ability)
-		if not abilities.is_empty():
-			queued_ability = abilities.pick_random()
-	if queued_ability == null or entity.stamina < queued_ability.stamina_cost:
+func take_queued_chain() -> AbilityChain:
+	if queued_chain == null or entity.stamina < queued_chain.stamina_cost():
 		return null
-	var ability := queued_ability
-	queued_ability = null
+	active_chain = queued_chain
+	chain_index = 0
+	queued_chain = _draw_chain()
+	return active_chain
+
+func next_chain_link() -> OffensiveAbility:
+	if active_chain == null or chain_index + 1 >= active_chain.abilities.size():
+		return null
+	var ability := active_chain.abilities[chain_index + 1]
+	if entity.stamina < ability.stamina_cost:
+		return null
+	chain_index += 1
 	return ability
 
-func ready_abilities() -> Array[OffensiveAbility]:
-	var abilities: Array[OffensiveAbility] = []
-	for ability in entity.entity_config.abilities:
-		if ability is OffensiveAbility and entity.stamina >= ability.stamina_cost:
-			abilities.append(ability)
-	return abilities
+func _draw_chain() -> AbilityChain:
+	return null if entity.chains.is_empty() else entity.chains.pick_random()
 
 func ready_defensive_ability() -> DefensiveAbility:
 	for ability in entity.entity_config.abilities:

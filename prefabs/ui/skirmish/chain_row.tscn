@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/ui/ability_cooldown_row.gd" id="1_row"]
+[ext_resource type="Script" path="res://scripts/ui/chain_row.gd" id="1_row"]
 [ext_resource type="Texture2D" uid="uid://ntv80s1mpdc5" path="res://icon.svg" id="2_icon"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_overlay_bg"]
@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay_fill"]
 bg_color = Color(0, 0, 0, 0.75)
 
-[node name="AbilityCooldownRow" type="HBoxContainer"]
+[node name="ChainRow" type="HBoxContainer"]
 mouse_filter = 2
 theme_override_constants/separation = 8
 script = ExtResource("1_row")
@@ -21,7 +21,7 @@ texture = ExtResource("2_icon")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CooldownOverlay" type="ProgressBar" parent="AbilityIcon"]
+[node name="StaminaOverlay" type="ProgressBar" parent="AbilityIcon"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

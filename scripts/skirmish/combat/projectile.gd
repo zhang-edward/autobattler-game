@@ -1,6 +1,8 @@
 class_name Projectile
 extends Area2D
 
+signal hit_connected
+
 var _source: SkirmishEntity
 var _hit: HitConfig
 var _direction := 1.0
@@ -50,4 +52,6 @@ func _handle_area_entered(body: Area2D) -> void:
 		config.dir = target.global_position - _source.global_position
 		config.angle_range_rad = Hitbox.EFFECT_ANGLE_RANGE
 		EffectManager.spawn_effect(config)
+		if target.state_machine.state != target.block_state:
+			hit_connected.emit()
 	queue_free()

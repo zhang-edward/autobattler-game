@@ -9,16 +9,12 @@ func init(ability_: OffensiveAbility) -> void:
 	super.init(ability_)
 	projectile_ability = ability as ProjectileAbility
 
-func can_cancel_into(_other: OffensiveAbility) -> bool:
-	return true
-
 func _active_entered() -> void:
 	phase_timer = projectile_ability.active_duration
 	if projectile_ability.velocity != Vector2.ZERO:
 		e.absolute_velocity = Vector2(e.facing() * projectile_ability.velocity.x, projectile_ability.velocity.y)
 	e.rig.anim_player.play_section_with_markers(ability.anim, "active", "recovery")
 	_release()
-	hit_connected = true
 
 func _active_update(delta: float) -> void:
 	e.absolute_velocity *= 1.0 - projectile_ability.friction
@@ -29,6 +25,7 @@ func _active_update(delta: float) -> void:
 func _release() -> void:
 	var projectile := projectile_ability.projectile_scene.instantiate() as Projectile
 	e.get_parent().add_child(projectile)
+	projectile.hit_connected.connect(_handle_hit_connected)
 	projectile.init(
 		e.position + Vector2(e.facing() * SPAWN_OFFSET.x, 0),
 		SPAWN_OFFSET.y,

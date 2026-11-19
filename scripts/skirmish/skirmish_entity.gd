@@ -63,6 +63,7 @@ var entity_config: EntityConfig
 var is_active := true
 var skirmish: Skirmish
 var ability_to_state: Dictionary = {}
+var chains: Array[AbilityChain] = []
 var dash_cooldowns: Array[float] = [0.0, 0.0]
 
 var hitstop_scale := 1.0:
@@ -180,6 +181,13 @@ func _build_move_map() -> void:
 		instance.state_machine = state_machine
 		instance.init(offensive_ability)
 		ability_to_state[offensive_ability] = instance
+	chains = entity_config.chains.duplicate()
+	if chains.is_empty():
+		for ability in entity_config.abilities:
+			if ability is OffensiveAbility:
+				var chain := AbilityChain.new()
+				chain.abilities.append(ability)
+				chains.append(chain)
 
 func _can_block() -> bool:
 	var state := state_machine.state
