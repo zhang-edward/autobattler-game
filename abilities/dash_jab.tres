@@ -34,7 +34,6 @@ velocity = Vector2(1500, 0)
 friction = 0.05
 ability_name = "Dash Jab"
 state_scene = ExtResource("5_state")
-cooldown = 4.0
 ability_range = 300.0
 anim = "male-rig/punch_big"
 startup = SubResource("Resource_startup")

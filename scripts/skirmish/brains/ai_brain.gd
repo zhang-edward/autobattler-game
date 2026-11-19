@@ -1,11 +1,6 @@
 class_name AIBrain
 extends Brain
 
-const TIER_WEIGHTS := {
-	Ability.Tier.LIGHT: 10.0,
-	Ability.Tier.MEDIUM: 5.0,
-	Ability.Tier.HEAVY: 2.0,
-}
 const FLEE_CHANCE := 0.25
 const FLEE_ROLL_SECONDS_MIN := 1.0
 const FLEE_ROLL_SECONDS_MAX := 2.0
@@ -15,6 +10,7 @@ const FLEE_ROLL_SECONDS_MAX := 2.0
 @export var flee_roll_timer: Timer
 
 var target: SkirmishEntity
+var queued_ability: OffensiveAbility
 
 func _ready() -> void:
 	flee_roll_timer.timeout.connect(_on_flee_roll_timer_timeout)
@@ -32,41 +28,36 @@ func _on_flee_roll_timer_timeout() -> void:
 func get_intent(delta: float) -> Intent:
 	return (state_machine.state as BrainState).get_intent(delta)
 
-func draw_weighted() -> OffensiveAbility:
-	return pick_weighted(ready_abilities())
+func take_queued_ability() -> OffensiveAbility:
+	if queued_ability == null:
+		var abilities: Array[OffensiveAbility] = []
+		for ability in entity.entity_config.abilities:
+			if ability is OffensiveAbility:
+				abilities.append(ability)
+		if not abilities.is_empty():
+			queued_ability = abilities.pick_random()
+	if queued_ability == null or entity.stamina < queued_ability.stamina_cost:
+		return null
+	var ability := queued_ability
+	queued_ability = null
+	return ability
 
 func ready_abilities() -> Array[OffensiveAbility]:
 	var abilities: Array[OffensiveAbility] = []
 	for ability in entity.entity_config.abilities:
-		if ability is OffensiveAbility and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
+		if ability is OffensiveAbility and entity.stamina >= ability.stamina_cost:
 			abilities.append(ability)
 	return abilities
 
 func ready_defensive_ability() -> DefensiveAbility:
 	for ability in entity.entity_config.abilities:
-		if ability is not DefensiveAbility or entity.ability_cooldowns.get(ability, 0.0) > 0.0:
+		if ability is not DefensiveAbility or entity.stamina < ability.stamina_cost:
 			continue
 		if entity.defensive_status == null:
 			return ability
 		if ability is BlockAbility and entity.defensive_status is BlockAbility and (ability as BlockAbility).block > entity.block:
 			return ability
 	return null
-
-func pick_weighted(abilities: Array[OffensiveAbility]) -> OffensiveAbility:
-	if abilities.is_empty():
-		return null
-
-	var total := 0.0
-	for ability in abilities:
-		total += TIER_WEIGHTS[ability.tier]
-
-	var roll := randf() * total
-	for ability in abilities:
-		var weight: float = TIER_WEIGHTS[ability.tier]
-		if roll < weight:
-			return ability
-		roll -= weight
-	return abilities[abilities.size() - 1]
 
 func nearest_opponent() -> SkirmishEntity:
 	if not is_instance_valid(target) or target.is_dead or not target.is_active:

@@ -12,13 +12,13 @@ func physics_update(delta: float) -> void:
 
 	if intent != null and intent.ability != null:
 		var next_state: State = e.ability_to_state.get(intent.ability)
-		if next_state != null and e.ability_cooldowns.get(intent.ability, 0.0) <= 0.0:
-			e.ability_cooldowns[intent.ability] = intent.ability.cooldown
+		if next_state != null and e.stamina >= intent.ability.stamina_cost:
+			e.stamina -= intent.ability.stamina_cost
 			state_machine.transition_to(next_state)
 			return
 
-	if intent != null and intent.defensive_ability != null and e.ability_cooldowns.get(intent.defensive_ability, 0.0) <= 0.0:
-		e.ability_cooldowns[intent.defensive_ability] = intent.defensive_ability.cooldown
+	if intent != null and intent.defensive_ability != null and e.stamina >= intent.defensive_ability.stamina_cost:
+		e.stamina -= intent.defensive_ability.stamina_cost
 		e.defensive_status = intent.defensive_ability
 		var block_ability := intent.defensive_ability as BlockAbility
 		if block_ability != null:

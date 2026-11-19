@@ -6,4 +6,4 @@
 script = ExtResource("1_block")
 block = 60
 ability_name = "Heavy Block"
-cooldown = 10.0
+stamina_cost = 20

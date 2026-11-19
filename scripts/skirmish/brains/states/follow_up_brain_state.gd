@@ -20,7 +20,7 @@ func get_intent(_delta: float) -> Intent:
 		return _action(follow_up, facing)
 
 	if _target_is_open(target):
-		state_machine.transition_to(attack_state, {"ability": brain.draw_weighted()})
+		state_machine.transition_to(attack_state, {"ability": brain.take_queued_ability()})
 	else:
 		state_machine.transition_to(idle_state)
 	return _movement(Vector2.ZERO, facing)
@@ -32,4 +32,4 @@ func _draw_follow_up(ability_state: AbilityState, to_target: Vector2) -> Offensi
 			continue
 		if ability_state.can_cancel_into(ability):
 			candidates.append(ability)
-	return brain.pick_weighted(candidates)
+	return null if candidates.is_empty() else candidates.pick_random()

@@ -17,6 +17,8 @@ const DEATH_LAUNCH := -260.0
 const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
+const STAMINA_MAX := 100.0
+const STAMINA_REGEN := 10.0
 const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.0
 # const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.5
 const ZERO_HEALTH_SPEED_SCALE := 0.7
@@ -61,7 +63,6 @@ var entity_config: EntityConfig
 var is_active := true
 var skirmish: Skirmish
 var ability_to_state: Dictionary = {}
-var ability_cooldowns: Dictionary = {}
 var dash_cooldowns: Array[float] = [0.0, 0.0]
 
 var hitstop_scale := 1.0:
@@ -79,6 +80,7 @@ var is_dead := false
 var combo_hits := 0
 var defensive_status: DefensiveAbility
 var block := 0
+var stamina := STAMINA_MAX
 
 
 var _shadow_base_scale: Vector2
@@ -151,8 +153,7 @@ func set_active(value: bool) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_active or brain == null:
 		return
-	for ability in ability_cooldowns:
-		ability_cooldowns[ability] = maxf(ability_cooldowns[ability] - delta * hitstop_scale, 0.0)
+	stamina = minf(stamina + STAMINA_REGEN * delta * hitstop_scale, STAMINA_MAX)
 	for i in dash_cooldowns.size():
 		dash_cooldowns[i] = maxf(dash_cooldowns[i] - delta * hitstop_scale, 0.0)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale

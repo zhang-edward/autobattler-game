@@ -11,6 +11,7 @@ const ACTIVE_BORDER := Color(1, 1, 0)
 @onready var _bar: ProgressBar = $VBox/HBox/HealthBar
 @onready var _wounds_bar: ProgressBar = $VBox/HBox/HealthBar/WoundsBar
 @onready var retreat_button: Button = $VBox/HBox/RetreatButton
+@onready var _stamina_bar: ProgressBar = $VBox/StaminaBar
 @onready var _defensive_status_label: Label = $VBox/DefensiveStatusLabel
 @onready var _abilities: VBoxContainer = $VBox/Abilities
 
@@ -27,6 +28,7 @@ func configure(e: SkirmishEntity) -> void:
 	_bar.max_value = e.entity_config.get_max_health()
 	_bar.value = e.entity_config.curr_health
 	_wounds_bar.max_value = e.entity_config.get_max_health()
+	_stamina_bar.max_value = SkirmishEntity.STAMINA_MAX
 	var fill := HERO_FILL if e.entity_type == EntityConfig.EntityType.HERO else VILLAIN_FILL
 	_bar.add_theme_stylebox_override("fill", fill)
 	for ability in e.entity_config.abilities:
@@ -43,6 +45,7 @@ func refresh() -> void:
 	_bar.value = entity.entity_config.curr_health
 	_wounds_bar.value = entity.entity_config.curr_wounds
 	_wounds_bar.visible = entity.entity_config.curr_health <= 0
+	_stamina_bar.value = entity.stamina
 	if entity.defensive_status is BlockAbility:
 		_defensive_status_label.text = "Block %d" % entity.block
 	elif entity.defensive_status is DodgeAbility:

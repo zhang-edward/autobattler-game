@@ -10,9 +10,9 @@ var ability: Ability
 func configure(e: SkirmishEntity, a: Ability) -> void:
 	entity = e
 	ability = a
-	_name_label.text = a.ability_name
-	_cooldown_overlay.max_value = a.cooldown
+	_name_label.text = "%s (%d)" % [a.ability_name, a.stamina_cost]
+	_cooldown_overlay.max_value = a.stamina_cost
 	refresh()
 
 func refresh() -> void:
-	_cooldown_overlay.value = entity.ability_cooldowns.get(ability, 0.0)
+	_cooldown_overlay.value = maxf(ability.stamina_cost - entity.stamina, 0.0)

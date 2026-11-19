@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_block")
 ability_name = "Light Block"
-cooldown = 1.0
+stamina_cost = 5

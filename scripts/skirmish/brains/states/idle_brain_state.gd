@@ -47,9 +47,9 @@ func get_intent(_delta: float) -> Intent:
 
 	var chase := brain.entity.entity_type == EntityConfig.EntityType.HERO and _target_is_fleeing(target)
 	if _target_is_open(target) or ((chase or _time_left <= 0.0) and _target_is_hittable(target)):
-		_time_left = randf_range(idle_time_min, idle_time_max)
-		var ability := brain.draw_weighted()
+		var ability := brain.take_queued_ability()
 		if ability != null:
+			_time_left = randf_range(idle_time_min, idle_time_max)
 			state_machine.transition_to(attack_state, {"ability": ability})
 
 	var to_target := target.global_position - brain.entity.global_position
