@@ -112,14 +112,9 @@ func _results_text() -> String:
 	]
 
 func _refresh_fight_button() -> void:
-	var hero_points := _hero_build.points()
-	var villain_points := _villain_build.points()
 	if not _hero_build.has_moves() or not _villain_build.has_moves():
 		_fight_button.text = "Each side needs a move"
 		_fight_button.disabled = true
-	elif hero_points != villain_points:
-		_fight_button.text = "Fight (Point totals differ)" % [hero_points, villain_points]
-		_fight_button.disabled = false
 	else:
 		_fight_button.text = "Fight"
 		_fight_button.disabled = false

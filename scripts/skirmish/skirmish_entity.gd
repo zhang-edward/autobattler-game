@@ -19,11 +19,6 @@ const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
 const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.0
 # const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.5
-const DEFENSE_LAUNCH_SCALE := 30.0
-const STRENGTH_LAUNCH_SCALE := 30.0
-const EVASION_PUSHBACK_SCALE := 20.0
-const IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE := 0.8
-const IGNORE_HITSTUN_STEEPNESS := 4.0
 const ZERO_HEALTH_SPEED_SCALE := 0.7
 # Max depth-axis spread on a knockdown
 const LAUNCH_Y_SPREAD := 0.25
@@ -253,10 +248,8 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	var wound_fraction := float(entity_config.curr_wounds) / entity_config.get_max_health()
 	var downed := not blocked and (wound_fraction >= 1.0 or (was_at_zero_health and randf() < wound_fraction))
 
-	var hitstun := HurtState.hitstun_for(hit.base_hitstun, source.entity_config.strength)
-	var pushback := hit.pushback \
-		* (1.0 + entity_config.evasion / EVASION_PUSHBACK_SCALE) \
-		* (AbilityState.AGILITY_SCALE + AbilityState.AGILITY_BASELINE) / (AbilityState.AGILITY_SCALE + source.entity_config.agility)
+	var hitstun := hit.base_hitstun
+	var pushback := hit.pushback
 	var hit_connected := false
 	if downed and state_machine.state != ragdoll_state:
 		state_machine.transition_to(downed_state)
@@ -265,21 +258,13 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		state_machine.transition_to(block_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
 	elif hit.is_launcher or state_machine.state == ragdoll_state:
-		var launch_x := hit.launch.x \
-			* (STRENGTH_LAUNCH_SCALE + source.entity_config.strength) / STRENGTH_LAUNCH_SCALE \
-			* DEFENSE_LAUNCH_SCALE / (DEFENSE_LAUNCH_SCALE + entity_config.defense)
-		launch_entity(dir * launch_x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
+		launch_entity(dir * hit.launch.x, hit.launch.y if hit.launch.y != 0.0 else JUGGLE_LAUNCH, source)
 		ragdoll_state.add_ragdoll_damage(damage)
 		if downed:
 			ragdoll_state.is_downed = true
 		hit_connected = true
 	else:
-		var ignore_hitstun_threshold := entity_config.resilience * IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE
-		var ignore_hitstun_chance := 0.0
-		if ignore_hitstun_threshold > 0.0:
-			ignore_hitstun_chance = 1.0 / (1.0 + pow(damage / ignore_hitstun_threshold, IGNORE_HITSTUN_STEEPNESS))
-		if randf() >= ignore_hitstun_chance:
-			state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
+		state_machine.transition_to(hurt_state, {"dir": dir, "hitstun": hitstun, "pushback": pushback})
 		hit_connected = true
 
 	if entity_type == EntityConfig.EntityType.HERO and healthbar.value <= 0 and not was_at_zero_health \

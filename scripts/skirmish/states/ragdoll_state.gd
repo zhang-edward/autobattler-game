@@ -45,7 +45,6 @@ const ANIM_CRUMPLE := "male-rig/ground_crumple"
 const BOUNCE_ANIM_DELAY := 0.12
 const MAX_WALL_SLAM_HITSTOP = 0.4
 const RAGDOLL_ESCAPE_HEALTH_FRACTION := 0.4
-const RESILIENCE_SCALE := 10.0
 const ESCAPE_BLINK_SECONDS := 0.08
 
 var phase: Phase
@@ -185,13 +184,11 @@ func _spawn_dust() -> void:
 	EffectManager.spawn_effect(config)
 
 # Once the entity takes enough damage while ragdolled, it can't be hit again until it gets up.
-# Higher "resilience" stat => lowers damage threshold.
 func add_ragdoll_damage(damage: int) -> void:
 	ragdoll_damage += damage
 	if has_escaped_ragdoll or e.is_dead:
 		return
-	var threshold := e.entity_config.get_max_health() * RAGDOLL_ESCAPE_HEALTH_FRACTION \
-		* RESILIENCE_SCALE / (RESILIENCE_SCALE + e.entity_config.resilience)
+	var threshold := e.entity_config.get_max_health() * RAGDOLL_ESCAPE_HEALTH_FRACTION
 	if ragdoll_damage < threshold:
 		return
 	has_escaped_ragdoll = true
