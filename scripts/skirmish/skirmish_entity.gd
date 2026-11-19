@@ -79,8 +79,6 @@ var z := 0.0
 var z_velocity := 0.0
 var is_dead := false
 var combo_hits := 0
-var defensive_status: DefensiveAbility
-var block := 0
 var stamina := STAMINA_MAX
 
 
@@ -210,6 +208,27 @@ func _can_dodge() -> bool:
 		or state == hurt_state
 	)
 
+func _defensive_ability_for(damage: int) -> DefensiveAbility:
+	var full_stop: DefensiveAbility = null
+	var biggest_block: BlockAbility = null
+	for ability in entity_config.abilities:
+		var defensive_ability := ability as DefensiveAbility
+		if defensive_ability == null or stamina < defensive_ability.stamina_cost:
+			continue
+		var block_ability := defensive_ability as BlockAbility
+		if block_ability != null:
+			if not _can_block():
+				continue
+			if biggest_block == null or block_ability.block > biggest_block.block:
+				biggest_block = block_ability
+			if block_ability.block < damage:
+				continue
+		elif not _can_dodge():
+			continue
+		if full_stop == null or defensive_ability.stamina_cost < full_stop.stamina_cost:
+			full_stop = defensive_ability
+	return full_stop if full_stop != null else biggest_block
+
 # Returns whether or not the hit connected
 func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	if is_dead or not is_active:
@@ -228,19 +247,17 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 		and (state_machine.state as AbilityState).phase == AbilityState.Phase.RECOVERY
 
 	## Defensive options logic
-	if defensive_status is DodgeAbility and _can_dodge():
-		defensive_status = null
+	var defensive_ability := _defensive_ability_for(hit.damage)
+	if defensive_ability != null:
+		stamina -= defensive_ability.stamina_cost
+	if defensive_ability is DodgeAbility:
 		state_machine.transition_to(dodge_state, {"dir": dir})
 		return false
 	var damage := hit.damage
 	var blocked := false
-	if defensive_status is BlockAbility and _can_block():
-		var absorbed := mini(block, damage)
-		block -= absorbed
-		damage -= absorbed
+	if defensive_ability is BlockAbility:
+		damage -= mini((defensive_ability as BlockAbility).block, damage)
 		blocked = damage == 0
-		if block == 0:
-			defensive_status = null
 	var was_at_zero_health := healthbar.value <= 0
 	source.entity_config.damage_dealt += damage
 	var wound_damage := maxi(damage - int(healthbar.value), 0)

@@ -52,16 +52,6 @@ func next_chain_link() -> OffensiveAbility:
 func _draw_chain() -> AbilityChain:
 	return null if entity.chains.is_empty() else entity.chains.pick_random()
 
-func ready_defensive_ability() -> DefensiveAbility:
-	for ability in entity.entity_config.abilities:
-		if ability is not DefensiveAbility or entity.stamina < ability.stamina_cost:
-			continue
-		if entity.defensive_status == null:
-			return ability
-		if ability is BlockAbility and entity.defensive_status is BlockAbility and (ability as BlockAbility).block > entity.block:
-			return ability
-	return null
-
 func nearest_opponent() -> SkirmishEntity:
 	if not is_instance_valid(target) or target.is_dead or not target.is_active:
 		target = _closest_opponent()

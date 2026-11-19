@@ -17,15 +17,6 @@ func physics_update(delta: float) -> void:
 			state_machine.transition_to(next_state)
 			return
 
-	if intent != null and intent.defensive_ability != null and e.stamina >= intent.defensive_ability.stamina_cost:
-		e.stamina -= intent.defensive_ability.stamina_cost
-		e.defensive_status = intent.defensive_ability
-		var block_ability := intent.defensive_ability as BlockAbility
-		if block_ability != null:
-			e.block = block_ability.block
-			state_machine.transition_to(e.block_state, {"hitstun": block_ability.duration})
-			return
-
 	if intent != null and intent.dash != 0.0:
 		var dash_slot := e.dash_cooldowns.find(0.0)
 		if dash_slot != -1:
