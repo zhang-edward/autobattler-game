@@ -18,7 +18,7 @@ const JUGGLE_LAUNCH := -300.0
 const DEATH_KNOCKBACK_MIN := 260.0
 const DASH_COOLDOWN := 5.0
 const STAMINA_MAX := 10.0
-const STAMINA_REGEN := 1.5
+const STAMINA_REGEN := 0.75
 const COMPOSURE_MAX := 5.0
 const COMPOSURE_REGEN := 0.5
 const CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE := 0.0
@@ -83,6 +83,7 @@ var is_dead := false
 var combo_hits := 0
 var stamina := STAMINA_MAX
 var composure := COMPOSURE_MAX
+var composure_recovering := false
 
 
 var _shadow_base_scale: Vector2
@@ -156,7 +157,9 @@ func _physics_process(delta: float) -> void:
 	if not is_active or brain == null:
 		return
 	stamina = minf(stamina + STAMINA_REGEN * delta * hitstop_scale, STAMINA_MAX)
-	composure = minf(composure + COMPOSURE_REGEN * delta * hitstop_scale, COMPOSURE_MAX)
+	if composure_recovering:
+		composure = minf(composure + COMPOSURE_REGEN * delta * hitstop_scale, COMPOSURE_MAX)
+		composure_recovering = composure < COMPOSURE_MAX
 	for i in dash_cooldowns.size():
 		dash_cooldowns[i] = maxf(dash_cooldowns[i] - delta * hitstop_scale, 0.0)
 	velocity = IsometryUtils.scale_velocity(absolute_velocity) * hitstop_scale
@@ -213,11 +216,13 @@ func _can_dodge() -> bool:
 	)
 
 func _defensive_ability_for(damage: int) -> DefensiveAbility:
+	if composure_recovering:
+		return null
 	var full_stop: DefensiveAbility = null
 	var biggest_block: BlockAbility = null
 	for ability in entity_config.abilities:
 		var defensive_ability := ability as DefensiveAbility
-		if defensive_ability == null or composure < defensive_ability.composure_cost:
+		if defensive_ability == null:
 			continue
 		var block_ability := defensive_ability as BlockAbility
 		if block_ability != null:
@@ -253,7 +258,8 @@ func take_hit(hit: HitConfig, source: SkirmishEntity) -> bool:
 	## Defensive options logic
 	var defensive_ability := _defensive_ability_for(hit.damage)
 	if defensive_ability != null:
-		composure -= defensive_ability.composure_cost
+		composure = maxf(composure - defensive_ability.composure_cost, 0.0)
+		composure_recovering = composure == 0.0
 	if defensive_ability is DodgeAbility:
 		state_machine.transition_to(dodge_state, {"dir": dir})
 		return false

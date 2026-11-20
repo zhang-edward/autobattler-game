@@ -9,6 +9,34 @@ const CHAIN_COUNT := 6
 const LINK_COUNT := 5
 const PICKER_WIDTH := 140.0
 const MOVE_DETAIL_FONT_SIZE := 14
+const EARLY_LOADOUT := {
+	"chains": [
+		["jab"],
+		["light_kick", "uppercut"],
+	],
+	"defensive": [],
+}
+const MID_LOADOUT := {
+	"chains": [
+		["jab", "light_kick"],
+		["jab", "uppercut", "heavy_kick"],
+		["dash_punch"],
+	],
+	"defensive": ["light_block"],
+}
+const LATE_LOADOUT := {
+	"chains": [
+		["jab", "light_kick", "uppercut", "big_punch"],
+		["dash_jab", "rapid_jab_default"],
+		["step_back_kick", "energy_blast_default"],
+		["dash_kick"],
+	],
+	"defensive": ["light_block", "heavy_block", "dodge"],
+}
+const EMPTY_LOADOUT := {
+	"chains": [],
+	"defensive": [],
+}
 
 @export var entity_type: EntityConfig.EntityType
 
@@ -16,17 +44,27 @@ const MOVE_DETAIL_FONT_SIZE := 14
 @onready var _chains: VBoxContainer = %Chains
 @onready var _move_details: GridContainer = %MoveDetails
 @onready var _defensive_moves: GridContainer = %DefensiveMoves
+@onready var _early_button: Button = %EarlyButton
+@onready var _mid_button: Button = %MidButton
+@onready var _late_button: Button = %LateButton
+@onready var _clear_button: Button = %ClearButton
 
 var _offensive_abilities: Array[OffensiveAbility] = []
 var _defensive_toggles: Dictionary[DefensiveAbility, CheckBox] = {}
 var _chain_pickers: Array[Array] = []
 var _chain_cost_labels: Array[Label] = []
+var _abilities_by_file: Dictionary[String, Ability] = {}
 
 func _ready() -> void:
 	_title_label.text = _build_name()
 	_load_abilities()
 	_build_chain_pickers()
 	_build_move_details()
+	_early_button.pressed.connect(_apply_loadout.bind(EARLY_LOADOUT))
+	_mid_button.pressed.connect(_apply_loadout.bind(MID_LOADOUT))
+	_late_button.pressed.connect(_apply_loadout.bind(LATE_LOADOUT))
+	_clear_button.pressed.connect(_apply_loadout.bind(EMPTY_LOADOUT))
+	_apply_loadout(MID_LOADOUT)
 
 func has_moves() -> bool:
 	return not _built_chains().is_empty()
@@ -53,6 +91,9 @@ func _load_abilities() -> void:
 			if not file_name.ends_with(".tres"):
 				continue
 			var ability := load(path + file_name) as Ability
+			if ability == null:
+				continue
+			_abilities_by_file[file_name.get_basename()] = ability
 			if ability is OffensiveAbility:
 				_offensive_abilities.append(ability)
 			elif ability is DefensiveAbility:
@@ -83,6 +124,19 @@ func _build_chain_pickers() -> void:
 		row.add_child(cost_label)
 		_chain_pickers.append(pickers)
 		_chain_cost_labels.append(cost_label)
+
+func _apply_loadout(loadout: Dictionary) -> void:
+	var chains: Array = loadout["chains"]
+	for i in _chain_pickers.size():
+		var links: Array = chains[i] if i < chains.size() else []
+		for j in _chain_pickers[i].size():
+			var picker: OptionButton = _chain_pickers[i][j]
+			var ability: Ability = _abilities_by_file.get(links[j]) if j < links.size() else null
+			picker.select(_offensive_abilities.find(ability) + 1 if ability != null else 0)
+	var defensive: Array = loadout["defensive"]
+	for ability in _defensive_toggles:
+		_defensive_toggles[ability].set_pressed_no_signal(defensive.has(ability.resource_path.get_file().get_basename()))
+	_on_build_changed()
 
 func _chain_from_pickers(pickers: Array) -> AbilityChain:
 	var chain := AbilityChain.new()

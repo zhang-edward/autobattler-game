@@ -17,4 +17,7 @@ func configure(e: SkirmishEntity, text: String, cost_: int, uses_composure_ := f
 	refresh()
 
 func refresh() -> void:
-	_cost_overlay.value = maxf(cost - (entity.composure if uses_composure else entity.stamina), 0.0)
+	if uses_composure:
+		_cost_overlay.value = cost if entity.composure_recovering else 0.0
+	else:
+		_cost_overlay.value = maxf(cost - entity.stamina, 0.0)

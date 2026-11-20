@@ -25,6 +25,30 @@ layout_mode = 2
 text = "Hero"
 horizontal_alignment = 1
 
+[node name="Loadouts" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="EarlyButton" type="Button" parent="MarginContainer/VBoxContainer/Loadouts"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Early"
+
+[node name="MidButton" type="Button" parent="MarginContainer/VBoxContainer/Loadouts"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Mid"
+
+[node name="LateButton" type="Button" parent="MarginContainer/VBoxContainer/Loadouts"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Late"
+
+[node name="ClearButton" type="Button" parent="MarginContainer/VBoxContainer/Loadouts"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Clear"
+
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1570031115]
 layout_mode = 2
 

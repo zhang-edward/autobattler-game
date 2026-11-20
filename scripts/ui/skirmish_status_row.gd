@@ -6,6 +6,7 @@ const VILLAIN_FILL := preload("res://prefabs/styles/villain_health_bar.tres")
 const CHAIN_ROW := preload("res://prefabs/ui/skirmish/chain_row.tscn")
 const QUEUED_ALPHA := 1.0
 const UNQUEUED_ALPHA := 0.45
+const RECOVERING_ALPHA := 0.45
 
 const ACTIVE_BORDER := Color(1, 1, 0)
 
@@ -60,6 +61,7 @@ func refresh() -> void:
 	_wounds_bar.visible = entity.entity_config.curr_health <= 0
 	_stamina_bar.set_value(entity.stamina)
 	_composure_bar.set_value(entity.composure)
+	_composure_bar.modulate.a = RECOVERING_ALPHA if entity.composure_recovering else 1.0
 	for chain_row in _abilities.get_children():
 		(chain_row as ChainRow).refresh()
 	var queued_chain := (entity.brain as AIBrain).queued_chain
