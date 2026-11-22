@@ -25,7 +25,7 @@ An example run:
 1. Start with a single, high-potential hero on the team.
 2. Play through the season.
    1. Matches are best of 3 rounds.
-   2. Fights start as 2v2, and eventually progress to 5v5 tag fights.
+   2. Fights start as 2v2, and eventually progress to 4v4 tag fights at most: a lead plus up to 3 tag-ins.
    3. After each fight, heroes gain XP. On a level-up, their stats improve automatically and they gain new moves.
    4. If the team's record is good enough, they go to the post-season.
 3. Draft new heroes at the end of the season.
