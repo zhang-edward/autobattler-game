@@ -32,7 +32,6 @@ var villain_statuses: VBoxContainer
 @export var debug_bench_count := 1
 @export var debug_villain_count := 1
 
-var return_to_post_skirmish := true
 var hero_team: Array[SkirmishEntity] = []
 var hero_bench: Array[SkirmishEntity] = []
 var villain_team: Array[SkirmishEntity] = []
@@ -57,23 +56,28 @@ var _status_rows: Array[SkirmishStatusRow] = []
 @export var tag_in_button_scene: PackedScene
 @export var special_move_button_scene: PackedScene
 
+var _preset_heroes: Array[EntityConfig] = []
+var _preset_bench: Array[EntityConfig] = []
+var _preset_villains: Array[EntityConfig] = []
+var _has_preset := false
+
+## Call before adding the scene to the tree to fight with specific teams.
+## Without it, the scene generates random debug teams (standalone testing).
+func configure(heroes: Array[EntityConfig], bench: Array[EntityConfig], villains: Array[EntityConfig]) -> void:
+	_preset_heroes = heroes
+	_preset_bench = bench
+	_preset_villains = villains
+	_has_preset = true
+
 func _ready() -> void:
 	get_viewport().size_changed.connect(_update_walls)
 	_update_walls()
-	var heroes: Array[EntityConfig] = []
-	var bench: Array[EntityConfig] = []
-	var villains: Array[EntityConfig] = []
-	if GameVariables.curr_threat_skirmish != null:
-		heroes = GameVariables.curr_threat_skirmish.heroes
-		bench = GameVariables.curr_threat_skirmish.bench_heroes
-		villains = GameVariables.curr_threat_skirmish.threat_request_config.enemy_configs
-	else:
-		print("[WARN] No threat skirmish in GameVariables - using random debug heroes and villains...")
-		heroes = EntityGenerator.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
-		bench = EntityGenerator.generate_random_entity_configs(debug_bench_count, EntityConfig.EntityType.HERO)
-		villains = EntityGenerator.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
-		return_to_post_skirmish = false
-	setup(heroes, bench, villains)
+	if not _has_preset:
+		print("[WARN] Skirmish not configured - using random debug heroes and villains...")
+		_preset_heroes = EntityGenerator.generate_random_entity_configs(debug_hero_count, EntityConfig.EntityType.HERO)
+		_preset_bench = EntityGenerator.generate_random_entity_configs(debug_bench_count, EntityConfig.EntityType.HERO)
+		_preset_villains = EntityGenerator.generate_random_entity_configs(debug_villain_count, EntityConfig.EntityType.VILLAIN)
+	setup(_preset_heroes, _preset_bench, _preset_villains)
 	_build_status_rows()
 	_build_special_move_buttons()
 
@@ -288,12 +292,3 @@ func _finish(winner: EntityConfig.EntityType) -> void:
 	# Short delay before running finish logic 
 	await get_tree().create_timer(OUTRO_SECONDS).timeout
 	finished.emit(winner)
-
-	if not return_to_post_skirmish:
-		return
-	GameVariables.curr_threat_skirmish.winner = winner
-	for e in hero_team:
-		if not hero_bench.has(e):
-			GameVariables.curr_threat_skirmish.entered_heroes.append(e.entity_config)
-	GameVariables.resolve_threat_skirmish(GameVariables.curr_threat_skirmish)
-	get_tree().change_scene_to_file("res://scenes/post_skirmish_result.tscn")

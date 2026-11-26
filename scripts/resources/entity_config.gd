@@ -38,8 +38,6 @@ var exp := 0
 var exp_to_next_level := 100
 var abilities: Array[Ability] = []
 var portrait_config: PortraitConfig
-var injury_recovery_days := 0
-var energy_level := BASE_ENERGY_LEVEL
 var curr_wounds := 0
 
 # In-round state
@@ -47,8 +45,6 @@ var curr_health := 0
 var gained_exp := 0
 var num_assists := 0
 var damage_dealt := 0
-
-static var BASE_ENERGY_LEVEL := 3
 
 const BASE_HEALTH := 140
 const HEALTH_PER_LEVEL := 20

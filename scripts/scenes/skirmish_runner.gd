@@ -55,13 +55,11 @@ func _start_run() -> void:
 func _start_fight() -> void:
 	_fight_status_label.text = "Fight %d/%d | %s" % [_fights_done + 1, int(_fights.value), _results_text()]
 	var villains := _build_team(_villain_build, int(_villain_count.value))
-	GameVariables.curr_threat_skirmish = ThreatSkirmish.new(ThreatRequestConfigBuilder.new().with_enemy_configs(villains).build())
 	var heroes := _build_team(_hero_build, int(_hero_count.value + _bench_count.value))
-	GameVariables.curr_threat_skirmish.heroes = heroes.slice(0, int(_hero_count.value))
-	GameVariables.curr_threat_skirmish.bench_heroes = heroes.slice(int(_hero_count.value))
+	var active_count := int(_hero_count.value)
 	_fight_time = 0.0
 	_skirmish = skirmish_scene.instantiate() as Skirmish
-	_skirmish.return_to_post_skirmish = false
+	_skirmish.configure(heroes.slice(0, active_count), heroes.slice(active_count), villains)
 	_skirmish.finished.connect(_on_fight_finished)
 	add_child(_skirmish)
 
@@ -118,7 +116,7 @@ func _refresh_fight_button() -> void:
 		_fight_button.text = "Each side needs a move"
 		_fight_button.disabled = true
 	elif hero_points != villain_points:
-		_fight_button.text = "Fight (Point totals differ)" % [hero_points, villain_points]
+		_fight_button.text = "Fight (Point totals differ: %d vs %d)" % [hero_points, villain_points]
 		_fight_button.disabled = false
 	else:
 		_fight_button.text = "Fight"

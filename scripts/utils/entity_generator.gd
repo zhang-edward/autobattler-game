@@ -5,13 +5,6 @@ const ABILITIES_PATH := "res://abilities/"
 const STARTING_STAT_POINTS := 26
 const ALL_STAT_KEYS := ["strength", "defense", "resilience", "agility", "evasion"]
 
-static func generate_random_prospects(num_prospects: int, prospect_type: Prospect.ProspectType) -> Array[Prospect]:
-	var entity_configs = generate_random_entity_configs(num_prospects, EntityConfig.EntityType.HERO)
-	var prospects: Array[Prospect] = []
-	for c in entity_configs:
-		prospects.append(Prospect.new(c, prospect_type, randi_range(200, 500)))
-	return prospects
-
 static func random_ability_of_tier(tier: Ability.Tier) -> Ability:
 	var abilities_with_matching_tier = get_all_abilities().filter(func(a: Ability): return a.tier == tier)
 	return abilities_with_matching_tier.pick_random().duplicate()
@@ -53,9 +46,6 @@ static func generate_enemy_config_at_level(level: int, num_enemies: int):
 				e[random_stat] += 1
 		e.curr_health = e.get_max_health()
 	return random_enemies
-
-static func enhance_villain_stats(config: EntityConfig):
-	pass
 
 static func get_all_abilities():
 	var all_abilities: Array[Ability] = []
