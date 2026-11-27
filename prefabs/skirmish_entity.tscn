@@ -4,8 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://dqpffuirjlq7b" path="res://prefabs/male_rig.tscn" id="2_gxyuk"]
 [ext_resource type="PackedScene" uid="uid://y3mvpybu4glb" path="res://prefabs/hitbox.tscn" id="2_ty1i2"]
 [ext_resource type="Texture2D" uid="uid://dn5gt0a1iuba6" path="res://sprites/shadow.png" id="3_shadow"]
-[ext_resource type="StyleBox" uid="uid://dg8sf30fs1c41" path="res://prefabs/styles/health_bar_bg.tres" id="4_bar_bg"]
-[ext_resource type="StyleBox" uid="uid://eavm8qye8ae8" path="res://prefabs/styles/hero_health_bar.tres" id="5_bar_fill"]
 [ext_resource type="Script" uid="uid://ct2wu0d81rh5a" path="res://scripts/fsm/state_machine.gd" id="6_state_machine"]
 [ext_resource type="Script" uid="uid://bn6wf5yfxhdvr" path="res://scripts/skirmish/states/move_state.gd" id="7_move"]
 [ext_resource type="Script" uid="uid://ctd1xqhkomlw" path="res://scripts/skirmish/states/jump_state.gd" id="8_jump"]
@@ -22,14 +20,9 @@
 [ext_resource type="Script" uid="uid://btba5ficqrjt5" path="res://scripts/skirmish/brains/states/attack_brain_state.gd" id="23_attack"]
 [ext_resource type="Script" path="res://scripts/skirmish/brains/states/follow_up_brain_state.gd" id="24_follow_up"]
 [ext_resource type="Script" uid="uid://daag8y60xl13e" path="res://scripts/skirmish/states/block_state.gd" id="25_block"]
-[ext_resource type="Script" uid="uid://e0gqseu8gg4x" path="res://scripts/skirmish/states/dodge_state.gd" id="26_dodge"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/dash_state.gd" id="27_dash"]
-[ext_resource type="Script" path="res://scripts/skirmish/brains/states/fleeing_brain_state.gd" id="28_fleeing"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/downed_state.gd" id="29_downed"]
-[ext_resource type="StyleBox" path="res://prefabs/styles/wounds_bar.tres" id="30_wounds_fill"]
 [ext_resource type="Script" path="res://scripts/skirmish/states/character_moment_state.gd" id="31_character_moment"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wounds_bg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6pmnr"]
 radius = 32.0
@@ -38,15 +31,13 @@ height = 116.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_feet"]
 radius = 8.0
 
-[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "healthbar", "wounds_bar", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dodge_state", "dash_state", "character_moment_state", "brain")]
+[node name="SkirmishEntity" type="CharacterBody2D" unique_id=1393326368 node_paths=PackedStringArray("rig", "shadow", "hurtbox", "state_machine", "hurt_state", "death_state", "downed_state", "move_state", "ragdoll_state", "tag_out_state", "tag_in_state", "block_state", "dash_state", "character_moment_state", "brain")]
 collision_layer = 0
 collision_mask = 3072
 script = ExtResource("1_entity")
 hitbox_scene = ExtResource("2_ty1i2")
 rig = NodePath("RigWrapper/MaleRig")
 shadow = NodePath("Shadow")
-healthbar = NodePath("ProgressBar")
-wounds_bar = NodePath("ProgressBar/WoundsBar")
 hurtbox = NodePath("RigWrapper/Hurtbox")
 state_machine = NodePath("StateMachine")
 hurt_state = NodePath("StateMachine/HurtState")
@@ -57,7 +48,6 @@ ragdoll_state = NodePath("StateMachine/RagdollState")
 tag_out_state = NodePath("StateMachine/TagOutState")
 tag_in_state = NodePath("StateMachine/TagInState")
 block_state = NodePath("StateMachine/BlockState")
-dodge_state = NodePath("StateMachine/DodgeState")
 dash_state = NodePath("StateMachine/DashState")
 character_moment_state = NodePath("StateMachine/CharacterMomentState")
 brain = NodePath("AIBrain")
@@ -83,33 +73,6 @@ parent = NodePath("../..")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigWrapper/Hurtbox" unique_id=1709564812]
 position = Vector2(4, -109)
 shape = SubResource("CapsuleShape2D_6pmnr")
-
-[node name="ProgressBar" type="ProgressBar" parent="." unique_id=42184160]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -45.0
-offset_top = -200.0
-offset_right = 57.0
-offset_bottom = -192.0
-grow_horizontal = 2
-theme_override_styles/background = ExtResource("4_bar_bg")
-theme_override_styles/fill = ExtResource("5_bar_fill")
-value = 100.0
-show_percentage = false
-
-[node name="WoundsBar" type="ProgressBar" parent="ProgressBar" unique_id=1768245031]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/background = SubResource("StyleBoxEmpty_wounds_bg")
-theme_override_styles/fill = ExtResource("30_wounds_fill")
-show_percentage = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=843592500]
 shape = SubResource("CircleShape2D_feet")
@@ -159,9 +122,6 @@ move_state = NodePath("../MoveState")
 [node name="BlockState" type="Node" parent="StateMachine" unique_id=1847302915]
 script = ExtResource("25_block")
 
-[node name="DodgeState" type="Node" parent="StateMachine" unique_id=627190484]
-script = ExtResource("26_dodge")
-
 [node name="DashState" type="Node" parent="StateMachine" unique_id=1940275316]
 script = ExtResource("27_dash")
 
@@ -193,15 +153,9 @@ offset_bottom = 40.0
 text = "hero name"
 horizontal_alignment = 1
 
-[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine", "fleeing_brain_state", "flee_roll_timer")]
+[node name="AIBrain" type="Node" parent="." unique_id=1710442994 node_paths=PackedStringArray("state_machine")]
 script = ExtResource("17_brain")
 state_machine = NodePath("StateMachine")
-fleeing_brain_state = NodePath("StateMachine/FleeingBrainState")
-flee_roll_timer = NodePath("FleeRollTimer")
-
-[node name="FleeRollTimer" type="Timer" parent="AIBrain" unique_id=1846203957]
-process_callback = 0
-one_shot = true
 
 [node name="StateMachine" type="Node" parent="AIBrain" unique_id=482915573]
 script = ExtResource("6_state_machine")
@@ -220,6 +174,3 @@ follow_up_state = NodePath("../FollowUpBrainState")
 script = ExtResource("24_follow_up")
 attack_state = NodePath("../AttackBrainState")
 idle_state = NodePath("../IdleBrainState")
-
-[node name="FleeingBrainState" type="Node" parent="AIBrain/StateMachine" unique_id=1290476513]
-script = ExtResource("28_fleeing")

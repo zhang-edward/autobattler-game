@@ -7,8 +7,10 @@ extends RefCounted
 ## average rating is the team rating. The rating gap sets the chance of
 ## winning each round, and rounds are rolled until one team has won two.
 ##
-## The numbers here are placeholders. Once M2 connects the new stats to
-## combat, tune them so quick-sim results match SkirmishRunner results.
+## The numbers here are placeholders (every stat counts equally). TODO: tune
+## them so quick-sim results match SkirmishRunner results. A first pass found
+## +6 in one stat (6 -> 12) too small to show in 20 1v1 fights; measure with
+## bigger gaps (+12) and more fights.
 
 # TUNE: how much each stat counts toward a hero's rating. Equal for now.
 const STAT_WEIGHTS := {

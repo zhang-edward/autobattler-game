@@ -1,23 +1,24 @@
 class_name SkirmishRunnerBuildPanel
 extends PanelContainer
 
+## One team's build in SkirmishRunner: the five stats and the moves. Every
+## hero on the team gets this build.
+
 signal build_changed
 
-const ABILITIES_PATH := "res://abilities/"
-
-@export var entity_type: EntityConfig.EntityType
+@export var title := "Team A"
 
 @onready var _title_label: Label = %TitleLabel
 @onready var _strength: SpinBox = %Strength
-@onready var _defense: SpinBox = %Defense
+@onready var _skill: SpinBox = %Skill
 @onready var _agility: SpinBox = %Agility
-@onready var _evasion: SpinBox = %Evasion
-@onready var _resilience: SpinBox = %Resilience
+@onready var _vitality: SpinBox = %Vitality
+@onready var _defense: SpinBox = %Defense
 @onready var _strength_info: Label = %StrengthInfo
-@onready var _defense_info: Label = %DefenseInfo
+@onready var _skill_info: Label = %SkillInfo
 @onready var _agility_info: Label = %AgilityInfo
-@onready var _evasion_info: Label = %EvasionInfo
-@onready var _resilience_info: Label = %ResilienceInfo
+@onready var _vitality_info: Label = %VitalityInfo
+@onready var _defense_info: Label = %DefenseInfo
 @onready var _points_label: Label = %PointsLabel
 @onready var _moves_by_tier: Dictionary[Ability.Tier, GridContainer] = {
 	Ability.Tier.LIGHT: %LightMoves,
@@ -26,14 +27,19 @@ const ABILITIES_PATH := "res://abilities/"
 }
 
 var _move_toggles: Dictionary[Ability, CheckBox] = {}
+var _power_type: OptionButton
+var _assist: OptionButton
+
 
 func _ready() -> void:
-	_title_label.text = _build_name()
+	_title_label.text = title
 	for stat in _stats():
 		stat.value_changed.connect(_on_build_changed.unbind(1))
+	_build_kit_pickers()
 	_build_move_toggles()
 	_refresh_points_label()
 	_refresh_stat_info()
+
 
 func points() -> int:
 	var total := 0
@@ -41,28 +47,44 @@ func points() -> int:
 		total += roundi(stat.value / stat.step)
 	return total
 
+
 func has_moves() -> bool:
 	return not _selected_abilities().is_empty()
 
-func build_config() -> EntityConfig:
-	var config: EntityConfig = EntityGenerator.generate_random_entity_configs(1, entity_type)[0]
-	config.entity_name = _build_name()
-	config.strength = int(_strength.value)
-	config.defense = int(_defense.value)
-	config.agility = int(_agility.value)
-	config.evasion = int(_evasion.value)
-	config.resilience = int(_resilience.value)
-	config.curr_health = config.get_max_health()
-	config.abilities = _selected_abilities()
-	return config
+
+## A hero with this build. Name, looks and power type are random.
+func build_hero(rng: RandomNumberGenerator) -> Hero:
+	var hero := LeagueGenerator.generate_hero(rng)
+	hero.hero_name = title
+	hero.stats[Hero.Stat.STRENGTH] = int(_strength.value)
+	hero.stats[Hero.Stat.SKILL] = int(_skill.value)
+	hero.stats[Hero.Stat.AGILITY] = int(_agility.value)
+	hero.stats[Hero.Stat.VITALITY] = int(_vitality.value)
+	hero.stats[Hero.Stat.DEFENSE] = int(_defense.value)
+	hero.moves = _selected_abilities()
+	hero.power_type = _power_type.get_selected_id() as Hero.PowerType
+	hero.assist = _assist.get_selected_id() as Hero.Assist
+	return hero
+
+
+## Power type (which sets the super) and tag assist pickers, under the points.
+func _build_kit_pickers() -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 15)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_power_type = OptionButton.new()
+	for type in Hero.PowerType.values():
+		_power_type.add_item("%s — Super: %s" % [Hero.power_type_name(type), Hero.SUPER_NAMES[type]], type)
+	_assist = OptionButton.new()
+	for assist in Hero.Assist.values():
+		_assist.add_item("Assist: %s" % Hero.assist_name(assist), assist)
+	row.add_child(_power_type)
+	row.add_child(_assist)
+	_points_label.add_sibling(row)
+
 
 func _build_move_toggles() -> void:
-	for file_name in ResourceLoader.list_directory(ABILITIES_PATH):
-		if not file_name.ends_with(".tres"):
-			continue
-		var ability := load(ABILITIES_PATH + file_name) as Ability
-		if ability == null:
-			continue
+	for ability in LeagueGenerator.all_abilities():
 		var toggle := CheckBox.new()
 		toggle.text = ability.ability_name
 		toggle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -70,8 +92,10 @@ func _build_move_toggles() -> void:
 		_moves_by_tier[ability.tier].add_child(toggle)
 		_move_toggles[ability] = toggle
 
+
 func _stats() -> Array[SpinBox]:
-	return [_strength, _defense, _agility, _evasion, _resilience]
+	return [_strength, _skill, _agility, _vitality, _defense]
+
 
 func _selected_abilities() -> Array[Ability]:
 	var abilities: Array[Ability] = []
@@ -80,58 +104,36 @@ func _selected_abilities() -> Array[Ability]:
 			abilities.append(ability)
 	return abilities
 
-func _build_name() -> String:
-	return EntityConfig.EntityType.keys()[entity_type].capitalize()
 
 func _refresh_points_label() -> void:
 	_points_label.text = "Points: %d" % points()
 
+
+## What each stat does in combat, from CombatStats.
 func _refresh_stat_info() -> void:
 	var strength := _strength.value
-	_strength_info.text = "Launch dealt ×%.2f   ·   Hitstun dealt ×%.2f" % [
-		(SkirmishEntity.STRENGTH_LAUNCH_SCALE + strength) / SkirmishEntity.STRENGTH_LAUNCH_SCALE,
-		HurtState.hitstun_for(1.0, int(strength)),
+	_strength_info.text = "Strike damage ×%.2f   ·   Launch ×%.2f" % [
+		CombatStats.strength_damage_multiplier(strength),
+		CombatStats.launch_multiplier(strength),
 	]
+
+	_skill_info.text = "Projectile and super damage ×%.2f" % CombatStats.skill_damage_multiplier(_skill.value)
 
 	var agility := _agility.value
-	var agility_time := (AbilityState.AGILITY_SCALE + AbilityState.AGILITY_BASELINE) / (AbilityState.AGILITY_SCALE + agility)
-	_agility_info.text = "Move time ×%.2f   ·   Pushback dealt ×%.2f   ·   Dash speed ×%.2f" % [
-		agility_time,
-		agility_time,
-		1.0 + agility / DashState.AGILITY_DASH_SCALE,
+	_agility_info.text = "Attack time ×%.2f   ·   Block chance %d%%" % [
+		CombatStats.action_time_scale(agility),
+		roundi(100.0 * CombatStats.block_chance(agility)),
 	]
 
+	_vitality_info.text = "Health %d" % CombatStats.max_health(_vitality.value)
+
+	# Every hero on a runner team has this build, so it's also the team average.
 	var defense := _defense.value
-	_defense_info.text = "Block %d%%   ·   Blocked hits −%d damage   ·   Launch taken ×%.2f" % [
-		roundi(100.0 * (SkirmishEntity.BLOCK_BASE_CHANCE + (1.0 - SkirmishEntity.BLOCK_BASE_CHANCE) * defense / (defense + SkirmishEntity.BLOCK_DEFENSE_SCALE))),
-		roundi(defense * SkirmishEntity.BLOCK_REDUCTION_PER_DEFENSE),
-		SkirmishEntity.DEFENSE_LAUNCH_SCALE / (SkirmishEntity.DEFENSE_LAUNCH_SCALE + defense),
+	_defense_info.text = "Team block bar %d   ·   Blocked hit drain ×%.2f" % [
+		roundi(CombatStats.block_bar_size(defense)),
+		CombatStats.block_drain(1.0, defense),
 	]
 
-	var evasion := _evasion.value
-	_evasion_info.text = "Dodge %d%%   ·   Pushback taken ×%.2f" % [
-		roundi(100.0 * evasion / (evasion + SkirmishEntity.DODGE_EVASION_SCALE)),
-		1.0 + evasion / SkirmishEntity.EVASION_PUSHBACK_SCALE,
-	]
-
-	var resilience := _resilience.value
-	var escape_fraction := RagdollState.RAGDOLL_ESCAPE_HEALTH_FRACTION \
-		* RagdollState.RESILIENCE_SCALE / (RagdollState.RESILIENCE_SCALE + resilience)
-	var ignore_hitstun_threshold := resilience * SkirmishEntity.IGNORE_HITSTUN_DAMAGE_PER_RESILIENCE
-	var ignore_hitstun_percent := func(damage: float) -> int:
-		return roundi(100.0 / (1.0 + pow(damage / ignore_hitstun_threshold, SkirmishEntity.IGNORE_HITSTUN_STEEPNESS)))
-	_resilience_info.text = "Escape after %d dmg (%d%%)   ·   " % [
-		ceili(EntityConfig.BASE_HEALTH * escape_fraction),
-		roundi(100.0 * escape_fraction),
-	]
-	if ignore_hitstun_threshold <= 0.0:
-		_resilience_info.text += "Never shrugs off hits"
-	else:
-		_resilience_info.text += "Shrug off 50%% at %.1f dmg, %d%% at 4, %d%% at 20" % [
-			ignore_hitstun_threshold,
-			ignore_hitstun_percent.call(4.0),
-			ignore_hitstun_percent.call(20.0),
-		]
 
 func _on_build_changed() -> void:
 	_refresh_points_label()

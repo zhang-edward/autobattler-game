@@ -12,22 +12,19 @@ func physics_update(delta: float) -> void:
 
 	if intent != null and intent.ability != null:
 		var next_state: State = e.ability_to_state.get(intent.ability)
-		if next_state != null and e.ability_cooldowns.get(intent.ability, 0.0) <= 0.0:
-			e.ability_cooldowns[intent.ability] = intent.ability.cooldown
+		# One projectile on screen per hero
+		var blocked_projectile := intent.ability is ProjectileAbility and e.has_projectile_out()
+		if next_state != null and not blocked_projectile:
+			if e.brain is AIBrain:
+				(e.brain as AIBrain).last_ability = intent.ability
 			state_machine.transition_to(next_state)
 			return
 
 	if intent != null and intent.dash != 0.0:
-		var dash_slot := e.dash_cooldowns.find(0.0)
-		if dash_slot != -1:
-			e.dash_cooldowns[dash_slot] = SkirmishEntity.DASH_COOLDOWN
-			state_machine.transition_to(e.dash_state, {"direction": intent.dash})
-			return
+		state_machine.transition_to(e.dash_state, {"direction": intent.dash})
+		return
 
 	var direction := intent.direction if intent != null else Vector2.ZERO
-	# # If entity is wounded, they can only walk
-	# if e.entity_config.curr_health <= 0:
-	# 	direction = direction.limit_length(IdleBrainState.SPEED)
 
 	e.absolute_velocity = direction * e.move_speed
 	if e.absolute_velocity == Vector2.ZERO:

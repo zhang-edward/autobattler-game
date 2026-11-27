@@ -27,6 +27,13 @@ func darken_screen(focus: Vector2, pair: Array) -> void:
 	_dim_others(pair)
 	await get_tree().create_timer(0.2).timeout
 
+## Zooms the camera in on `focus` (release() zooms back out).
+func focus(point: Vector2, zoom := ZOOM) -> void:
+	var tween := create_tween().set_parallel(true).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(_camera, "zoom", Vector2.ONE * zoom, 0.2)
+	tween.tween_property(_camera, "position", point, 0.2)
+	await tween.finished
+
 func speak(entity: SkirmishEntity, text: String) -> void:
 	if entity == null or not is_instance_valid(entity) or entity.is_dead or text == "":
 		return
@@ -63,13 +70,13 @@ func release() -> void:
 	get_tree().paused = false
 
 func _dim_others(pair: Array) -> void:
-	for e in skirmish.hero_team + skirmish.villain_team:
+	for e in skirmish.all_entities():
 		if e == null or not is_instance_valid(e):
 			continue
 		e.modulate = Color.WHITE if e in pair else DIM
 
 func _undim_all() -> void:
-	for e in skirmish.hero_team + skirmish.villain_team:
+	for e in skirmish.all_entities():
 		if e != null and is_instance_valid(e):
 			e.modulate = Color.WHITE
 

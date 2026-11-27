@@ -62,6 +62,12 @@ const SALARY_PER_RATING := 25_000
 const SALARY_ROUNDING := 10_000
 const CONTRACT_LENGTH_RANGE := Vector2i(1, 3)
 
+const ABILITIES_PATH := "res://abilities/"
+# Starting attacks: one of each tier.
+const STARTING_MOVE_TIERS: Array[Ability.Tier] = [Ability.Tier.LIGHT, Ability.Tier.MEDIUM, Ability.Tier.HEAVY]
+
+static var _all_abilities: Array[Ability] = []
+
 
 ## A new level-1 hero with random stats and potential, and no contract.
 static func generate_hero(rng: RandomNumberGenerator, used_names: Dictionary = {}) -> Hero:
@@ -74,7 +80,32 @@ static func generate_hero(rng: RandomNumberGenerator, used_names: Dictionary = {
 		var stars := rng.rand_weighted(PackedFloat32Array(POTENTIAL_WEIGHTS)) + 1
 		hero.potential[stat] = stars
 		hero.stats[stat] = stars + rng.randi_range(BASE_STAT_BONUS.x, BASE_STAT_BONUS.y)
+	assign_starting_moves(hero, rng)
+	hero.assist = rng.randi_range(0, Hero.Assist.size() - 1) as Hero.Assist
 	return hero
+
+
+## Gives a hero one random move of each starting tier.
+static func assign_starting_moves(hero: Hero, rng: RandomNumberGenerator) -> void:
+	hero.moves.clear()
+	for tier in STARTING_MOVE_TIERS:
+		var options := all_abilities().filter(func(a: Ability) -> bool: return a.tier == tier)
+		if not options.is_empty():
+			hero.moves.append(options[rng.randi_range(0, options.size() - 1)])
+
+
+## Every move in res://abilities/, sorted by file name so picks are
+## reproducible with a seed. Loaded once.
+static func all_abilities() -> Array[Ability]:
+	if _all_abilities.is_empty():
+		var file_names := Array(ResourceLoader.list_directory(ABILITIES_PATH))
+		file_names.sort()
+		for file_name: String in file_names:
+			if file_name.ends_with(".tres"):
+				var ability := load(ABILITIES_PATH + file_name) as Ability
+				if ability != null:
+					_all_abilities.append(ability)
+	return _all_abilities
 
 
 ## A hero at `level`, as if an AI manager had levelled them up from 1.

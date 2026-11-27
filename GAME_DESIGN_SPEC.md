@@ -64,29 +64,71 @@ Matches use tag-based fighting game mechanics, and play out as an autobattler.
 
 - A match is best of 3 rounds.
 - Each round is one fight. Fight size depends on the league tier (see Tiers).
-- Each team shares one health bar across all its heroes. A team loses the round when its health bar is empty.
+- One hero per team is on the field at a time. The rest wait on the bench to tag in.
+- Each team shares one health bar across all its heroes. A team loses the round when its health bar is empty. Individual heroes can't be knocked out.
 - Moves have no cooldowns.
-- Each team builds a super meter during the fight. A full meter lets the hero use their super move.
-- During a fight, the player can tag in a hero from the bench.
+- Each team builds a super meter during the fight.
+
+### What the player controls
+
+Fights play out on their own. The player has two controls:
+
+- **Tag in** a hero from the bench. If the hero on the field is busy (being hit, knocked down or blocking), the tag waits and happens as soon as they're free. A tag can cut an attack short.
+- **Trigger a super move** when the team's super meter is full. Like tags, it fires as soon as the hero on the field is free.
+
+The opposing team tags and uses supers on its own.
+
+### Blocking
+
+There are no dodges. Defense is blocking only.
+
+- Heroes block automatically. Each incoming hit has a chance to be blocked, based on the defending hero's Agility.
+- Each team has a shared block bar. Its size scales with the team's Defense.
+- A blocked hit does no health damage. Instead it drains the block bar. Higher Defense means each blocked hit drains less.
+- When the block bar empties, the guard breaks: the hero on the field is knocked down for a moment and can be hit freely. The team can't block again until the bar has refilled completely.
+- The block bar refills slowly while the team isn't blocking.
 
 ### Hero moveset
 
-| Move type | Examples |
+Each hero has:
+
+| Slot | What it is |
 |---|---|
-| Offensive | Strikes, projectiles |
-| Defensive | Blocks, dodges, counters |
-| Movement | Dashes, jumps |
-| Super | Uses the super meter |
-| Tag assist | Heals, strike boosts, defensive boosts |
+| Attacks | Strikes and projectiles, one each of light, medium and heavy to start. More are learned through level-ups. |
+| Super | Set by the hero's power type (see below). Uses the super meter. |
+| Tag assist | Fires when the hero tags in: Heal, Strike Boost or Guard Boost. |
+
+Movement (dashing) and blocking are built in for every hero, so they aren't moves.
+
+- **Projectiles:** a hero can only have one projectile on screen, and a projectile's recovery can't be cancelled, so a missed projectile can be punished.
+- **Juggles:** a knocked-down hero can only be hit twice in the air (the launch and one follow-up), and can't be hit while getting up.
+
+### Super meter
+
+- Each team has a super meter that fills from damage dealt and damage taken (so a team that's behind still gets its super), and a little from blocking.
+- When it's full, the player can trigger their hero's super. The meter empties.
+- The hero has super armor during a super: hits still deal damage but don't interrupt it.
+- Supers can't be blocked.
+- Super damage scales with Skill.
 
 ### Power types
 
-| Power type | Focus |
+| Power type | Focus | Super |
+|---|---|---|
+| Elemental | Projectile-focused zoning | **Nova Beam:** a huge, fast energy beam that launches |
+| Physical | Strike-focused | **Rush Combo:** a lunging rush that launches on contact |
+| Psychic | Support-focused | **Mind Surge:** heals the team and blasts the opponent from anywhere |
+| Transformation | Meter-focused | **Power Up:** hits harder, attacks faster and takes less damage for a while |
+
+### Tag assists
+
+When a hero tags in, their assist fires. Boosts that last a while (Strike Boost, Guard Boost, Power Up) show an icon over the hero with a ring that empties as the boost runs out.
+
+| Assist | Effect |
 |---|---|
-| Elemental | Projectile-focused zoning |
-| Physical | Strike-focused |
-| Psychic | Support-focused |
-| Transformation | Meter-focused |
+| Heal | Restores some of the team's health (shown as a green number) |
+| Strike Boost | The incoming hero hits harder for a few seconds |
+| Guard Boost | Refills the block bar, fixes a broken guard, and blocked hits drain less for a few seconds |
 
 ### After a match
 
@@ -129,10 +171,10 @@ Heroes level up after gaining enough XP.
 | Stat | What it does |
 |---|---|
 | Strength | Physical attack damage |
-| Skill | Special move damage |
-| Agility | Dodge chance, attack speed |
+| Skill | Projectile and super damage |
+| Agility | Block chance, attack speed |
 | Vitality | Health |
-| Defense | Block damage mitigation, armor |
+| Defense | Block bar size; less block drain per blocked hit |
 
 - Each stat has a potential, shown as 1 to 5 stars.
 - On a level-up, the player picks one stat to raise. The higher that stat's potential, the more it rises.

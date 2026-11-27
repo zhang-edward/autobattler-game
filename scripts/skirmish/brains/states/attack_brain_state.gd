@@ -21,7 +21,7 @@ func get_intent(_delta: float) -> Intent:
 
 	var to_target := target.global_position - brain.entity.global_position
 	var facing := signf(to_target.x)
-	if _ability == null or brain.entity.ability_cooldowns.get(_ability, 0.0) > 0.0:
+	if _ability == null or not brain.ready_abilities().has(_ability):
 		_ability = brain.draw_weighted()
 		if _ability == null:
 			state_machine.transition_to(idle_state)

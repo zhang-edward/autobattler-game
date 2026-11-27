@@ -31,50 +31,30 @@ theme_override_constants/separation = 25
 layout_mode = 2
 theme_override_constants/separation = 25
 
-[node name="HeroBuild" parent="SetupLayer/Root/CenterContainer/VBoxContainer/Builds" unique_id=1880042007 instance=ExtResource("3_panel")]
+[node name="TeamABuild" parent="SetupLayer/Root/CenterContainer/VBoxContainer/Builds" unique_id=1880042007 instance=ExtResource("3_panel")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="VillainBuild" parent="SetupLayer/Root/CenterContainer/VBoxContainer/Builds" unique_id=1880042008 instance=ExtResource("3_panel")]
+[node name="TeamBBuild" parent="SetupLayer/Root/CenterContainer/VBoxContainer/Builds" unique_id=1880042008 instance=ExtResource("3_panel")]
 unique_name_in_owner = true
 layout_mode = 2
-entity_type = 1
+title = "Team B"
 
 [node name="RunOptions" type="HBoxContainer" parent="SetupLayer/Root/CenterContainer/VBoxContainer" unique_id=1880042009]
 layout_mode = 2
 theme_override_constants/separation = 15
 alignment = 1
 
-[node name="HeroCountLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042012]
+[node name="TeamSizeLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042012]
 layout_mode = 2
-text = "Heroes"
+text = "Team size (lead + tag-ins)"
 
-[node name="HeroCount" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042013]
+[node name="TeamSize" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042013]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
-max_value = 3.0
-value = 1.0
-
-[node name="BenchCountLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042024]
-layout_mode = 2
-text = "Bench"
-
-[node name="BenchCount" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042025]
-unique_name_in_owner = true
-layout_mode = 2
-max_value = 2.0
-
-[node name="VillainCountLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042022]
-layout_mode = 2
-text = "Villains"
-
-[node name="VillainCount" type="SpinBox" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042023]
-unique_name_in_owner = true
-layout_mode = 2
-min_value = 1.0
-max_value = 3.0
-value = 1.0
+max_value = 4.0
+value = 2.0
 
 [node name="FightsLabel" type="Label" parent="SetupLayer/Root/CenterContainer/VBoxContainer/RunOptions" unique_id=1880042010]
 layout_mode = 2
@@ -103,12 +83,14 @@ layer = 12
 visible = false
 
 [node name="Root" type="PanelContainer" parent="FightLayer" unique_id=1880042017]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -450.0
+offset_top = 12.0
+offset_right = 450.0
+offset_bottom = 70.0
 grow_horizontal = 2
-grow_vertical = 0
 theme_override_styles/panel = ExtResource("4_style")
 
 [node name="MarginContainer" type="MarginContainer" parent="FightLayer/Root" unique_id=1880042018]
@@ -126,6 +108,7 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+horizontal_alignment = 1
 
 [node name="StopButton" type="Button" parent="FightLayer/Root/MarginContainer/HBoxContainer" unique_id=1880042021]
 unique_name_in_owner = true

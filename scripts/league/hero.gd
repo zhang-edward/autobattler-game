@@ -6,6 +6,8 @@ extends RefCounted
 
 enum Stat { STRENGTH, SKILL, AGILITY, VITALITY, DEFENSE }
 enum PowerType { ELEMENTAL, PHYSICAL, PSYCHIC, TRANSFORMATION }
+## What the hero does for the team when they tag in.
+enum Assist { HEAL, STRIKE_BOOST, GUARD_BOOST }
 
 const STAT_NAMES := {
 	Stat.STRENGTH: "Strength",
@@ -20,6 +22,20 @@ const POWER_TYPE_NAMES := {
 	PowerType.PHYSICAL: "Physical",
 	PowerType.PSYCHIC: "Psychic",
 	PowerType.TRANSFORMATION: "Transformation",
+}
+
+## Each power type has one super move. What they do is in SuperState.
+const SUPER_NAMES := {
+	PowerType.ELEMENTAL: "Nova Beam",
+	PowerType.PHYSICAL: "Rush Combo",
+	PowerType.PSYCHIC: "Mind Surge",
+	PowerType.TRANSFORMATION: "Power Up",
+}
+
+const ASSIST_NAMES := {
+	Assist.HEAL: "Heal",
+	Assist.STRIKE_BOOST: "Strike Boost",
+	Assist.GUARD_BOOST: "Guard Boost",
 }
 
 const MIN_POTENTIAL := 1
@@ -50,8 +66,10 @@ var xp := 0
 var pending_level_ups := 0
 var stats: Dictionary[Stat, int] = {}
 var potential: Dictionary[Stat, int] = {}
-## Moves are assigned in M2, once moves have the new categories.
+## Attacks: one light, one medium and one heavy to start. The super comes
+## from the power type (see SUPER_NAMES).
 var moves: Array[Ability] = []
+var assist: Assist = Assist.HEAL
 var contract: Contract
 
 
@@ -69,6 +87,14 @@ static func stat_name(stat: Stat) -> String:
 
 static func power_type_name(type: PowerType) -> String:
 	return POWER_TYPE_NAMES[type]
+
+
+static func assist_name(assist_: Assist) -> String:
+	return ASSIST_NAMES[assist_]
+
+
+func super_name() -> String:
+	return SUPER_NAMES[power_type]
 
 
 func get_stat(stat: Stat) -> int:

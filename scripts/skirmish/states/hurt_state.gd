@@ -3,16 +3,12 @@ extends SkirmishState
 
 const BASE_KNOCKBACK := 100.0
 const HITSTUN_SECONDS := 0.3
-const HITSTUN_STRENGTH_SCALE := 10.0
 
 @export var move_state: MoveState
 @export var fall_state: FallState
 @export var death_state: DeathState
 
 var hitstun_timer := 0.0
-
-static func hitstun_for(base: float, strength: int) -> float:
-	return base * (HITSTUN_STRENGTH_SCALE + strength) / HITSTUN_STRENGTH_SCALE
 
 func enter(msg := {}) -> void:
 	var dir: Vector2 = msg.get("dir", Vector2.ZERO)

@@ -7,7 +7,6 @@ enum Tier {LIGHT, MEDIUM, HEAVY}
 @export var tier: Tier
 ## State scene instantiated under the entity's StateMachine at spawn.
 @export var state_scene: PackedScene
-@export var cooldown := 0.0
 @export var ability_range := 80.0
 @export var ability_min_range := 0.0
 @export var anim := ""

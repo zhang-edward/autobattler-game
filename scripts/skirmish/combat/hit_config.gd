@@ -4,6 +4,8 @@ extends Resource
 enum Kind {
 	STRIKE,
 	PROJECTILE,
+	## A super move's hit. Scales with Skill, like projectiles.
+	SUPER,
 }
 
 @export var kind: Kind = Kind.STRIKE
