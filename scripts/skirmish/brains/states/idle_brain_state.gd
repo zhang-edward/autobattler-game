@@ -9,19 +9,27 @@ const SPEED := 1.0
 @export var dash_back_range := 120.0
 @export var idle_time_min := 1.0
 @export var idle_time_max := 3.0
+## TUNE: after an attack string ends, the hero resets to neutral for this
+## long before starting another attack, so fights have back-and-forth (and
+## a window for the other side to act or block) instead of nonstop strings.
+@export var reset_time_min := 0.4
+@export var reset_time_max := 0.9
 
 var _time_left := 0.0
+var _reset_left := 0.0
 
 func _ready() -> void:
 	_time_left = randf_range(idle_time_min, idle_time_max)
 
 func enter(_msg := {}) -> void:
 	brain.pick_target(preferred_distance + deadzone)
+	_reset_left = randf_range(reset_time_min, reset_time_max)
 
 func _physics_process(delta: float) -> void:
 	_time_left -= delta * brain.entity.hitstop_scale
+	_reset_left -= delta * brain.entity.hitstop_scale
 	var entity_state: State = brain.entity.state_machine.state
-	if entity_state == brain.entity.hurt_state or entity_state == brain.entity.block_state or entity_state == brain.entity.dodge_state:
+	if entity_state == brain.entity.hurt_state or entity_state == brain.entity.block_state:
 		_time_left = 0.0
 
 func _away_from_opponents() -> Vector2:
@@ -38,8 +46,8 @@ func get_intent(_delta: float) -> Intent:
 	if target == null:
 		return null
 
-	var chase := brain.entity.entity_type == EntityConfig.EntityType.HERO and _target_is_fleeing(target)
-	if _target_is_open(target) or ((chase or _time_left <= 0.0) and _target_is_hittable(target)):
+	var reset_done := _reset_left <= 0.0
+	if reset_done and (_target_is_open(target) or (_time_left <= 0.0 and _target_is_hittable(target))):
 		_time_left = randf_range(idle_time_min, idle_time_max)
 		var ability := brain.draw_weighted()
 		if ability != null:

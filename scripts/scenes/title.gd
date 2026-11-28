@@ -7,5 +7,7 @@ func _ready() -> void:
 	new_game_button.pressed.connect(start_new_game)
 
 func start_new_game():
-	GameVariables.new_game()
-	get_tree().change_scene_to_file("res://scenes/dispatch.tscn")
+	# TODO(M3/M7): route to the New Game flow once the league screens exist.
+	# Until then this starts a league and goes straight into the first match.
+	League.new_game()
+	get_tree().change_scene_to_file("res://scenes/match.tscn")

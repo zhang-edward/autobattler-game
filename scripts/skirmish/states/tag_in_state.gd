@@ -14,11 +14,10 @@ var _destination := Vector2.ZERO
 
 func enter(msg := {}) -> void:
 	_t = 0.0
-	var fallback := Skirmish.HERO_START if e.entity_type == EntityConfig.EntityType.HERO else Skirmish.VILLAIN_START
-	_destination = msg.get("destination", fallback)
+	_destination = msg.get("destination", Skirmish.start_for(e.side))
 	var entry_side := float(msg.get("entry_side", 0.0))
 	if entry_side == 0.0:
-		entry_side = -1.0 if e.entity_type == EntityConfig.EntityType.HERO else 1.0
+		entry_side = Skirmish.entry_direction(e.side)
 	e.position = Vector2(_destination.x + entry_side * RUN_DISTANCE, _destination.y)
 	e.modulate.a = 0.0
 	_from = e.position

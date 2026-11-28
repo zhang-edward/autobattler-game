@@ -23,8 +23,9 @@ enum Phase {AIRBORNE, SLIDING, RECOVERING}
 @export var floor_skid_retention := 0.8
 @export var air_drag := 40.0
 @export var ground_friction := 800.0
-# Below this altitude speed, stop bouncing and start sliding
-@export var min_bounce_speed := 300.0
+# Below this altitude speed, stop bouncing and start sliding. Ordinary
+# launches land below it; only big hits (or juggles from height) bounce.
+@export var min_bounce_speed := 400.0
 @export var wall_restitution := 0.6
 @export var min_wall_bounce_speed := 200.0
 @export var wall_damage_per_speed := 0.04
@@ -32,7 +33,7 @@ enum Phase {AIRBORNE, SLIDING, RECOVERING}
 @export var settle_speed := 40.0
 
 @export_group("Timing")
-@export var recovering_seconds := 0.5
+@export var recovering_seconds := 0.3
 # Seconds of hitstop per unit of sideways speed when hitting a side wall
 @export var wall_hitstop_per_speed := 0.0004
 
@@ -44,8 +45,10 @@ const ANIM_CRUMPLE := "male-rig/ground_crumple"
 # How long the slam pose shows after an impact that bounces, before switching to ANIM_BOUNCE
 const BOUNCE_ANIM_DELAY := 0.12
 const MAX_WALL_SLAM_HITSTOP = 0.4
-const RAGDOLL_ESCAPE_HEALTH_FRACTION := 0.4
-const RESILIENCE_SCALE := 10.0
+# TUNE: a juggle ends (the hero can't be hit again until they're up) after
+# this many hits, counting the launcher, or this share of the hero's health.
+const JUGGLE_HIT_LIMIT := 2
+const RAGDOLL_ESCAPE_HEALTH_FRACTION := 0.2
 const ESCAPE_BLINK_SECONDS := 0.08
 
 var phase: Phase
@@ -56,16 +59,14 @@ var _bounce_anim_timer := 0.0
 var _wall_slam_animation_resume_tween: Tween
 var launched_by: SkirmishEntity
 var ragdoll_damage := 0
+var juggle_hits := 0
 var has_escaped_ragdoll := false
-var is_downed := false
-var character_moment_on_land := false
 var _escape_blink_tween: Tween
 
 func enter(msg := {}) -> void:
 	ragdoll_damage = 0
+	juggle_hits = 0
 	has_escaped_ragdoll = false
-	is_downed = false
-	character_moment_on_land = false
 	relaunch(msg.get("impulse", Vector2.ZERO), msg.get("launch", 0.0))
 	launched_by = msg["launched_by"]
 
@@ -108,7 +109,7 @@ func update(delta: float) -> void:
 	if phase == Phase.RECOVERING:
 		recovering_timer -= delta
 		if recovering_timer <= 0.0:
-			state_machine.transition_to(e.downed_state if is_downed else move_state)
+			state_machine.transition_to(move_state)
 
 func _enter_phase(next_phase: Phase) -> void:
 	phase = next_phase
@@ -116,8 +117,8 @@ func _enter_phase(next_phase: Phase) -> void:
 		Phase.RECOVERING:
 			e.rig.play_animation(ANIM_CRUMPLE)
 			recovering_timer = recovering_seconds
-			# Recovering entities are safe until they're back in play
-			# e.hurtbox.set_deferred("monitorable", false)
+			# Getting up: safe until back in play, so knockdowns can't loop
+			e.hurtbox.set_deferred("monitorable", false)
 			if e.is_dead:
 				e.despawn()
 
@@ -150,30 +151,12 @@ func _bounce_off_side_walls() -> void:
 		ScreenShake.shake_horizontal(12, 0.1, 12)
 		_spawn_dust()
 
-		# Wall impact damage calculation
-		if not e.is_dead:
+		# Wall impact damage. If it empties the team's health, the hero is
+		# knocked out and stays down when they land.
+		if not e.is_dead and not e.skirmish.is_finished():
 			var damage := roundi(impact_speed * wall_damage_per_speed)
-			if launched_by != null and is_instance_valid(launched_by):
-				launched_by.entity_config.damage_dealt += damage
-			var was_at_zero_health := e.healthbar.value <= 0
-			var wound_damage := maxi(damage - int(e.healthbar.value), 0)
-			e.healthbar.value -= damage
-			e.entity_config.curr_health = int(e.healthbar.value)
-			e.entity_config.curr_wounds = mini(e.entity_config.curr_wounds + wound_damage, e.entity_config.get_max_health())
-			e.wounds_bar.value = e.entity_config.curr_wounds
-			e.wounds_bar.visible = e.healthbar.value <= 0
-			if e.healthbar.value <= 0 and not was_at_zero_health:
-				e.move_speed *= SkirmishEntity.ZERO_HEALTH_SPEED_SCALE
-				if e.entity_type == EntityConfig.EntityType.HERO and not e.character_moment_state.has_played \
-					and randf() < SkirmishEntity.CHARACTER_MOMENT_ON_ZERO_HEALTH_CHANCE:
-					if phase == Phase.AIRBORNE:
-						character_moment_on_land = true
-					else:
-						e.character_moment_rolled.emit()
-			if e.entity_config.curr_wounds >= e.entity_config.get_max_health():
-				is_downed = true
+			e.apply_damage(damage, launched_by)
 			add_ragdoll_damage(damage)
-			EffectManager.spawn_damage_number(e.global_position + Vector2(0.0, e.z) + SkirmishEntity.DAMAGE_NUMBER_OFFSET, damage)
 			e.combo_hits += 1
 			e.took_hit.emit(e.combo_hits, false)
 		return
@@ -185,14 +168,13 @@ func _spawn_dust() -> void:
 	EffectManager.spawn_effect(config)
 
 # Once the entity takes enough damage while ragdolled, it can't be hit again until it gets up.
-# Higher "resilience" stat => lowers damage threshold.
 func add_ragdoll_damage(damage: int) -> void:
 	ragdoll_damage += damage
+	juggle_hits += 1
 	if has_escaped_ragdoll or e.is_dead:
 		return
-	var threshold := e.entity_config.get_max_health() * RAGDOLL_ESCAPE_HEALTH_FRACTION \
-		* RESILIENCE_SCALE / (RESILIENCE_SCALE + e.entity_config.resilience)
-	if ragdoll_damage < threshold:
+	var threshold := e.entity_config.get_max_health() * RAGDOLL_ESCAPE_HEALTH_FRACTION
+	if ragdoll_damage < threshold and juggle_hits < JUGGLE_HIT_LIMIT:
 		return
 	has_escaped_ragdoll = true
 	e.hurtbox.set_deferred("monitorable", false)
@@ -203,9 +185,6 @@ func add_ragdoll_damage(damage: int) -> void:
 func _land() -> void:
 	e.z = 0.0
 	_spawn_dust()
-	if character_moment_on_land:
-		character_moment_on_land = false
-		e.character_moment_rolled.emit()
 
 	if e.is_dead:
 		state_machine.transition_to(e.death_state)

@@ -6,28 +6,16 @@ const TIER_WEIGHTS := {
 	Ability.Tier.MEDIUM: 5.0,
 	Ability.Tier.HEAVY: 2.0,
 }
-const FLEE_CHANCE := 0.25
-const FLEE_ROLL_SECONDS_MIN := 1.0
-const FLEE_ROLL_SECONDS_MAX := 2.0
+# TUNE: the move used last is this much less likely to be picked again, so
+# heroes mix up their moves instead of repeating one.
+const REPEAT_WEIGHT := 0.25
 
 @export var state_machine: StateMachine
-@export var fleeing_brain_state: FleeingBrainState
-@export var flee_roll_timer: Timer
+
+## The move this hero used most recently (set by MoveState).
+var last_ability: Ability
 
 var target: SkirmishEntity
-
-func _ready() -> void:
-	flee_roll_timer.timeout.connect(_on_flee_roll_timer_timeout)
-	flee_roll_timer.start(randf_range(FLEE_ROLL_SECONDS_MIN, FLEE_ROLL_SECONDS_MAX))
-
-func _on_flee_roll_timer_timeout() -> void:
-	flee_roll_timer.start(randf_range(FLEE_ROLL_SECONDS_MIN, FLEE_ROLL_SECONDS_MAX))
-	if entity.entity_type != EntityConfig.EntityType.VILLAIN or entity.is_dead or entity.entity_config.curr_health > 0:
-		return
-	if state_machine.state == fleeing_brain_state or entity.state_machine.state == entity.downed_state:
-		return
-	if randf() < FLEE_CHANCE:
-		state_machine.transition_to(fleeing_brain_state)
 
 func get_intent(delta: float) -> Intent:
 	return (state_machine.state as BrainState).get_intent(delta)
@@ -35,10 +23,13 @@ func get_intent(delta: float) -> Intent:
 func draw_weighted() -> Ability:
 	return pick_weighted(ready_abilities())
 
+## Moves have no cooldowns, so every move is ready, except projectiles
+## while this hero already has one on screen.
 func ready_abilities() -> Array[Ability]:
 	var abilities: Array[Ability] = []
+	var projectile_out := entity.has_projectile_out()
 	for ability in entity.entity_config.abilities:
-		if ability != null and entity.ability_cooldowns.get(ability, 0.0) <= 0.0:
+		if ability != null and not (projectile_out and ability is ProjectileAbility):
 			abilities.append(ability)
 	return abilities
 
@@ -48,15 +39,21 @@ func pick_weighted(abilities: Array[Ability]) -> Ability:
 
 	var total := 0.0
 	for ability in abilities:
-		total += TIER_WEIGHTS[ability.tier]
+		total += _weight(ability)
 
 	var roll := randf() * total
 	for ability in abilities:
-		var weight: float = TIER_WEIGHTS[ability.tier]
+		var weight := _weight(ability)
 		if roll < weight:
 			return ability
 		roll -= weight
 	return abilities[abilities.size() - 1]
+
+func _weight(ability: Ability) -> float:
+	var weight: float = TIER_WEIGHTS[ability.tier]
+	if ability == last_ability:
+		weight *= REPEAT_WEIGHT
+	return weight
 
 func nearest_opponent() -> SkirmishEntity:
 	if not is_instance_valid(target) or target.is_dead or not target.is_active:
@@ -71,7 +68,7 @@ func opponents() -> Array[SkirmishEntity]:
 	var found: Array[SkirmishEntity] = []
 	for node in entity.get_parent().get_children():
 		var other := node as SkirmishEntity
-		if other == null or other == entity or other.is_dead or not other.is_active or other.entity_type == entity.entity_type:
+		if other == null or other == entity or other.is_dead or not other.is_active or other.side == entity.side:
 			continue
 		found.append(other)
 	return found

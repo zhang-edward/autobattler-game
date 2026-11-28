@@ -39,7 +39,7 @@ func _handle_area_entered(body: Area2D):
 		return
 	var target := (body as Hurtbox).parent as SkirmishEntity
 	# Only hit the other side
-	if target == null or target.entity_type == _source.entity_type:
+	if target == null or target.side == _source.side:
 		return
 	# Attack out of range (not on the same horizontal axis)
 	if abs(_source.position.y - target.position.y) > IsometryUtils.Y_AXIS_HIT_RANGE:

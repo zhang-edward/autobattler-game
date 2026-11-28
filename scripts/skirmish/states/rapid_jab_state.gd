@@ -1,7 +1,6 @@
 class_name RapidJabState
 extends AbilityState
 
-const CYCLES := 2
 const JAB_ANIM := "male-rig/punch_flurry"
 # Each jab plays from its marker to the next one. Even indices throw the front fist, odd indices the back fist
 const JAB_MARKERS: Array[StringName] = [&"", &"punch_2", &"punch_3", &"punch_4"]
@@ -28,7 +27,11 @@ func _active_update(delta: float) -> void:
 		_enter_phase(Phase.RECOVERY)
 
 func _total_jabs() -> int:
-	return JAB_MARKERS.size() * CYCLES
+	return rapid_jab.jab_count
+
+# The long recovery is the flurry's weakness, so it can't be cancelled away.
+func can_cancel_into(_other: Ability) -> bool:
+	return false
 
 func _jab() -> void:
 	var anim_index := jab_index % JAB_MARKERS.size()

@@ -22,7 +22,7 @@ theme_override_constants/separation = 15
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1570031104]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Hero"
+text = "Team A"
 horizontal_alignment = 1
 
 [node name="Stats" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1570031105]
@@ -49,18 +49,18 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 14
 
-[node name="DefenseLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031108]
+[node name="SkillLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031112]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Defense"
+text = "Skill"
 
-[node name="Defense" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031109]
+[node name="Skill" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031113]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 90.0
+max_value = 60.0
 allow_greater = true
 
-[node name="DefenseInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031126]
+[node name="SkillInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031130]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 layout_mode = 2
@@ -85,36 +85,36 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 14
 
-[node name="EvasionLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031112]
+[node name="VitalityLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031122]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Evasion"
+text = "Vitality"
 
-[node name="Evasion" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031113]
+[node name="Vitality" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031123]
 unique_name_in_owner = true
 layout_mode = 2
 max_value = 60.0
 allow_greater = true
 
-[node name="EvasionInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031130]
+[node name="VitalityInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031132]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 14
 
-[node name="ResilienceLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031122]
+[node name="DefenseLabel" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031108]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Resilience"
+text = "Defense"
 
-[node name="Resilience" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031123]
+[node name="Defense" type="SpinBox" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031109]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 60.0
+max_value = 90.0
 allow_greater = true
 
-[node name="ResilienceInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031132]
+[node name="DefenseInfo" type="Label" parent="MarginContainer/VBoxContainer/Stats" unique_id=1570031126]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.65)
 layout_mode = 2

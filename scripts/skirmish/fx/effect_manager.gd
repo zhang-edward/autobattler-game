@@ -30,3 +30,12 @@ static func spawn_damage_number(pos: Vector2, damage: int) -> void:
 	instance.add_child(damage_number)
 	damage_number.global_position = pos + Vector2(randf_range(-20, 20), randf_range(-10, 10))
 	damage_number.play(damage)
+
+## A floating text pop in the damage number style, e.g. a heal amount.
+static func spawn_popup(pos: Vector2, text: String, color: Color) -> void:
+	if instance == null:
+		return
+	var popup: DamageNumber = _damage_number_scene.instantiate()
+	instance.add_child(popup)
+	popup.global_position = pos
+	popup.play_text(text, color)

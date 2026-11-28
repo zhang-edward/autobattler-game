@@ -32,8 +32,7 @@ func physics_update(delta: float) -> void:
 	e.position = Vector2(lerpf(_from.x, _exit_x, k), _from.y)
 	e.modulate.a = 1.0 - k
 	if k >= 1.0:
-		var bench := Skirmish.HERO_BENCH if e.entity_type == EntityConfig.EntityType.HERO else Skirmish.VILLAIN_BENCH
-		e.position = bench
+		e.position = Skirmish.bench_for(e.side)
 		e.modulate.a = 1.0
 		e.set_active(false)
 		finished.emit()

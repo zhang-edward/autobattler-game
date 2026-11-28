@@ -30,7 +30,6 @@ script = ExtResource("4_gvl5g")
 hitbox = SubResource("Resource_hitbox")
 ability_name = "Bad Punch"
 state_scene = ExtResource("5_oawr4")
-cooldown = 4.0
 anim = "male-rig/frontarm_jab"
 startup = SubResource("Resource_startup")
 recovery = SubResource("Resource_recovery")

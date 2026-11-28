@@ -38,7 +38,7 @@ func _handle_area_entered(body: Area2D) -> void:
 		queue_free()
 		return
 	var target := (body as Hurtbox).parent as SkirmishEntity
-	if target == null or target.entity_type == _source.entity_type:
+	if target == null or target.side == _source.side:
 		return
 	if abs(position.y - target.position.y) > IsometryUtils.Y_AXIS_HIT_RANGE:
 		return

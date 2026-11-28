@@ -14,7 +14,7 @@ launch = Vector2(500, 0)
 
 [sub_resource type="Resource" id="Resource_recovery"]
 script = ExtResource("3_0wudy")
-duration = 0.15
+duration = 0.6
 
 [sub_resource type="Resource" id="Resource_startup"]
 script = ExtResource("3_0wudy")
@@ -28,7 +28,6 @@ projectile_scene = ExtResource("2_xckq6")
 ability_name = "Medium Energy Blast"
 tier = 1
 state_scene = ExtResource("5_v8ngl")
-cooldown = 4.0
 ability_range = 500.0
 ability_min_range = 150.0
 anim = "male-rig/frontarm_jab"

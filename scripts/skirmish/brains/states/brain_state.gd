@@ -14,8 +14,8 @@ func _target_is_open(target: SkirmishEntity) -> bool:
 	if not _target_is_hittable(target):
 		return false
 	var target_state := target.state_machine.state
-	# Target is hurt
-	if target_state == target.hurt_state:
+	# Target is hurt, or down from a guard break
+	if target_state == target.hurt_state or target.is_guard_broken():
 		return true
 	# Target is ragdolled (but not in "recovering", when they're invulnerable)
 	if target_state == target.ragdoll_state:
@@ -30,10 +30,6 @@ func _target_is_hittable(target: SkirmishEntity) -> bool:
 func _target_is_attacking(target: SkirmishEntity) -> bool:
 	var target_mode := (target.brain as AIBrain).state_machine.state
 	return target_mode is AttackBrainState or target_mode is FollowUpBrainState
-
-func _target_is_fleeing(target: SkirmishEntity) -> bool:
-	var target_brain := target.brain as AIBrain
-	return target_brain.state_machine.state == target_brain.fleeing_brain_state
 
 func _y_direction(to_target: Vector2) -> Vector2:
 	# Line up on the target's row, since hits only land within Y_AXIS_HIT_RANGE

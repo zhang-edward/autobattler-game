@@ -1,83 +1,127 @@
 class_name TagDirector
 extends Node
 
-enum Scenario {LOW_HEALTH, COWARD, AVENGE, GLORY}
+## Plays tag-ins as short cutscenes: the screen darkens, the outgoing hero
+## calls for help, the incoming hero runs on and the outgoing one runs off.
+## Requests queue up and play one at a time.
+##
+## Sides in `auto_tag_sides` also tag on their own: every so often, the hero
+## who has been on the bench longest comes in. The opponent always does this;
+## the player's side only does in the Skirmish Runner.
 
+enum Scenario {CALL_FOR_HELP, COVER_ME, MY_TURN}
+
+## What the outgoing hero says. The incoming hero calls out their assist
+## (see Skirmish.ASSIST_LINES).
 const LINES := {
-	Scenario.LOW_HEALTH: ["Help!", "I got you!"],
-	Scenario.COWARD: ["Cover me!", "I've got this!"],
-	Scenario.AVENGE: ["", "I'll avenge you!"],
-	Scenario.GLORY: ["", "My turn!"],
+	Scenario.CALL_FOR_HELP: ["Help!"],
+	Scenario.COVER_ME: ["Cover me!"],
+	Scenario.MY_TURN: [""],
 }
 
-const LOW_HP := 0.25
-const COWARD_HP := 0.5
-const GLORY_HP := 0.25
+# TUNE: seconds between automatic tags, picked at random in this range.
+const AUTO_TAG_INTERVAL := Vector2(10.0, 18.0)
 
 @onready var skirmish: Skirmish = get_parent()
 @export var cutscene: CutsceneManager
 
 var is_playing := false
+var auto_tag_sides: Array[Skirmish.Side] = []
 
-var _ropes_called: Array[int] = []
-var _coward_called: Array[int] = []
-var _glory_called: Array[int] = []
+## Each request is [side, incoming entity, scenario].
 var _pending: Array = []
+var _auto_tag_timers := {}
+## When each hero last went to the bench, in seconds of fight time.
+var _benched_at := {}
+var _clock := 0.0
 
-func request_avenge(entity_type: EntityConfig.EntityType) -> void:
-	var bench := skirmish._healthiest_living_entity_on_team(skirmish.team_for(entity_type))
-	if bench == null:
-		skirmish._finish(skirmish._winning_side(entity_type))
+
+## Turns on automatic tagging for `sides`.
+func set_auto_tag_sides(sides: Array[Skirmish.Side]) -> void:
+	auto_tag_sides = sides
+	for side in sides:
+		_auto_tag_timers[side] = _next_auto_tag_delay()
+
+
+## Whether a tag is playing or waiting to play.
+func is_busy() -> bool:
+	return is_playing or not _pending.is_empty()
+
+
+## A tag-in the player (or the AI) chose.
+func request_manual_tag(side: Skirmish.Side, incoming_entity: SkirmishEntity) -> void:
+	_pending.append([side, incoming_entity, Scenario.values().pick_random()])
+
+
+func _process(delta: float) -> void:
+	if skirmish == null:
 		return
-	_pending.append([entity_type, bench, Scenario.AVENGE])
-	
-func request_manual_tag(entity_type: EntityConfig.EntityType, incoming_entity: SkirmishEntity) -> void:
-	var rand_scenario = Scenario.values().pick_random()
-	_pending.append([entity_type, incoming_entity, rand_scenario])
-
-func _process(_delta: float) -> void:
-	if is_playing or skirmish == null:
-		return
-
-	if not _pending.is_empty():
+	_clock += delta
+	if not is_playing and not _pending.is_empty():
 		var req: Array = _pending.pop_front()
 		play_tag(req[0], req[1], req[2])
+	if skirmish.is_finished():
 		return
-	#for team in [EntityConfig.EntityType.HERO, EntityConfig.EntityType.VILLAIN]:
-		#if _has_pending(team):
-			#continue
-		#if _check_voluntary(team):
-			#return
-		#if _check_glory(team):
-			#return
+	for side: Skirmish.Side in auto_tag_sides:
+		_tick_auto_tag(side, delta)
 
-func _has_pending(team: EntityConfig.EntityType) -> bool:
-	for req in _pending:
-		if req[0] == team:
-			return true
-	return false
 
-func play_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity, scenario: Scenario) -> void:
+func _tick_auto_tag(side: Skirmish.Side, delta: float) -> void:
+	if is_busy():
+		return
+	_auto_tag_timers[side] = maxf(_auto_tag_timers[side] - delta, 0.0)
+	if _auto_tag_timers[side] > 0.0:
+		return
+	# Due: tag as soon as the hero on the field is free.
+	var incoming := _longest_benched(side)
+	if incoming != null and skirmish.can_tag(side, incoming):
+		request_manual_tag(side, incoming)
+		_auto_tag_timers[side] = _next_auto_tag_delay()
+
+
+## The benched hero who's waited longest. Heroes who haven't played yet
+## count as waiting since the start, in lineup order.
+func _longest_benched(side: Skirmish.Side) -> SkirmishEntity:
+	var best: SkirmishEntity = null
+	var best_time := INF
+	var team := skirmish.team_for(side)
+	for i in team.size():
+		var e := team[i]
+		if e == null or not is_instance_valid(e) or e.is_dead or e.is_active:
+			continue
+		var since: float = _benched_at.get(e, -1000.0 + i)
+		if since < best_time:
+			best_time = since
+			best = e
+	return best
+
+
+func _next_auto_tag_delay() -> float:
+	return randf_range(AUTO_TAG_INTERVAL.x, AUTO_TAG_INTERVAL.y)
+
+
+func play_tag(side: Skirmish.Side, incoming: SkirmishEntity, scenario: Scenario) -> void:
 	if is_playing:
-		_pending.append([team, incoming, scenario])
+		_pending.append([side, incoming, scenario])
 		return
-	if not skirmish.can_tag(team, incoming):
-		if incoming != null and is_instance_valid(incoming) and not incoming.is_dead:
-			_pending.append([team, incoming, scenario])
+	if not skirmish.can_tag(side, incoming):
+		# Wait and retry if the hero on the field is busy (mid-attack, in
+		# hitstun). Drop the request if the round is over or the incoming
+		# hero can no longer come in.
+		if not skirmish.is_finished() and incoming != null and is_instance_valid(incoming) \
+				and not incoming.is_dead and not incoming.is_active:
+			_pending.append([side, incoming, scenario])
 		return
 
 	is_playing = true
-	var outgoing := skirmish.active_for(team)
-	if scenario == Scenario.AVENGE and outgoing != null and is_instance_valid(outgoing) and outgoing.is_dead and outgoing.rig.anim_player.is_playing():
-		await outgoing.rig.anim_player.animation_finished
-
-	print("tag: ", Scenario.keys()[scenario], " ", incoming.name)
-	skirmish.swap_refs(team, incoming)
-	var destination := Skirmish.HERO_START if team == EntityConfig.EntityType.HERO else Skirmish.VILLAIN_START
-	var entry_side := -1.0 if team == EntityConfig.EntityType.HERO else 1.0
+	var outgoing := skirmish.active_for(side)
+	skirmish.swap_refs(side, incoming)
+	var destination := Skirmish.start_for(side)
+	var entry_side := Skirmish.entry_direction(side)
 	if outgoing != null and is_instance_valid(outgoing):
 		destination = outgoing.position
 		entry_side = - outgoing.facing()
+		_benched_at[outgoing] = _clock
 	var focus := incoming.position
 	if outgoing != null and is_instance_valid(outgoing):
 		focus = (outgoing.position + incoming.position) * 0.5
@@ -87,46 +131,10 @@ func play_tag(team: EntityConfig.EntityType, incoming: SkirmishEntity, scenario:
 	var lines: Array = LINES[scenario]
 	await cutscene.speak(outgoing, lines[0])
 	await cutscene.tag_in(incoming, destination, entry_side)
-	await cutscene.speak(incoming, lines[1])
+	# The incoming hero's tag assist: they call it out, then it takes effect
+	await cutscene.speak(incoming, Skirmish.assist_line(incoming.entity_config.assist))
+	skirmish.apply_assist(incoming)
 	if outgoing != null and is_instance_valid(outgoing) and not outgoing.is_dead:
 		await cutscene.tag_out(outgoing)
 	await cutscene.release()
 	is_playing = false
-
-func _check_voluntary(team: EntityConfig.EntityType) -> bool:
-	var active := skirmish.active_for(team)
-	if active == null or not is_instance_valid(active) or active.is_dead or active.entity_config == null:
-		return false
-	var bench := skirmish._healthiest_living_entity_on_team(skirmish.team_for(team))
-	if bench == null:
-		return false
-	var id := active.get_instance_id()
-	if _frac(active) < LOW_HP and not id in _ropes_called:
-		_ropes_called.append(id)
-		_coward_called.append(id)
-		_pending.append([team, bench, Scenario.LOW_HEALTH])
-		return true
-	if _frac(active) < COWARD_HP and not id in _coward_called:
-		_coward_called.append(id)
-		_pending.append([team, bench, Scenario.COWARD])
-		return true
-	return false
-
-func _check_glory(team: EntityConfig.EntityType) -> bool:
-	var foe := skirmish.active_for(EntityConfig.EntityType.VILLAIN if team == EntityConfig.EntityType.HERO else EntityConfig.EntityType.HERO)
-	if foe == null or not is_instance_valid(foe) or foe.is_dead or foe.entity_config == null:
-		return false
-	if _frac(foe) >= GLORY_HP:
-		return false
-	var bench := skirmish._healthiest_living_entity_on_team(skirmish.team_for(team))
-	if bench == null:
-		return false
-	var id := bench.get_instance_id()
-	if id in _glory_called:
-		return false
-	_glory_called.append(id)
-	_pending.append([team, bench, Scenario.GLORY])
-	return true
-
-func _frac(e: SkirmishEntity) -> float:
-	return float(e.entity_config.curr_health) / float(maxi(e.entity_config.get_max_health(), 1))
